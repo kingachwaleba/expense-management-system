@@ -1,18 +1,13 @@
 package com.team.backend.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Table(name = "user")
 @Entity
 public class User {
