@@ -15,7 +15,7 @@ public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
     //W bazie DATETIME (data utworzenia wydatku)
   /*  @Column(nullable = false)

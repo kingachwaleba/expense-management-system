@@ -15,7 +15,7 @@ public class Wallet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
     @Column(nullable = false, length = 45)
     @Size(min = 1, max = 45)
