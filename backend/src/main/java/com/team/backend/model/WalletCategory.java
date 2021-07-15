@@ -23,7 +23,4 @@ public class WalletCategory {
     @Size(min = 1, max = 45)
     @NotBlank(message = "Wallet category name is mandatory!")
     private String name;
-
-    @OneToMany(mappedBy = "walletCategory", cascade = CascadeType.ALL)
-    private Set<Wallet> walletSet = new HashSet<>();
 }
