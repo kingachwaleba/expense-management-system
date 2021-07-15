@@ -44,5 +44,5 @@ public class Expense {
 
     @Column(length = 1)
     @Size(min = 1, max = 1)
-    private String interval;
+    private String period;
 }
