@@ -9,8 +9,9 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name= "user")
+@Table(name = "user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -39,5 +40,4 @@ public class User {
 
     @Column(length = 1)
     private String deleted;
-
 }
