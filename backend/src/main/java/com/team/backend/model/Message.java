@@ -34,7 +34,6 @@ public class Message {
     @NotBlank(message = "Content is mandatory!")
     private String content;
 
-    //Typ wiadomości (wiadomość czy powiadomienie) generowane przez system
     @Column(nullable = false, length = 1)
     @Size(min = 1, max = 1)
     private String type;
@@ -42,5 +41,4 @@ public class Message {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "sender", referencedColumnName="id")
     private User sender;
-
 }

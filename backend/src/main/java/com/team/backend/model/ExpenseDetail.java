@@ -31,5 +31,4 @@ public class ExpenseDetail {
 
     @Column(nullable = false)
     private Double cost;
-
 }

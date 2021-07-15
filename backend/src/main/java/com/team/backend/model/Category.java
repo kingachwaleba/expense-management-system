@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 @Table(name = "category")
 @Entity
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
