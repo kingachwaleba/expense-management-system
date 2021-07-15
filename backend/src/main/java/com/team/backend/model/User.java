@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Getter
 @Setter
+@Table(name = "user")
 @Entity
 public class User {
     @Id
