@@ -25,8 +25,7 @@ public class Expense {
     @Size(min = 1, max = 255)
     private String receipt_image;
 
-    //Nie wiem czy dobry typ zmiennej
-    @Column(nullable = false)
+    @Column(precision = 10, scale = 2, nullable = false)
     @NotBlank(message = "Total cost is mandatory!")
     private Double total_cost;
 

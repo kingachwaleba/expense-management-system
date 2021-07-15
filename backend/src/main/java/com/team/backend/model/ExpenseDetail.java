@@ -29,6 +29,6 @@ public class ExpenseDetail {
     @JoinColumn(name = "user_id", referencedColumnName="id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(precision = 10, scale = 2, nullable = false)
     private Double cost;
 }
