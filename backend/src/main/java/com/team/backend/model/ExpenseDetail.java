@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -30,5 +31,5 @@ public class ExpenseDetail {
     private User user;
 
     @Column(precision = 10, scale = 2, nullable = false)
-    private Double cost;
+    private BigDecimal cost;
 }

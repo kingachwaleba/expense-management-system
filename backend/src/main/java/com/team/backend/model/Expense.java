@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -28,7 +29,7 @@ public class Expense {
 
     @Column(precision = 10, scale = 2, nullable = false)
     @NotBlank(message = "Total cost is mandatory!")
-    private Double total_cost;
+    private BigDecimal total_cost;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName="id", nullable = false)
