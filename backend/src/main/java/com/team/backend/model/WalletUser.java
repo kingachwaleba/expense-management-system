@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -27,11 +28,11 @@ public class WalletUser {
     @JoinColumn(name = "wallet_id", referencedColumnName="id", nullable = false)
     private Wallet wallet;
 
-    //W bazie DATETIME (data wysłania zaproszenia)
-  /*  @Column(nullable = false)
-    private created_at;*/
+    @Column(columnDefinition = "DATETIME", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date created_at;
 
-    //W bazie DATETIME (data zaakceptowania zaproszenia)
-  /*  @Column
-    private accepted_at;*/
+    @Column(columnDefinition = "DATETIME")
+    @Temporal(TemporalType.DATE)
+    private Date accepted_at;
 }

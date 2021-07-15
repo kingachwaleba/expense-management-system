@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -17,9 +18,9 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    //W bazie DATETIME (data utworzenia wydatku)
-  /*  @Column(nullable = false)
-    private date;*/
+    @Column(columnDefinition = "DATETIME", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @Column(length = 255)
     @Size(min = 1, max = 255)

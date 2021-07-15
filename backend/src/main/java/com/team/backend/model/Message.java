@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -25,9 +26,9 @@ public class Message {
     @JoinColumn(name = "wallet_id", referencedColumnName="id", nullable = false)
     private Wallet wallet;
 
-    //W bazie DATETIME (data wysłania wiadomości, generowana przez system)
-  /*  @Column(nullable = false)
-    private date;*/
+    @Column(columnDefinition = "DATETIME", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @Column(nullable = false)
     @Size(min = 1, max = 255)
