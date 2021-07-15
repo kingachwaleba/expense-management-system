@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +16,7 @@ public class ExpenseDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_status_id", referencedColumnName="id")
@@ -29,7 +30,6 @@ public class ExpenseDetail {
     @JoinColumn(name = "user_id", referencedColumnName="id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
-    private Double cost;
-
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal cost;
 }

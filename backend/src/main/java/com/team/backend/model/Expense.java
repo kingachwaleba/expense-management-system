@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -15,20 +17,19 @@ public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
-    //W bazie DATETIME (data utworzenia wydatku)
-  /*  @Column(nullable = false)
-    private date;*/
+    @Column(columnDefinition = "DATETIME", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @Column(length = 255)
     @Size(min = 1, max = 255)
     private String receipt_image;
 
-    //Nie wiem czy dobry typ zmiennej
-    @Column(nullable = false)
+    @Column(precision = 10, scale = 2, nullable = false)
     @NotBlank(message = "Total cost is mandatory!")
-    private Double total_cost;
+    private BigDecimal total_cost;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName="id", nullable = false)
@@ -44,6 +45,5 @@ public class Expense {
 
     @Column(length = 1)
     @Size(min = 1, max = 1)
-    private String interval;
-
+    private String period;
 }

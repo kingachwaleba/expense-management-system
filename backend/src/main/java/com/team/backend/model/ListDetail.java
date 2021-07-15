@@ -15,7 +15,7 @@ public class ListDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
     @Column(nullable = false, length = 100)
     @Size(min = 1, max = 100)
@@ -42,5 +42,4 @@ public class ListDetail {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName="id")
     private User user;
-
 }
