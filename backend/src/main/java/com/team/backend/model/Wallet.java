@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name= "wallet")
+@Table(name = "wallet")
 public class Wallet {
 
     @Id
