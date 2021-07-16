@@ -32,7 +32,7 @@ public class User {
 
     @Column(nullable = false)
     @Size(max = 255)
-    private String password_hash;
+    private String passwordHash;
 
     @Column(nullable = false, length = 45)
     @Size(max = 45)
