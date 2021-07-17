@@ -38,9 +38,6 @@ public class User {
 
     @Column(nullable = false)
     @Size(max = 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$",
-            message = "Incorrect format of a password (min. 1 capital letter, min. 1 lowercase, min. 1 number, " +
-                    "it should have min. 8 characters)!")
     private String password;
 
     @Column(length = 1)
