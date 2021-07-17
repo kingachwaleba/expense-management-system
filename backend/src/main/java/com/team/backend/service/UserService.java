@@ -8,4 +8,6 @@ public interface UserService {
 
     void save(User user);
     Optional<User> findByLogin(String login);
+    Boolean existsByLogin(String login);
+    Boolean existsByEmail(String email);
 }
