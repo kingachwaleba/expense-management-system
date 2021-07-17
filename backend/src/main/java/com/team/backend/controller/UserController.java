@@ -20,7 +20,7 @@ public class UserController {
         this.securityService = securityService;
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/register")
     public ResponseEntity<String> createAccount(@Valid @RequestBody User user) {
         if (userService.existsByLogin(user.getLogin()) || userService.existsByEmail(user.getEmail())) {
             return new ResponseEntity<>("Given user has an account!", HttpStatus.BAD_REQUEST);
