@@ -1,4 +1,7 @@
 package com.team.backend.repository;
 
-public interface WalletUserRepository {
+import com.team.backend.model.WalletUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface WalletUserRepository extends JpaRepository<WalletUser, Integer> {
 }
