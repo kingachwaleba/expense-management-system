@@ -1,4 +1,13 @@
 package com.team.backend.service;
 
-public class UserService {
+import com.team.backend.model.User;
+
+import java.util.Optional;
+
+public interface UserService {
+
+    void save(User user);
+    Optional<User> findByLogin(String login);
+    Boolean existsByLogin(String login);
+    Boolean existsByEmail(String email);
 }
