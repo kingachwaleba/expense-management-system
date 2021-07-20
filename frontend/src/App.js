@@ -5,6 +5,7 @@ import {createBrowserHistory} from 'history';
 import {LoginPage} from "./pages/login/LoginPage";
 import {RegisterPage} from "./pages/register/RegisterPage";
 import {HomePage} from "./pages/home/HomePage";
+import AuthGuard from './guards/AuthGuard';
 
 class App extends React.Component {
 
@@ -26,6 +27,7 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/register" component={RegisterPage}/>
+                        <AuthGuard path="/home" component={HomePage}/>
                         <Route exact path="/home" component={HomePage}/>
                     </Switch>
                 </div>
