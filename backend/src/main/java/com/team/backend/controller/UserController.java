@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 public class UserController {
@@ -30,5 +32,21 @@ public class UserController {
 //        securityService.autoLogin(user.getLogin(), user.getPassword());
 
         return ResponseEntity.ok("User has been created");
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> login(HttpServletRequest request) {
+//        if (securityService.isAuthenticated()) {
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        }
+
+        Principal principal = request.getUserPrincipal();
+        if (principal == null || principal.getName() == null)
+        {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        User user = userService.findByLogin(principal.getName()).orElseThrow(RuntimeException::new);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
