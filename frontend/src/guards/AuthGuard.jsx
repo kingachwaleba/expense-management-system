@@ -20,3 +20,5 @@ class AuthGuard extends React.Component {
         return (<Component/>);
     }
 }
+
+export default AuthGuard;
