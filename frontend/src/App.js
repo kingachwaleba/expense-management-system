@@ -31,7 +31,7 @@ class App extends React.Component {
         UserService.logOut()
             .then(
                 data => {
-                    this.state.push('/login');
+                    this.state.history.push('/login');
                 },
                 error => {
                     this.setState({
