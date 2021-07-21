@@ -42,4 +42,7 @@ public class User {
 
     @Column(length = 1)
     private String deleted;
+
+    @Transient
+    private String roles = "ROLE_USER";
 }
