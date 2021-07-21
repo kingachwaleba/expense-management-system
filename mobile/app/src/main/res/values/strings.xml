@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Mobile</string>
+    <string name="log_header">Zaloguj się:</string>
+    <string name="log_button">Zaloguj się</string>
+    <string name="email_text">Email:</string>
+    <string name="password_text">Hasło:</string>
+    <string name="forget_pass_baner_text">Nie pamiętam hasła, przypomnij hasło.</string>
+    <string name="no_accout_text">Nie masz konta?</string>
+    <string name="sign_up_text">Zarejestruj się!</string>
+    <string name="sign_up_header">Zarejestruj się:</string>
+    <string name="sign_up_button">Zarejestruj się</string>
+    <string name="login_text_r">Login*</string>
+    <string name="password_confirm_text_r">Powtórz hasło*</string>
+    <string name="email_text_r">Email*</string>
+    <string name="password_text_r">Hasło*</string>
+    <string name="choose_image_text">Wybierz zdjęcie</string>
+    <string name="browse_text">Przeglądaj</string>
+    <string name="info_text">*-pola wymagane.</string>
+    <string name="reg_text_r">regulaminu*</string>
+    <string name="reg_text_cb">Przeczytałem/am i akceptuję warunki </string>
 </resources>
