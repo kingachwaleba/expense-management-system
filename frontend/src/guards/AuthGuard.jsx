@@ -11,7 +11,7 @@ class AuthGuard extends React.Component {
 
     render() {
         const {component: Component} = this.props;
-        const currentUser = UserService.currentUserValue;
+        const currentUser = UserService.getCurrentUser();
 
         if (!currentUser) {
             return (<Redirect to={{pathname: '/login'}}/>)

@@ -1,13 +1,14 @@
 import React from 'react';
 import UserService from '../../services/user.service';
 import {User} from '../../models/user';
+import { Button, Form, FormGroup, Input, Label, Row, Col } from "reactstrap";
 
 class RegisterPage extends React.Component {
 
     constructor(props, context) {
         super(props, context);
 
-        if (UserService.currentUserValue) {
+        if (UserService.getCurrentUser()) {
             this.props.history.push('/home');
         }
 
@@ -74,9 +75,8 @@ class RegisterPage extends React.Component {
 
                     <form
                         name="form"
-                        onSubmit={(e) => this.handleRegister(e)}
-                        noValidate
-                        className={submitted ? 'was-validated' : ''}>
+                        method="post"
+                        onSubmit={(e) => this.handleRegister(e)}>
                         <div className={'form-group'}>
                             <label htmlFor="login">Login: </label>
                             <input
@@ -129,7 +129,6 @@ class RegisterPage extends React.Component {
                                 className="form-control"
                                 name="image"
                                 placeholder="image"
-                                required
                                 value={user.image}
                                 onChange={(e) => this.handleChange(e)}/>
                             <div className="invalid-feedback">
