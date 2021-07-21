@@ -4,58 +4,41 @@ import {User} from '../../models/user';
 
 class LoginPage extends React.Component {
 
-
     constructor(props, context) {
         super(props, context);
 
-        if (UserService.currentUserValue) {
-            this.props.history.push('/home');
-        }
-
         this.state = {
-            user: new User('', ''),
-            submitted: false,
-            loading: false,
-            errorMessage: '',
+            login: "",
+            password: "",
+            error: ""
         };
     }
 
-    handleChange(e) {
-        const {name, value} = e.target;
-        const {user} = this.state;
-        user[name] = value;
-        this.setState({user: user});
-    }
+    changeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({[nam]: val});
+    };
 
-    handleLogin(e) {
-        e.preventDefault();
+    doLogin = async (event) => {
+        event.preventDefault();
 
-        this.setState({submitted: true});
-        const {user} = this.state;
-
-        //Validation.
-        if (!user.login || !user.password) {
-            return;
-        }
-
-        this.setState({loading: true});
-        UserService.login(user)
+        UserService
+            .login(this.state.login,
+                this.state.password)
             .then(
-                data => {
-                    this.props.history.push('/home');
+                () => {
+                    this.props.history.push('/profile');
+                    window.location.reload();
                 },
                 error => {
-                    console.log(error);
-                    this.setState({
-                        errorMessage: 'Login or password is not valid.',
-                        loading: false,
-                    });
-                },
+                    console.log("Login fail: error = { " + error.toString() + " }");
+                    this.setState({error: "Can not signin successfully! Please check login/password again"});
+                }
             );
-    }
+    };
 
     render() {
-        const {user, submitted, loading, errorMessage} = this.state;
         return (
             <div className="login-page">
                 <div className="card">
@@ -63,17 +46,10 @@ class LoginPage extends React.Component {
                         <i className="fa fa-user"/>
                     </div>
 
-                    {errorMessage &&
-                    <div className="alert alert-danger" role="alert">
-                        {errorMessage}
-                    </div>
-                    }
-
                     <form
                         name="form"
-                        onSubmit={(e) => this.handleLogin(e)}
-                        noValidate
-                        className={submitted ? 'was-validated' : ''}>
+                        method="post"
+                        onSubmit={this.doLogin}>
                         <div className={'form-group'}>
                             <label htmlFor="username">Login: </label>
                             <input
@@ -82,8 +58,8 @@ class LoginPage extends React.Component {
                                 name="login"
                                 placeholder="Login"
                                 required
-                                value={user.login}
-                                onChange={(e) => this.handleChange(e)}/>
+                                value={this.state.login}
+                                onChange={this.changeHandler}/>
                             <div className="invalid-feedback">
                                 A valid login is required.
                             </div>
@@ -97,19 +73,23 @@ class LoginPage extends React.Component {
                                 name="password"
                                 placeholder="Password"
                                 required
-                                value={user.password}
-                                onChange={(e) => this.handleChange(e)}/>
+                                value={this.state.password}
+                                onChange={this.changeHandler}/>
                             <div className="invalid-feedback">
                                 Password is required.
                             </div>
                         </div>
 
-                        <button
-                            className="btn btn-primary btn-block"
-                            onClick={() => this.setState({submitted: true})}
-                            disabled={loading}>
+                        <button type="submit">
                             Login
                         </button>
+                        {
+                            this.state.error && (
+                                <alert color="danger">
+                                    {this.state.error}
+                                </alert>
+                            )
+                        }
                     </form>
                     <a href="/register" className="card-link">Create New Account!</a>
                 </div>

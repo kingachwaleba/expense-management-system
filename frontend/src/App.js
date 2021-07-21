@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import {Router, Route, Switch} from 'react-router-dom';
-import {createBrowserHistory} from 'history';
+import {Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import {LoginPage} from "./pages/login/LoginPage";
 import {RegisterPage} from "./pages/register/RegisterPage";
 import {HomePage} from "./pages/home/HomePage";
@@ -14,40 +14,35 @@ class App extends React.Component {
         super(props, context);
 
         this.state = {
-            history: createBrowserHistory(),
-            currentUser: null,
+            username: undefined,
+            login: false
         };
     }
 
     componentDidMount() {
-        UserService.currentUser.subscribe(data => {
+        const user = UserService.getCurrentUser();
+
+        if (user) {
             this.setState({
-                currentUser: data,
+                login: true,
+                username: user.login
             });
-        });
+
+            console.log(user);
+        }
     }
 
-    logout() {
-        UserService.logOut()
-            .then(
-                data => {
-                    this.state.history.push('/login');
-                },
-                error => {
-                    this.setState({
-                        errorMessage: 'Unexpected error occurred.',
-                    });
-                },
-            );
+    logOut() {
+        UserService.logOut();
+        this.props.history.push('/login');
+        window.location.reload();
     }
 
     render() {
-        const {currentUser, history} = this.state;
-
         return (
-            <Router history={history}>
+            <Router>
                 <div>
-                    {currentUser &&
+                    {this.state.login &&
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
                         <a className="navbar-brand" href="https://reactjs.org">
                             React
@@ -60,15 +55,16 @@ class App extends React.Component {
                                 </a>
                             </li>
                         </div>
+
                         <div className="navbar-nav ml-auto">
                             <li className="nav-item">
                                 <a className="nav-link" href="/profile">
                                     <span className="fa fa-user"/>
-                                    {currentUser.name}
+                                    {this.state.username}
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#" onClick={() => this.logout()}>
+                                <a className="nav-link" href="#" onClick={this.logOut}>
                                     <span className="fa fa-sign-out"/>
                                     LogOut
                                 </a>
@@ -77,9 +73,8 @@ class App extends React.Component {
                     </nav>
                     }
                 </div>
-
                 <div>
-                    {!currentUser &&
+                    {!this.state.login &&
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
                         <a className="navbar-brand" href="https://reactjs.org">
                             React
@@ -115,7 +110,6 @@ class App extends React.Component {
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/register" component={RegisterPage}/>
                         <AuthGuard path="/home" component={HomePage}/>
-                        <Route exact path="/home" component={HomePage}/>
                     </Switch>
                 </div>
             </Router>
