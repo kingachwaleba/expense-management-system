@@ -4,6 +4,7 @@ import com.team.backend.service.UserDetailsServiceImpl;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,13 +20,11 @@ import java.io.IOException;
 @NoArgsConstructor
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
+    @Autowired
     private JwtProvider tokenProvider;
-    private UserDetailsServiceImpl userDetailsService;
 
-    public JwtAuthTokenFilter(JwtProvider tokenProvider, UserDetailsServiceImpl userDetailsService) {
-        this.tokenProvider = tokenProvider;
-        this.userDetailsService = userDetailsService;
-    }
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
