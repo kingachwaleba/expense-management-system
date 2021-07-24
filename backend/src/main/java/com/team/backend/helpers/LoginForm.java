@@ -1,4 +1,4 @@
-package com.team.backend.model.helpers;
+package com.team.backend.helpers;
 
 import lombok.Getter;
 import lombok.Setter;
