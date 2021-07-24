@@ -5,10 +5,10 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user_status")
 @Entity
 public class UserStatus {
