@@ -26,7 +26,7 @@ public class Wallet {
     @Size(min = 1, max = 45)
     @NotBlank(message = "Wallet name is mandatory!")
     private String name;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_category_id", referencedColumnName="id", nullable = false)
     private WalletCategory walletCategory;
@@ -35,6 +35,7 @@ public class Wallet {
     @Size(max = 1000)
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy="wallet", cascade = CascadeType.ALL)
     private Set<WalletUser> walletUserSet = new HashSet<>();
 
