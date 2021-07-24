@@ -1,5 +1,6 @@
 package com.team.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +26,8 @@ public class Wallet {
     @Size(min = 1, max = 45)
     @NotBlank(message = "Wallet name is mandatory!")
     private String name;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_category_id", referencedColumnName="id", nullable = false)
     private WalletCategory walletCategory;
 
