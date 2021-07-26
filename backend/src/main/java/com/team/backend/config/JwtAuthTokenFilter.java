@@ -4,6 +4,7 @@ import com.team.backend.service.UserDetailsServiceImpl;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,12 @@ import java.io.IOException;
 @NoArgsConstructor
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
+    @Autowired
+    private JwtProvider tokenProvider;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
     @Override
@@ -26,7 +33,8 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwt(httpServletRequest);
-
+            // Removing first and last character of a string using substring() method - only for postman
+            jwt = jwt.substring(1, jwt.length() - 1);
             if (jwt!=null && tokenProvider.validateJwtToken(jwt)) {
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
 
