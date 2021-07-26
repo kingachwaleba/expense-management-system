@@ -19,14 +19,6 @@ import java.io.IOException;
 @NoArgsConstructor
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
-    private JwtProvider tokenProvider;
-    private UserDetailsServiceImpl userDetailsService;
-
-    public JwtAuthTokenFilter(JwtProvider tokenProvider, UserDetailsServiceImpl userDetailsService) {
-        this.tokenProvider = tokenProvider;
-        this.userDetailsService = userDetailsService;
-    }
-
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
     @Override
@@ -34,6 +26,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwt(httpServletRequest);
+
             if (jwt!=null && tokenProvider.validateJwtToken(jwt)) {
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
 
