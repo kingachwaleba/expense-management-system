@@ -67,4 +67,21 @@ public class WalletController {
                 .created(walletEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(walletEntityModel);
     }
+
+    @PutMapping("/wallet/{id}")
+    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Wallet newWallet) {
+        Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+
+        updatedWallet.setName(newWallet.getName());
+        updatedWallet.setDescription(newWallet.getDescription());
+        updatedWallet.setWalletCategory(newWallet.getWalletCategory());
+
+        walletService.save(updatedWallet);
+
+        EntityModel<Wallet> walletEntityModel = walletAssembler.toModel(updatedWallet);
+
+        return ResponseEntity
+                .created(walletEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(walletEntityModel);
+    }
 }

@@ -67,6 +67,11 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public void save(Wallet wallet) {
+        walletRepository.save(wallet);
+    }
+
+    @Override
     public Optional<Wallet> findById(int id) {
         return walletRepository.findById(id);
     }

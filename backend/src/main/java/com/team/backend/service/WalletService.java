@@ -11,6 +11,7 @@ import java.util.Set;
 public interface WalletService {
 
     void save(WalletHolder walletHolder);
+    void save(Wallet wallet);
 
     Optional<Wallet> findById(int id);
     List<Wallet> findAll();
