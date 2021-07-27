@@ -5,7 +5,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import com.team.backend.helpers.WalletAssembler;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.User;
+import com.team.backend.model.UserStatus;
 import com.team.backend.model.Wallet;
+import com.team.backend.model.WalletUser;
+import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.hateoas.CollectionModel;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +31,13 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final WalletAssembler walletAssembler;
+    private final UserStatusRepository userStatusRepository;
 
-    public WalletController(WalletService walletService, UserService userService, WalletAssembler walletAssembler) {
+    public WalletController(WalletService walletService, UserService userService, WalletAssembler walletAssembler, UserStatusRepository userStatusRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.walletAssembler = walletAssembler;
+        this.userStatusRepository = userStatusRepository;
     }
 
     @GetMapping("/wallet/{id}")
@@ -75,6 +81,33 @@ public class WalletController {
         updatedWallet.setName(newWallet.getName());
         updatedWallet.setDescription(newWallet.getDescription());
         updatedWallet.setWalletCategory(newWallet.getWalletCategory());
+
+        walletService.save(updatedWallet);
+
+        EntityModel<Wallet> walletEntityModel = walletAssembler.toModel(updatedWallet);
+
+        return ResponseEntity
+                .created(walletEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(walletEntityModel);
+    }
+
+    @PutMapping("/wallet/{id}/users")
+    public ResponseEntity<?> addUsers(@PathVariable int id, @RequestBody List<User> userList) {
+        Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+
+        Date date = new Date();
+
+        // Get user status for others wallets' members
+        UserStatus userStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
+
+        for (User user1 : userList) {
+            WalletUser walletUser1 = new WalletUser();
+            walletUser1.setUser(user1);
+            walletUser1.setCreated_at(date);
+            walletUser1.setAccepted_at(date);
+            walletUser1.setUserStatus(userStatus);
+            updatedWallet.addWalletUser(walletUser1);
+        }
 
         walletService.save(updatedWallet);
 
