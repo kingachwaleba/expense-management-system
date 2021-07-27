@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -25,6 +24,23 @@ public class WalletServiceImpl implements WalletService {
         this.userStatusRepository = userStatusRepository;
         this.walletRepository = walletRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public void saveUsers(List<User> userList, Wallet wallet) {
+        Date date = new Date();
+
+        // Get user status for others wallets' members
+        UserStatus userStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
+
+        for (User user : userList) {
+            WalletUser walletUser = new WalletUser();
+            walletUser.setUser(user);
+            walletUser.setCreated_at(date);
+            walletUser.setAccepted_at(date);
+            walletUser.setUserStatus(userStatus);
+            wallet.addWalletUser(walletUser);
+        }
     }
 
     @Override
@@ -45,17 +61,7 @@ public class WalletServiceImpl implements WalletService {
         // Get user status for wallet's owner
         UserStatus userStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
 
-        // Get user status for others wallets' members
-        UserStatus userStatus2 = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
-
-        for (User user1 : userList) {
-            WalletUser walletUser1 = new WalletUser();
-            walletUser1.setUser(user1);
-            walletUser1.setCreated_at(date);
-            walletUser1.setAccepted_at(date);
-            walletUser1.setUserStatus(userStatus2);
-            wallet.addWalletUser(walletUser1);
-        }
+        saveUsers(userList, wallet);
 
         walletUser.setUser(user);
         walletUser.setCreated_at(date);

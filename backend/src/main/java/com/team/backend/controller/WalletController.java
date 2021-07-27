@@ -31,13 +31,11 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final WalletAssembler walletAssembler;
-    private final UserStatusRepository userStatusRepository;
 
-    public WalletController(WalletService walletService, UserService userService, WalletAssembler walletAssembler, UserStatusRepository userStatusRepository) {
+    public WalletController(WalletService walletService, UserService userService, WalletAssembler walletAssembler) {
         this.walletService = walletService;
         this.userService = userService;
         this.walletAssembler = walletAssembler;
-        this.userStatusRepository = userStatusRepository;
     }
 
     @GetMapping("/wallet/{id}")
@@ -95,19 +93,7 @@ public class WalletController {
     public ResponseEntity<?> addUsers(@PathVariable int id, @RequestBody List<User> userList) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
-        Date date = new Date();
-
-        // Get user status for others wallets' members
-        UserStatus userStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
-
-        for (User user1 : userList) {
-            WalletUser walletUser1 = new WalletUser();
-            walletUser1.setUser(user1);
-            walletUser1.setCreated_at(date);
-            walletUser1.setAccepted_at(date);
-            walletUser1.setUserStatus(userStatus);
-            updatedWallet.addWalletUser(walletUser1);
-        }
+        walletService.saveUsers(userList, updatedWallet);
 
         walletService.save(updatedWallet);
 
