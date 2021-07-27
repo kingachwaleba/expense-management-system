@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -73,5 +74,10 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public List<Wallet> findAll() {
         return walletRepository.findAll();
+    }
+
+    @Override
+    public List<Wallet> findByUserId(int id) {
+        return walletRepository.findByUserId(id);
     }
 }
