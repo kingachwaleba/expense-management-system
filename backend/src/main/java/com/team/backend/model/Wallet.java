@@ -38,7 +38,7 @@ public class Wallet {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy="wallet")
+    @OneToMany(mappedBy="wallet", cascade = CascadeType.ALL)
     private Set<WalletUser> walletUserSet = new HashSet<>();
 
     public void addWalletUser(WalletUser walletUser) {
