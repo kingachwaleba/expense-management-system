@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:padding="40dp"
+    android:orientation="vertical"
+    android:gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_gray"
-
     >
 
-    <LinearLayout
-        android:id="@+id/main_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-      >
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:textAppearance="@style/label"
             android:textSize="36sp"
             android:textColor="@color/yellow"
@@ -117,14 +111,11 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/button"
             android:text="Przejdź do porfela"
             android:textAppearance="@style/button_style"
             android:textColor="@color/light_gray"
             app:backgroundTint="@null" />
 
-    </LinearLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
