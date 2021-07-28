@@ -10,8 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,28 +27,26 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void saveUsers(List<User> userList, Wallet wallet) {
+    public void saveUser(User user, Wallet wallet, UserStatus userStatus) {
         LocalDateTime date = LocalDateTime.now();
 
-        // Get user status for others wallets' members
-        UserStatus userStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
+        WalletUser walletUser = new WalletUser();
+        walletUser.setUser(user);
+        walletUser.setCreated_at(date);
 
-        for (User user : userList) {
-            WalletUser walletUser = new WalletUser();
-            walletUser.setUser(user);
-            walletUser.setCreated_at(date);
+        if (userStatus.getId() == 1)
+            walletUser.setAccepted_at(date);
+        else
             walletUser.setAccepted_at(null);
-            walletUser.setUserStatus(userStatus);
-            wallet.addWalletUser(walletUser);
-        }
+
+        walletUser.setUserStatus(userStatus);
+        wallet.addWalletUser(walletUser);
     }
 
     @Override
     public void save(WalletHolder walletHolder) {
         Wallet wallet = walletHolder.getWallet();
-        List<User> userList= walletHolder.getUserList();
-
-        WalletUser walletUser = new WalletUser();
+        List<User> userList = walletHolder.getUserList();
 
         // Get current logged in user and set it
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -58,19 +54,20 @@ public class WalletServiceImpl implements WalletService {
 
         User user = userRepository.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
 
-        LocalDateTime date = LocalDateTime.now();
-
         // Get user status for wallet's owner
-        UserStatus userStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
+        UserStatus ownerStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
 
-        saveUsers(userList, wallet);
+        // Get user status for others wallets' members
+        UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
 
-        walletUser.setUser(user);
-        walletUser.setCreated_at(date);
-        walletUser.setAccepted_at(date);
-        walletUser.setUserStatus(userStatus);
+        // Save the wallet's owner
+        saveUser(user, wallet, ownerStatus);
 
-        wallet.addWalletUser(walletUser);
+        // Save others wallet's members
+        for (User member : userList) {
+            saveUser(member, wallet, waitingStatus);
+        }
+
         walletRepository.save(wallet);
     }
 

@@ -7,7 +7,6 @@ import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
 import com.team.backend.model.Wallet;
-import com.team.backend.model.WalletUser;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,11 +29,13 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final WalletAssembler walletAssembler;
+    private final UserStatusRepository userStatusRepository;
 
-    public WalletController(WalletService walletService, UserService userService, WalletAssembler walletAssembler) {
+    public WalletController(WalletService walletService, UserService userService, WalletAssembler walletAssembler, UserStatusRepository userStatusRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.walletAssembler = walletAssembler;
+        this.userStatusRepository = userStatusRepository;
     }
 
     @GetMapping("/wallet/{id}")
@@ -90,10 +90,13 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}/users")
-    public ResponseEntity<?> addUsers(@PathVariable int id, @RequestBody List<User> userList) {
+    public ResponseEntity<?> addUsers(@PathVariable int id, @RequestBody User user) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
-        walletService.saveUsers(userList, updatedWallet);
+        // Get user status for others wallets' members
+        UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
+
+        walletService.saveUser(user, updatedWallet, waitingStatus);
 
         walletService.save(updatedWallet);
 
