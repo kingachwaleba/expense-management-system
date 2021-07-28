@@ -37,7 +37,7 @@ public class WalletServiceImpl implements WalletService {
             WalletUser walletUser = new WalletUser();
             walletUser.setUser(user);
             walletUser.setCreated_at(date);
-            walletUser.setAccepted_at(date);
+            walletUser.setAccepted_at(null);
             walletUser.setUserStatus(userStatus);
             wallet.addWalletUser(walletUser);
         }
