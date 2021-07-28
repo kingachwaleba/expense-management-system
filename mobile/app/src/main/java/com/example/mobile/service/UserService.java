@@ -1,6 +1,7 @@
 package com.example.mobile.service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,10 +11,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
+import com.example.mobile.LoginActivity;
+import com.example.mobile.MainActivity;
 import com.example.mobile.config.MySingleton;
+import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,8 +28,13 @@ public class UserService {
     public static final String BASE_URL = "http://192.168.0.31:8080/";
     Context context;
 
+    // Session Manager Class
+    SessionManager session;
+
+
     public UserService(Context context) {
         this.context = context;
+        this.session = new SessionManager(context);
     }
 
     public void register(User user) {
@@ -77,7 +87,18 @@ public class UserService {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.d("TAG", response);
+                    try {
+                        JSONObject logindata = new JSONObject(response);
+                        Log.d("TAG", response);
+                        session.createLoginSession(logindata.getString("login"));
+                        Intent i = new Intent(context, MainActivity.class);
+                        context.startActivity(i);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             }, new Response.ErrorListener() {
                 @Override
