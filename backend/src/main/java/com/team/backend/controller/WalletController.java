@@ -1,8 +1,5 @@
 package com.team.backend.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
-import com.team.backend.helpers.WalletAssembler;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
@@ -10,9 +7,7 @@ import com.team.backend.model.Wallet;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,59 +16,50 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class WalletController {
 
     private final WalletService walletService;
     private final UserService userService;
-    private final WalletAssembler walletAssembler;
     private final UserStatusRepository userStatusRepository;
 
-    public WalletController(WalletService walletService, UserService userService, WalletAssembler walletAssembler, UserStatusRepository userStatusRepository) {
+    public WalletController(WalletService walletService, UserService userService, UserStatusRepository userStatusRepository) {
         this.walletService = walletService;
         this.userService = userService;
-        this.walletAssembler = walletAssembler;
         this.userStatusRepository = userStatusRepository;
     }
 
     @GetMapping("/wallet/{id}")
-    public EntityModel<Wallet> one(@PathVariable int id) {
+    public ResponseEntity<Wallet> one(@PathVariable int id) {
         Wallet wallet = walletService.findById(id)
                 .orElseThrow(RuntimeException::new);
 
-        return walletAssembler.toModel(wallet);
+        return new ResponseEntity<>(wallet, HttpStatus.OK);
     }
 
     @GetMapping("/wallets")
-    public CollectionModel<EntityModel<Wallet>> all() {
+    public ResponseEntity<List<Wallet>> all() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserLogin = authentication.getName();
 
         User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
 
-        List<EntityModel<Wallet>> wallets = walletService.findByUserId(user.getId()).stream()
-                .map(walletAssembler::toModel) //
-                .collect(Collectors.toList());
+        List<Wallet> walletList = walletService.findByUserId(user.getId());
 
-        return CollectionModel.of(wallets, linkTo(methodOn(WalletController.class).all()).withSelfRel());
+        return new ResponseEntity<>(walletList, HttpStatus.OK);
     }
 
     @Transactional
     @PostMapping("/create-wallet")
-    public ResponseEntity<?> createWallet(@Valid @RequestBody WalletHolder walletHolder) {
+    public ResponseEntity<Wallet> createWallet(@Valid @RequestBody WalletHolder walletHolder) {
         walletService.save(walletHolder);
 
-        EntityModel<Wallet> walletEntityModel = walletAssembler.toModel(walletHolder.getWallet());
-
-        return ResponseEntity
-                .created(walletEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(walletEntityModel);
+        return new ResponseEntity<>(walletHolder.getWallet(), HttpStatus.OK);
     }
 
     @PutMapping("/wallet/{id}")
-    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Wallet newWallet) {
+    public ResponseEntity<Wallet> editOne(@PathVariable int id, @RequestBody Wallet newWallet) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
         updatedWallet.setName(newWallet.getName());
@@ -82,15 +68,11 @@ public class WalletController {
 
         walletService.save(updatedWallet);
 
-        EntityModel<Wallet> walletEntityModel = walletAssembler.toModel(updatedWallet);
-
-        return ResponseEntity
-                .created(walletEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(walletEntityModel);
+        return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
     }
 
     @PutMapping("/wallet/{id}/users")
-    public ResponseEntity<?> addUsers(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<Wallet> addUsers(@PathVariable int id, @RequestBody User user) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
         // Get user status for others wallets' members
@@ -100,10 +82,6 @@ public class WalletController {
 
         walletService.save(updatedWallet);
 
-        EntityModel<Wallet> walletEntityModel = walletAssembler.toModel(updatedWallet);
-
-        return ResponseEntity
-                .created(walletEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(walletEntityModel);
+        return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
     }
 }
