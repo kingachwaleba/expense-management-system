@@ -7,11 +7,4 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentLoginContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.example.mobile.LoginFragment"
-        tools:layout="@layout/fragment_login"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
