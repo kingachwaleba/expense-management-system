@@ -1,5 +1,6 @@
 package com.team.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class WalletUser {
     @JoinColumn(name = "user_status_id", referencedColumnName="id", nullable = false)
     private UserStatus userStatus;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id", referencedColumnName="id", nullable = false)
     private Wallet wallet;

@@ -37,7 +37,6 @@ public class Wallet {
     @Size(max = 1000)
     private String description;
 
-    @JsonIgnore
     @OneToMany(mappedBy="wallet", cascade = CascadeType.ALL)
     private Set<WalletUser> walletUserSet = new HashSet<>();
 
