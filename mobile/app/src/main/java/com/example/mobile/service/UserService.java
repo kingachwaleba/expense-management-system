@@ -3,9 +3,13 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.example.mobile.config.MySingleton;
+import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
 
 import org.json.JSONException;
@@ -56,5 +60,43 @@ public class UserService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void login(LoginForm loginForm) {
+        String url = BASE_URL + "login";
+
+
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("login", loginForm.getLogin());
+            jsonBody.put("password", loginForm.getPassword());
+            final String mRequestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> Log.i("RESPONSE", response), error -> Log.e("RESPONSE", error.toString())) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() {
+                    return mRequestBody.getBytes(StandardCharsets.UTF_8);
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+
+            MySingleton.getInstance(context).addToRequestQueue(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }
