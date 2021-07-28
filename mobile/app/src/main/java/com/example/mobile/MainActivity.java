@@ -47,12 +47,28 @@ public class MainActivity extends AppCompatActivity {
         login_tv.setText(login);
 
 
+
         logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 session.logoutUser();
             }
         });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+      /*  session.checkLogin();
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String login = user.get(SessionManager.KEY_LOGIN);
+
+        login_tv.setText(login);*/
 
     }
 }
