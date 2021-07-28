@@ -1,16 +1,16 @@
 package com.example.mobile.model;
 
 public class LoginForm {
-    private String login;
+    private String email;
     private String password;
 
-    public LoginForm(String login, String password) {
-        this.login = login;
+    public LoginForm(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
     public String getPassword() {
         return password;

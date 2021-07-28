@@ -2,10 +2,12 @@ package com.example.mobile.service;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.example.mobile.config.MySingleton;
@@ -68,11 +70,21 @@ public class UserService {
 
         try {
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("login", loginForm.getLogin());
+            jsonBody.put("email", loginForm.getEmail());
             jsonBody.put("password", loginForm.getPassword());
             final String mRequestBody = jsonBody.toString();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> Log.i("RESPONSE", response), error -> Log.e("RESPONSE", error.toString())) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, "Niepoprawny email lub hasło", Toast.LENGTH_LONG).show();
+                }
+            }) {
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
