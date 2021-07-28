@@ -17,8 +17,6 @@ import com.example.mobile.service.UserService;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,4 +49,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }

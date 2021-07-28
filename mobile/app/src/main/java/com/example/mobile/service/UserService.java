@@ -1,5 +1,6 @@
 package com.example.mobile.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -47,7 +48,18 @@ public class UserService {
             jsonBody.put("password", user.getPassword());
             final String mRequestBody = jsonBody.toString();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> Log.i("RESPONSE", response), error -> Log.e("RESPONSE", error.toString())) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    /*Intent i = new Intent(context, MainActivity.class);
+                    context.startActivity(i);*/
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, "Rejestracja się nie powiodła", Toast.LENGTH_LONG).show();
+                }})
+                {
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
@@ -93,6 +105,7 @@ public class UserService {
                         session.createLoginSession(logindata.getString("login"));
                         Intent i = new Intent(context, MainActivity.class);
                         context.startActivity(i);
+                      //  ((LoginActivity)context).finish();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
