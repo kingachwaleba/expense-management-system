@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +30,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public void saveUsers(List<User> userList, Wallet wallet) {
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
 
         // Get user status for others wallets' members
         UserStatus userStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
@@ -56,7 +58,7 @@ public class WalletServiceImpl implements WalletService {
 
         User user = userRepository.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
 
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
 
         // Get user status for wallet's owner
         UserStatus userStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
