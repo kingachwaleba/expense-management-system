@@ -4,6 +4,7 @@ import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
 import com.team.backend.model.Wallet;
+import com.team.backend.model.WalletUser;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
@@ -72,8 +73,13 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}/users")
-    public ResponseEntity<Wallet> addUsers(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<?> addUsers(@PathVariable int id, @RequestBody User user) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+
+        for (WalletUser walletUser : updatedWallet.getWalletUserSet()) {
+            if (walletUser.getUser().getId() == user.getId())
+                return new ResponseEntity<>("Person already exists for login " + user.getLogin() + " in this wallet!", HttpStatus.CONFLICT);
+        }
 
         // Get user status for others wallets' members
         UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
