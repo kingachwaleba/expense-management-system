@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.service.UserService;
 
 public class LoginActivity extends AppCompatActivity {
+
 
 
     @Override
@@ -26,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.pagename);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         TextView goToRegistration = findViewById(R.id.sign_up_label);
         Button log_btn = findViewById(R.id.log_btn);
