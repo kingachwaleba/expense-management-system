@@ -21,6 +21,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.pagename);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         TextView goToRegistration = findViewById(R.id.sign_up_label);
         Button log_btn = findViewById(R.id.log_btn);
         EditText email= findViewById(R.id.email_edit);

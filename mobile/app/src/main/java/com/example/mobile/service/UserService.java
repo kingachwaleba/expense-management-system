@@ -77,7 +77,7 @@ public class UserService {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
+                    Log.d("TAG", response);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -95,14 +95,14 @@ public class UserService {
                     return mRequestBody.getBytes(StandardCharsets.UTF_8);
                 }
 
-                @Override
+              /*  @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
                     String responseString = "";
                     if (response != null) {
                         responseString = String.valueOf(response.statusCode);
                     }
                     return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
+                }*/
             };
 
             MySingleton.getInstance(context).addToRequestQueue(stringRequest);
