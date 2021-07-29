@@ -1,25 +1,22 @@
 package com.example.mobile.service;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.example.mobile.LoginActivity;
 import com.example.mobile.MainActivity;
+import com.example.mobile.RegistrationActivity;
 import com.example.mobile.config.MySingleton;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,8 +48,9 @@ public class UserService {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    /*Intent i = new Intent(context, MainActivity.class);
-                    context.startActivity(i);*/
+                    Intent i = new Intent(context, MainActivity.class);
+                    context.startActivity(i);
+                    ((RegistrationActivity)context).finish();
                 }
             }, new Response.ErrorListener(){
                 @Override
@@ -105,7 +103,7 @@ public class UserService {
                         session.createLoginSession(logindata.getString("login"));
                         Intent i = new Intent(context, MainActivity.class);
                         context.startActivity(i);
-                      //  ((LoginActivity)context).finish();
+                        ((LoginActivity)context).finish();
 
                     } catch (JSONException e) {
                         e.printStackTrace();

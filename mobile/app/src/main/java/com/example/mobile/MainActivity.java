@@ -36,18 +36,6 @@ public class MainActivity extends AppCompatActivity {
         // Session class instance
         session = new SessionManager(getApplicationContext());
 
-        session.checkLogin();
-
-        // get user data from session
-        HashMap<String, String> user = session.getUserDetails();
-
-        // name
-        String login = user.get(SessionManager.KEY_LOGIN);
-
-        login_tv.setText(login);
-
-
-
         logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-      /*  session.checkLogin();
+        session.checkLogin();
 
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
@@ -68,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // name
         String login = user.get(SessionManager.KEY_LOGIN);
 
-        login_tv.setText(login);*/
+        login_tv.setText(login);
 
     }
 }
