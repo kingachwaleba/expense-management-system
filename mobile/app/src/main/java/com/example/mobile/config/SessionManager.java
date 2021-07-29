@@ -22,7 +22,7 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     // Sharedpref file name
-    private static final String PREF_NAME = "AndroidHivePref";
+    private static final String PREF_NAME = "auth0";
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
@@ -30,6 +30,8 @@ public class SessionManager {
     // User login (make variable public to access from outside)
     public static final String KEY_LOGIN = "login";
 
+    // User token
+    public static final String KEY_TOKEN = "token";
 
     // Constructor
     public SessionManager(Context context){
@@ -38,12 +40,15 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLoginSession(String login){
+    public void createLoginSession(String login, String token){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
-        // Storing name in pref
+        // Storing login in pref
         editor.putString(KEY_LOGIN, login);
+
+
+        editor.putString(KEY_TOKEN, token);
 
         // commit changes
         editor.commit();
@@ -53,7 +58,7 @@ public class SessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
         user.put(KEY_LOGIN, pref.getString(KEY_LOGIN, null));
-
+        user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
         // return user
         return user;
     }

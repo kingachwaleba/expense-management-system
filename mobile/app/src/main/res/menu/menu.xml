@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    android:id="@+id/action_more"
+    android:title=""
+    app:showAsAction="never"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item
+            android:id="@+id/action_add_contact"
+            android:title="Profil"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_baseline_person_24">
+            <menu>
+                <item
+                    android:id="@+id/goToWallets"
+                    android:title="Portfele"
+                    app:showAsAction="never"
+                    android:textAppearance="@style/label"
+                    android:textSize="14sp"/>
+                <item
+                    android:id="@+id/goToProfile"
+                    android:title="Profil"
+                    app:showAsAction="never"
+                    android:textAppearance="@style/label"
+                    android:textSize="14sp"/>
+                <item
+                    android:id="@+id/logout"
+                    android:title="Wyloguj"
+                    app:showAsAction="never"
+                    android:textAppearance="@style/label"
+                    android:textSize="14sp"/>
+            </menu>
+       </item>
+</menu>

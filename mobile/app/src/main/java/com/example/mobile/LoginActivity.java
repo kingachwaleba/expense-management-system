@@ -2,16 +2,13 @@ package com.example.mobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.service.UserService;
 
@@ -41,12 +38,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        log_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               UserService userService = new UserService(LoginActivity.this);
-               userService.login(new LoginForm(email.getText().toString(), password.getText().toString()));
-            }
+        log_btn.setOnClickListener(v -> {
+           UserService userService = new UserService(LoginActivity.this);
+           userService.login(new LoginForm(email.getText().toString(), password.getText().toString()));
         });
     }
 
