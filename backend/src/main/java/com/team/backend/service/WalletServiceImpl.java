@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,9 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void saveUser(User user, Wallet wallet, UserStatus userStatus) {
+    public void saveUser(String userLogin, Wallet wallet, UserStatus userStatus) {
+        User user = userRepository.findByLogin(userLogin).orElseThrow(RuntimeException::new);
+
         LocalDateTime date = LocalDateTime.now();
 
         WalletUser walletUser = new WalletUser();
@@ -46,13 +49,11 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public void save(WalletHolder walletHolder) {
         Wallet wallet = walletHolder.getWallet();
-        List<User> userList = walletHolder.getUserList();
+        List<String> userLoginList = walletHolder.getUserList();
 
         // Get current logged in user and set it
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserLogin = authentication.getName();
-
-        User user = userRepository.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
 
         // Get user status for wallet's owner
         UserStatus ownerStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
@@ -61,11 +62,11 @@ public class WalletServiceImpl implements WalletService {
         UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
 
         // Save the wallet's owner
-        saveUser(user, wallet, ownerStatus);
+        saveUser(currentUserLogin, wallet, ownerStatus);
 
         // Save others wallet's members
-        for (User member : userList) {
-            saveUser(member, wallet, waitingStatus);
+        for (String memberLogin : userLoginList) {
+            saveUser(memberLogin, wallet, waitingStatus);
         }
 
         walletRepository.save(wallet);

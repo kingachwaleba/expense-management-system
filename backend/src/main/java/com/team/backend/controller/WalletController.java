@@ -72,19 +72,19 @@ public class WalletController {
         return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
     }
 
-    @PutMapping("/wallet/{id}/users")
-    public ResponseEntity<?> addUsers(@PathVariable int id, @RequestBody User user) {
+    @PutMapping("/wallet/{id}/users/{userLogin}")
+    public ResponseEntity<?> addUsers(@PathVariable int id, @PathVariable String userLogin) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
         for (WalletUser walletUser : updatedWallet.getWalletUserSet()) {
-            if (walletUser.getUser().getId() == user.getId())
-                return new ResponseEntity<>("Person already exists for login " + user.getLogin() + " in this wallet!", HttpStatus.CONFLICT);
+            if (walletUser.getUser().getLogin().equals(userLogin))
+                return new ResponseEntity<>("Person already exists for login " + userLogin + " in this wallet!", HttpStatus.CONFLICT);
         }
 
         // Get user status for others wallets' members
         UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
 
-        walletService.saveUser(user, updatedWallet, waitingStatus);
+        walletService.saveUser(userLogin, updatedWallet, waitingStatus);
 
         walletService.save(updatedWallet);
 

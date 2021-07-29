@@ -1,6 +1,5 @@
 package com.team.backend.helpers;
 
-import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +15,5 @@ import java.util.List;
 public class WalletHolder {
 
     private Wallet wallet;
-    private List<User> userList;
+    private List<String> userList;
 }
