@@ -6,8 +6,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.mobile.LoginActivity;
 import com.example.mobile.MainActivity;
@@ -45,18 +43,11 @@ public class UserService {
             jsonBody.put("password", user.getPassword());
             final String mRequestBody = jsonBody.toString();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Intent i = new Intent(context, MainActivity.class);
-                    context.startActivity(i);
-                    ((RegistrationActivity)context).finish();
-                }
-            }, new Response.ErrorListener(){
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, "Rejestracja się nie powiodła", Toast.LENGTH_LONG).show();
-                }})
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+                Intent i = new Intent(context, MainActivity.class);
+                context.startActivity(i);
+                ((RegistrationActivity)context).finish();
+            }, error -> Toast.makeText(context, "Rejestracja się nie powiodła", Toast.LENGTH_LONG).show())
                 {
                 @Override
                 public String getBodyContentType() {
@@ -94,29 +85,21 @@ public class UserService {
             jsonBody.put("password", loginForm.getPassword());
             final String mRequestBody = jsonBody.toString();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject logindata = new JSONObject(response);
-                        Log.d("TAG", response);
-                        session.createLoginSession(logindata.getString("login"), logindata.getString("token"));
-                        Intent i = new Intent(context, MainActivity.class);
-                        context.startActivity(i);
-                        ((LoginActivity)context).finish();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+                try {
+                    JSONObject logindata = new JSONObject(response);
+                    Log.d("TAG", response);
+                    session.createLoginSession(logindata.getString("login"), logindata.getString("token"));
+                    Intent i = new Intent(context, MainActivity.class);
+                    context.startActivity(i);
+                    ((LoginActivity)context).finish();
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, "Niepoprawny email lub hasło", Toast.LENGTH_LONG).show();
-                }
-            }) {
+
+
+            }, error -> Toast.makeText(context, "Niepoprawny email lub hasło", Toast.LENGTH_LONG).show()) {
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";

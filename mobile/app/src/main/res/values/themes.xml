@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Custom_Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:itemBackground">@color/dark_gray</item>
+        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:itemTextAppearance">@style/label</item>
+    </style>
 </resources>

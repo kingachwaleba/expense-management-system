@@ -1,7 +1,6 @@
 package com.example.mobile.service;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,8 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
     public void onBindViewHolder(WalletAdapter.ViewHolder holder, int position) {
         Wallet wallet = mWallet.get(position);
         holder.walletName.setText(wallet.getName());
-        holder.ownerName.setText(wallet.getOwner());
-        holder.numberOfMembers.setText(String.valueOf(wallet.getNumeberOfMembers()));
+        holder.ownerName.setText(mInflater.getContext().getResources().getString(R.string.owner) + " " + wallet.getOwner());
+        holder.numberOfMembers.setText(mInflater.getContext().getResources().getString(R.string.number_of_members) + " " + String.valueOf(wallet.getNumeberOfMembers()));
      //   holder.balance.setText(wallet.getBalance().toString());
 
     }

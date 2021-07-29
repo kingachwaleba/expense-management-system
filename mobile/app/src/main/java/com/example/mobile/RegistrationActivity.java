@@ -71,7 +71,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public boolean validatePassword(String s) {
-        if (Pattern.compile("^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\\d.-]{4,45}$").matcher(s).matches())
+        if (Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$").matcher(s).matches())
             return true;
         else {
             Toast.makeText(RegistrationActivity.this, "Incorrect password!", Toast.LENGTH_LONG).show();

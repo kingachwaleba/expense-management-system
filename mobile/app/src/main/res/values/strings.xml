@@ -23,4 +23,6 @@
     <string name="number_of_members">Liczba członków:</string>
     <string name="owner">Właściciel:</string>
     <string name="logout">Wyloguj się</string>
+    <string name="hello">Witaj</string>
+    <string name="new_wallet">Dodaj nowy portfel</string>
 </resources>
