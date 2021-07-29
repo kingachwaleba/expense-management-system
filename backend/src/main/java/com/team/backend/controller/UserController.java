@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -49,8 +51,13 @@ public class UserController {
         String currentUserLogin = authentication.getName();
 
         User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        Map<String, String> userDetailsMap = new HashMap<>();
+        userDetailsMap.put("id", String.valueOf(user.getId()));
+        userDetailsMap.put("login", user.getLogin());
+        userDetailsMap.put("email", user.getEmail());
+        userDetailsMap.put("image", user.getImage());
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userDetailsMap, HttpStatus.OK);
     }
 
     @PostMapping("/login")
