@@ -2,6 +2,7 @@ package com.team.backend.service;
 
 import com.team.backend.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -9,6 +10,7 @@ public interface UserService {
     void save(User user);
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
+    List<User> findByLoginContaining(String infix);
     Boolean existsByLogin(String login);
     Boolean existsByEmail(String email);
 

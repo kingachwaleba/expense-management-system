@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -30,11 +32,15 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping("/{login}")
-    public ResponseEntity<?> findUser(@PathVariable String login) {
-        User user = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+    @GetMapping("/{infix}")
+    public ResponseEntity<?> findUser(@PathVariable String infix) {
+        List<User> userList = userService.findByLoginContaining(infix);
+        List<String> userLoginList = new ArrayList<>();
+        for (User user : userList) {
+            userLoginList.add(user.getLogin());
+        }
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userLoginList, HttpStatus.OK);
     }
 
     @GetMapping("/account")
