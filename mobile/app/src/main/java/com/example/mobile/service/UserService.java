@@ -100,7 +100,7 @@ public class UserService {
                     try {
                         JSONObject logindata = new JSONObject(response);
                         Log.d("TAG", response);
-                        session.createLoginSession(logindata.getString("login"));
+                        session.createLoginSession(logindata.getString("login"), logindata.getString("token"));
                         Intent i = new Intent(context, MainActivity.class);
                         context.startActivity(i);
                         ((LoginActivity)context).finish();
