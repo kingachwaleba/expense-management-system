@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.team.backend.config.JwtProvider;
 import com.team.backend.config.JwtResponse;
+import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.User;
 import com.team.backend.helpers.LoginForm;
 import com.team.backend.service.UserService;
@@ -15,6 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -27,6 +32,32 @@ public class UserController {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
+    }
+
+    @GetMapping("/{infix}")
+    public ResponseEntity<?> findUser(@PathVariable String infix) {
+        List<User> userList = userService.findByLoginContaining(infix);
+        List<String> userLoginList = new ArrayList<>();
+        for (User user : userList) {
+            userLoginList.add(user.getLogin());
+        }
+
+        return new ResponseEntity<>(userLoginList, HttpStatus.OK);
+    }
+
+    @GetMapping("/account")
+    public ResponseEntity<?> one() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserLogin = authentication.getName();
+
+        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        Map<String, String> userDetailsMap = new HashMap<>();
+        userDetailsMap.put("id", String.valueOf(user.getId()));
+        userDetailsMap.put("login", user.getLogin());
+        userDetailsMap.put("email", user.getEmail());
+        userDetailsMap.put("image", user.getImage());
+
+        return new ResponseEntity<>(userDetailsMap, HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -51,5 +82,23 @@ public class UserController {
         userService.save(user);
 
         return ResponseEntity.ok("User has been created");
+    }
+
+    @PutMapping("/account/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody UpdatePasswordHolder updatePasswordHolder) {
+        String password = updatePasswordHolder.getPassword();
+        String oldPassword = updatePasswordHolder.getOldPassword();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserLogin = authentication.getName();
+
+        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+
+        if (!userService.checkIfValidOldPassword(user, oldPassword))
+            throw new RuntimeException();
+
+        userService.changeUserPassword(user, password);
+
+        return new ResponseEntity<>("User password has been changed!", HttpStatus.OK);
     }
 }

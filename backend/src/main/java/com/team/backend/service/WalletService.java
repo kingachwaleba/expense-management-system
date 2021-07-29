@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface WalletService {
 
 //    void saveUsers(List<User> userList, Wallet wallet);
-    void saveUser(User user, Wallet wallet, UserStatus userStatus);
+    void saveUser(String userLogin, Wallet wallet, UserStatus userStatus);
     void save(WalletHolder walletHolder);
     void save(Wallet wallet);
 
