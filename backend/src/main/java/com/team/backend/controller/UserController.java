@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.team.backend.config.JwtProvider;
 import com.team.backend.config.JwtResponse;
+import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.User;
 import com.team.backend.helpers.LoginForm;
 import com.team.backend.service.UserService;
@@ -51,5 +52,23 @@ public class UserController {
         userService.save(user);
 
         return ResponseEntity.ok("User has been created");
+    }
+
+    @PutMapping("/account/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody UpdatePasswordHolder updatePasswordHolder) {
+        String password = updatePasswordHolder.getPassword();
+        String oldPassword = updatePasswordHolder.getOldPassword();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserLogin = authentication.getName();
+
+        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+
+        if (!userService.checkIfValidOldPassword(user, oldPassword))
+            throw new RuntimeException();
+
+        userService.changeUserPassword(user, password);
+
+        return new ResponseEntity<>("User password has been changed!", HttpStatus.OK);
     }
 }

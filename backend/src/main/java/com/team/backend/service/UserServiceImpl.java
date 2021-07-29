@@ -45,4 +45,15 @@ public class UserServiceImpl implements UserService {
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    @Override
+    public Boolean checkIfValidOldPassword(User user, String oldPassword) {
+        return bCryptPasswordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    @Override
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        userRepository.save(user);
+    }
 }
