@@ -30,6 +30,13 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
+    @GetMapping("/{login}")
+    public ResponseEntity<?> findUser(@PathVariable String login) {
+        User user = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
