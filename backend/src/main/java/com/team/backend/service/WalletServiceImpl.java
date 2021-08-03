@@ -81,14 +81,4 @@ public class WalletServiceImpl implements WalletService {
     public Optional<Wallet> findById(int id) {
         return walletRepository.findById(id);
     }
-
-    @Override
-    public List<Wallet> findAll() {
-        return walletRepository.findAll();
-    }
-
-    @Override
-    public List<Wallet> findByUserId(int id) {
-        return walletRepository.findByUserId(id);
-    }
 }
