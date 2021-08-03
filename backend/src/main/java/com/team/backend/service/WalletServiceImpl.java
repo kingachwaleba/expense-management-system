@@ -5,6 +5,7 @@ import com.team.backend.model.*;
 import com.team.backend.repository.UserRepository;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletRepository;
+import com.team.backend.repository.WalletUserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -20,11 +22,14 @@ public class WalletServiceImpl implements WalletService {
     private UserStatusRepository userStatusRepository;
     private WalletRepository walletRepository;
     private UserRepository userRepository;
+    private WalletUserRepository walletUserRepository;
 
-    public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository, UserRepository userRepository) {
+    public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository, UserRepository userRepository,
+                             WalletUserRepository walletUserRepository) {
         this.userStatusRepository = userStatusRepository;
         this.walletRepository = walletRepository;
         this.userRepository = userRepository;
+        this.walletUserRepository = walletUserRepository;
     }
 
     @Override
@@ -80,5 +85,25 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Optional<Wallet> findById(int id) {
         return walletRepository.findById(id);
+    }
+
+    @Override
+    public List<Wallet> findWallets(User user) {
+        List<Wallet> walletList = new ArrayList<>();
+
+        // Get user status for wallet's owner
+        UserStatus ownerStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
+
+        // Get user status for others wallets' members
+        UserStatus memberStatus = userStatusRepository.findById(4).orElseThrow(RuntimeException::new);
+
+        Set<WalletUser> walletsOwner = walletUserRepository.findAllByUserStatusAndUser(ownerStatus, user);
+        Set<WalletUser> walletsMember = walletUserRepository.findAllByUserStatusAndUser(memberStatus, user);
+
+        walletsOwner.addAll(walletsMember);
+
+        walletsOwner.forEach(walletUser -> walletList.add(walletUser.getWallet()));
+
+        return walletList;
     }
 }

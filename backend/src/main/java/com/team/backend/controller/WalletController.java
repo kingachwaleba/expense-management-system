@@ -6,6 +6,7 @@ import com.team.backend.model.UserStatus;
 import com.team.backend.model.Wallet;
 import com.team.backend.model.WalletUser;
 import com.team.backend.repository.UserStatusRepository;
+import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class WalletController {
@@ -24,11 +27,13 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
+    private final WalletUserRepository walletUserRepository;
 
-    public WalletController(WalletService walletService, UserService userService, UserStatusRepository userStatusRepository) {
+    public WalletController(WalletService walletService, UserService userService, UserStatusRepository userStatusRepository, WalletUserRepository walletUserRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
+        this.walletUserRepository = walletUserRepository;
     }
 
     @GetMapping("/wallet/{id}")
@@ -46,9 +51,7 @@ public class WalletController {
 
         User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
 
-        List<Wallet> walletList = walletService.findByUserId(user.getId());
-
-        return new ResponseEntity<>(walletList, HttpStatus.OK);
+        return new ResponseEntity<>(walletService.findWallets(user), HttpStatus.OK);
     }
 
     @Transactional
