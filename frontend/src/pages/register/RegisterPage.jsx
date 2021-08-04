@@ -34,7 +34,7 @@ class RegisterPage extends React.Component {
         const {user} = this.state;
 
         //validate form
-        if (!user.login || !user.password || !user.email || !user.image) {
+        if (!user.login || !user.password || !user.email) {
             return;
         }
 
@@ -119,20 +119,6 @@ class RegisterPage extends React.Component {
                                 onChange={(e) => this.handleChange(e)}/>
                             <div className="invalid-feedback">
                                 A valid email is required.
-                            </div>
-                        </div>
-
-                        <div className={'form-group'}>
-                            <label htmlFor="image">Image: </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="image"
-                                placeholder="image"
-                                value={user.image}
-                                onChange={(e) => this.handleChange(e)}/>
-                            <div className="invalid-feedback">
-                                A valid image is required.
                             </div>
                         </div>
 

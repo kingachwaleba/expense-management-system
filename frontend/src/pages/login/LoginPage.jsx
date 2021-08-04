@@ -8,7 +8,7 @@ class LoginPage extends React.Component {
         super(props, context);
 
         this.state = {
-            login: "",
+            email: "",
             password: "",
             error: ""
         };
@@ -24,7 +24,7 @@ class LoginPage extends React.Component {
         event.preventDefault();
 
         UserService
-            .login(this.state.login,
+            .login(this.state.email,
                 this.state.password)
             .then(
                 () => {
@@ -55,10 +55,10 @@ class LoginPage extends React.Component {
                             <input
                                 type="text"
                                 className="form-control"
-                                name="login"
+                                name="email"
                                 placeholder="Login"
                                 required
-                                value={this.state.login}
+                                value={this.state.email}
                                 onChange={this.changeHandler}/>
                             <div className="invalid-feedback">
                                 A valid login is required.

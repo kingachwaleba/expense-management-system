@@ -2,8 +2,8 @@ import axios from 'axios';
 
 class UserService {
 
-    login = (login, password) => {
-        return axios.post("/login", {login, password})
+    login = (email, password) => {
+        return axios.post("/login", {email, password})
             .then(response => {
                 if (response.data.token) {
                     localStorage.setItem("user", JSON.stringify(response.data));
