@@ -1,7 +1,5 @@
 package com.team.backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
@@ -29,14 +27,12 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
-    private final ObjectMapper objectMapper;
 
     public WalletController(WalletService walletService, UserService userService,
-                            UserStatusRepository userStatusRepository, ObjectMapper objectMapper) {
+                            UserStatusRepository userStatusRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
-        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/wallet/{id}")
@@ -66,17 +62,17 @@ public class WalletController {
         User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
         List<Wallet> wallets = walletService.findWallets(user);
 
-        List<ObjectNode> walletsList = new ArrayList<>();
+        List<Map<String, Object>> walletsList = new ArrayList<>();
 
         for (Wallet wallet : wallets) {
-            ObjectNode objectNode = objectMapper.createObjectNode();
+            Map<String, Object> map = new HashMap<>();
 
-            objectNode.put("walletId", wallet.getId());
-            objectNode.put("name", wallet.getName());
-            objectNode.put("owner", walletService.findOwner(wallet).getLogin());
-            objectNode.put("userListCounter", walletService.findUserList(wallet).size());
+            map.put("walletId", wallet.getId());
+            map.put("name", wallet.getName());
+            map.put("owner", walletService.findOwner(wallet).getLogin());
+            map.put("userListCounter", walletService.findUserList(wallet).size());
 
-            walletsList.add(objectNode);
+            walletsList.add(map);
         }
 
         return new ResponseEntity<>(walletsList, HttpStatus.OK);
