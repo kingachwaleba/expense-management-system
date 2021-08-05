@@ -11,10 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -108,12 +106,18 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public List<User> findUserList(Wallet wallet) {
-        List<User> userList = new ArrayList<>();
+    public List<Map<String, Object>> findUserList(Wallet wallet) {
+        List<Map<String, Object>> userList = new ArrayList<>();
 
         for (WalletUser walletUser : wallet.getWalletUserSet())
-            if (walletUser.getUserStatus().getId() == 1 || walletUser.getUserStatus().getId() == 4)
-                userList.add(walletUser.getUser());
+            if (walletUser.getUserStatus().getId() == 1 || walletUser.getUserStatus().getId() == 4) {
+                Map<String, Object> userMap = new HashMap<>();
+
+                userMap.put("userId", walletUser.getUser().getId());
+                userMap.put("login", walletUser.getUser().getLogin());
+
+                userList.add(userMap);
+            }
 
         return userList;
     }

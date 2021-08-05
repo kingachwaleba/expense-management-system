@@ -6,6 +6,7 @@ import com.team.backend.model.UserStatus;
 import com.team.backend.model.Wallet;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface WalletService {
@@ -18,6 +19,6 @@ public interface WalletService {
 
     List<Wallet> findWallets(User user);
 
-    List<User> findUserList(Wallet wallet);
+    List<Map<String, Object>> findUserList(Wallet wallet);
     User findOwner(Wallet wallet);
 }

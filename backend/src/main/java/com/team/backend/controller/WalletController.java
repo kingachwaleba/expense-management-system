@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class WalletController {
@@ -42,15 +44,18 @@ public class WalletController {
         Wallet wallet = walletService.findById(id)
                 .orElseThrow(RuntimeException::new);
 
-        ObjectNode objectNode = objectMapper.createObjectNode();
+        Map<String, Object> map = new HashMap<>();
 
-        objectNode.put("walletId", wallet.getId());
-        objectNode.put("name", wallet.getName());
-        objectNode.put("description", wallet.getDescription());
-        objectNode.put("owner", walletService.findOwner(wallet).getLogin());
-        objectNode.put("userListCounter", walletService.findUserList(wallet).size());
+        map.put("walletId", wallet.getId());
+        map.put("name", wallet.getName());
+        map.put("description", wallet.getDescription());
+        map.put("owner", walletService.findOwner(wallet).getLogin());
+        map.put("userListCounter", walletService.findUserList(wallet).size());
 
-        return new ResponseEntity<>(objectNode, HttpStatus.OK);
+        List<Map<String, Object>> userList = walletService.findUserList(wallet);
+        map.put("userList", userList);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/wallets")
