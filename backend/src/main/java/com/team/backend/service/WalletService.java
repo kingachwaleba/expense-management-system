@@ -17,4 +17,7 @@ public interface WalletService {
     Optional<Wallet> findById(int id);
 
     List<Wallet> findWallets(User user);
+
+    List<User> findUserList(Wallet wallet);
+    User findOwner(Wallet wallet);
 }

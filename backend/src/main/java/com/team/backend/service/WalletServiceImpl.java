@@ -106,4 +106,24 @@ public class WalletServiceImpl implements WalletService {
 
         return walletList;
     }
+
+    @Override
+    public List<User> findUserList(Wallet wallet) {
+        List<User> userList = new ArrayList<>();
+
+        for (WalletUser walletUser : wallet.getWalletUserSet())
+            if (walletUser.getUserStatus().getId() == 1 || walletUser.getUserStatus().getId() == 4)
+                userList.add(walletUser.getUser());
+
+        return userList;
+    }
+
+    @Override
+    public User findOwner(Wallet wallet) {
+        for (WalletUser walletUser : wallet.getWalletUserSet())
+            if (walletUser.getUserStatus().getId() == 1)
+                return walletUser.getUser();
+
+        return null;
+    }
 }
