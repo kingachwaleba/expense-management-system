@@ -6,7 +6,6 @@ import com.team.backend.model.UserStatus;
 import com.team.backend.model.Wallet;
 import com.team.backend.model.WalletUser;
 import com.team.backend.repository.UserStatusRepository;
-import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @RestController
 public class WalletController {
@@ -27,43 +27,67 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
-    private final WalletUserRepository walletUserRepository;
 
-    public WalletController(WalletService walletService, UserService userService, UserStatusRepository userStatusRepository, WalletUserRepository walletUserRepository) {
+    public WalletController(WalletService walletService, UserService userService,
+                            UserStatusRepository userStatusRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
-        this.walletUserRepository = walletUserRepository;
     }
 
     @GetMapping("/wallet/{id}")
-    public ResponseEntity<Wallet> one(@PathVariable int id) {
+    public ResponseEntity<?> one(@PathVariable int id) {
         Wallet wallet = walletService.findById(id)
                 .orElseThrow(RuntimeException::new);
 
-        return new ResponseEntity<>(wallet, HttpStatus.OK);
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("walletId", wallet.getId());
+        map.put("name", wallet.getName());
+        map.put("description", wallet.getDescription());
+        map.put("owner", walletService.findOwner(wallet).getLogin());
+        map.put("userListCounter", walletService.findUserList(wallet).size());
+
+        List<Map<String, Object>> userList = walletService.findUserList(wallet);
+        map.put("userList", userList);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/wallets")
-    public ResponseEntity<List<Wallet>> all() {
+    public ResponseEntity<?> all() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserLogin = authentication.getName();
 
         User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        List<Wallet> wallets = walletService.findWallets(user);
 
-        return new ResponseEntity<>(walletService.findWallets(user), HttpStatus.OK);
+        List<Map<String, Object>> walletsList = new ArrayList<>();
+
+        for (Wallet wallet : wallets) {
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("walletId", wallet.getId());
+            map.put("name", wallet.getName());
+            map.put("owner", walletService.findOwner(wallet).getLogin());
+            map.put("userListCounter", walletService.findUserList(wallet).size());
+
+            walletsList.add(map);
+        }
+
+        return new ResponseEntity<>(walletsList, HttpStatus.OK);
     }
 
     @Transactional
     @PostMapping("/create-wallet")
-    public ResponseEntity<Wallet> createWallet(@Valid @RequestBody WalletHolder walletHolder) {
+    public ResponseEntity<?> createWallet(@Valid @RequestBody WalletHolder walletHolder) {
         walletService.save(walletHolder);
 
-        return new ResponseEntity<>(walletHolder.getWallet(), HttpStatus.OK);
+        return new ResponseEntity<>(walletHolder.getWallet().getId(), HttpStatus.OK);
     }
 
     @PutMapping("/wallet/{id}")
-    public ResponseEntity<Wallet> editOne(@PathVariable int id, @RequestBody Wallet newWallet) {
+    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Wallet newWallet) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
         updatedWallet.setName(newWallet.getName());
@@ -72,7 +96,7 @@ public class WalletController {
 
         walletService.save(updatedWallet);
 
-        return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
+        return new ResponseEntity<>(updatedWallet.getId(), HttpStatus.OK);
     }
 
     @PutMapping("/wallet/{id}/users/{userLogin}")
@@ -84,13 +108,12 @@ public class WalletController {
                 return new ResponseEntity<>("Person already exists for login " + userLogin + " in this wallet!", HttpStatus.CONFLICT);
         }
 
-        // Get user status for others wallets' members
         UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
 
         walletService.saveUser(userLogin, updatedWallet, waitingStatus);
 
         walletService.save(updatedWallet);
 
-        return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
+        return new ResponseEntity<>(updatedWallet.getId(), HttpStatus.OK);
     }
 }
