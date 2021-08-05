@@ -5,6 +5,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import {LoginPage} from "./pages/login/LoginPage";
 import {RegisterPage} from "./pages/register/RegisterPage";
 import {HomePage} from "./pages/home/HomePage";
+import {StartPage} from "./pages/start/StartPage";
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
 
@@ -44,8 +45,8 @@ class App extends React.Component {
                 <div>
                     {this.state.login &&
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
-                        <a className="navbar-brand" href="https://reactjs.org">
-                            React
+                        <a className="navbar-brand" href="/start">
+                            eSakwa Zalogowany?
                         </a>
                         <div className="navbar-nav mr-auto">
                             <li className="nav-item">
@@ -76,29 +77,24 @@ class App extends React.Component {
                 <div>
                     {!this.state.login &&
                     <nav className="navbar navbar-expand navbar-dark bg-dark">
-                        <a className="navbar-brand" href="https://reactjs.org">
-                            React
+                        <a className="navbar-brand" href="/start">
+                            eSakwa
                         </a>
-                        <div className="navbar-nav mr-auto">
-                            <li className="nav-item">
-                                <a className="nav-link" href="/home">
-                                    <span className="fa fa-home"/>
-                                    Home
-                                </a>
-                            </li>
-                        </div>
+                        
                         <div className="navbar-nav ml-auto">
                             <li className="nav-item">
-                                <a className="nav-link" href="/register">
+                            <a className="nav-link" href="/login">
+                                    <span className="fa fa-sign-in"/>
+                                    Login
+                                </a>
+                                
+                            </li>
+                            <li className="nav-item"> | </li>
+                            <li className="nav-item">
+                            <a className="nav-link" href="/register">
                                     <span className="fa fa-user-plus"/>
                                     &nbsp;
                                     Register
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/login">
-                                    <span className="fa fa-sign-in"/>
-                                    Login
                                 </a>
                             </li>
                         </div>
@@ -109,6 +105,7 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/register" component={RegisterPage}/>
+                        <Route exact path="/start" component={StartPage}/>
                         <AuthGuard path="/home" component={HomePage}/>
                     </Switch>
                 </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header';
-class HomePage extends React.Component {
+class StartPage extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -9,10 +9,10 @@ class HomePage extends React.Component {
     render() {
         return (
           <div>
-              
+              <Header title={'Kontrolowanie \nTwoich wydatków nigdy \nnie było tak \nproste'} pretitle='Załóż darmowe konto'/>
           </div>
         );
     }
 }
 
-export { HomePage };
+export { StartPage };
