@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
+import com.team.backend.model.Wallet;
 import com.team.backend.model.WalletUser;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletUserRepository;
@@ -13,9 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -64,5 +65,25 @@ public class WalletUserController {
         }
 
         return new ResponseEntity<>(invitationsList, HttpStatus.OK);
+    }
+
+    @PutMapping("/notifications/invitations/{id}")
+    public ResponseEntity<?> manageInvitations(@PathVariable int id, @RequestBody boolean flag) {
+        WalletUser updatedWalletUser = walletUserRepository.findById(id).orElseThrow(RuntimeException::new);
+
+        if (flag) {
+            UserStatus memberStatus = userStatusRepository.findById(4).orElseThrow(RuntimeException::new);
+            LocalDateTime date = LocalDateTime.now();
+            updatedWalletUser.setAccepted_at(date);
+            updatedWalletUser.setUserStatus(memberStatus);
+        }
+        else {
+            UserStatus cancelledStatus = userStatusRepository.findById(3).orElseThrow(RuntimeException::new);
+            updatedWalletUser.setUserStatus(cancelledStatus);
+        }
+
+        walletUserRepository.save(updatedWalletUser);
+
+        return new ResponseEntity<>("User status has been changed!", HttpStatus.OK);
     }
 }
