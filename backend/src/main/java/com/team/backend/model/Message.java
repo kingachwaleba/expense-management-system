@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -28,8 +28,7 @@ public class Message {
     private Wallet wallet;
 
     @Column(columnDefinition = "DATETIME", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDateTime date;
 
     @Column(nullable = false)
     @Size(min = 1, max = 255)
