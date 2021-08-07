@@ -62,7 +62,7 @@ public class MessageController {
             User user2 = userService.findByLogin(mapUser.get("login").toString()).orElseThrow(RuntimeException::new);
 
             if (user2.getId() != user.getId())
-                messageService.saveNotifications(wallet, user2);
+                messageService.saveNotifications(wallet, user2, user);
         }
 
         return ResponseEntity.ok("New message has been sent!");

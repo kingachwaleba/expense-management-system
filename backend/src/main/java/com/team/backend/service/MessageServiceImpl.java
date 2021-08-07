@@ -34,13 +34,13 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void saveNotifications(Wallet wallet, User user) {
+    public void saveNotifications(Wallet wallet, User user, User messageSender) {
         Message message = new Message();
 
         message.setReceiver(user);
-        message.setSender(null);
+        message.setSender(messageSender);
         message.setWallet(wallet);
-        message.setContent("Nowa wiadomość w portfelu o nazwie: " + wallet.getName());
+        message.setContent("Nowa wiadomość");
         message.setDate(LocalDateTime.now());
         message.setType("S");
 
@@ -83,6 +83,7 @@ public class MessageServiceImpl implements MessageService {
 
             map.put("messageId", message.getId());
             map.put("walletId", message.getWallet().getId());
+            map.put("walletName", message.getWallet().getName());
             if (message.getSender() != null)
                 map.put("senderLogin", message.getSender().getLogin());
             else
