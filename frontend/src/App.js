@@ -8,6 +8,7 @@ import {HomePage} from "./pages/home/HomePage";
 import {StartPage} from "./pages/start/StartPage";
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
+import FooterPage from './components/Footer';
 
 class App extends React.Component {
 
@@ -35,29 +36,30 @@ class App extends React.Component {
 
     logOut() {
         UserService.logOut();
-        this.props.history.push('/login');
+        //this.props.history.push('/login');
         window.location.reload();
     }
 
     render() {
         return (
+            <div>
             <Router>
                 <div>
                     {this.state.login &&
-                    <nav className="navbar navbar-expand navbar-dark bg-dark">
-                        <a className="navbar-brand" href="/start">
-                            eSakwa Zalogowany?
+                    <nav className="navbar navbar-expand navbar-dark">
+                        <a className="navbarBrand" href="/start">
+                            eSakwa
                         </a>
-                        <div className="navbar-nav mr-auto">
+                        <div className="navbar-nav ml-auto">
                             <li className="nav-item">
                                 <a className="nav-link" href="/home">
                                     <span className="fa fa-home"/>
                                     Home
                                 </a>
                             </li>
-                        </div>
+                        
 
-                        <div className="navbar-nav ml-auto">
+                        
                             <li className="nav-item">
                                 <a className="nav-link" href="/profile">
                                     <span className="fa fa-user"/>
@@ -76,25 +78,32 @@ class App extends React.Component {
                 </div>
                 <div>
                     {!this.state.login &&
-                    <nav className="navbar navbar-expand navbar-dark bg-dark">
-                        <a className="navbar-brand" href="/start">
+                    <nav className="navbar navbar-expand navbar-dark">
+                        <a className="navbarBrand" href="/start">
                             eSakwa
                         </a>
                         
                         <div className="navbar-nav ml-auto">
                             <li className="nav-item">
-                            <a className="nav-link" href="/login">
+                            <a className="btn btn-primary" id = "mainbuttonstyle" href="/login">
                                     <span className="fa fa-sign-in"/>
-                                    Login
+                                    Zaloguj się
                                 </a>
                                 
                             </li>
-                            <li className="nav-item"> | </li>
+                            <li className="nav-item"> 
+                            <a className="nav-link" href="">
+                                <span className="fa fa-sign-in"/>
+
+                                    &nbsp;
+                                    | 
+                         </a>
+                            </li>
                             <li className="nav-item">
                             <a className="nav-link" href="/register">
                                     <span className="fa fa-user-plus"/>
                                     &nbsp;
-                                    Register
+                                    Załóż konto
                                 </a>
                             </li>
                         </div>
@@ -103,13 +112,15 @@ class App extends React.Component {
                 </div>
                 <div className="container">
                     <Switch>
+                        <Route exact path="/start" component={StartPage}/>
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/register" component={RegisterPage}/>
-                        <Route exact path="/start" component={StartPage}/>
                         <AuthGuard path="/home" component={HomePage}/>
                     </Switch>
                 </div>
             </Router>
+            <FooterPage/>
+            </div>
         );
     }
 }

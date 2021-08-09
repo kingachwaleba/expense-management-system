@@ -1,33 +1,16 @@
-.App {
-  text-align: center;
+
+
+#root{
+  position: relative;
+  background-image:url(background_image.png);
+  height: 100%;
+  
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-
-.navbar-brand{
+.navbarBrand{
   font-family: PT Sans;
   font-style: normal;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 25px;
   margin-left: 30px;
  
   background:
@@ -38,26 +21,41 @@
   
 }
 
+.navbar-nav{
+ position: relative;
+ float: right;
+ margin-left: auto;
+ margin-right: 2%;
+ flex-wrap: wrap;
+}
 .nav-item{
   
   font-family: PT Sans;
   font-style: normal;
   font-weight: normal;
-  font-size: 20px;
- 
-  
-  
-  
+  font-size: 20px !important;
 }
 
-#idtitle{
- margin-top: 20px;
- 
-font-family: PT Sans;
-font-style: normal;
-font-weight: bold;
-font-size: 96px;
-line-height: 107.4%;
-letter-spacing: 0.04em;
+#mainbuttonstyle{
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
+  padding: 2px 17px;
+  position: static;
+ 
+
+  left: calc(50% - 174px/2 - 116px);
+  top: calc(50% - 65px/2);
+  margin-top: 6px;
+
+  
+  background: linear-gradient(284.77deg, #F8B500 32.81%, #F80000 189.19%);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 24px;
+  border-color: transparent;
+  font-size: 20px !important;
 }
+#mainbuttonstyle:hover{
+  background: linear-gradient(284.77deg, #F8B100 32.81%, #F8B500 189.19%);
+ }
