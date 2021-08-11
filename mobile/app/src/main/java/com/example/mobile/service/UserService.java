@@ -2,128 +2,67 @@ package com.example.mobile.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
 import com.example.mobile.LoginActivity;
 import com.example.mobile.MainActivity;
 import com.example.mobile.RegistrationActivity;
-import com.example.mobile.config.MySingleton;
+import com.example.mobile.config.ApiClient;
+import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.nio.charset.StandardCharsets;
+import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserService {
-    public static final String BASE_URL = "http://192.168.0.31:8080/";
     Context context;
-
-    // Session Manager Class
     SessionManager session;
-
+    ApiInterface apiInterface;
 
     public UserService(Context context) {
         this.context = context;
         this.session = new SessionManager(context);
+        this.apiInterface = new ApiClient().getService();
     }
 
     public void register(User user) {
-        String url = BASE_URL + "register";
-
-        try {
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("login", user.getLogin());
-            jsonBody.put("email", user.getEmail());
-            jsonBody.put("password", user.getPassword());
-            final String mRequestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+        Call<ResponseBody> call = apiInterface.register(user);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 Intent i = new Intent(context, MainActivity.class);
                 context.startActivity(i);
                 ((RegistrationActivity)context).finish();
-            }, error -> Toast.makeText(context, "Rejestracja się nie powiodła", Toast.LENGTH_LONG).show())
-                {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() {
-                    return mRequestBody.getBytes(StandardCharsets.UTF_8);
-                }
-
-              /*  @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }*/
-            };
-
-            MySingleton.getInstance(context).addToRequestQueue(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            }
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Nie udało się zarejestrować użytkownika",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
     }
 
     public void login(LoginForm loginForm) {
-        String url = BASE_URL + "login";
-
-
-        try {
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("email", loginForm.getEmail());
-            jsonBody.put("password", loginForm.getPassword());
-            final String mRequestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-                try {
-                    JSONObject logindata = new JSONObject(response);
-                    Log.d("TAG", response);
-                    session.createLoginSession(logindata.getString("login"), logindata.getString("token"));
+        Call<JsonObject> call = apiInterface.login(loginForm);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
+                if(response.body()!=null){
+                    session.createLoginSession(response.body().get("login").toString(), response.body().get("token").toString());
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                     ((LoginActivity)context).finish();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
-
-            }, error -> Toast.makeText(context, "Niepoprawny email lub hasło", Toast.LENGTH_LONG).show()) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() {
-                    return mRequestBody.getBytes(StandardCharsets.UTF_8);
-                }
-
-              /*  @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }*/
-            };
-
-            MySingleton.getInstance(context).addToRequestQueue(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+            }
+            @Override
+            public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Logowanie nie powiodło się",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
     }
 }

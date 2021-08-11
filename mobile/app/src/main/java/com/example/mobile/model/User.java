@@ -1,42 +1,31 @@
 package com.example.mobile.model;
 
+import com.google.gson.annotations.SerializedName;
 
 public class User {
+    @SerializedName("login")
     private String login;
+    @SerializedName("email")
     private String email;
-    private String image;
+    @SerializedName("password")
     private String password;
-    private String status;
 
     public User(String login, String email, String password) {
         this.login = login;
         this.email = email;
-        this.image = null;
         this.password = password;
     }
 
-    public User(String login, String status) {
-        this.login = login;
-        this.status = status;
-    }
-
+    public void setLogin(String login) { this.login = login; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPassword(String password) { this.password = password; }
     public String getLogin() {
         return login;
     }
-
     public String getEmail() {
         return email;
     }
-
-    public String getImage() {
-        return image;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public String getStatus() {
-        return status;
     }
 }

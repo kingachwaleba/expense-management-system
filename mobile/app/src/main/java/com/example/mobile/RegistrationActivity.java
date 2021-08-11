@@ -1,16 +1,13 @@
 package com.example.mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.mobile.model.User;
 import com.example.mobile.service.UserService;
-
 import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -71,7 +68,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public boolean validatePassword(String s) {
-        if (Pattern.compile("^(?=.[a-z])(?=.[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$").matcher(s).matches())
+        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(s).matches())
             return true;
         else {
             Toast.makeText(RegistrationActivity.this, "Incorrect password!", Toast.LENGTH_LONG).show();
@@ -82,7 +79,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean validateConfirmPassword(String s1, String s2) {
         if (s1.equals(s2)) return true;
         else {
-            Toast.makeText(RegistrationActivity.this, "Incorret password!", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this, "Incorret confirm password!", Toast.LENGTH_LONG).show();
             return false;
         }
     }

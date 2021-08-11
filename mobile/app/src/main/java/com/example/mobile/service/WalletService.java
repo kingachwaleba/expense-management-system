@@ -1,72 +1,50 @@
 package com.example.mobile.service;
 
 import android.content.Context;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.mobile.config.MySingleton;
-import com.example.mobile.model.User;
+import android.util.Log;
+import android.widget.Toast;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.mobile.config.ApiClient;
+import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Wallet;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
-import java.util.Map;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WalletService {
-    public static final String BASE_URL = "http://192.168.0.31:8080/";
     Context context;
+    ApiInterface apiInterface;
+    RecyclerView wallet_rv;
 
-
-    public WalletService(Context context) {
+    public WalletService(Context context, RecyclerView wallet_rv) {
         this.context = context;
+        this.apiInterface = new ApiClient().getService();
+        this.wallet_rv = wallet_rv;
     }
 
-    public interface VolleyResponseListener{
-        void onError(String message);
-
-        void onResponse(List<Wallet> wallets);
-    }
-
-    public void getAll(String accesstoken, VolleyResponseListener volleyResponseListener) {
-        String url = BASE_URL + "wallets";
-
-        List<Wallet> wallets = new ArrayList<>();
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url,null, response -> {
-            try {
-            for(int i = 0; i < response.length(); i++){
-
-                    String name = "",owner = "",category = "", login = "", status = "";
-                    List<User> members = new ArrayList<>();
-                    name = response.getJSONObject(i).getString("name");
-                    category = response.getJSONObject(i).getJSONObject("walletCategory").getString("name");
-                    JSONArray membersJson = response.getJSONObject(i).getJSONArray("walletUserSet");
-                    for(int j = 0; j < membersJson.length(); j++){
-                        login = membersJson.getJSONObject(j).getJSONObject("user").getString("login");
-                        status =  membersJson.getJSONObject(j).getJSONObject("userStatus").getString("name");
-                        if(status.equals("właściciel"))
-                            owner = login;
-                        members.add(new User(login,status));
-
-                    }
-                    wallets.add(new Wallet(name,owner,category,members, members.size()));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            volleyResponseListener.onResponse(wallets);
-        }, error -> volleyResponseListener.onError("Something went wrong")) {
+    public void getUserWallets(String accessToken) {
+        Call<List<Wallet>> call = apiInterface.getUserWallets("Bearer " + accessToken.substring(1, accessToken.length() - 1));
+        call.enqueue(new Callback<List<Wallet>>() {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + accesstoken);
-                return headers;
+            public void onResponse(@NotNull Call<List<Wallet>> call, @NotNull Response<List<Wallet>> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            List<Wallet> wallets = response.body();
+                            WalletAdapter walletAdapter = new WalletAdapter(context, wallets);
+                            wallet_rv.setAdapter(walletAdapter);
+                            walletAdapter.notifyDataSetChanged();
+                        }
+                    } catch (Exception e) {
+                        Log.d("Error", e.getMessage());
+                    }
             }
-        };
-        MySingleton.getInstance(context).addToRequestQueue(request);
+            @Override
+            public void onFailure(@NotNull Call<List<Wallet>> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
     }
-
 }

@@ -3,7 +3,6 @@ package com.example.mobile.config;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import com.example.mobile.LoginActivity;
 
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class SessionManager {
     }
 
     public HashMap<String, String> getUserDetails(){
-        HashMap<String, String> user = new HashMap<String, String>();
+        HashMap<String, String> user = new HashMap<>();
         // user name
         user.put(KEY_LOGIN, pref.getString(KEY_LOGIN, null));
         user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));

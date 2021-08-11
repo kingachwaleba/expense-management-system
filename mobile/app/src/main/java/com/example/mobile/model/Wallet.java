@@ -1,45 +1,54 @@
 package com.example.mobile.model;
 
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 public class Wallet {
-
+    @SerializedName("walletId")
+    int walletId;
+    @SerializedName("name")
     String name;
+    @SerializedName("owner")
     String owner;
-    String category;
-    List<User> members;
-    int numeberOfMembers;
-    Double balance;
+    @SerializedName("userListCounter")
+    int userListCounter;
+    // Double balance;
 
-    public Wallet(String name, String owner, String category, List<User> members, int numeberOfMembers) {
+    public Wallet(int id, String name, String owner, int numeberOfMembers, Double balance) {
         this.name = name;
         this.owner = owner;
-        this.category = category;
-        this.members = members;
-        this.numeberOfMembers = numeberOfMembers;
+        this.userListCounter = numeberOfMembers;
+        //this.balance = balance;
+    }
+
+    public int getWalletId() {
+        return walletId;
+    }
+
+    public void setWalletId(int walletId) {
+        this.walletId = walletId;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getOwner() {
         return owner;
     }
 
-    public String getCategory() {
-        return category;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
-    public List<User> getMembers() {
-        return members;
+    public int getUserListCounter() {
+        return userListCounter;
     }
 
-    public int getNumeberOfMembers() {
-        return numeberOfMembers;
-    }
-
-    public Double getBalance() {
-        return balance;
+    public void setUserListCounter(int userListCounter) {
+        this.userListCounter = userListCounter;
     }
 }
