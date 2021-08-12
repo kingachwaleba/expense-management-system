@@ -52,7 +52,11 @@ public class UserService {
             @Override
             public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
                 if(response.body()!=null){
-                    session.createLoginSession(response.body().get("login").toString(), response.body().get("token").toString());
+                    String login =response.body().get("login").toString();
+                    String token =response.body().get("token").toString();
+                    login = login.substring(1, login.length() - 1);
+                    token = token.substring(1, token.length() - 1);
+                    session.createLoginSession(login, token);
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                     ((LoginActivity)context).finish();
