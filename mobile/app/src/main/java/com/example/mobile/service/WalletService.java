@@ -26,6 +26,11 @@ public class WalletService {
         this.wallet_rv = wallet_rv;
     }
 
+    public WalletService(Context context) {
+        this.context = context;
+        this.apiInterface = new ApiClient().getService();
+    }
+
     public void getUserWallets(String accessToken) {
         Call<List<Wallet>> call = apiInterface.getUserWallets("Bearer " + accessToken);
         call.enqueue(new Callback<List<Wallet>>() {
@@ -58,7 +63,7 @@ public class WalletService {
                 try {
                     if (response.isSuccessful()) {
                         WalletModel walletModel = response.body();
-
+                        Log.d("NAME", walletModel.getName());
                     }
                 } catch (Exception e) {
                     Log.d("Error", e.getMessage());
