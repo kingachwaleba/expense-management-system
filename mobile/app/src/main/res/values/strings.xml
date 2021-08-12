@@ -19,10 +19,16 @@
     <string name="reg_text_r">regulaminu*</string>
     <string name="reg_text_cb">Przeczytałem/am i akceptuję warunki </string>
     <string name="go_to_wallet">Przejdź do porfela</string>
-    <string name="balance">Saldo:</string>
+    <string name="balance">Bilans:</string>
+    <string name="saldo">Saldo:</string>
     <string name="number_of_members">Liczba członków:</string>
     <string name="owner">Właściciel:</string>
     <string name="logout">Wyloguj się</string>
     <string name="hello">Witaj</string>
     <string name="new_wallet">Dodaj nowy portfel</string>
+    <string name="description">Opis:</string>
+    <string name="your_expanses">Twoje wydatki:</string>
+    <string name="expanses">Wydatki:</string>
+    <string name="statistics">Statystyki</string>
+    <string name="deleteWallet">Usuń portfel</string>
 </resources>
