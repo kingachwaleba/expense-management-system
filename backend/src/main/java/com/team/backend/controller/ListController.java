@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.team.backend.helpers.ListHolder;
 import com.team.backend.model.*;
+import com.team.backend.repository.StatusRepository;
 import com.team.backend.service.ListService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class ListController {
         return new ResponseEntity<>(listHolder.getList(), HttpStatus.OK);
     }
 
-    @PutMapping("/shopping-list/{id}")
+    @PutMapping("/shopping-list/edit/{id}")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody String name) {
         List updatedShoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
 
