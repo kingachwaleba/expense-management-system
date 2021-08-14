@@ -45,6 +45,11 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
+    public void save(List list) {
+        listRepository.save(list);
+    }
+
+    @Override
     public Optional<List> findById(int id) {
         return listRepository.findById(id);
     }

@@ -10,10 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class ListController {
@@ -28,7 +24,7 @@ public class ListController {
 
     @GetMapping("/shopping-list/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
-        com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
 
         return new ResponseEntity<>(shoppingList, HttpStatus.OK);
     }
@@ -41,5 +37,16 @@ public class ListController {
         listService.save(listHolder, wallet);
 
         return new ResponseEntity<>(listHolder.getList(), HttpStatus.OK);
+    }
+
+    @PutMapping("/shopping-list/{id}")
+    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody String name) {
+        List updatedShoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+
+        updatedShoppingList.setName(name);
+
+        listService.save(updatedShoppingList);
+
+        return new ResponseEntity<>(updatedShoppingList, HttpStatus.OK);
     }
 }
