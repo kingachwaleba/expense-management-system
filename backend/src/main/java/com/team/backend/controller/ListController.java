@@ -7,13 +7,12 @@ import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,6 +24,13 @@ public class ListController {
     public ListController(WalletService walletService, ListService listService) {
         this.walletService = walletService;
         this.listService = listService;
+    }
+
+    @GetMapping("/shopping-list/{id}")
+    public ResponseEntity<?> one(@PathVariable int id) {
+        com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+
+        return new ResponseEntity<>(listService.showListDetails(shoppingList), HttpStatus.OK);
     }
 
     @Transactional

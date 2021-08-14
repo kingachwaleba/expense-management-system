@@ -9,6 +9,11 @@ import com.team.backend.repository.ListRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 @Service
 public class ListServiceImpl implements ListService {
 
@@ -37,5 +42,49 @@ public class ListServiceImpl implements ListService {
         }
 
         listRepository.save(shoppingList);
+    }
+
+    @Override
+    public Map<String, Object> showListDetails(List shoppingList) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("shoppingListId", shoppingList.getId());
+        map.put("shoppingListName", shoppingList.getName());
+        map.put("shoppingListStatus", shoppingList.getStatus());
+
+        if (shoppingList.getUser() != null)
+            map.put("shoppingListUser", shoppingList.getUser().getLogin());
+        else
+            map.put("shoppingListUser", shoppingList.getUser());
+
+        map.put("walletId", shoppingList.getWallet().getId());
+
+        java.util.List<Map<String, Object>> listDetailList = new ArrayList<>();
+
+        for (ListDetail listDetail : shoppingList.getListDetailSet()) {
+            Map<String, Object> listDetailMap = new HashMap<>();
+
+            listDetailMap.put("listDetailId", listDetail.getId());
+            listDetailMap.put("listDetailName", listDetail.getName());
+            listDetailMap.put("quantity", listDetail.getQuantity());
+            listDetailMap.put("unit", listDetail.getUnit().getName());
+            listDetailMap.put("listDetailStatus", listDetail.getStatus());
+
+            if (shoppingList.getUser() != null)
+                map.put("shoppingListUser", shoppingList.getUser().getLogin());
+            else
+                map.put("shoppingListUser", shoppingList.getUser());
+
+            listDetailList.add(listDetailMap);
+        }
+
+        map.put("listDetailMap", listDetailList);
+
+        return map;
+    }
+
+    @Override
+    public Optional<List> findById(int id) {
+        return listRepository.findById(id);
     }
 }
