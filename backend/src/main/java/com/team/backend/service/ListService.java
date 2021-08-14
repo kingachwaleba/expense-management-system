@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface ListService {
 
     void save(ListHolder listHolder, Wallet wallet);
-    Map<String, Object> showListDetails(List shoppingList);
 
     Optional<List> findById(int id);
 }

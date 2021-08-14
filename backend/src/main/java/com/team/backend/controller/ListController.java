@@ -30,7 +30,7 @@ public class ListController {
     public ResponseEntity<?> one(@PathVariable int id) {
         com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
 
-        return new ResponseEntity<>(listService.showListDetails(shoppingList), HttpStatus.OK);
+        return new ResponseEntity<>(shoppingList, HttpStatus.OK);
     }
 
     @Transactional
@@ -40,11 +40,6 @@ public class ListController {
 
         listService.save(listHolder, wallet);
 
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("walletId", wallet.getId());
-        map.put("shoppingListId", listHolder.getList().getId());
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(listHolder.getList(), HttpStatus.OK);
     }
 }

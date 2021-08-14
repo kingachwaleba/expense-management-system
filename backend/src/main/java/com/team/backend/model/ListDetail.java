@@ -29,6 +29,7 @@ public class ListDetail {
     @NotBlank(message = "Quantity is mandatory!")
     private String quantity;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "list_id", referencedColumnName="id", nullable = false)
     private List list;
