@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,4 +36,12 @@ public class List {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName="id")
     private User user;
+
+    @OneToMany(mappedBy="list", cascade = CascadeType.ALL)
+    private Set<ListDetail> listDetailSet = new HashSet<>();
+
+    public void addListDetail(ListDetail listDetail) {
+        listDetailSet.add(listDetail);
+        listDetail.setList(this);
+    }
 }
