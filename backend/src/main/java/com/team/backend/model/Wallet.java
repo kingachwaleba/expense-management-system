@@ -29,7 +29,7 @@ public class Wallet {
     @NotBlank(message = "Wallet name is mandatory!")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "wallet_category_id", referencedColumnName="id", nullable = false)
     private WalletCategory walletCategory;
 
