@@ -13,4 +13,5 @@ public interface ListService {
     void save(List list);
 
     Optional<List> findById(int id);
+    java.util.List<List> findAllByWallet(Wallet wallet);
 }

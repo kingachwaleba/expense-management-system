@@ -30,6 +30,14 @@ public class ListController {
         return new ResponseEntity<>(shoppingList, HttpStatus.OK);
     }
 
+    @GetMapping("/wallet/{id}/shopping-lists")
+    public ResponseEntity<?> all(@PathVariable int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        java.util.List<List> shoppingList = listService.findAllByWallet(wallet);
+
+        return new ResponseEntity<>(shoppingList, HttpStatus.OK);
+    }
+
     @Transactional
     @PostMapping("/wallet/{id}/create-shopping-list")
     public ResponseEntity<?> createWallet(@PathVariable int id, @Valid @RequestBody ListHolder listHolder) {

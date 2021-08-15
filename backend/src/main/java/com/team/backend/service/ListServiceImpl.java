@@ -53,4 +53,9 @@ public class ListServiceImpl implements ListService {
     public Optional<List> findById(int id) {
         return listRepository.findById(id);
     }
+
+    @Override
+    public java.util.List<List> findAllByWallet(Wallet wallet) {
+        return listRepository.findAllByWallet(wallet);
+    }
 }
