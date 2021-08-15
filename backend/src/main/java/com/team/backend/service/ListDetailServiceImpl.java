@@ -7,6 +7,8 @@ import com.team.backend.repository.ListDetailRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ListDetailServiceImpl implements ListDetailService {
 
@@ -28,5 +30,15 @@ public class ListDetailServiceImpl implements ListDetailService {
         shoppingList.addListDetail(listDetail);
 
         listDetailRepository.save(listDetail);
+    }
+
+    @Override
+    public void save(ListDetail listDetail) {
+        listDetailRepository.save(listDetail);
+    }
+
+    @Override
+    public Optional<ListDetail> findById(int id) {
+        return listDetailRepository.findById(id);
     }
 }
