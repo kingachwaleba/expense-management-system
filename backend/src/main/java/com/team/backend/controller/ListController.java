@@ -4,9 +4,12 @@ import com.team.backend.helpers.ListHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.StatusRepository;
 import com.team.backend.service.ListService;
+import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +20,15 @@ public class ListController {
 
     private final WalletService walletService;
     private final ListService listService;
+    private final StatusRepository statusRepository;
+    private final UserService userService;
 
-    public ListController(WalletService walletService, ListService listService) {
+    public ListController(WalletService walletService, ListService listService, StatusRepository statusRepository,
+                          UserService userService) {
         this.walletService = walletService;
         this.listService = listService;
+        this.statusRepository = statusRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/shopping-list/{id}")
@@ -57,5 +65,36 @@ public class ListController {
         listService.save(updatedShoppingList);
 
         return new ResponseEntity<>(updatedShoppingList, HttpStatus.OK);
+    }
+
+    @PutMapping("/change-list-status/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
+        List updatedList = listService.findById(id).orElseThrow(RuntimeException::new);
+        Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserLogin = authentication.getName();
+
+        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+
+        updatedList.setStatus(chosenStatus);
+
+        if (statusId == 3)
+            updatedList.setUser(null);
+        else
+            updatedList.setUser(user);
+
+        for (ListDetail listDetail : updatedList.getListDetailSet()) {
+            listDetail.setStatus(chosenStatus);
+
+            if (statusId == 3)
+                listDetail.setUser(null);
+            else
+                listDetail.setUser(user);
+        }
+
+        listService.save(updatedList);
+
+        return new ResponseEntity<>(updatedList, HttpStatus.OK);
     }
 }
