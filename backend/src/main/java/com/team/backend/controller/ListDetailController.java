@@ -62,6 +62,19 @@ public class ListDetailController {
         return new ResponseEntity<>(updatedElement.getList(), HttpStatus.OK);
     }
 
+    @PutMapping("/edit-list-element/{id}")
+    public ResponseEntity<?> editListElement(@PathVariable int id, @RequestBody ListDetail listDetail) {
+        ListDetail updatedElement = listDetailService.findById(id).orElseThrow(RuntimeException::new);
+
+        updatedElement.setName(listDetail.getName());
+        updatedElement.setQuantity(listDetail.getQuantity());
+        updatedElement.setUnit(listDetail.getUnit());
+
+        listDetailService.save(updatedElement);
+
+        return new ResponseEntity<>(updatedElement.getList(), HttpStatus.OK);
+    }
+
     @DeleteMapping("/delete-list-element/{id}")
     public ResponseEntity<?> deleteOne(@PathVariable int id) {
         ListDetail listDetail = listDetailService.findById(id).orElseThrow(RuntimeException::new);
