@@ -9,5 +9,6 @@ public interface ListDetailService {
 
     void save(ListDetail listDetail, List shoppingList);
     void save(ListDetail listDetail);
+    void delete(ListDetail listDetail);
     Optional<ListDetail> findById(int id);
 }

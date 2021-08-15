@@ -38,6 +38,11 @@ public class ListDetailServiceImpl implements ListDetailService {
     }
 
     @Override
+    public void delete(ListDetail listDetail) {
+        listDetailRepository.delete(listDetail);
+    }
+
+    @Override
     public Optional<ListDetail> findById(int id) {
         return listDetailRepository.findById(id);
     }
