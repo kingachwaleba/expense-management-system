@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,15 +25,23 @@ public class List {
     @NotBlank(message = "List name is mandatory!")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "wallet_id", referencedColumnName="id", nullable = false)
     private Wallet wallet;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", referencedColumnName="id", nullable = false)
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName="id")
     private User user;
+
+    @OneToMany(mappedBy="list", cascade = CascadeType.ALL)
+    private Set<ListDetail> listDetailSet = new HashSet<>();
+
+    public void addListDetail(ListDetail listDetail) {
+        listDetailSet.add(listDetail);
+        listDetail.setList(this);
+    }
 }

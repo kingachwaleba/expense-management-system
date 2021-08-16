@@ -1,5 +1,6 @@
 package com.team.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,19 +29,20 @@ public class ListDetail {
     @NotBlank(message = "Quantity is mandatory!")
     private String quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "list_id", referencedColumnName="id", nullable = false)
     private List list;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "unit_id", referencedColumnName="id", nullable = false)
     private Unit unit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", referencedColumnName="id", nullable = false)
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName="id")
     private User user;
 }

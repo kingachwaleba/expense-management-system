@@ -32,15 +32,15 @@ public class Expense {
     @NotBlank(message = "Total cost is mandatory!")
     private BigDecimal total_cost;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName="id", nullable = false)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "wallet_id", referencedColumnName="id", nullable = false)
     private Wallet wallet;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName="id", nullable = false)
     private User user;
 

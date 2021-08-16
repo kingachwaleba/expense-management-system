@@ -1,5 +1,6 @@
 package com.team.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class User {
                     "it should start with letter, it should have 5-45 characters)!")
     private String login;
 
+    @JsonIgnore
     @Column(unique = true, nullable = false, length = 100)
     @Size(min = 5, max = 100)
     @NotBlank(message = "Email is mandatory!")
@@ -38,6 +40,7 @@ public class User {
     @Size(max = 255)
     private String image;
 
+    @JsonIgnore
     @Column(nullable = false)
     @Size(max = 255)
     private String password;
