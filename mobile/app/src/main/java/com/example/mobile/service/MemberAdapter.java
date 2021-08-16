@@ -22,7 +22,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
     @Override
     public @NotNull ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        View memberView = mInflater.inflate(R.layout.item_wallet, parent, false);
+        View memberView = mInflater.inflate(R.layout.item_member, parent, false);
         return new ViewHolder(memberView);
     }
 

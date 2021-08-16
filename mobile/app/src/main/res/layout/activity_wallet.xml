@@ -152,17 +152,16 @@
                     android:textSize="24sp">
                 </TextView>
                 <Button
+                    android:id="@+id/show_members"
                     android:layout_width="30dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/button_list_close">
+                    android:layout_height="40dp">
                 </Button>
 
             </LinearLayout>
 
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragmentContainerView"
-                android:name="com.example.mobile.MembersFragment"
+                android:id="@+id/fragment_container_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

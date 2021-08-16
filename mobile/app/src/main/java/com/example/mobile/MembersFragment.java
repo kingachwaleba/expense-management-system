@@ -3,6 +3,7 @@ package com.example.mobile;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -44,18 +45,31 @@ public class MembersFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            members = getArguments().getParcelableArrayList("members");
+
+            for(int i = 0; i <members.size() ;i++){
+                System.out.println(members.get(i).getLogin());
+            }
         }
 
-   /*     MemberAdapter memberAdapter = new MemberAdapter(context, members);
-        member_rv.setAdapter(memberAdapter);
-        memberAdapter.notifyDataSetChanged();*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_members, container, false);
+        View view = inflater.inflate(R.layout.fragment_members, container, false);
+        member_rv = view.findViewById(R.id.members_rv);
+        if (getArguments() != null) {
+            members = getArguments().getParcelableArrayList("members");
+
+            for(int i = 0; i <members.size() ;i++){
+                System.out.println(members.get(i).getLogin());
+            }
+        }
+        member_rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        MemberAdapter memberAdapter = new MemberAdapter(getContext(), members);
+        member_rv.setAdapter(memberAdapter);
+        memberAdapter.notifyDataSetChanged();
+        return view;
     }
 }
