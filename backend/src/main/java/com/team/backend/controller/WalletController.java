@@ -83,7 +83,7 @@ public class WalletController {
     public ResponseEntity<?> createWallet(@Valid @RequestBody WalletHolder walletHolder) {
         walletService.save(walletHolder);
 
-        return new ResponseEntity<>(walletHolder.getWallet().getId(), HttpStatus.OK);
+        return new ResponseEntity<>(walletHolder.getWallet(), HttpStatus.OK);
     }
 
     @PutMapping("/wallet/{id}")
@@ -96,7 +96,7 @@ public class WalletController {
 
         walletService.save(updatedWallet);
 
-        return new ResponseEntity<>(updatedWallet.getId(), HttpStatus.OK);
+        return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
     }
 
     @PutMapping("/wallet/{id}/users/{userLogin}")
@@ -114,6 +114,6 @@ public class WalletController {
 
         walletService.save(updatedWallet);
 
-        return new ResponseEntity<>(updatedWallet.getId(), HttpStatus.OK);
+        return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
     }
 }
