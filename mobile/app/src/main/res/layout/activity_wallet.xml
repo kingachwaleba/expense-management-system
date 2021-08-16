@@ -13,32 +13,6 @@
         android:gravity="center"
         android:background="@drawable/background">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/hello_label"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/hello"
-                android:textAppearance="@style/label"
-                android:textSize="40sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="0dp" />
-
-            <View
-                android:id="@+id/vector"
-                android:layout_width="156dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="43dp"
-                android:background="@drawable/vector_1"
-                android:layout_marginStart="200dp"
-                app:layout_constraintStart_toStartOf="@+id/hello_label"
-                app:layout_constraintTop_toTopOf="@+id/hello_label" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -8,7 +8,6 @@ import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Wallet;
 import com.example.mobile.model.WalletModel;
-
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import retrofit2.Call;
@@ -29,6 +28,10 @@ public class WalletService {
     public WalletService(Context context) {
         this.context = context;
         this.apiInterface = new ApiClient().getService();
+    }
+
+    public interface OnOneWalletCallback{
+        void onOneWallet(WalletModel walletModel);
     }
 
     public void getUserWallets(String accessToken) {
@@ -55,19 +58,13 @@ public class WalletService {
         });
     }
 
-    public void getWalletById(String accessToken, int id) {
+    public WalletModel getWalletById(OnOneWalletCallback callback, String accessToken, int id) {
+        WalletModel walletModel = new WalletModel(0, " ", " ", " ", 0, null);
         Call<WalletModel> call = apiInterface.getWalletById("Bearer " + accessToken, id);
         call.enqueue(new Callback<WalletModel>() {
             @Override
             public void onResponse(@NotNull Call<WalletModel> call, @NotNull Response<WalletModel> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        WalletModel walletModel = response.body();
-                        Log.d("NAME", walletModel.getName());
-                    }
-                } catch (Exception e) {
-                    Log.d("Error", e.getMessage());
-                }
+                callback.onOneWallet(response.body());
             }
             @Override
             public void onFailure(@NotNull Call<WalletModel> call, @NotNull Throwable t) {
@@ -75,5 +72,6 @@ public class WalletService {
                 call.cancel();
             }
         });
+        return walletModel;
     }
 }
