@@ -1,6 +1,9 @@
 package com.example.mobile.config;
 
+import com.example.mobile.model.Category;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Member;
+import com.example.mobile.model.Unit;
 import com.example.mobile.model.User;
 import com.example.mobile.model.Wallet;
 import com.example.mobile.model.WalletModel;
@@ -30,4 +33,16 @@ public interface ApiInterface  {
     @GET("wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<WalletModel> getWalletById(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @GET("categories")
+    @Headers("Content-Type: application/json")
+    Call<List<Category>> getCategories();
+
+    @GET("units")
+    @Headers("Content-Type: application/json")
+    Call<List<Unit>> getUnits();
+
+    @GET("infix")
+    @Headers("Content-Type: application/json")
+    Call<List<Member>> getMembersByInfix(@Path("infix") String infix);
 }
