@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp"
+        android:background="@drawable/round_box">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textAppearance="@style/info_label"
+            android:text="Dodaj portfel:"
+            android:textColor="@color/yellow" />
+
+        <View
+            android:id="@+id/vector_2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/vector_2" />
+
+        <EditText
+            android:id="@+id/nameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Wpisz nazwę..."
+            android:background="@drawable/round_box_button"
+            android:padding="20dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/light_gray"
+            />
+        <EditText
+            android:id="@+id/descriptionEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Wpisz opis..."
+            android:background="@drawable/round_box_button"
+            android:padding="20dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/light_gray"/>
+        <EditText
+            android:id="@+id/memberEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_box_button"
+            android:padding="20dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/light_gray"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_box_button"
+            android:padding="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kategoria:"
+                android:textColor="@color/light_gray"
+                android:textAppearance="@style/label"
+                android:textSize="24sp"/>
+
+            <RadioGroup
+                android:id="@+id/category_RG"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="@string/create"
+            android:textAllCaps="false"
+            android:textAppearance="@style/button_style" />
+
+    </LinearLayout>
+</ScrollView>

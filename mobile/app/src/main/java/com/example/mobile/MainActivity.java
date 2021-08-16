@@ -1,8 +1,11 @@
 package com.example.mobile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     SessionManager session;
     RecyclerView wallet_rv;
     TextView hello_tv;
+    Button add_wallet;
 
 
     @Override
@@ -38,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
         List<Wallet> wallets = new ArrayList<>();
         WalletAdapter walletAdapter = new WalletAdapter(MainActivity.this, wallets);
         wallet_rv.setAdapter(walletAdapter);
+
+        add_wallet = findViewById(R.id.create_wallet_btn);
+
+        add_wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, CreateWalletActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override

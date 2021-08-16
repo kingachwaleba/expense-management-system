@@ -120,6 +120,107 @@
                 android:background="@drawable/vector_2" />
 
             <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/round_box_button"
+                android:gravity="center_horizontal"
+                android:paddingVertical="15dp"
+                android:text="@string/open_chat_button"
+                android:textAllCaps="false"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_box_button"
+                android:paddingVertical="15dp"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="20dp">
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/button_add">
+                </Button>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textColor="@color/yellow"
+                    android:text="@string/members"
+                    android:textSize="24sp">
+                </TextView>
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_list_close">
+                </Button>
+
+            </LinearLayout>
+
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentContainerView"
+                android:name="com.example.mobile.MembersFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_box_button"
+                android:paddingVertical="15dp"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="20dp">
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_add">
+                </Button>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textColor="@color/yellow"
+                    android:text="@string/expenses"
+                    android:textSize="24sp">
+                </TextView>
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_list_close">
+                </Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_box_button"
+                android:paddingVertical="15dp"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="20dp">
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/button_add">
+                </Button>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textColor="@color/yellow"
+                    android:text="@string/shop_lists"
+                    android:textSize="24sp">
+                </TextView>
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_list_close">
+                </Button>
+            </LinearLayout>
+
+            <Button
                 android:id="@+id/statistics_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,6 +241,6 @@
                 android:textColor="@color/light_gray"
                 app:backgroundTint="@null" />
 
-            </LinearLayout>
+        </LinearLayout>
         </LinearLayout>
 </ScrollView>

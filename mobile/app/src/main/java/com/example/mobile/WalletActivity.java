@@ -23,6 +23,7 @@ public class WalletActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.pagename);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         id = Integer.parseInt(getIntent().getStringExtra("id"));
         session = new SessionManager(getApplicationContext());
         accesToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
@@ -36,22 +37,18 @@ public class WalletActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         WalletService walletService = new WalletService(this);
+        walletService.getWalletById(walletModel -> {
+            walletName_tv.setText(walletModel.getName());
+            if(walletModel.getDescription()!=null)
+                description_tv.setText(getResources().getString(R.string.description) + " " + walletModel.getDescription());
+            owner_tv.setText(getResources().getString(R.string.owner) + " " + walletModel.getOwner());
+            number_of_members_tv.setText(getResources().getString(R.string.number_of_members) + " " + String.valueOf(walletModel.getUserListCounter()));
 
-
-
-
-        WalletModel walletModel = walletService.getWalletById(new WalletService.OnOneWalletCallback() {
-            @Override
-            public void onOneWallet(WalletModel walletModel) {
-                walletName_tv.setText(walletModel.getName());
-                if(walletModel.getDescription()!=null)
-                    description_tv.setText(getResources().getString(R.string.description) + " " + walletModel.getDescription());
-                owner_tv.setText(getResources().getString(R.string.owner) + " " + walletModel.getOwner());
-                number_of_members_tv.setText(getResources().getString(R.string.number_of_members) + " " + String.valueOf(walletModel.getUserListCounter()));
-
+            for(int i = 0; i < walletModel.getUserListCounter();i++){
+                System.out.println(walletModel.getUserList().get(i).getLogin());
             }
+
         }, accesToken, id);
-        Log.d("NAME", walletModel.getName());
     }
 
 }
