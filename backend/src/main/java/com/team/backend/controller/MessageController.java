@@ -33,7 +33,7 @@ public class MessageController {
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
-        return new ResponseEntity<>(messageService.findAllMessages(wallet, "M"), HttpStatus.OK);
+        return new ResponseEntity<>(messageService.findAllByWalletAndTypeOrderByDate(wallet, "M"), HttpStatus.OK);
     }
 
     @GetMapping("/notifications")
@@ -43,7 +43,7 @@ public class MessageController {
 
         User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
 
-        return new ResponseEntity<>(messageService.findAllNotifications(user, "S"), HttpStatus.OK);
+        return new ResponseEntity<>(messageService.findAllByReceiverAndTypeOrderByDate(user, "S"), HttpStatus.OK);
     }
 
     @PostMapping("/wallet/{id}/message")

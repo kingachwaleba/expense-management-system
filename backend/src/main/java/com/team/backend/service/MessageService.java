@@ -15,8 +15,8 @@ public interface MessageService {
 
     void delete(Message message);
 
-    List<Map<String, Object>> findAllMessages(Wallet wallet, String type);
-    List<Map<String, Object>> findAllNotifications(User user, String type);
+    List<Message> findAllByWalletAndTypeOrderByDate(Wallet wallet, String type);
+    List<Message> findAllByReceiverAndTypeOrderByDate(User user, String type);
 
     Optional<Message> findById(Integer id);
 }

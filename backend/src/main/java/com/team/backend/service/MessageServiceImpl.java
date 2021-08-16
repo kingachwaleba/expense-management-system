@@ -53,50 +53,13 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Map<String, Object>> findAllMessages(Wallet wallet, String type) {
-        List<Message> messageList = messageRepository.findAllByWalletAndTypeOrderByDate(wallet, type);
-
-        List<Map<String, Object>> messages = new ArrayList<>();
-
-        for (Message message : messageList) {
-            Map<String, Object> map = new HashMap<>();
-
-            map.put("walletId", message.getWallet().getId());
-            map.put("senderLogin", message.getSender().getLogin());
-            map.put("date", message.getDate());
-            map.put("content", message.getContent());
-
-            messages.add(map);
-        }
-
-        return messages;
+    public List<Message> findAllByWalletAndTypeOrderByDate(Wallet wallet, String type) {
+        return messageRepository.findAllByWalletAndTypeOrderByDate(wallet, type);
     }
 
     @Override
-    public List<Map<String, Object>> findAllNotifications(User user, String type) {
-        List<Message> messageList = messageRepository.findAllByReceiverAndTypeOrderByDate(user, type);
-
-        List<Map<String, Object>> notifications = new ArrayList<>();
-
-        for (Message message : messageList) {
-            Map<String, Object> map = new HashMap<>();
-
-            map.put("messageId", message.getId());
-            map.put("walletId", message.getWallet().getId());
-            map.put("walletName", message.getWallet().getName());
-            if (message.getSender() != null)
-                map.put("senderLogin", message.getSender().getLogin());
-            else
-                map.put("senderLogin", null);
-            map.put("receiverId", message.getReceiver().getId());
-            map.put("date", message.getDate());
-            map.put("content", message.getContent());
-            map.put("walletOwnerLogin", walletService.findOwner(message.getWallet()).getLogin());
-
-            notifications.add(map);
-        }
-
-        return notifications;
+    public List<Message> findAllByReceiverAndTypeOrderByDate(User user, String type) {
+        return messageRepository.findAllByReceiverAndTypeOrderByDate(user, type);
     }
 
     @Override
