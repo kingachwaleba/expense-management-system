@@ -1,5 +1,6 @@
 package com.team.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class ExpenseDetail {
     @JoinColumn(name = "payment_status_id", referencedColumnName="id")
     private PaymentStatus paymentStatus;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "expense_id", referencedColumnName="id", nullable = false)
     private Expense expense;
