@@ -22,6 +22,13 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
+    @GetMapping("/expense/{id}")
+    public ResponseEntity<?> one(@PathVariable int id) {
+        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+
+        return new ResponseEntity<>(expense, HttpStatus.OK);
+    }
+
     @GetMapping("/wallet/{id}/expenses")
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -66,6 +67,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
 
         expenseRepository.save(expense);
+    }
+
+    @Override
+    public Optional<Expense> findById(int id) {
+        return expenseRepository.findById(id);
     }
 
     @Override
