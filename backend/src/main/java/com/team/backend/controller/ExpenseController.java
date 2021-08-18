@@ -7,10 +7,7 @@ import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,6 +20,13 @@ public class ExpenseController {
     public ExpenseController(WalletService walletService, ExpenseService expenseService) {
         this.walletService = walletService;
         this.expenseService = expenseService;
+    }
+
+    @GetMapping("/wallet/{id}/expenses")
+    public ResponseEntity<?> all(@PathVariable int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+
+        return new ResponseEntity<>(expenseService.findAllByWalletOrderByDate(wallet), HttpStatus.OK);
     }
 
     @Transactional

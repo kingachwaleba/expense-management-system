@@ -67,4 +67,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         expenseRepository.save(expense);
     }
+
+    @Override
+    public List<Expense> findAllByWalletOrderByDate(Wallet wallet) {
+        return expenseRepository.findAllByWalletOrderByDate(wallet);
+    }
 }
