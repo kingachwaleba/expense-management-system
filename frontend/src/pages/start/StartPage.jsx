@@ -10,7 +10,10 @@ class StartPage extends React.Component {
         return (
           <div>
               <Header title={'Kontrolowanie \nTwoich wydatków nigdy \nnie było tak \nproste'} pretitle='Załóż darmowe konto'/>
-              <img src="../../logo.svg" alt="logopig" height="100" width="100" ></img>
+              <div className = "grid-container">
+                <div id="vector-image"></div>
+                <div id="piggy-image"></div>
+             </div>
           </div>
         );
     }

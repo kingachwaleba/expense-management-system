@@ -59,3 +59,25 @@
 #mainbuttonstyle:hover{
   background: linear-gradient(284.77deg, #F8B100 32.81%, #F8B500 189.19%);
  }
+.grid-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+#vector-image{
+  background-image: url(vector_png.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 3vw;
+  width: 30vw;
+  margin-top: -7px;
+}
+#piggy-image{
+  background-image: url(logo.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 25vw;
+  width: 25vw;
+  margin-top:-30vh;
+  margin-left:20vw;
+}
