@@ -43,15 +43,6 @@ public class MembersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            members = getArguments().getParcelableArrayList("members");
-
-            for(int i = 0; i <members.size() ;i++){
-                System.out.println(members.get(i).getLogin());
-            }
-        }
-
     }
 
     @Override
@@ -61,10 +52,6 @@ public class MembersFragment extends Fragment {
         member_rv = view.findViewById(R.id.members_rv);
         if (getArguments() != null) {
             members = getArguments().getParcelableArrayList("members");
-
-            for(int i = 0; i <members.size() ;i++){
-                System.out.println(members.get(i).getLogin());
-            }
         }
         member_rv.setLayoutManager(new LinearLayoutManager(getContext()));
         MemberAdapter memberAdapter = new MemberAdapter(getContext(), members);

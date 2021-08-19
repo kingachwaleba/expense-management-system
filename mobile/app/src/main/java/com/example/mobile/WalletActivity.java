@@ -46,8 +46,6 @@ public class WalletActivity extends AppCompatActivity {
         show_members_control = false;
         show_members.setBackgroundResource(R.drawable.button_list_close);
 
-
-
     }
 
     @Override
@@ -60,17 +58,6 @@ public class WalletActivity extends AppCompatActivity {
                 description_tv.setText(getResources().getString(R.string.description) + " " + walletModel.getDescription());
             owner_tv.setText(getResources().getString(R.string.owner) + " " + walletModel.getOwner());
             number_of_members_tv.setText(getResources().getString(R.string.number_of_members) + " " + String.valueOf(walletModel.getUserListCounter()));
-
-            for(int i = 0; i < walletModel.getUserListCounter();i++){
-                System.out.println(walletModel.getUserList().get(i).getLogin());
-            }
-
-          /*  Fragment fragment = getSupportFragmentManager().findFragmentByTag("MembersFragment");
-            if(fragment != null){
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("members", (ArrayList<Member>)walletModel.getUserList());
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view, MembersFragment.class, bundle, "MembersFragment");
-            }*/
 
             show_members.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,9 +80,6 @@ public class WalletActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
-
         }, accesToken, id);
     }
 
