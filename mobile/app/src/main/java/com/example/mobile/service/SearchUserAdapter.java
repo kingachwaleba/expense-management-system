@@ -37,7 +37,14 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
         holder.memberName.setText(member);
 
         holder.button.setOnClickListener(v -> {
-            selectedUser.add(member);
+            holder.isChecked = !holder.isChecked;
+            if(holder.isChecked){
+                v.setBackgroundResource(R.drawable.added_person);
+                selectedUser.add(member);
+            } else {
+                v.setBackgroundResource(R.drawable.add_person);
+                selectedUser.remove(member);
+            }
         });
     }
 
@@ -49,8 +56,10 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView memberName;
         public Button button;
+        public boolean isChecked;
         public ViewHolder(View itemView) {
             super(itemView);
+            isChecked = false;
             memberName = itemView.findViewById(R.id.member_name);
             button = itemView.findViewById(R.id.add_user_btn);
         }
