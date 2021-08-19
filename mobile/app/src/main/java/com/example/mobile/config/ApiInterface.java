@@ -42,7 +42,7 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<List<Unit>> getUnits();
 
-    @GET("infix")
+    @GET("{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<Member>> getMembersByInfix(@Path("infix") String infix);
+    Call<List<String>> getMembersByInfix(@Path("infix") String infix);
 }

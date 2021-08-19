@@ -30,8 +30,12 @@ public class WalletService {
         this.apiInterface = new ApiClient().getService();
     }
 
-    public interface OnOneWalletCallback{
+    public interface OnWalletCallback{
         void onOneWallet(WalletModel walletModel);
+    }
+
+    public interface OnMemberSearchCallback{
+        void onMembersList(List<String> members);
     }
 
     public void getUserWallets(String accessToken) {
@@ -58,7 +62,7 @@ public class WalletService {
         });
     }
 
-    public WalletModel getWalletById(OnOneWalletCallback callback, String accessToken, int id) {
+    public WalletModel getWalletById(OnWalletCallback callback, String accessToken, int id) {
         WalletModel walletModel = new WalletModel(0, " ", " ", " ", 0, null);
         Call<WalletModel> call = apiInterface.getWalletById("Bearer " + accessToken, id);
         call.enqueue(new Callback<WalletModel>() {
@@ -73,5 +77,22 @@ public class WalletService {
             }
         });
         return walletModel;
+    }
+
+    public void getMembersByInfix(WalletService.OnMemberSearchCallback callback, String infix){
+        System.out.println(infix);
+        Call<List<String>> call = apiInterface.getMembersByInfix(infix);
+        System.out.println(infix);
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                callback.onMembersList(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+            }
+        });
     }
 }
