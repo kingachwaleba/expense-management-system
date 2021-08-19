@@ -65,7 +65,7 @@
   grid-gap: 20px;
 }
 #vector-image{
-  background-image: url(vector_png.png);
+  background-image: url(headervector.svg);
   background-size: contain;
   background-repeat: no-repeat;
   height: 3vw;
@@ -80,4 +80,53 @@
   width: 25vw;
   margin-top:-30vh;
   margin-left:20vw;
+}
+
+@media only screen and (max-width: 1025px){
+  #piggy-image{
+    background-image: url(logo.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 35vw;
+    width: 35vw;
+    margin-top:20vh;
+    margin-left:20vw;
+  }
+}
+
+
+@media only screen and (max-width: 415px){
+  #mainbuttonstyle{
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  
+    padding: 2px 10px;
+    position: static;
+   
+  
+    left: calc(50% - 174px/2 - 116px);
+    top: calc(50% - 65px/2);
+    margin-top: 6px;
+  
+    
+    background: linear-gradient(284.77deg, #F8B500 32.81%, #F80000 189.19%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 24px;
+    border-color: transparent;
+    font-size: 4vw !important;
+  }
+
+
+   .nav-item{
+     
+     font-size: 4vw !important;
+   }
+
+   .navbarBrand{
+    
+    font-size: 6vw;
+   
+    
+  }
 }

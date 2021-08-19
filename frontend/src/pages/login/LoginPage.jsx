@@ -1,7 +1,8 @@
 import React from 'react';
 import UserService from '../../services/user.service';
 import {User} from '../../models/user';
-
+import './loginpage.css';
+import Header from '../../components/Header';
 class LoginPage extends React.Component {
 
     constructor(props, context) {
@@ -41,7 +42,8 @@ class LoginPage extends React.Component {
     render() {
         return (
             <div className="login-page">
-                <div className="card">
+                 <Header title='Zaloguj się' />
+                <div className="login-container">
                     <div className="header-container">
                         <i className="fa fa-user"/>
                     </div>
@@ -51,7 +53,7 @@ class LoginPage extends React.Component {
                         method="post"
                         onSubmit={this.doLogin}>
                         <div className={'form-group'}>
-                            <label htmlFor="username">Login: </label>
+                            <label className="form-label" htmlFor="username">Email: </label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -66,7 +68,7 @@ class LoginPage extends React.Component {
                         </div>
 
                         <div className={'form-group'}>
-                            <label htmlFor="Password">Password: </label>
+                            <label className="form-label" htmlFor="Password">Hasło: </label>
                             <input
                                 type="password"
                                 className="form-control"
@@ -78,11 +80,14 @@ class LoginPage extends React.Component {
                             <div className="invalid-feedback">
                                 Password is required.
                             </div>
-                        </div>
-
-                        <button type="submit">
-                            Login
+                            <a href="/register" className="card-link href-text">Nie pamietam hasła, przypomnij hasło.</a>
+                            <br></br>
+                            <button className="btn btn-primary form-button" id = "mainbuttonstyle" type="submit">
+                            Zaloguj się
                         </button>
+                        </div>
+                          
+                       
                         {
                             this.state.error && (
                                 <alert color="danger">
@@ -91,7 +96,11 @@ class LoginPage extends React.Component {
                             )
                         }
                     </form>
-                    <a href="/register" className="card-link">Create New Account!</a>
+                    <div className="grid-container">
+                  Nie masz konta?
+                      <a href="/register" className="card-link href-text">Zarejestruj sie!</a> 
+                    </div>
+                    
                 </div>
             </div>
         );
