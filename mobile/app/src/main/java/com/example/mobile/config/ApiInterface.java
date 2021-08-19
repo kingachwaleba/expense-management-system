@@ -6,6 +6,7 @@ import com.example.mobile.model.Member;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.User;
 import com.example.mobile.model.Wallet;
+import com.example.mobile.model.WalletHolder;
 import com.example.mobile.model.WalletModel;
 import com.google.gson.JsonObject;
 import java.util.List;
@@ -30,6 +31,10 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<List<Wallet>> getUserWallets(@Header("Authorization") String accessToken);
 
+    @POST("create-wallet")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> createWallet(@Header("Authorization") String accessToken, @Body WalletHolder walletHolder);
+
     @GET("wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<WalletModel> getWalletById(@Header("Authorization") String accessToken, @Path("id") int id);
@@ -42,7 +47,7 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<List<Unit>> getUnits();
 
-    @GET("infix")
+    @GET("{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<Member>> getMembersByInfix(@Path("infix") String infix);
+    Call<List<String>> getMembersByInfix(@Path("infix") String infix);
 }

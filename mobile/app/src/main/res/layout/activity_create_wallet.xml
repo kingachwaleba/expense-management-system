@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background">
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,8 +55,17 @@
             android:background="@drawable/round_box_button"
             android:padding="20dp"
             android:layout_marginBottom="20dp"
-            android:textColor="@color/light_gray"/>
+            android:textColor="@color/light_gray"
+            android:drawableRight="@drawable/search_icon"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/members_search_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            tools:listitem="@layout/item_user_search"
+            android:padding="10dp"
+            android:layout_marginBottom="20dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,26 +73,28 @@
             android:background="@drawable/round_box_button"
             android:padding="20dp"
             android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Kategoria:"
                 android:textColor="@color/light_gray"
                 android:textAppearance="@style/label"
-                android:textSize="24sp"/>
+                android:textSize="24sp"
+                android:layout_marginBottom="20dp"/>
 
             <RadioGroup
                 android:id="@+id/category_RG"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_gravity="center"
                 />
 
         </LinearLayout>
 
-
         <Button
+            android:id="@+id/create_wallet_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button"

@@ -11,12 +11,17 @@ import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
+import com.example.mobile.model.WalletModel;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Path;
 
 public class UserService {
     Context context;
