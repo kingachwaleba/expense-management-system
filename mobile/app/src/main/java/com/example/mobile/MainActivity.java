@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         WalletAdapter walletAdapter = new WalletAdapter(MainActivity.this, wallets);
         wallet_rv.setAdapter(walletAdapter);
 
-        add_wallet = findViewById(R.id.create_wallet_btn);
+        add_wallet = findViewById(R.id.go_to_create_wallet_btn);
 
         add_wallet.setOnClickListener(new View.OnClickListener() {
             @Override

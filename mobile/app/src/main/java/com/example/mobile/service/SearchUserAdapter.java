@@ -1,20 +1,26 @@
 package com.example.mobile.service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
+import com.example.mobile.WalletActivity;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.ViewHolder> {
 
-    private final ArrayList<String> mMember;
+    private final List<String> mMember;
     private final LayoutInflater mInflater;
-    public SearchUserAdapter(Context context, ArrayList<String> members){
+    public static final List<String> selectedUser = new ArrayList<>();
+    public SearchUserAdapter(Context context, List<String> members){
         mMember= members;
         mInflater = LayoutInflater.from(context);
     }
@@ -29,6 +35,10 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
     public void onBindViewHolder(SearchUserAdapter.ViewHolder holder, int position) {
         String member = mMember.get(position);
         holder.memberName.setText(member);
+
+        holder.button.setOnClickListener(v -> {
+            selectedUser.add(member);
+        });
     }
 
     @Override
@@ -38,11 +48,15 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView memberName;
-        public int id;
-
+        public Button button;
         public ViewHolder(View itemView) {
             super(itemView);
             memberName = itemView.findViewById(R.id.member_name);
+            button = itemView.findViewById(R.id.add_user_btn);
         }
+    }
+
+    public List<String> getSelectedUser(){
+        return selectedUser;
     }
 }

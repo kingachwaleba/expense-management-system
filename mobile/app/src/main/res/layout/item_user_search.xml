@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
-    android:background="@drawable/round_box_button">
+    android:background="@drawable/round_box">
     <TextView
         android:id="@+id/member_name"
         android:layout_width="wrap_content"
@@ -15,9 +15,9 @@
     </TextView>
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Dodaj" />
+        android:id="@+id/add_user_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/add_person" />
 
 </LinearLayout>

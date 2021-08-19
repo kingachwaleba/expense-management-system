@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Wallet;
+import com.example.mobile.model.WalletHolder;
 import com.example.mobile.model.WalletModel;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,10 +82,23 @@ public class WalletService {
         return walletModel;
     }
 
+    public void createWallet(String accessToken, WalletHolder walletHolder) {
+        Call<ResponseBody> call = apiInterface.createWallet("Bearer " + accessToken, walletHolder);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                Toast.makeText(context,"Udalo się",Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
     public void getMembersByInfix(WalletService.OnMemberSearchCallback callback, String infix){
-        System.out.println(infix);
         Call<List<String>> call = apiInterface.getMembersByInfix(infix);
-        System.out.println(infix);
         call.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
