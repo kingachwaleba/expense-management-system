@@ -8,4 +8,6 @@
     <color name="shadow">#303030</color>
     <color name="orange">#FF7D19</color>
     <color name="dark_orange">#F85A20</color>
+    <color name="red">#E80E0E</color>
+    <color name="light_red">#ED430A</color>
 </resources>

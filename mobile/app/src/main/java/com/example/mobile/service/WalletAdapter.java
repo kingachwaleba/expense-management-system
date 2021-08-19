@@ -2,6 +2,7 @@ package com.example.mobile.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.mobile.LoginActivity;
 import com.example.mobile.R;
+import com.example.mobile.WalletActivity;
 import com.example.mobile.model.Wallet;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -40,10 +41,9 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
         holder.id = wallet.getWalletId();
 
         holder.button.setOnClickListener(v -> {
-            Intent i = new Intent(holder.itemView.getContext(), LoginActivity.class);
-            i.putExtra("id",holder.id);
+            Intent i = new Intent(holder.itemView.getContext(), WalletActivity.class);
+            i.putExtra("id",String.valueOf(holder.id));
             holder.itemView.getContext().startActivity(i);
-            Toast.makeText(holder.itemView.getContext(), String.valueOf(holder.id),Toast.LENGTH_LONG).show();
         });
     }
 
