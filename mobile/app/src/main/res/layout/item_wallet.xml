@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/round_box">
+    android:background="@drawable/bg_round_box_dark">
 
         <TextView
             android:id="@+id/walletName_tv"
@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/label"
             android:textSize="36sp"
-            android:text=" "
             android:textColor="@color/yellow" />
 
         <View
@@ -24,7 +23,7 @@
             android:layout_height="10dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/vector_2" />
+            android:background="@drawable/v_line_white" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -66,7 +65,7 @@
             android:id="@+id/goToWallet_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button"
+            android:background="@drawable/btn_simple"
             android:text="@string/go_to_wallet"
             android:textAppearance="@style/button_style"
             android:textColor="@color/light_gray"

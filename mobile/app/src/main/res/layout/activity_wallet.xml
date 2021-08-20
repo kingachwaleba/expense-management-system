@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -11,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@drawable/background">
+        android:background="@drawable/bg_background">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -20,7 +19,7 @@
             android:layout_margin="20dp"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/round_box">
+            android:background="@drawable/bg_round_box_dark">
 
             <TextView
                 android:id="@+id/walletName_tv"
@@ -28,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/label"
                 android:textSize="36sp"
-                android:text=" "
                 android:textColor="@color/yellow" />
 
             <View
@@ -37,7 +35,7 @@
                 android:layout_height="10dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/vector_2" />
+                android:background="@drawable/v_line_white" />
 
             <TextView
                 android:id="@+id/description_tv"
@@ -54,7 +52,7 @@
                 android:layout_height="10dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/vector_2" />
+                android:background="@drawable/v_line_white" />
 
             <TextView
                 android:id="@+id/owner_tv"
@@ -117,13 +115,13 @@
                 android:layout_height="10dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/vector_2" />
+                android:background="@drawable/v_line_white" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/round_box_button"
+                android:background="@drawable/bg_round_box_light"
                 android:gravity="center_horizontal"
                 android:paddingVertical="15dp"
                 android:text="@string/open_chat_button"
@@ -134,14 +132,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_box_button"
+                android:background="@drawable/bg_round_box_light"
                 android:paddingVertical="15dp"
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="20dp">
                 <Button
                     android:layout_width="30dp"
                     android:layout_height="35dp"
-                    android:background="@drawable/button_add">
+                    android:background="@drawable/btn_plus">
                 </Button>
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,14 +166,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_box_button"
+                android:background="@drawable/bg_round_box_light"
                 android:paddingVertical="15dp"
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="20dp">
                 <Button
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/button_add">
+                    android:background="@drawable/btn_plus">
                 </Button>
                 <TextView
                     android:layout_width="wrap_content"
@@ -188,21 +186,21 @@
                 <Button
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/button_list_close">
+                    android:background="@drawable/btn_list_closed">
                 </Button>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_box_button"
+                android:background="@drawable/bg_round_box_light"
                 android:paddingVertical="15dp"
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="20dp">
                 <Button
                     android:layout_width="30dp"
                     android:layout_height="35dp"
-                    android:background="@drawable/button_add">
+                    android:background="@drawable/btn_plus">
                 </Button>
                 <TextView
                     android:layout_width="wrap_content"
@@ -215,7 +213,7 @@
                 <Button
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/button_list_close">
+                    android:background="@drawable/btn_list_closed">
                 </Button>
             </LinearLayout>
 
@@ -224,7 +222,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/button"
+                android:background="@drawable/btn_simple"
                 android:text="@string/statistics"
                 android:textAppearance="@style/button_style"
                 android:textColor="@color/light_gray"
@@ -234,7 +232,7 @@
                 android:id="@+id/deleteWallet_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_danger"
+                android:background="@drawable/btn_danger"
                 android:text="@string/deleteWallet"
                 android:textAppearance="@style/button_style"
                 android:textColor="@color/light_gray"

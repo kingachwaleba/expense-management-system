@@ -2,8 +2,6 @@ package com.example.mobile.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class WalletCreate {
     @SerializedName("name")
     private String name;

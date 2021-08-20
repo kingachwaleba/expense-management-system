@@ -1,6 +1,6 @@
 package com.example.mobile.service;
 
-import android.content.Context;;
+import android.content.Context;
 import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
@@ -12,6 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ValidationTableService  {
+
     Context context;
     ApiInterface apiInterface;
 

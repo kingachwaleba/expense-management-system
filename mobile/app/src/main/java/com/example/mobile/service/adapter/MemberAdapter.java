@@ -1,4 +1,4 @@
-package com.example.mobile.service;
+package com.example.mobile.service.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
     private final List<Member> mMember;
     private final LayoutInflater mInflater;
+
     public MemberAdapter(Context context, List<Member> members){
         mMember= members;
         mInflater = LayoutInflater.from(context);
@@ -39,6 +40,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         public TextView memberName;
         public int id;
 

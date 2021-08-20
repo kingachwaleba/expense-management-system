@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_checked="true"
-        android:drawable="@drawable/radio_button_selected" />
+        android:drawable="@drawable/rb_radio_button_selected" />
     <item
-        android:drawable="@drawable/radio_button_null"/>
+        android:drawable="@drawable/rb_radio_button_null"/>
 
 </selector>

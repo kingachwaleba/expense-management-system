@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,26 +6,28 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.example.mobile.R;
 import com.example.mobile.model.User;
 import com.example.mobile.service.UserService;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     EditText login, email, password, password_confirm;
     CheckBox reg_cb;
+    Button sign_up;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.pagename);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_pagename);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        Button sign_up = findViewById(R.id.register_button);
+        sign_up = findViewById(R.id.register_button);
         login = findViewById(R.id.login_edit);
         email = findViewById(R.id.email_edit);
         password = findViewById(R.id.password_edit);

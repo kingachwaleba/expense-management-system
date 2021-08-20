@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".MembersFragment"
+    tools:context=".fragment.MembersFragment"
     android:gravity="center"
     android:layout_marginBottom="20dp">
 
@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="10dp"
-        android:background="@drawable/round_box_button">
+        android:background="@drawable/bg_round_box_light">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/members_rv"
@@ -27,13 +27,13 @@
             android:layout_height="10dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/vector_3" />
+            android:background="@drawable/v_line_gradient" />
 
         <TextView
             android:id="@+id/edit_members_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edytuj listę członków"
+            android:text="@string/members_list_edit_btn"
             android:textSize="18sp"
             android:textAppearance="@style/button_style" />
     </LinearLayout>

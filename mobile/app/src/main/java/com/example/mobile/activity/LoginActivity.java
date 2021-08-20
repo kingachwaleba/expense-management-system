@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,32 +7,35 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.mobile.R;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.service.UserService;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText email, password;
+    TextView goToRegistration;
+    Button log_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.pagename);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_pagename);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-        TextView goToRegistration = findViewById(R.id.sign_up_label);
-        Button log_btn = findViewById(R.id.log_btn);
+        goToRegistration = findViewById(R.id.sign_up_label);
+        log_btn = findViewById(R.id.log_btn);
         email= findViewById(R.id.email_edit);
         password = findViewById(R.id.password_edit);
 
         goToRegistration.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(),RegistrationActivity.class);
+            Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
             startActivity(intent);
         });
 

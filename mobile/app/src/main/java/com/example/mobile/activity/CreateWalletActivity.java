@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,42 +13,45 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
-import com.example.mobile.service.SearchUserAdapter;
+import com.example.mobile.service.adapter.SearchUserAdapter;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CreateWalletActivity extends AppCompatActivity {
+
+    SessionManager session;
+    WalletService walletService;
+
+    WalletCreate walletCreate;
+    Category category;
+    String accesToken;
 
     RadioGroup category_RG;
     EditText name, description, search;
     Button create;
     RecyclerView add_user_rv;
-    WalletCreate walletCreate;
-    Category category;
-    SessionManager session;
-    String accesToken;
-
-    WalletService walletService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_wallet);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.pagename);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_pagename);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         walletService = new WalletService(getParent());
 
         session = new SessionManager(getApplicationContext());
+
         accesToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
 
         name = findViewById(R.id.nameEdit);
@@ -56,25 +59,19 @@ public class CreateWalletActivity extends AppCompatActivity {
         search = findViewById(R.id.memberEdit);
         create = findViewById(R.id.create_wallet_btn);
         add_user_rv = findViewById(R.id.members_search_rv);
+        category_RG = findViewById(R.id.category_RG);
 
-        add_user_rv = findViewById(R.id.members_search_rv);
         add_user_rv.setLayoutManager(new LinearLayoutManager(this));
         List<String> members = new ArrayList<>();
         SearchUserAdapter searchUserAdapter = new SearchUserAdapter(this, members);
         add_user_rv.setAdapter(searchUserAdapter);
 
-        category_RG = findViewById(R.id.category_RG);
-
         search.addTextChangedListener(new TextWatcher(){
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -96,7 +93,7 @@ public class CreateWalletActivity extends AppCompatActivity {
                 rdbtn.setText(categories.get(i).getName());
                 rdbtn.setTextAppearance(R.style.label);
                 rdbtn.setTextSize(18);
-                rdbtn.setButtonDrawable(R.drawable.radio_button);
+                rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
                 category_RG.addView(rdbtn);
                 if(i == 0) rdbtn.setChecked(true);
             }
@@ -120,7 +117,6 @@ public class CreateWalletActivity extends AppCompatActivity {
     }
 
     public boolean validateName(String s){
-        if(s.length()>0) return true;
-        else return false;
+        return s.length() > 0;
     }
 }

@@ -2,7 +2,7 @@ package com.example.mobile.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Wallet {
+public class WalletItem {
     @SerializedName("walletId")
     int walletId;
     @SerializedName("name")
@@ -13,7 +13,7 @@ public class Wallet {
     int userListCounter;
     // Double balance;
 
-    public Wallet(int id, String name, String owner, int numeberOfMembers, Double balance) {
+    public WalletItem(int id, String name, String owner, int numeberOfMembers, Double balance) {
         this.name = name;
         this.owner = owner;
         this.userListCounter = numeberOfMembers;

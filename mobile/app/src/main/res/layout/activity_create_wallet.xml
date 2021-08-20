@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background">
+    android:background="@drawable/bg_background">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,14 +11,14 @@
         android:gravity="center"
         android:padding="20dp"
         android:layout_margin="20dp"
-        android:background="@drawable/round_box">
+        android:background="@drawable/bg_round_box_dark">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:textAppearance="@style/info_label"
-            android:text="Dodaj portfel:"
+            android:text="@string/add_wallet_label"
             android:textColor="@color/yellow" />
 
         <View
@@ -27,14 +27,14 @@
             android:layout_height="10dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/vector_2" />
+            android:background="@drawable/v_line_white" />
 
         <EditText
             android:id="@+id/nameEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Wpisz nazwę..."
-            android:background="@drawable/round_box_button"
+            android:hint="@string/name_hint"
+            android:background="@drawable/bg_round_box_light"
             android:padding="20dp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/light_gray"
@@ -43,8 +43,8 @@
             android:id="@+id/descriptionEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Wpisz opis..."
-            android:background="@drawable/round_box_button"
+            android:hint="@string/description_hint"
+            android:background="@drawable/bg_round_box_light"
             android:padding="20dp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/light_gray"/>
@@ -52,32 +52,30 @@
             android:id="@+id/memberEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_box_button"
+            android:background="@drawable/bg_round_box_light"
             android:padding="20dp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/light_gray"
-            android:drawableRight="@drawable/search_icon"/>
+            android:drawableRight="@drawable/ic_search"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/members_search_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             tools:listitem="@layout/item_user_search"
-            android:padding="10dp"
             android:layout_marginBottom="20dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_box_button"
+            android:background="@drawable/bg_round_box_light"
             android:padding="20dp"
             android:layout_marginBottom="20dp"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Kategoria:"
+                android:text="@string/category_label"
                 android:textColor="@color/light_gray"
                 android:textAppearance="@style/label"
                 android:textSize="24sp"
@@ -97,7 +95,7 @@
             android:id="@+id/create_wallet_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button"
+            android:background="@drawable/btn_simple"
             android:text="@string/create"
             android:textAllCaps="false"
             android:textAppearance="@style/button_style" />

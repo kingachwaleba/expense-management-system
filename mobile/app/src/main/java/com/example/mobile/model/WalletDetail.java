@@ -1,10 +1,9 @@
 package com.example.mobile.model;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
-public class WalletModel {
+public class WalletDetail {
     @SerializedName("walletId")
     private int walletId;
     @SerializedName("name")
@@ -18,7 +17,7 @@ public class WalletModel {
     @SerializedName("userList")
     private List<Member> userList;
 
-    public WalletModel(int walletId, String name, String description, String owner, int userListCounter, List<Member> userList) {
+    public WalletDetail(int walletId, String name, String description, String owner, int userListCounter, List<Member> userList) {
         this.walletId = walletId;
         this.name = name;
         this.description = description;

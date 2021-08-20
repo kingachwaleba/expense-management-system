@@ -4,8 +4,9 @@
 
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/button_pressed" />
+        android:drawable="@drawable/btn_danger_pressed" />
     <item
-        android:drawable="@drawable/button_normal"/>
+        android:drawable="@drawable/btn_danger_normal"/>
 
 </selector>
+

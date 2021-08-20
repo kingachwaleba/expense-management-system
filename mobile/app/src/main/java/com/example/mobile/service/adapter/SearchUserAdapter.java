@@ -1,7 +1,6 @@
-package com.example.mobile.service;
+package com.example.mobile.service.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
-import com.example.mobile.WalletActivity;
-
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +17,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
     private final List<String> mMember;
     private final LayoutInflater mInflater;
     public static final List<String> selectedUser = new ArrayList<>();
+
     public SearchUserAdapter(Context context, List<String> members){
         mMember= members;
         mInflater = LayoutInflater.from(context);
@@ -36,15 +34,23 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
         String member = mMember.get(position);
         holder.memberName.setText(member);
 
+        if(selectedUser.contains(member)){
+            holder.isChecked = true;
+            holder.button.setBackgroundResource(R.drawable.btn_added_person);
+        } else {
+            holder.isChecked = false;
+            holder.button.setBackgroundResource(R.drawable.btn_add_person);
+        }
+
         holder.button.setOnClickListener(v -> {
-            holder.isChecked = !holder.isChecked;
             if(holder.isChecked){
-                v.setBackgroundResource(R.drawable.added_person);
-                selectedUser.add(member);
-            } else {
-                v.setBackgroundResource(R.drawable.add_person);
+                v.setBackgroundResource(R.drawable.btn_add_person);
                 selectedUser.remove(member);
+            } else {
+                v.setBackgroundResource(R.drawable.btn_added_person);
+                selectedUser.add(member);
             }
+            holder.isChecked = !holder.isChecked;
         });
     }
 
@@ -54,9 +60,11 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         public TextView memberName;
         public Button button;
         public boolean isChecked;
+
         public ViewHolder(View itemView) {
             super(itemView);
             isChecked = false;
