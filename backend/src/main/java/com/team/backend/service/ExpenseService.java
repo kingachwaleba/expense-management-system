@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface ExpenseService {
 
     void save(ExpenseHolder expenseHolder, Wallet wallet);
+    void save(Expense expense);
 
     Optional<Expense> findById(int id);
     List<Expense> findAllByWalletOrderByDate(Wallet wallet);

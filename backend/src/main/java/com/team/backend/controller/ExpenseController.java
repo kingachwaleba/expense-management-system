@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @RestController
 public class ExpenseController {
@@ -44,5 +46,27 @@ public class ExpenseController {
         expenseService.save(expenseHolder, wallet);
 
         return new ResponseEntity<>(expenseHolder.getExpense(), HttpStatus.OK);
+    }
+
+    @PutMapping("/expense/{id}")
+    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Expense newExpense) {
+        Expense updatedExpense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+
+        updatedExpense.setName(newExpense.getName());
+        updatedExpense.setTotal_cost(newExpense.getTotal_cost());
+
+        for (ExpenseDetail expenseDetail : updatedExpense.getExpenseDetailSet()) {
+            BigDecimal cost = updatedExpense.getTotal_cost().divide(BigDecimal.valueOf(updatedExpense
+                    .getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
+
+            expenseDetail.setCost(cost);
+        }
+
+        updatedExpense.setCategory(newExpense.getCategory());
+        updatedExpense.setPeriod(newExpense.getPeriod());
+
+        expenseService.save(updatedExpense);
+
+        return new ResponseEntity<>(updatedExpense, HttpStatus.OK);
     }
 }

@@ -70,6 +70,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public void save(Expense expense) {
+        expenseRepository.save(expense);
+    }
+
+    @Override
     public Optional<Expense> findById(int id) {
         return expenseRepository.findById(id);
     }
