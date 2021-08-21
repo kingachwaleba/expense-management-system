@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -47,8 +48,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         PaymentStatus waitingStatus = paymentStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
         PaymentStatus completedStatus = paymentStatusRepository.findByName("zrealizowany").orElseThrow(RuntimeException::new);
 
+        BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
+                .getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
+
         ExpenseDetail expenseDetail = new ExpenseDetail();
-        expenseDetail.setCost(BigDecimal.valueOf(0.0));
+        expenseDetail.setCost(cost);
         expenseDetail.setUser(owner);
         expenseDetail.setPaymentStatus(completedStatus);
 
@@ -59,7 +63,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
             expenseDetail = new ExpenseDetail();
 
-            expenseDetail.setCost(BigDecimal.valueOf(0.0));
+            expenseDetail.setCost(cost);
             expenseDetail.setUser(member);
             expenseDetail.setPaymentStatus(waitingStatus);
 
