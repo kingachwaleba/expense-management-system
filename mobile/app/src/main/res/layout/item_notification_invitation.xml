@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="40dp"
+    android:layout_margin="20dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_round_box_dark">
+
+    <TextView
+        android:id="@+id/walletName_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/label"
+        android:textSize="36sp"
+        android:textColor="@color/yellow" />
+
+    <View
+        android:id="@+id/vector"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/v_line_white" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/owner_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="@style/label"
+            android:textSize="20sp"
+            android:text="@string/owner" />
+
+        <TextView
+            android:id="@+id/number_of_members_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="@style/label"
+            android:textSize="20sp"
+            android:text="@string/number_of_members" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/accept_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_simple"
+        android:layout_marginBottom="20dp"
+        android:text="@string/accept_btn_string"
+        android:textAppearance="@style/button_style"
+        android:textColor="@color/light_gray"
+        app:backgroundTint="@null" />
+
+    <Button
+        android:id="@+id/deny_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_danger"
+        android:text="@string/deny_btn_string"
+        android:textAppearance="@style/button_style"
+        android:textColor="@color/light_gray"
+        app:backgroundTint="@null" />
+
+
+</LinearLayout>

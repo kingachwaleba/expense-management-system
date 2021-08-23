@@ -1,5 +1,6 @@
 package com.example.mobile.config;
 
+import com.example.mobile.model.Account;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
@@ -25,6 +26,10 @@ public interface ApiInterface  {
     @POST("register")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> register(@Body User user);
+
+    @GET("account")
+    @Headers("Content-Type: application/json")
+    Call<Account> getAccount(@Header("Authorization") String accessToken);
 
     @GET("wallets")
     @Headers("Content-Type: application/json")
