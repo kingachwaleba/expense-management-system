@@ -73,6 +73,10 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
         }
     }
 
+    public void clear(){
+        mMember.clear();
+    }
+
     public List<String> getSelectedUser(){
         return selectedUser;
     }

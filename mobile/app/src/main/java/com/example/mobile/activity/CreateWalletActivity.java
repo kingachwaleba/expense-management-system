@@ -68,20 +68,29 @@ public class CreateWalletActivity extends AppCompatActivity {
 
         search.addTextChangedListener(new TextWatcher(){
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(search.getText().length()>0){
+                if(search.getText().toString().length()>0){
                     walletService.getMembersByInfix(members1 -> {
                         SearchUserAdapter searchUserAdapter1 = new SearchUserAdapter(CreateWalletActivity.this, members1);
                         add_user_rv.setAdapter(searchUserAdapter1);
                         searchUserAdapter1.notifyDataSetChanged();
                     }, search.getText().toString());
                 }
+
+                if(search.getText().toString().length()==0){
+                    searchUserAdapter.clear();
+                    add_user_rv.setAdapter(searchUserAdapter);
+                    searchUserAdapter.notifyDataSetChanged();
+                }
+
             }
         });
 

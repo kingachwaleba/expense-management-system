@@ -65,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
             session.logoutUser();
             return true;
         }
+        if(id == R.id.goToProfile){
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
