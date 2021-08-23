@@ -86,7 +86,7 @@ public class WalletService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                Toast.makeText(context,"Udalo się",Toast.LENGTH_LONG).show();
+
             }
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {

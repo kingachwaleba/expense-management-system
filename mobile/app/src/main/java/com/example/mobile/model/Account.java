@@ -11,13 +11,8 @@ public class Account {
     private String email;
     @SerializedName("image")
     private String image;
-
-    public Account(int id, String login, String email, String image) {
-        this.id = id;
-        this.login = login;
-        this.email = email;
-        this.image = image;
-    }
+    @SerializedName("userListCounter")
+    private int userListCounter;
 
     public int getId() {
         return id;
@@ -49,5 +44,13 @@ public class Account {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getUserListCounter() {
+        return userListCounter;
+    }
+
+    public void setUserListCounter(int userListCounter) {
+        this.userListCounter = userListCounter;
     }
 }

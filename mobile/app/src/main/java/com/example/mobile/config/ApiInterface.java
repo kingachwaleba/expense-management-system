@@ -2,6 +2,7 @@ package com.example.mobile.config;
 
 import com.example.mobile.model.Account;
 import com.example.mobile.model.Category;
+import com.example.mobile.model.Invitation;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.User;
@@ -17,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiInterface  {
@@ -30,6 +32,14 @@ public interface ApiInterface  {
     @GET("account")
     @Headers("Content-Type: application/json")
     Call<Account> getAccount(@Header("Authorization") String accessToken);
+
+    @GET("notifications/invitations")
+    @Headers("Content-Type: application/json")
+    Call<List<Invitation>> getInvitations(@Header("Authorization") String accessToken);
+
+    @PUT("notifications/invitations/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> manageInvitation(@Header("Authorization") String accessToken, @Path("id") int id, @Body Boolean flag);
 
     @GET("wallets")
     @Headers("Content-Type: application/json")

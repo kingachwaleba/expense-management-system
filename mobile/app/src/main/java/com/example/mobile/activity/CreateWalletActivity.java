@@ -32,7 +32,7 @@ public class CreateWalletActivity extends AppCompatActivity {
 
     WalletCreate walletCreate;
     Category category;
-    String accesToken;
+    String accessToken;
 
     RadioGroup category_RG;
     EditText name, description, search;
@@ -52,7 +52,7 @@ public class CreateWalletActivity extends AppCompatActivity {
 
         session = new SessionManager(getApplicationContext());
 
-        accesToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
+        accessToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
 
         name = findViewById(R.id.nameEdit);
         description = findViewById(R.id.descriptionEdit);
@@ -120,7 +120,8 @@ public class CreateWalletActivity extends AppCompatActivity {
                 String descriptionS = description.getText().toString();
                 walletCreate = new WalletCreate(nameS, descriptionS, category);
                 WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapter.getSelectedUser());
-                walletService.createWallet(accesToken, walletHolder);
+                walletService.createWallet(accessToken, walletHolder);
+                finish();
             } else Toast.makeText(CreateWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();
         });
     }

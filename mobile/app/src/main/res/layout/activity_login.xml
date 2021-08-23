@@ -39,7 +39,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="36dp"
-        android:text="@string/email_text"
+        android:text="@string/email_string"
         android:textAppearance="@style/label"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

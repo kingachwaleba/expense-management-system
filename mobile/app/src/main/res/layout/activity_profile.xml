@@ -41,7 +41,7 @@
             android:background="@drawable/bg_round_box_dark">
 
             <TextView
-                android:id="@+id/description_tv"
+                android:id="@+id/login_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,7 +49,7 @@
                 android:textSize="20sp"
                 android:text="@string/login_string" />
             <TextView
-                android:id="@+id/owner_tv"
+                android:id="@+id/email_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -58,7 +58,7 @@
                 android:text="@string/email_string" />
 
             <TextView
-                android:id="@+id/number_of_members_tv"
+                android:id="@+id/number_of_wallets_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,7 +67,7 @@
                 android:text="@string/numer_of_wallets_string" />
 
             <TextView
-                android:id="@+id/saldo_tv"
+                android:id="@+id/balance_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -77,7 +77,7 @@
                 android:text="@string/saldo" />
 
             <Button
-                android:id="@+id/statistics_btn"
+                android:id="@+id/edit_profile_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -115,6 +115,7 @@
                     android:textSize="24sp">
                 </TextView>
                 <Button
+                    android:id="@+id/open_notification_btn"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
