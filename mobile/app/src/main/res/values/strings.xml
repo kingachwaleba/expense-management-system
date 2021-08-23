@@ -2,7 +2,7 @@
     <string name="app_name">Mobile</string>
     <string name="log_header">Zaloguj się:</string>
     <string name="log_button">Zaloguj się</string>
-    <string name="email_text">Email:</string>
+    <string name="email_string">Email:</string>
     <string name="password_text">Hasło:</string>
     <string name="forget_pass_baner_text">Nie pamiętam hasła, przypomnij hasło.</string>
     <string name="no_accout_text">Nie masz konta?</string>
@@ -35,7 +35,19 @@
     <string name="expenses">Wydatki</string>
     <string name="members">Członkowie</string>
     <string name="open_chat_button">Otwórz czat</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create">Utwórz</string>
+    <string name="members_list_edit_btn">Edytuj listę członków</string>
+    <string name="add_wallet_label">Dodaj portfel:</string>
+    <string name="category_label">Kategoria:</string>
+    <string name="description_hint">Wpisz opis...</string>
+    <string name="name_hint">Wpisz nazwę...</string>
+    <string name="login_string">Login:</string>
+    <string name="numer_of_wallets_string">Liczba portfeli:</string>
+    <string name="edit_profile_btn_string">Edytuj profil</string>
+    <string name="notifications_string">Powiadomienia</string>
+    <string name="deny_btn_string">Odrzuć</string>
+    <string name="accept_btn_string">Zaakceptuj</string>
+    <string name="go_to_expense_string">Przejdź do wydatku</string>
+    <string name="debth_string">Wysyokość należności</string>
 </resources>

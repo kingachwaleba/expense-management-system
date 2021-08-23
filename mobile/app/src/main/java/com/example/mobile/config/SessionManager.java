@@ -3,8 +3,7 @@ package com.example.mobile.config;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import com.example.mobile.LoginActivity;
-
+import com.example.mobile.activity.LoginActivity;
 import java.util.HashMap;
 
 public class SessionManager {
@@ -45,7 +44,6 @@ public class SessionManager {
 
         // Storing login in pref
         editor.putString(KEY_LOGIN, login);
-
 
         editor.putString(KEY_TOKEN, token);
 

@@ -22,7 +22,7 @@
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">3</item>
         <item name="android:shadowRadius">4</item>
-        <item name="background">@drawable/button_normal</item>
+        <item name="background">@drawable/btn_simple_normal</item>
         <item name="backgroundTint">@null</item>
     </style>
 

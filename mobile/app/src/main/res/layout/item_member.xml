@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
-    android:background="@drawable/round_box_button">
+    android:background="@drawable/bg_round_box_light">
     <TextView
         android:id="@+id/member_name"
         android:layout_width="wrap_content"
@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         android:textAppearance="@style/info_label"
         android:textSize="18sp"
-        android:text="20zl"
         android:layout_marginHorizontal="20dp">
     </TextView>
 </LinearLayout>

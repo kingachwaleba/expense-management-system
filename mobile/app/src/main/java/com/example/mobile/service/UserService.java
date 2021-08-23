@@ -3,27 +3,24 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-import com.example.mobile.LoginActivity;
-import com.example.mobile.MainActivity;
-import com.example.mobile.RegistrationActivity;
+import com.example.mobile.activity.LoginActivity;
+import com.example.mobile.activity.MainActivity;
+import com.example.mobile.activity.RegistrationActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
-import com.example.mobile.model.WalletModel;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Path;
 
 public class UserService {
+
     Context context;
     SessionManager session;
     ApiInterface apiInterface;
