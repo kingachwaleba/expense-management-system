@@ -42,7 +42,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id="content">
             <Router>
                 <div>
                     {this.state.login &&
@@ -79,7 +79,7 @@ class App extends React.Component {
                 <div>
                     {!this.state.login &&
                     <nav className="navbar navbar-expand navbar-dark">
-                        <a className="navbarBrand" href="/start">
+                        <a className="navbarBrand" href="/">
                             eSakwa
                         </a>
                         
@@ -112,7 +112,7 @@ class App extends React.Component {
                 </div>
                 <div className="container">
                     <Switch>
-                        <Route exact path="/start" component={StartPage}/>
+                        <Route exact path="/" component={StartPage}/>
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/register" component={RegisterPage}/>
                         <AuthGuard path="/home" component={HomePage}/>

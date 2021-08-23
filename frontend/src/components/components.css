@@ -4,7 +4,7 @@ header{
 }
 .title-text{
 color: #F7F7F7;
-font-size: 5vw;
+font-size: 90px;
 }
 .text-size{
     font-size: 1.2vw;
@@ -12,20 +12,51 @@ font-size: 5vw;
 
 .footer{
     position:absolute;
-    bottom: 0;
+    bottom: 0px;
+    margin-top:-80px;
+    
     
     color: #F7F7F7;
     width: 100%;
+    
     background-color: #484848;
+    clear: both;
 }
 
-@media only screen and (max-width: 415px){
-    .footer{
-        position:absolute;
-        bottom: 0;
-        font-size: 3vw;
-        color: #F7F7F7;
-        width: 100%;
-        background-color: #484848;
+
+  @media only screen and (max-width: 1025px){ 
+    .footer{  
+        font-size: 25px;
+    }
+    .title-text{
+        font-size: 60px;
+    }
+    .text-size{
+        font-size: 25px;
     }
   }
+  @media only screen and (max-width: 769px){
+    .footer{  
+        font-size: 15px;
+    }
+    .title-text{
+        font-size: 50px;
+    }
+    .text-size{
+        font-size: 15px;
+    }
+  }
+  
+  @media only screen and (max-width: 415px){
+    .footer{
+        font-size: 10px;
+    }
+
+    .title-text{
+        font-size: 30px;
+    }
+    .text-size{
+        font-size: 15px;
+    }
+  }
+  

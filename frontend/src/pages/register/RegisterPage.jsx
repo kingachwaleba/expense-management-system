@@ -2,6 +2,7 @@ import React from 'react';
 import UserService from '../../services/user.service';
 import {User} from '../../models/user';
 import { Button, Form, FormGroup, Input, Label, Row, Col } from "reactstrap";
+import Header from '../../components/Header';
 
 class RegisterPage extends React.Component {
 
@@ -62,7 +63,8 @@ class RegisterPage extends React.Component {
         const {user, submitted, loading, errorMessage} = this.state;
         return (
             <div className="register-page">
-                <div className="card">
+                 <Header title='Zarejestruj się' />
+                <div className="login-container">
                     <div className="header-container">
                         <i className="fa fa-user"/>
                     </div>
@@ -78,12 +80,12 @@ class RegisterPage extends React.Component {
                         method="post"
                         onSubmit={(e) => this.handleRegister(e)}>
                         <div className={'form-group'}>
-                            <label htmlFor="login">Login: </label>
+                            <label className="form-label"  htmlFor="login">Login: </label>
                             <input
                                 type="text"
                                 className="form-control"
                                 name="login"
-                                placeholder="Login"
+                                placeholder=""
                                 required
                                 value={user.login}
                                 onChange={(e) => this.handleChange(e)}/>
@@ -93,12 +95,12 @@ class RegisterPage extends React.Component {
                         </div>
 
                         <div className={'form-group'}>
-                            <label htmlFor="Password">Password: </label>
+                            <label className="form-label" htmlFor="Password">Hasło: </label>
                             <input
                                 type="password"
                                 className="form-control"
                                 name="password"
-                                placeholder="Password"
+                                placeholder=""
                                 required
                                 value={user.password}
                                 onChange={(e) => this.handleChange(e)}/>
@@ -108,12 +110,12 @@ class RegisterPage extends React.Component {
                         </div>
 
                         <div className={'form-group'}>
-                            <label htmlFor="email">Email: </label>
+                            <label className="form-label" htmlFor="email">Email: </label>
                             <input
                                 type="text"
                                 className="form-control"
                                 name="email"
-                                placeholder="Email"
+                                placeholder=""
                                 required
                                 value={user.email}
                                 onChange={(e) => this.handleChange(e)}/>
@@ -121,15 +123,17 @@ class RegisterPage extends React.Component {
                                 A valid email is required.
                             </div>
                         </div>
-
+                        <br></br>
+                        <br></br>
                         <button
-                            className="btn btn-primary btn-block"
+                            className="btn btn-primary btn-block form-button"
+                            id = "mainbuttonstyle"
                             onClick={() => this.setState({submitted: true})}
                             disabled={loading}>
-                            Sign Up
+                            Zarejestruj
                         </button>
                     </form>
-                    <a href="/login" className="card-link">I have an Account!</a>
+                    <a href="/login" className="card-link href-text center-content">Mam już konto, zaloguj</a>
                 </div>
             </div>
         );

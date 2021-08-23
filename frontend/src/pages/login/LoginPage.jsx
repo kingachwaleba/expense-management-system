@@ -1,7 +1,6 @@
 import React from 'react';
 import UserService from '../../services/user.service';
 import {User} from '../../models/user';
-import './loginpage.css';
 import Header from '../../components/Header';
 class LoginPage extends React.Component {
 
@@ -58,7 +57,7 @@ class LoginPage extends React.Component {
                                 type="text"
                                 className="form-control"
                                 name="email"
-                                placeholder="Login"
+                                placeholder=""
                                 required
                                 value={this.state.email}
                                 onChange={this.changeHandler}/>
@@ -73,18 +72,14 @@ class LoginPage extends React.Component {
                                 type="password"
                                 className="form-control"
                                 name="password"
-                                placeholder="Password"
+                                placeholder=""
                                 required
                                 value={this.state.password}
                                 onChange={this.changeHandler}/>
                             <div className="invalid-feedback">
                                 Password is required.
                             </div>
-                            <a href="/register" className="card-link href-text">Nie pamietam hasła, przypomnij hasło.</a>
-                            <br></br>
-                            <button className="btn btn-primary form-button" id = "mainbuttonstyle" type="submit">
-                            Zaloguj się
-                        </button>
+                            
                         </div>
                           
                        
@@ -95,10 +90,21 @@ class LoginPage extends React.Component {
                                 </alert>
                             )
                         }
+                        <div className="center-content" >
+                    <a href="/remindpassword" className="card-link href-text">Nie pamietam hasła, przypomnij hasło.</a>
+                    </div>
+                    <br></br>
+                    <div  className="center-content">
+                        <button className="btn btn-primary form-button" id = "mainbuttonstyle" type="submit">
+                    Zaloguj się
+                    </button>
+                    </div>
                     </form>
-                    <div className="grid-container">
+                    
+                    
+                    <div className="center-content" >
                   Nie masz konta?
-                      <a href="/register" className="card-link href-text">Zarejestruj sie!</a> 
+                      <a href="/register" className="card-link href-text  center-content"> Zarejestruj sie!</a> 
                     </div>
                     
                 </div>
