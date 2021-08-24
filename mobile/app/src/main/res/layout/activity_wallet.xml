@@ -22,10 +22,10 @@
             android:background="@drawable/bg_round_box_dark">
 
             <TextView
-                android:id="@+id/walletName_tv"
+                android:id="@+id/name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label_bold"
                 android:textSize="36sp"
                 android:textColor="@color/yellow" />
 
@@ -42,9 +42,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
-                android:text="@string/description" />
+                android:text="@string/description_label" />
 
             <View
                 android:id="@+id/vector_2"
@@ -59,55 +59,55 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
-                android:text="@string/owner" />
+                android:text="@string/owner_label" />
 
             <TextView
                 android:id="@+id/number_of_members_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
-                android:text="@string/number_of_members" />
+                android:text="@string/number_of_members_label" />
 
             <TextView
                 android:id="@+id/saldo_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/saldo" />
+                android:text="@string/saldo_label" />
 
             <TextView
                 android:id="@+id/expanses_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/expanses" />
+                android:text="@string/expanses_label" />
 
             <TextView
                 android:id="@+id/your_expanses_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/your_expanses" />
+                android:text="@string/your_expanses_label" />
 
             <TextView
                 android:id="@+id/balance_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/balance" />
+                android:text="@string/balance_label" />
 
             <View
                 android:id="@+id/vector_3"
@@ -118,13 +118,14 @@
                 android:background="@drawable/v_line_white" />
 
             <Button
+                android:id="@+id/open_chat_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/bg_round_box_light"
                 android:gravity="center_horizontal"
                 android:paddingVertical="15dp"
-                android:text="@string/open_chat_button"
+                android:text="@string/open_chat"
                 android:textAllCaps="false"
                 android:textColor="@color/yellow"
                 android:textSize="24sp" />
@@ -137,6 +138,7 @@
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="20dp">
                 <Button
+                    android:id="@+id/add_member_btn"
                     android:layout_width="30dp"
                     android:layout_height="35dp"
                     android:background="@drawable/btn_plus">
@@ -150,7 +152,7 @@
                     android:textSize="24sp">
                 </TextView>
                 <Button
-                    android:id="@+id/show_members"
+                    android:id="@+id/show_members_btn"
                     android:layout_width="30dp"
                     android:layout_height="40dp">
                 </Button>
@@ -171,6 +173,7 @@
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="20dp">
                 <Button
+                    android:id="@+id/add_expense_btn"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
                     android:background="@drawable/btn_plus">
@@ -184,6 +187,7 @@
                     android:textSize="24sp">
                 </TextView>
                 <Button
+                    android:id="@+id/show_expenses_btn"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
                     android:background="@drawable/btn_list_closed">
@@ -198,6 +202,7 @@
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="20dp">
                 <Button
+                    android:id="@+id/add_shop_list_btn"
                     android:layout_width="30dp"
                     android:layout_height="35dp"
                     android:background="@drawable/btn_plus">
@@ -211,6 +216,7 @@
                     android:textSize="24sp">
                 </TextView>
                 <Button
+                    android:id="@+id/show_shop_lists_btn"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
                     android:background="@drawable/btn_list_closed">
@@ -224,17 +230,17 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_simple"
                 android:text="@string/statistics"
-                android:textAppearance="@style/button_style"
+                android:textAppearance="@style/simple_button"
                 android:textColor="@color/light_gray"
                 app:backgroundTint="@null" />
 
             <Button
-                android:id="@+id/deleteWallet_btn"
+                android:id="@+id/delete_wallet_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_danger"
-                android:text="@string/deleteWallet"
-                android:textAppearance="@style/button_style"
+                android:text="@string/delete_wallet"
+                android:textAppearance="@style/simple_button"
                 android:textColor="@color/light_gray"
                 app:backgroundTint="@null" />
 

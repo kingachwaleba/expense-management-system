@@ -14,9 +14,9 @@ import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    EditText login, email, password, password_confirm;
-    CheckBox reg_cb;
-    Button sign_up;
+    EditText loginEt, emailEt, passwordEt, passwordConfirmEt;
+    CheckBox statueCb;
+    Button signUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +27,14 @@ public class RegistrationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        sign_up = findViewById(R.id.register_button);
-        login = findViewById(R.id.login_edit);
-        email = findViewById(R.id.email_edit);
-        password = findViewById(R.id.password_edit);
-        password_confirm = findViewById(R.id.password_confirm_edit);
-        reg_cb = findViewById(R.id.reg_cb);
+        signUpBtn = findViewById(R.id.sign_up_reg_btn);
+        loginEt = findViewById(R.id.login_reg_et);
+        emailEt = findViewById(R.id.email_reg_et);
+        passwordEt = findViewById(R.id.password_reg_et);
+        passwordConfirmEt = findViewById(R.id.password_confirm_reg_et);
+        statueCb = findViewById(R.id.statue_reg_cb);
 
-        sign_up.setOnClickListener(v -> {
+        signUpBtn.setOnClickListener(v -> {
             UserService userService = new UserService(RegistrationActivity.this);
             if (validateUser() != null)
                 userService.register(validateUser());
@@ -42,10 +42,10 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public User validateUser() {
-        String l = login.getText().toString();
-        String e = email.getText().toString();
-        String p = password.getText().toString();
-        String pc = password_confirm.getText().toString();
+        String l = loginEt.getText().toString();
+        String e = emailEt.getText().toString();
+        String p = passwordEt.getText().toString();
+        String pc = passwordConfirmEt.getText().toString();
         if (validateLogin(l) && validateEmail(e) && validatePassword(p) && validateConfirmPassword(p, pc) && validateReg())
             return new User(l, e, p);
         else return null;
@@ -87,7 +87,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public boolean validateReg() {
-        if (reg_cb.isChecked()) return true;
+        if (statueCb.isChecked()) return true;
         else {
             Toast.makeText(RegistrationActivity.this, "Consend to the regulations is required", Toast.LENGTH_LONG).show();
             return false;

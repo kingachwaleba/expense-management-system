@@ -6,18 +6,18 @@
     android:gravity="center"
     android:background="@drawable/bg_round_box_light">
     <TextView
-        android:id="@+id/member_name"
+        android:id="@+id/member_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textAppearance="@style/info_label"
+        android:textAppearance="@style/simple_label"
         android:textSize="18sp"
         android:layout_marginHorizontal="20dp">
     </TextView>
     <TextView
-        android:id="@+id/member_balance"
+        android:id="@+id/member_balance_tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textAppearance="@style/info_label"
+        android:textAppearance="@style/simple_label_bold"
         android:textSize="18sp"
         android:layout_marginHorizontal="20dp">
     </TextView>

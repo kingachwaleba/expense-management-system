@@ -16,127 +16,125 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.749"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/log_label" />
+        app:layout_constraintTop_toTopOf="@+id/log_in_label" />
 
     <TextView
-        android:id="@+id/log_label"
+        android:id="@+id/log_in_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="39dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="59dp"
-        android:text="@string/log_header"
-        android:textAppearance="@style/label"
+        android:text="@string/log_in_label"
+        android:textAppearance="@style/simple_label"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/email_label"
+        android:id="@+id/email_reg_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="36dp"
-        android:text="@string/email_string"
-        android:textAppearance="@style/label"
+        android:text="@string/email_label"
+        android:textAppearance="@style/simple_label_bold"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/log_label" />
+        app:layout_constraintTop_toTopOf="@+id/log_in_label" />
 
     <EditText
-        android:id="@+id/email_edit"
+        android:id="@+id/email_reg_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:layout_marginStart="21dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="21dp"
-        android:padding="8dp"
         android:background="@drawable/et_edittext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_label"
+        app:layout_constraintTop_toBottomOf="@+id/email_reg_tv"
         android:importantForAutofill="no"
         tools:ignore="LabelFor"  />
 
     <TextView
-        android:id="@+id/password_label"
+        android:id="@+id/password_reg_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="36dp"
-        android:text="@string/password_text"
-        android:textAppearance="@style/label"
+        android:text="@string/password_label"
+        android:textAppearance="@style/simple_label_bold"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/email_reg_et" />
 
     <EditText
-        android:id="@+id/password_edit"
+        android:id="@+id/password_reg_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:layout_marginStart="21dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="21dp"
-        android:padding="8dp"
         android:background="@drawable/et_edittext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_label"
+        app:layout_constraintTop_toBottomOf="@+id/password_reg_tv"
         android:importantForAutofill="no"
         tools:ignore="LabelFor" />
 
     <TextView
-        android:id="@+id/forget_pass_baner_label"
+        android:id="@+id/password_forget_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/forget_pass_baner_text"
-        android:textAppearance="@style/label"
+        android:text="@string/password_forget_text"
+        android:textAppearance="@style/simple_label_bold"
         android:textSize="18sp"
         android:textColor="@drawable/btn_text"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/password_reg_et" />
 
     <Button
-        android:id="@+id/log_btn"
+        android:id="@+id/log_in_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="21dp"
         android:paddingBottom="6dp"
-        android:text="@string/log_button"
+        android:text="@string/log_in"
         app:backgroundTint="@null"
         android:textColor="@color/light_gray"
-        android:textAppearance="@style/button_style"
+        android:textAppearance="@style/simple_button"
         android:background="@drawable/btn_simple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forget_pass_baner_label" />
+        app:layout_constraintTop_toBottomOf="@+id/password_forget_label" />
 
     <TextView
         android:id="@+id/no_account_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="65dp"
-        android:text="@string/no_accout_text"
-        android:textAppearance="@style/label"
+        android:text="@string/no_account_text"
+        android:textAppearance="@style/simple_label"
         android:textColor="@color/light_gray"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sign_up_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/log_btn"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_btn"
         app:layout_constraintVertical_bias="0.275" />
 
     <TextView
@@ -146,13 +144,13 @@
         android:layout_marginEnd="65dp"
         android:clickable="true"
         android:text="@string/sign_up_text"
-        android:textAppearance="@style/label"
+        android:textAppearance="@style/simple_label_bold"
         android:textColor="@drawable/btn_text"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/no_account_label"
-        app:layout_constraintTop_toBottomOf="@+id/log_btn"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_btn"
         app:layout_constraintVertical_bias="0.275" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
