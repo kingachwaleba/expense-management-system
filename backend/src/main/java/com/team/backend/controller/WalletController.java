@@ -73,6 +73,14 @@ public class WalletController {
         return new ResponseEntity<>(walletsList, HttpStatus.OK);
     }
 
+    @GetMapping("/wallet-users/{id}")
+    public ResponseEntity<?> findsWalletUsers(@PathVariable int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        List<Map<String, Object>> userList = walletService.findUserList(wallet);
+
+        return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
+
     @Transactional
     @PostMapping("/create-wallet")
     public ResponseEntity<?> createWallet(@Valid @RequestBody WalletHolder walletHolder) {
