@@ -9,9 +9,6 @@ import com.team.backend.repository.ListRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
