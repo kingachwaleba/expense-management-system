@@ -17,12 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:textAppearance="@style/label"
+            android:textAppearance="@style/simple_label_bold"
             android:textSize="36sp"
-            android:text="Profil"
+            android:text="@string/profil"
             android:textColor="@color/light_gray" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -45,36 +45,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label_bold"
                 android:textSize="20sp"
-                android:text="@string/login_string" />
+                android:text="@string/login_label" />
             <TextView
                 android:id="@+id/email_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label_bold"
                 android:textSize="20sp"
-                android:text="@string/email_string" />
+                android:text="@string/email_label" />
 
             <TextView
                 android:id="@+id/number_of_wallets_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label_bold"
                 android:textSize="20sp"
-                android:text="@string/numer_of_wallets_string" />
+                android:text="@string/numer_of_wallets_label" />
 
             <TextView
                 android:id="@+id/balance_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label_bold"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/saldo" />
+                android:text="@string/saldo_label" />
 
             <Button
                 android:id="@+id/edit_profile_btn"
@@ -82,8 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_simple"
-                android:text="@string/edit_profile_btn_string"
-                android:textAppearance="@style/button_style"
+                android:text="@string/edit_profile"
+                android:textAppearance="@style/simple_button"
                 android:textColor="@color/light_gray"
                 app:backgroundTint="@null" />
         </LinearLayout>
@@ -106,25 +106,26 @@
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="20dp">
                 <TextView
+                    android:id="@+id/notification_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:textAppearance="@style/label"
+                    android:textAppearance="@style/simple_label_bold"
                     android:textColor="@color/yellow"
-                    android:text="@string/notifications_string"
+                    android:text="@string/notifications"
                     android:textSize="24sp">
                 </TextView>
                 <Button
                     android:id="@+id/open_notification_btn"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:background="@drawable/btn_list_closed">
                 </Button>
             </LinearLayout>
 
             <View
-                android:id="@+id/vector_3"
+                android:id="@+id/vector"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_marginBottom="20dp"
@@ -144,12 +145,12 @@
                 tools:listitem="@layout/item_notification_warning"/>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/go_to_statue_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label_bold"
                 android:textColor="@color/yellow"
-                android:text="Przejdź do regulaminu"
+                android:text="@string/go_to_statue"
                 android:textSize="18sp"/>
 
         </LinearLayout>

@@ -16,7 +16,7 @@
         android:background="@drawable/bg_round_box_light">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/members_rv"
+            android:id="@+id/members_wallet_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/item_member" />
@@ -30,12 +30,12 @@
             android:background="@drawable/v_line_gradient" />
 
         <TextView
-            android:id="@+id/edit_members_button"
+            android:id="@+id/edit_members_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/members_list_edit_btn"
+            android:text="@string/edit_members_list"
             android:textSize="18sp"
-            android:textAppearance="@style/button_style" />
+            android:textAppearance="@style/simple_button" />
     </LinearLayout>
 
 </FrameLayout>

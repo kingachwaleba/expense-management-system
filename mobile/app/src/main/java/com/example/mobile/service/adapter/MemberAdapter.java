@@ -30,7 +30,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     @Override
     public void onBindViewHolder(MemberAdapter.ViewHolder holder, int position) {
         Member member = mMember.get(position);
-        holder.memberName.setText(member.getLogin());
+        holder.memberNameTv.setText(member.getLogin());
         //holder.memberBalance.setText(mInflater.getContext().getResources().getString(R.string.owner) + " " + member.getBalabce());
     }
 
@@ -41,12 +41,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView memberName;
+        public TextView memberNameTv;
         public int id;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            memberName = itemView.findViewById(R.id.member_name);
+            memberNameTv = itemView.findViewById(R.id.member_name_tv);
            // memberBalance = itemView.findViewById(R.id.member_balance);
         }
     }

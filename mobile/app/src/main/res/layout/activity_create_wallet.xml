@@ -14,15 +14,16 @@
         android:background="@drawable/bg_round_box_dark">
 
         <TextView
+            android:id="@+id/add_wallet_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/simple_label_bold"
             android:textSize="30sp"
-            android:textAppearance="@style/info_label"
             android:text="@string/add_wallet_label"
             android:textColor="@color/yellow" />
 
         <View
-            android:id="@+id/vector_2"
+            android:id="@+id/vector"
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_marginBottom="20dp"
@@ -30,36 +31,39 @@
             android:background="@drawable/v_line_white" />
 
         <EditText
-            android:id="@+id/nameEdit"
+            android:id="@+id/name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:hint="@string/name_hint"
-            android:background="@drawable/bg_round_box_light"
-            android:padding="20dp"
+            android:background="@drawable/et_simple"
             android:layout_marginBottom="20dp"
             android:textColor="@color/light_gray"
-            />
+            android:importantForAutofill="no"/>
         <EditText
-            android:id="@+id/descriptionEdit"
+            android:id="@+id/description_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:hint="@string/description_hint"
-            android:background="@drawable/bg_round_box_light"
-            android:padding="20dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/light_gray"/>
-        <EditText
-            android:id="@+id/memberEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_round_box_light"
-            android:padding="20dp"
+            android:background="@drawable/et_simple"
             android:layout_marginBottom="20dp"
             android:textColor="@color/light_gray"
-            android:drawableRight="@drawable/ic_search"/>
+            android:importantForAutofill="no"/>
+        <EditText
+            android:id="@+id/infix_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:background="@drawable/et_simple"
+            android:hint="@string/find_user_hint"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/light_gray"
+            android:drawableEnd="@drawable/ic_search"
+            android:importantForAutofill="no" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/members_search_rv"
+            android:id="@+id/browse_members_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/item_user_search"
@@ -76,8 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/category_label"
-                android:textColor="@color/light_gray"
-                android:textAppearance="@style/label"
+                android:textAppearance="@style/simple_label_bold"
                 android:textSize="24sp"
                 android:layout_marginBottom="20dp"/>
 
@@ -86,8 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_gravity="center"
-                />
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -97,8 +99,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_simple"
             android:text="@string/create"
-            android:textAllCaps="false"
-            android:textAppearance="@style/button_style" />
+            android:textAppearance="@style/simple_button" />
 
     </LinearLayout>
 </ScrollView>

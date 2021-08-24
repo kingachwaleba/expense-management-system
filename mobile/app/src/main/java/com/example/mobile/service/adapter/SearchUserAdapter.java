@@ -32,17 +32,17 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
     @Override
     public void onBindViewHolder(SearchUserAdapter.ViewHolder holder, int position) {
         String member = mMember.get(position);
-        holder.memberName.setText(member);
+        holder.memberNameTv.setText(member);
 
         if(selectedUser.contains(member)){
             holder.isChecked = true;
-            holder.button.setBackgroundResource(R.drawable.btn_added_person);
+            holder.addUserBtn.setBackgroundResource(R.drawable.btn_added_person);
         } else {
             holder.isChecked = false;
-            holder.button.setBackgroundResource(R.drawable.btn_add_person);
+            holder.addUserBtn.setBackgroundResource(R.drawable.btn_add_person);
         }
 
-        holder.button.setOnClickListener(v -> {
+        holder.addUserBtn.setOnClickListener(v -> {
             if(holder.isChecked){
                 v.setBackgroundResource(R.drawable.btn_add_person);
                 selectedUser.remove(member);
@@ -61,15 +61,15 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView memberName;
-        public Button button;
+        public TextView memberNameTv;
+        public Button addUserBtn;
         public boolean isChecked;
 
         public ViewHolder(View itemView) {
             super(itemView);
             isChecked = false;
-            memberName = itemView.findViewById(R.id.member_name);
-            button = itemView.findViewById(R.id.add_user_btn);
+            memberNameTv = itemView.findViewById(R.id.member_name_tv);
+            addUserBtn = itemView.findViewById(R.id.add_user_btn);
         }
     }
 

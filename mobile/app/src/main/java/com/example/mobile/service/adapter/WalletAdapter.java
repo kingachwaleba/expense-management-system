@@ -33,13 +33,13 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
     @Override
     public void onBindViewHolder(WalletAdapter.ViewHolder holder, int position) {
         WalletItem walletItem = mWalletItem.get(position);
-        holder.walletName.setText(walletItem.getName());
-        holder.ownerName.setText(mInflater.getContext().getResources().getString(R.string.owner) + " " + walletItem.getOwner());
-        holder.userListCounter.setText(mInflater.getContext().getResources().getString(R.string.number_of_members) + " " + walletItem.getUserListCounter());
+        holder.nameTv.setText(walletItem.getName());
+        holder.ownerTv.setText(mInflater.getContext().getResources().getString(R.string.owner_label) + " " + walletItem.getOwner());
+        holder.numberOfMembersTv.setText(mInflater.getContext().getResources().getString(R.string.number_of_members_label) + " " + walletItem.getUserListCounter());
       //holder.balance.setText(mInflater.getContext().getResources().getString(R.string.balance) + " " + Double.toString(walletItem.getBalance()));
         holder.id = walletItem.getWalletId();
 
-        holder.button.setOnClickListener(v -> {
+        holder.goToWalletBtn.setOnClickListener(v -> {
             Intent i = new Intent(holder.itemView.getContext(), WalletActivity.class);
             i.putExtra("id",String.valueOf(holder.id));
             holder.itemView.getContext().startActivity(i);
@@ -53,17 +53,17 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-         public TextView walletName, ownerName, userListCounter, balance;
+         public TextView nameTv, ownerTv, numberOfMembersTv, balanceTv;
          public int id;
-         public Button button;
+         public Button goToWalletBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            walletName = itemView.findViewById(R.id.walletName_tv);
-            ownerName = itemView.findViewById(R.id.owner_tv);
-            userListCounter = itemView.findViewById(R.id.number_of_members_tv);
-            balance = itemView.findViewById(R.id.balance_tv);
-            button = itemView.findViewById(R.id.goToWallet_btn);
+            nameTv = itemView.findViewById(R.id.name_tv);
+            ownerTv = itemView.findViewById(R.id.owner_tv);
+            numberOfMembersTv = itemView.findViewById(R.id.number_of_members_tv);
+            balanceTv = itemView.findViewById(R.id.balance_tv);
+            goToWalletBtn = itemView.findViewById(R.id.go_to_wallet_btn);
         }
     }
 }
