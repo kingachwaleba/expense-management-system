@@ -30,11 +30,11 @@ public class MembersFragment extends Fragment {
         if (getArguments() != null)
             members = getArguments().getParcelableArrayList("members");
 
-        RecyclerView member_rv = view.findViewById(R.id.members_rv);
-        member_rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerView membersWalletRv = view.findViewById(R.id.members_wallet_rv);
+        membersWalletRv.setLayoutManager(new LinearLayoutManager(getContext()));
 
         MemberAdapter memberAdapter = new MemberAdapter(getContext(), members);
-        member_rv.setAdapter(memberAdapter);
+        membersWalletRv.setAdapter(memberAdapter);
         memberAdapter.notifyDataSetChanged();
         return view;
     }

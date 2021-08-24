@@ -18,12 +18,12 @@ public class WalletActivity extends AppCompatActivity {
     SessionManager session;
 
     int id;
-    Boolean show_members_control;
+    Boolean showMembersControl;
     String accesToken;
     String TAG = "MEMBERS_FRAGMENT";
 
-    TextView walletName_tv, description_tv, owner_tv, number_of_members_tv;
-    Button show_members;
+    TextView walletNameTv, descriptionTv, ownerTv, numberOfMembersTv;
+    Button showMembersBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,15 @@ public class WalletActivity extends AppCompatActivity {
 
         id = Integer.parseInt(getIntent().getStringExtra("id"));
         accesToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
-        show_members_control = false;
+        showMembersControl = false;
 
-        walletName_tv = findViewById(R.id.walletName_tv);
-        description_tv = findViewById(R.id.description_tv);
-        owner_tv = findViewById(R.id.owner_tv);
-        number_of_members_tv = findViewById(R.id.number_of_members_tv);
-        show_members = findViewById(R.id.show_members);
+        walletNameTv = findViewById(R.id.name_tv);
+        descriptionTv = findViewById(R.id.description_tv);
+        ownerTv = findViewById(R.id.owner_tv);
+        numberOfMembersTv = findViewById(R.id.number_of_members_tv);
+        showMembersBtn = findViewById(R.id.show_members_btn);
 
-        show_members.setBackgroundResource(R.drawable.btn_list_closed);
+        showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
     }
 
     @Override
@@ -54,28 +54,28 @@ public class WalletActivity extends AppCompatActivity {
         super.onStart();
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
-            walletName_tv.setText(walletModel.getName());
+            walletNameTv.setText(walletModel.getName());
             if(walletModel.getDescription()!=null)
-                description_tv.setText(getResources().getString(R.string.description) + " " + walletModel.getDescription());
-            owner_tv.setText(getResources().getString(R.string.owner) + " " + walletModel.getOwner());
-            number_of_members_tv.setText(getResources().getString(R.string.number_of_members) + " " + walletModel.getUserListCounter());
+                descriptionTv.setText(getResources().getString(R.string.description_label) + " " + walletModel.getDescription());
+            ownerTv.setText(getResources().getString(R.string.owner_label) + " " + walletModel.getOwner());
+            numberOfMembersTv.setText(getResources().getString(R.string.number_of_members_label) + " " + walletModel.getUserListCounter());
 
-            show_members.setOnClickListener(v -> {
-                if (!show_members_control) {
+            showMembersBtn.setOnClickListener(v -> {
+                if (!showMembersControl) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("members", (ArrayList<Member>)walletModel.getUserList());
                         getSupportFragmentManager().beginTransaction()
                                 .setReorderingAllowed(true)
                                 .replace(R.id.fragment_container_view, MembersFragment.class, bundle, TAG)
                                 .commit();
-                        show_members.setBackgroundResource(R.drawable.btn_list_opened);
-                        show_members_control = true;
+                        showMembersBtn.setBackgroundResource(R.drawable.btn_list_opened);
+                        showMembersControl = true;
                 } else {
                     Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
                     if(fragment != null)
                         getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    show_members.setBackgroundResource(R.drawable.btn_list_closed);
-                    show_members_control = false;
+                    showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
+                    showMembersControl = false;
                 }
             });
         }, accesToken, id);

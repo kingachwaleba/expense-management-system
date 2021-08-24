@@ -21,12 +21,12 @@ public class WalletService {
 
     Context context;
     ApiInterface apiInterface;
-    RecyclerView wallet_rv;
+    RecyclerView walletsRv;
 
-    public WalletService(Context context, RecyclerView wallet_rv) {
+    public WalletService(Context context, RecyclerView walletsRv) {
         this.context = context;
         this.apiInterface = new ApiClient().getService();
-        this.wallet_rv = wallet_rv;
+        this.walletsRv = walletsRv;
     }
 
     public WalletService(Context context) {
@@ -51,7 +51,7 @@ public class WalletService {
                         if (response.isSuccessful()) {
                             List<WalletItem> walletItems = response.body();
                             WalletAdapter walletAdapter = new WalletAdapter(context, walletItems);
-                            wallet_rv.setAdapter(walletAdapter);
+                            walletsRv.setAdapter(walletAdapter);
                             walletAdapter.notifyDataSetChanged();
                         }
                     } catch (Exception e) {

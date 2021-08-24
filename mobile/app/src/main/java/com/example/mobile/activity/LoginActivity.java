@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText email, password;
-    TextView goToRegistration;
-    Button log_btn;
+    EditText emailEt, passwordEt;
+    TextView signUpTv;
+    Button logInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,25 +29,25 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        goToRegistration = findViewById(R.id.sign_up_label);
-        log_btn = findViewById(R.id.log_btn);
-        email= findViewById(R.id.email_edit);
-        password = findViewById(R.id.password_edit);
+        signUpTv = findViewById(R.id.sign_up_label);
+        logInBtn = findViewById(R.id.log_in_btn);
+        emailEt = findViewById(R.id.email_reg_et);
+        passwordEt = findViewById(R.id.password_reg_et);
 
-        goToRegistration.setOnClickListener(v -> {
+        signUpTv.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
             startActivity(intent);
         });
 
-        log_btn.setOnClickListener(v -> {
+        logInBtn.setOnClickListener(v -> {
            UserService userService = new UserService(LoginActivity.this);
            userService.login(validateLoginForm());
         });
     }
 
     public LoginForm validateLoginForm() {
-        String e = email.getText().toString();
-        String p = password.getText().toString();
+        String e = emailEt.getText().toString();
+        String p = passwordEt.getText().toString();
         if (validateEmail(e) && validatePassword(p))
             return new LoginForm(e,p);
         else return null;

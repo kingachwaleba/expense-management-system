@@ -34,10 +34,10 @@ public class CreateWalletActivity extends AppCompatActivity {
     Category category;
     String accessToken;
 
-    RadioGroup category_RG;
-    EditText name, description, search;
-    Button create;
-    RecyclerView add_user_rv;
+    RadioGroup categoryRg;
+    EditText nameEt, descriptionEt, infixEt;
+    Button createBtn;
+    RecyclerView browseMembersRv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +54,19 @@ public class CreateWalletActivity extends AppCompatActivity {
 
         accessToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
 
-        name = findViewById(R.id.nameEdit);
-        description = findViewById(R.id.descriptionEdit);
-        search = findViewById(R.id.memberEdit);
-        create = findViewById(R.id.create_wallet_btn);
-        add_user_rv = findViewById(R.id.members_search_rv);
-        category_RG = findViewById(R.id.category_RG);
+        nameEt = findViewById(R.id.name_et);
+        descriptionEt = findViewById(R.id.description_et);
+        infixEt = findViewById(R.id.infix_et);
+        createBtn = findViewById(R.id.create_wallet_btn);
+        browseMembersRv = findViewById(R.id.browse_members_rv);
+        categoryRg = findViewById(R.id.category_RG);
 
-        add_user_rv.setLayoutManager(new LinearLayoutManager(this));
-        List<String> members = new ArrayList<>();
-        SearchUserAdapter searchUserAdapter = new SearchUserAdapter(this, members);
-        add_user_rv.setAdapter(searchUserAdapter);
+        browseMembersRv.setLayoutManager(new LinearLayoutManager(this));
+        List<String> membersInit = new ArrayList<>();
+        SearchUserAdapter searchUserAdapterInit = new SearchUserAdapter(this, membersInit);
+        browseMembersRv.setAdapter(searchUserAdapterInit);
 
-        search.addTextChangedListener(new TextWatcher(){
+        infixEt.addTextChangedListener(new TextWatcher(){
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -77,18 +77,18 @@ public class CreateWalletActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(search.getText().toString().length()>0){
-                    walletService.getMembersByInfix(members1 -> {
-                        SearchUserAdapter searchUserAdapter1 = new SearchUserAdapter(CreateWalletActivity.this, members1);
-                        add_user_rv.setAdapter(searchUserAdapter1);
-                        searchUserAdapter1.notifyDataSetChanged();
-                    }, search.getText().toString());
+                if(infixEt.getText().toString().length()>0){
+                    walletService.getMembersByInfix(members -> {
+                        SearchUserAdapter searchUserAdapter = new SearchUserAdapter(CreateWalletActivity.this, members);
+                        browseMembersRv.setAdapter(searchUserAdapter);
+                        searchUserAdapter.notifyDataSetChanged();
+                    }, infixEt.getText().toString());
                 }
 
-                if(search.getText().toString().length()==0){
-                    searchUserAdapter.clear();
-                    add_user_rv.setAdapter(searchUserAdapter);
-                    searchUserAdapter.notifyDataSetChanged();
+                if(infixEt.getText().toString().length()==0){
+                    searchUserAdapterInit.clear();
+                    browseMembersRv.setAdapter(searchUserAdapterInit);
+                    searchUserAdapterInit.notifyDataSetChanged();
                 }
 
             }
@@ -100,26 +100,26 @@ public class CreateWalletActivity extends AppCompatActivity {
                 RadioButton rdbtn = new RadioButton(CreateWalletActivity.this);
                 rdbtn.setId(View.generateViewId());
                 rdbtn.setText(categories.get(i).getName());
-                rdbtn.setTextAppearance(R.style.label);
+                rdbtn.setTextAppearance(R.style.simple_label);
                 rdbtn.setTextSize(18);
                 rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
-                category_RG.addView(rdbtn);
+                categoryRg.addView(rdbtn);
                 if(i == 0) rdbtn.setChecked(true);
             }
         });
 
-        category_RG.setOnCheckedChangeListener((group, checkedId) -> {
+        categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton rb=findViewById(checkedId);
             String radioText = rb.getText().toString();
             category = new Category(checkedId, radioText);
         });
 
-        create.setOnClickListener(v -> {
-            String nameS = name.getText().toString();
+        createBtn.setOnClickListener(v -> {
+            String nameS = nameEt.getText().toString();
             if(validateName(nameS)){
-                String descriptionS = description.getText().toString();
+                String descriptionS = descriptionEt.getText().toString();
                 walletCreate = new WalletCreate(nameS, descriptionS, category);
-                WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapter.getSelectedUser());
+                WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapterInit.getSelectedUser());
                 walletService.createWallet(accessToken, walletHolder);
                 finish();
             } else Toast.makeText(CreateWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();

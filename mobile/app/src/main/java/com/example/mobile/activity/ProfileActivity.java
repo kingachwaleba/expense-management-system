@@ -1,21 +1,19 @@
 package com.example.mobile.activity;
 
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
-import com.example.mobile.model.Account;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,7 @@ public class ProfileActivity extends AppCompatActivity {
     ImageView profileImage;
     Button openNotificationBtn;
     Boolean ifOpenNotification;
-    RecyclerView invitations_rv, warning_rv;
+    RecyclerView notificationInvitationRv, notificationWarningRv, notificationMessageRv;
     SessionManager session;
     String accessToken;
     AccountService accountService;
@@ -40,12 +38,12 @@ public class ProfileActivity extends AppCompatActivity {
         accessToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
         accountService = new AccountService(this);
 
-        invitations_rv = findViewById(R.id.notification_invitation_rv);
+        notificationInvitationRv = findViewById(R.id.notification_invitation_rv);
 
-        invitations_rv.setLayoutManager(new LinearLayoutManager(this));
-        List<Invitation> ins = new ArrayList<>();
-        InvitationAdapter invitationAdapter = new InvitationAdapter(this, ins, accessToken);
-        invitations_rv.setAdapter(invitationAdapter);
+        notificationInvitationRv.setLayoutManager(new LinearLayoutManager(this));
+        List<Invitation> invitationsInit = new ArrayList<>();
+        InvitationAdapter invitationAdapterInit = new InvitationAdapter(this, invitationsInit, accessToken);
+        notificationInvitationRv.setAdapter(invitationAdapterInit);
 
 
         ifOpenNotification = false;
@@ -58,34 +56,28 @@ public class ProfileActivity extends AppCompatActivity {
         numberOfWalletTv = findViewById(R.id.number_of_wallets_tv);
         balanceTv = findViewById(R.id.balance_tv);
 
-        accountService.getAccount(new AccountService.OnAccountCallback() {
-            @Override
-            public void onMyAccount(Account account) {
-                loginTv.setText(getResources().getString(R.string.login_string) + " " + account.getLogin());
-                emailTv.setText(getResources().getString(R.string.email_string) + " " + account.getEmail());
-                numberOfWalletTv.setText(getResources().getString(R.string.numer_of_wallets_string) + " " + account.getUserListCounter());
-                //balanceTv.setText(getResources().getString(R.string.login_string) + " " + account.getLogin());
-            }
+        accountService.getAccount(account -> {
+            loginTv.setText(getResources().getString(R.string.login_label) + " " + account.getLogin());
+            emailTv.setText(getResources().getString(R.string.email_label) + " " + account.getEmail());
+            numberOfWalletTv.setText(getResources().getString(R.string.numer_of_wallets_label) + " " + account.getUserListCounter());
+            //balanceTv.setText(getResources().getString(R.string.login_string) + " " + account.getLogin());
         }, accessToken);
 
-        openNotificationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ifOpenNotification = !ifOpenNotification;
-                if(ifOpenNotification){
-                    openNotificationBtn.setBackgroundResource(R.drawable.btn_list_opened);
-                    accountService.getInvitations(invitations -> {
-                        InvitationAdapter invitationAdapter1 = new InvitationAdapter(ProfileActivity.this, invitations, accessToken);
-                        invitations_rv.setAdapter(invitationAdapter1);
-                        invitationAdapter1.notifyDataSetChanged();
-                    }, accessToken);
-
-                } else {
-                    openNotificationBtn.setBackgroundResource(R.drawable.btn_list_closed);
-                    invitationAdapter.clear();
-                    invitations_rv.setAdapter(invitationAdapter);
+        openNotificationBtn.setOnClickListener(v -> {
+            ifOpenNotification = !ifOpenNotification;
+            if(ifOpenNotification){
+                openNotificationBtn.setBackgroundResource(R.drawable.btn_list_opened);
+                accountService.getInvitations(invitations -> {
+                    InvitationAdapter invitationAdapter = new InvitationAdapter(ProfileActivity.this, invitations, accessToken);
+                    notificationInvitationRv.setAdapter(invitationAdapter);
                     invitationAdapter.notifyDataSetChanged();
-                }
+                }, accessToken);
+
+            } else {
+                openNotificationBtn.setBackgroundResource(R.drawable.btn_list_closed);
+                invitationAdapterInit.clear();
+                notificationInvitationRv.setAdapter(invitationAdapterInit);
+                invitationAdapterInit.notifyDataSetChanged();
             }
         });
     }

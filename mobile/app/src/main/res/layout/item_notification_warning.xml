@@ -13,9 +13,9 @@
         android:id="@+id/warning_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/label"
+        android:textAppearance="@style/simple_label_bold"
         android:textSize="36sp"
-        android:text="NIEUREGULOWANA NALEŻNOSC"
+        android:text="@string/warning_debth"
         android:textColor="@color/red" />
 
     <View
@@ -34,32 +34,32 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/warning_info_label"
+            android:id="@+id/warning_info_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
-            android:textAppearance="@style/label"
+            android:textAppearance="@style/simple_label"
             android:textSize="20sp"
-            android:text="Użytkownik przypomina Ci o uregulowaniu należności" />
+            android:text="@string/warning_info_text" />
 
         <TextView
             android:id="@+id/owner_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/label"
+            android:textAppearance="@style/simple_label"
             android:textSize="20sp"
-            android:text="@string/owner" />
+            android:text="@string/owner_label" />
 
         <TextView
-            android:id="@+id/debth_label"
+            android:id="@+id/debth_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/label"
+            android:textAppearance="@style/simple_label"
             android:textSize="20sp"
-            android:text="@string/debth_string" />
+            android:text="@string/debth" />
 
     </LinearLayout>
 
@@ -69,8 +69,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_simple"
         android:layout_marginBottom="20dp"
-        android:text="@string/go_to_expense_string"
-        android:textAppearance="@style/button_style"
+        android:text="@string/go_to_expense"
+        android:textAppearance="@style/simple_button"
         android:textColor="@color/light_gray"
         app:backgroundTint="@null" />
 

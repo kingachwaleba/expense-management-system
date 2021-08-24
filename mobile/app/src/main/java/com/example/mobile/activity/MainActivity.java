@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     SessionManager session;
 
-    RecyclerView wallet_rv;
-    TextView hello_tv;
-    Button add_wallet;
+    RecyclerView walletRv;
+    TextView helloTv;
+    Button addNewWalletBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +37,16 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        hello_tv = findViewById(R.id.hello_label);
-        add_wallet = findViewById(R.id.go_to_create_wallet_btn);
-        wallet_rv = findViewById(R.id.wallet_rv);
+        helloTv = findViewById(R.id.hello_label);
+        addNewWalletBtn = findViewById(R.id.add_new_wallet_btn);
+        walletRv = findViewById(R.id.wallets_rv);
 
-        wallet_rv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        List<WalletItem> walletItems = new ArrayList<>();
-        WalletAdapter walletAdapter = new WalletAdapter(MainActivity.this, walletItems);
-        wallet_rv.setAdapter(walletAdapter);
+        walletRv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        List<WalletItem> walletItemsInit = new ArrayList<>();
+        WalletAdapter walletAdapterInit = new WalletAdapter(MainActivity.this, walletItemsInit);
+        walletRv.setAdapter(walletAdapterInit);
 
-        add_wallet.setOnClickListener(v -> {
+        addNewWalletBtn.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, CreateWalletActivity.class);
             startActivity(i);
         });
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if(id == R.id.goToProfile){
-            Intent i = new Intent(this, ProfileActivity.class);
-            startActivity(i);
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
             HashMap<String, String> user = session.getUserDetails();
             String login = user.get(SessionManager.KEY_LOGIN);
 
-            hello_tv.setText(getResources().getString(R.string.hello) + " " + login + "!");
+            helloTv.setText(getResources().getString(R.string.hello) + " " + login + "!");
 
-            WalletService walletService = new WalletService(MainActivity.this, wallet_rv);
+            WalletService walletService = new WalletService(MainActivity.this, walletRv);
             walletService.getUserWallets(user.get(SessionManager.KEY_TOKEN));
         }
     }
