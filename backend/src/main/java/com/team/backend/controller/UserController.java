@@ -5,7 +5,9 @@ import com.team.backend.config.JwtResponse;
 import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.User;
 import com.team.backend.helpers.LoginForm;
+import com.team.backend.model.Wallet;
 import com.team.backend.service.UserService;
+import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,11 +27,13 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final WalletService walletService;
     private JwtProvider jwtProvider;
     private AuthenticationManager authenticationManager;
 
-    public UserController(UserService userService, JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, WalletService walletService, JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
         this.userService = userService;
+        this.walletService = walletService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
     }
@@ -51,11 +55,14 @@ public class UserController {
         String currentUserLogin = authentication.getName();
 
         User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        List<Wallet> wallets = walletService.findWallets(user);
+
         Map<String, String> userDetailsMap = new HashMap<>();
         userDetailsMap.put("id", String.valueOf(user.getId()));
         userDetailsMap.put("login", user.getLogin());
         userDetailsMap.put("email", user.getEmail());
         userDetailsMap.put("image", user.getImage());
+        userDetailsMap.put("walletsNumber", String.valueOf(wallets.size()));
 
         return new ResponseEntity<>(userDetailsMap, HttpStatus.OK);
     }
