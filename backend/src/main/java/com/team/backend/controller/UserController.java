@@ -40,10 +40,16 @@ public class UserController {
 
     @GetMapping("/{infix}")
     public ResponseEntity<?> findUser(@PathVariable String infix) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserLogin = authentication.getName();
+
+        User loggedInUser = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+
         List<User> userList = userService.findByLoginContaining(infix);
         List<String> userLoginList = new ArrayList<>();
         for (User user : userList) {
-            userLoginList.add(user.getLogin());
+            if (user.getId() != loggedInUser.getId())
+                userLoginList.add(user.getLogin());
         }
 
         return new ResponseEntity<>(userLoginList, HttpStatus.OK);
