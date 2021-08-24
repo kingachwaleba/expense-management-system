@@ -17,10 +17,10 @@ import java.util.List;
 @Service
 public class WalletServiceImpl implements WalletService {
 
-    private UserStatusRepository userStatusRepository;
-    private WalletRepository walletRepository;
-    private UserRepository userRepository;
-    private WalletUserRepository walletUserRepository;
+    private final UserStatusRepository userStatusRepository;
+    private final WalletRepository walletRepository;
+    private final UserRepository userRepository;
+    private final WalletUserRepository walletUserRepository;
 
     public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository, UserRepository userRepository,
                              WalletUserRepository walletUserRepository) {
@@ -54,15 +54,11 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = walletHolder.getWallet();
         List<String> userLoginList = walletHolder.getUserList();
 
-        // Get current logged in user and set it
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserLogin = authentication.getName();
 
-        // Get user status for wallet's owner
-        UserStatus ownerStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
-
-        // Get user status for others wallets' members
-        UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
+        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
 
         // Save the wallet's owner
         saveUser(currentUserLogin, wallet, ownerStatus);
@@ -89,11 +85,8 @@ public class WalletServiceImpl implements WalletService {
     public List<Wallet> findWallets(User user) {
         List<Wallet> walletList = new ArrayList<>();
 
-        // Get user status for wallet's owner
-        UserStatus ownerStatus = userStatusRepository.findById(1).orElseThrow(RuntimeException::new);
-
-        // Get user status for others wallets' members
-        UserStatus memberStatus = userStatusRepository.findById(4).orElseThrow(RuntimeException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
+        UserStatus memberStatus = userStatusRepository.findByName("członek").orElseThrow(RuntimeException::new);
 
         Set<WalletUser> walletsOwner = walletUserRepository.findAllByUserStatusAndUser(ownerStatus, user);
         Set<WalletUser> walletsMember = walletUserRepository.findAllByUserStatusAndUser(memberStatus, user);
@@ -110,7 +103,27 @@ public class WalletServiceImpl implements WalletService {
         List<Map<String, Object>> userList = new ArrayList<>();
 
         for (WalletUser walletUser : wallet.getWalletUserSet())
-            if (walletUser.getUserStatus().getId() == 1 || walletUser.getUserStatus().getId() == 4) {
+            if (walletUser.getUserStatus().getName().equals("właściciel")
+                    || walletUser.getUserStatus().getName().equals("członek")) {
+                Map<String, Object> userMap = new HashMap<>();
+
+                userMap.put("userId", walletUser.getUser().getId());
+                userMap.put("login", walletUser.getUser().getLogin());
+
+                userList.add(userMap);
+            }
+
+        return userList;
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllUsers(Wallet wallet) {
+        List<Map<String, Object>> userList = new ArrayList<>();
+
+        for (WalletUser walletUser : wallet.getWalletUserSet())
+            if (walletUser.getUserStatus().getName().equals("właściciel")
+                    || walletUser.getUserStatus().getName().equals("członek")
+                    || walletUser.getUserStatus().getName().equals("oczekujący")) {
                 Map<String, Object> userMap = new HashMap<>();
 
                 userMap.put("userId", walletUser.getUser().getId());

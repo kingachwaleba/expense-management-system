@@ -12,12 +12,10 @@ import java.util.*;
 @Service
 public class MessageServiceImpl implements MessageService {
 
-    private MessageRepository messageRepository;
-    private WalletService walletService;
+    private final MessageRepository messageRepository;
 
-    public MessageServiceImpl(MessageRepository messageRepository, WalletService walletService) {
+    public MessageServiceImpl(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
-        this.walletService = walletService;
     }
 
     @Override

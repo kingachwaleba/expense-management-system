@@ -28,8 +28,8 @@ public class UserController {
 
     private final UserService userService;
     private final WalletService walletService;
-    private JwtProvider jwtProvider;
-    private AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
+    private final AuthenticationManager authenticationManager;
 
     public UserController(UserService userService, WalletService walletService, JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
         this.userService = userService;
@@ -40,10 +40,33 @@ public class UserController {
 
     @GetMapping("/{infix}")
     public ResponseEntity<?> findUser(@PathVariable String infix) {
+        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
         List<User> userList = userService.findByLoginContaining(infix);
         List<String> userLoginList = new ArrayList<>();
         for (User user : userList) {
-            userLoginList.add(user.getLogin());
+            if (user.getId() != loggedInUser.getId())
+                userLoginList.add(user.getLogin());
+        }
+
+        return new ResponseEntity<>(userLoginList, HttpStatus.OK);
+    }
+
+    @GetMapping("/wallet/{id}/{infix}")
+    public ResponseEntity<?> findUserForWallet(@PathVariable int id, @PathVariable String infix) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
+
+        List<User> userListInfix = userService.findByLoginContaining(infix);
+        List<String> userLoginList = new ArrayList<>();
+        for (User user : userListInfix) {
+            Map<String, Object> userMap = new HashMap<>();
+
+            userMap.put("userId", user.getId());
+            userMap.put("login", user.getLogin());
+
+            if (!userList.contains(userMap))
+                userLoginList.add(user.getLogin());
         }
 
         return new ResponseEntity<>(userLoginList, HttpStatus.OK);
@@ -51,10 +74,8 @@ public class UserController {
 
     @GetMapping("/account")
     public ResponseEntity<?> one() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
         List<Wallet> wallets = walletService.findWallets(user);
 
         Map<String, String> userDetailsMap = new HashMap<>();
@@ -96,10 +117,7 @@ public class UserController {
         String password = updatePasswordHolder.getPassword();
         String oldPassword = updatePasswordHolder.getOldPassword();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         if (!userService.checkIfValidOldPassword(user, oldPassword))
             throw new RuntimeException();

@@ -10,8 +10,6 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,10 +54,7 @@ public class WalletController {
 
     @GetMapping("/wallets")
     public ResponseEntity<?> all() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
         List<Wallet> wallets = walletService.findWallets(user);
 
         List<Map<String, Object>> walletsList = new ArrayList<>();
@@ -76,6 +71,14 @@ public class WalletController {
         }
 
         return new ResponseEntity<>(walletsList, HttpStatus.OK);
+    }
+
+    @GetMapping("/wallet-users/{id}")
+    public ResponseEntity<?> findsWalletUsers(@PathVariable int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        List<Map<String, Object>> userList = walletService.findUserList(wallet);
+
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     @Transactional
