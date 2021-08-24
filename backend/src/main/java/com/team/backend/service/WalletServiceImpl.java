@@ -17,10 +17,10 @@ import java.util.List;
 @Service
 public class WalletServiceImpl implements WalletService {
 
-    private UserStatusRepository userStatusRepository;
-    private WalletRepository walletRepository;
-    private UserRepository userRepository;
-    private WalletUserRepository walletUserRepository;
+    private final UserStatusRepository userStatusRepository;
+    private final WalletRepository walletRepository;
+    private final UserRepository userRepository;
+    private final WalletUserRepository walletUserRepository;
 
     public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository, UserRepository userRepository,
                              WalletUserRepository walletUserRepository) {

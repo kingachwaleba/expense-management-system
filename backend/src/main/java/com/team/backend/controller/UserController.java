@@ -28,8 +28,8 @@ public class UserController {
 
     private final UserService userService;
     private final WalletService walletService;
-    private JwtProvider jwtProvider;
-    private AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
+    private final AuthenticationManager authenticationManager;
 
     public UserController(UserService userService, WalletService walletService, JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
         this.userService = userService;
