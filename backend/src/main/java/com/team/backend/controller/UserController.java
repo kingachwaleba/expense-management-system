@@ -40,10 +40,7 @@ public class UserController {
 
     @GetMapping("/{infix}")
     public ResponseEntity<?> findUser(@PathVariable String infix) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User loggedInUser = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         List<User> userList = userService.findByLoginContaining(infix);
         List<String> userLoginList = new ArrayList<>();
@@ -57,10 +54,8 @@ public class UserController {
 
     @GetMapping("/account")
     public ResponseEntity<?> one() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
         List<Wallet> wallets = walletService.findWallets(user);
 
         Map<String, String> userDetailsMap = new HashMap<>();
@@ -102,10 +97,7 @@ public class UserController {
         String password = updatePasswordHolder.getPassword();
         String oldPassword = updatePasswordHolder.getOldPassword();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         if (!userService.checkIfValidOldPassword(user, oldPassword))
             throw new RuntimeException();

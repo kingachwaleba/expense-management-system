@@ -9,8 +9,6 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,10 +32,7 @@ public class WalletUserController {
 
     @GetMapping("/notifications/invitations")
     public ResponseEntity<?> all() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         // Get user status for the waiting status
         UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);

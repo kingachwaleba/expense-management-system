@@ -8,8 +8,6 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,10 +36,7 @@ public class MessageController {
 
     @GetMapping("/notifications")
     public ResponseEntity<?> allNotifications() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         return new ResponseEntity<>(messageService.findAllByReceiverAndTypeOrderByDate(user, "S"), HttpStatus.OK);
     }
@@ -49,11 +44,7 @@ public class MessageController {
     @PostMapping("/wallet/{id}/message")
     public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         messageService.save(message, wallet, user);
 
