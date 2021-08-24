@@ -16,4 +16,6 @@ public interface UserService {
 
     Boolean checkIfValidOldPassword(User user, String oldPassword);
     void changeUserPassword(User user, String password);
+
+    Optional<User> findCurrentLoggedInUser();
 }

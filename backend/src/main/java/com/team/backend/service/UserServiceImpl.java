@@ -2,6 +2,8 @@ package com.team.backend.service;
 
 import com.team.backend.model.User;
 import com.team.backend.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -61,5 +63,13 @@ public class UserServiceImpl implements UserService {
     public void changeUserPassword(User user, String password) {
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findCurrentLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserLogin = authentication.getName();
+
+        return userRepository.findByLogin(currentUserLogin);
     }
 }

@@ -8,8 +8,6 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,11 +69,7 @@ public class ListController {
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         List updatedList = listService.findById(id).orElseThrow(RuntimeException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         updatedList.setStatus(chosenStatus);
 

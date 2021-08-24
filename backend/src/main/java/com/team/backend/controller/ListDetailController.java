@@ -10,8 +10,6 @@ import com.team.backend.service.ListService;
 import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,11 +42,7 @@ public class ListDetailController {
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         ListDetail updatedElement = listDetailService.findById(id).orElseThrow(RuntimeException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User user = userService.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         updatedElement.setStatus(chosenStatus);
 

@@ -4,9 +4,6 @@ import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseRepository;
 import com.team.backend.repository.PaymentStatusRepository;
-import com.team.backend.repository.UserRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,12 +16,12 @@ import java.util.Optional;
 public class ExpenseServiceImpl implements ExpenseService {
 
     private final ExpenseRepository expenseRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final PaymentStatusRepository paymentStatusRepository;
 
-    public ExpenseServiceImpl(ExpenseRepository expenseRepository, UserRepository userRepository, PaymentStatusRepository paymentStatusRepository) {
+    public ExpenseServiceImpl(ExpenseRepository expenseRepository, UserService userService, PaymentStatusRepository paymentStatusRepository) {
         this.expenseRepository = expenseRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.paymentStatusRepository = paymentStatusRepository;
     }
 
@@ -32,12 +29,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void save(ExpenseHolder expenseHolder, Wallet wallet) {
         Expense expense = expenseHolder.getExpense();
         List<String> userList = expenseHolder.getUserList();
-
-        // Get current logged in user and set it
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserLogin = authentication.getName();
-
-        User owner = userRepository.findByLogin(currentUserLogin).orElseThrow(RuntimeException::new);
+        User owner = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         LocalDateTime date = LocalDateTime.now();
 
@@ -59,7 +51,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.addExpenseDetail(expenseDetail);
 
         for (String login : userList) {
-            User member = userRepository.findByLogin(login).orElseThrow(RuntimeException::new);
+            User member = userService.findByLogin(login).orElseThrow(RuntimeException::new);
 
             expenseDetail = new ExpenseDetail();
 
