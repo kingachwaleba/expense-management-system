@@ -52,6 +52,26 @@ public class UserController {
         return new ResponseEntity<>(userLoginList, HttpStatus.OK);
     }
 
+    @GetMapping("/wallet/{id}/{infix}")
+    public ResponseEntity<?> findUserForWallet(@PathVariable int id, @PathVariable String infix) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
+
+        List<User> userListInfix = userService.findByLoginContaining(infix);
+        List<String> userLoginList = new ArrayList<>();
+        for (User user : userListInfix) {
+            Map<String, Object> userMap = new HashMap<>();
+
+            userMap.put("userId", user.getId());
+            userMap.put("login", user.getLogin());
+
+            if (!userList.contains(userMap))
+                userLoginList.add(user.getLogin());
+        }
+
+        return new ResponseEntity<>(userLoginList, HttpStatus.OK);
+    }
+
     @GetMapping("/account")
     public ResponseEntity<?> one() {
         User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);

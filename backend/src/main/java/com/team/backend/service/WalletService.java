@@ -20,5 +20,6 @@ public interface WalletService {
     List<Wallet> findWallets(User user);
 
     List<Map<String, Object>> findUserList(Wallet wallet);
+    List<Map<String, Object>> findAllUsers(Wallet wallet);
     User findOwner(Wallet wallet);
 }

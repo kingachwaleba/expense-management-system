@@ -123,6 +123,24 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public List<Map<String, Object>> findAllUsers(Wallet wallet) {
+        List<Map<String, Object>> userList = new ArrayList<>();
+
+        for (WalletUser walletUser : wallet.getWalletUserSet())
+            if (walletUser.getUserStatus().getId() == 1 || walletUser.getUserStatus().getId() == 4
+                    || walletUser.getUserStatus().getId() == 2) {
+                Map<String, Object> userMap = new HashMap<>();
+
+                userMap.put("userId", walletUser.getUser().getId());
+                userMap.put("login", walletUser.getUser().getLogin());
+
+                userList.add(userMap);
+            }
+
+        return userList;
+    }
+
+    @Override
     public User findOwner(Wallet wallet) {
         for (WalletUser walletUser : wallet.getWalletUserSet())
             if (walletUser.getUserStatus().getId() == 1)
