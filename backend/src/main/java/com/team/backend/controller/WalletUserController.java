@@ -33,12 +33,8 @@ public class WalletUserController {
     @GetMapping("/notifications/invitations")
     public ResponseEntity<?> all() {
         User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
-
-        // Get user status for the waiting status
-        UserStatus waitingStatus = userStatusRepository.findById(2).orElseThrow(RuntimeException::new);
-
+        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
         Set<WalletUser> invitations = walletUserRepository.findAllByUserStatusAndUser(waitingStatus, user);
-
         List<Map<String, Object>> invitationsList = new ArrayList<>();
 
         for (WalletUser walletUser : invitations) {
@@ -61,13 +57,13 @@ public class WalletUserController {
         WalletUser updatedWalletUser = walletUserRepository.findById(id).orElseThrow(RuntimeException::new);
 
         if (flag) {
-            UserStatus memberStatus = userStatusRepository.findById(4).orElseThrow(RuntimeException::new);
+            UserStatus memberStatus = userStatusRepository.findByName("członek").orElseThrow(RuntimeException::new);
             LocalDateTime date = LocalDateTime.now();
             updatedWalletUser.setAccepted_at(date);
             updatedWalletUser.setUserStatus(memberStatus);
         }
         else {
-            UserStatus cancelledStatus = userStatusRepository.findById(3).orElseThrow(RuntimeException::new);
+            UserStatus cancelledStatus = userStatusRepository.findByName("odrzucony").orElseThrow(RuntimeException::new);
             updatedWalletUser.setUserStatus(cancelledStatus);
         }
 
