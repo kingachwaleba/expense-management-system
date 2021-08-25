@@ -9,10 +9,17 @@
     android:background="@drawable/bg_background"
     tools:context=".activity.RegistrationActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,19 +49,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/login_reg_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginHorizontal="30dp"
             android:text="@string/login_required"
             android:textAppearance="@style/simple_label"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/sign_up_label" />
 
         <EditText
@@ -62,13 +66,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="21dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
             android:background="@drawable/et_edittext"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_reg_tv"
             android:importantForAutofill="no"
             tools:ignore="LabelFor" />
 
@@ -76,28 +76,19 @@
             android:id="@+id/email_reg_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginHorizontal="30dp"
             android:text="@string/email_required"
             android:textAppearance="@style/simple_label"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_reg_et" />
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/email_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="21dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
             android:background="@drawable/et_edittext"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_reg_tv"
             android:importantForAutofill="no"
             tools:ignore="LabelFor"  />
 
@@ -105,28 +96,19 @@
             android:id="@+id/password_reg_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginHorizontal="30dp"
             android:text="@string/password_required"
             android:textAppearance="@style/simple_label"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_reg_et" />
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/password_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="21dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
             android:background="@drawable/et_edittext"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_reg_tv"
             android:importantForAutofill="no"
             tools:ignore="LabelFor" />
 
@@ -134,46 +116,32 @@
             android:id="@+id/password_confirm_reg_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginHorizontal="30dp"
             android:text="@string/password_confirm_required"
             android:textAppearance="@style/simple_label"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_reg_et" />
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/password_confirm_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="21dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
             android:background="@drawable/et_edittext"
             android:importantForAutofill="no"
             android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_confirm_reg_tv"
             tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/requirement_info_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/filed_required"
             android:textAlignment="center"
             android:textAppearance="@style/simple_label"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_confirm_reg_et" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/statue_layout"
@@ -212,20 +180,12 @@
             android:id="@+id/sign_up_reg_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="21dp"
-            android:layout_marginBottom="20dp"
-            android:paddingBottom="6dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="30dp"
             android:text="@string/sign_up"
             android:textAppearance="@style/simple_button"
             android:textColor="@color/light_gray"
             app:backgroundTint="@null"
-            android:background="@drawable/btn_simple"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statue_layout" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:background="@drawable/btn_simple" />
+    </LinearLayout>
 </ScrollView>

@@ -2,7 +2,10 @@ package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.example.mobile.fragment.MembersFragment;
@@ -23,7 +26,7 @@ public class WalletActivity extends AppCompatActivity {
     String TAG = "MEMBERS_FRAGMENT";
 
     TextView walletNameTv, descriptionTv, ownerTv, numberOfMembersTv;
-    Button showMembersBtn;
+    Button showMembersBtn, addMemberBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class WalletActivity extends AppCompatActivity {
         ownerTv = findViewById(R.id.owner_tv);
         numberOfMembersTv = findViewById(R.id.number_of_members_tv);
         showMembersBtn = findViewById(R.id.show_members_btn);
-
+        addMemberBtn = findViewById(R.id.add_member_btn);
         showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
     }
 
@@ -80,6 +83,16 @@ public class WalletActivity extends AppCompatActivity {
                 }
             });
         }, accesToken, id);
+
+        addMemberBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, AddMemberActivity.class);
+            intent.putExtra("name",walletNameTv.getText().toString());
+            intent.putExtra("walletId",id);
+            intent.putExtra("accessToken", accesToken);
+            startActivity(intent);
+        });
+
+
     }
 
 }

@@ -11,7 +11,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Custom_Theme">
-        <activity android:name=".activity.ChangePasswordActivity"></activity>
+        <activity android:name=".activity.AddMemberActivity"></activity>
+        <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.EditProfileActivity" />
         <activity android:name=".activity.StatueActivity" />
         <activity android:name=".activity.ProfileActivity" />
