@@ -7,6 +7,7 @@ import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
+import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.model.WalletDetail;
 import com.example.mobile.model.WalletItem;
@@ -69,4 +70,17 @@ public interface ApiInterface  {
     @GET("{infix}")
     @Headers("Content-Type: application/json")
     Call<List<String>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
+
+    @GET("wallet/{id}/{infix}")
+    @Headers("Content-Type: application/json")
+    Call<List<String>> getMembersByInfixInWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Path("infix") String infix);
+
+    @PUT("wallet/{id}/users/{userLogin}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> sendInvitationToUser(@Header("Authorization") String accessToken, @Path("id") int id, @Path("userLogin") String userLogin);
+
+
+    @PUT("wallet/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body WalletCreate walletCreate);
 }

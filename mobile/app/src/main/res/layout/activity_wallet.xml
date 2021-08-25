@@ -25,6 +25,7 @@
                 android:id="@+id/name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:textAppearance="@style/simple_label_bold"
                 android:textSize="36sp"
                 android:textColor="@color/yellow" />
@@ -230,6 +231,17 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_simple"
                 android:text="@string/statistics"
+                android:textAppearance="@style/simple_button"
+                android:textColor="@color/light_gray"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/edit_wallet_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_simple"
+                android:text="@string/edit_wallet"
                 android:textAppearance="@style/simple_button"
                 android:textColor="@color/light_gray"
                 app:backgroundTint="@null" />

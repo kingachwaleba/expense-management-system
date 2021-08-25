@@ -2,7 +2,6 @@ package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,12 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
-import com.example.mobile.model.MessageNotification;
-import com.example.mobile.model.Warning;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
-import com.example.mobile.service.adapter.MessageNotificationAdapter;
-import com.example.mobile.service.adapter.WarningAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         accountService.getAccount(account -> {
             loginTv.setText(getResources().getString(R.string.login_label) + " " + account.getLogin());
             emailTv.setText(getResources().getString(R.string.email_label) + " " + account.getEmail());
-            numberOfWalletTv.setText(getResources().getString(R.string.numer_of_wallets_label) + " " + account.getUserListCounter());
+            numberOfWalletTv.setText(getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber());
             //balanceTv.setText(getResources().getString(R.string.login_string) + " " + account.getLogin());
         }, accessToken);
 

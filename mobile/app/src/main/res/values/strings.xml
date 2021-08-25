@@ -66,5 +66,9 @@
     <string name="insert_old_password_label">Podaj aktualne hasło:</string>
     <string name="insert_new_password_label">Podaj nowe hasło: </string>
     <string name="repeat_new_password_label">Powtórz nowe hasło: </string>
+    <string name="add_members_label">Dodaj osoby: </string>
+    <string name="send_invitations">Wyślij zaproszenia</string>
+    <string name="edit_wallet">Edytuj portfel</string>
+    <string name="edit_wallet_label">Edytuj portfel:</string>
 
 </resources>
