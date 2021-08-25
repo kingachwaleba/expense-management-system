@@ -63,6 +63,7 @@ public class UserService {
                     context.startActivity(i);
                     ((LoginActivity)context).finish();
                 }
+                else Toast.makeText(context,"Nie poprawne dane logowania",Toast.LENGTH_LONG).show();
             }
             @Override
             public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {

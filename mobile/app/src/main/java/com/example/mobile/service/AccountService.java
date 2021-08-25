@@ -1,11 +1,14 @@
 package com.example.mobile.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.Invitation;
+import com.example.mobile.model.UpdatePasswordHolder;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
@@ -70,6 +73,24 @@ public class AccountService {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
 
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void changePassword(String accessToken, UpdatePasswordHolder updatePasswordHolder){
+        Call<ResponseBody> call = apiInterface.changePassword("Bearer " + accessToken, updatePasswordHolder);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if(response.body()!=null)
+                    ((Activity)context).finish();
+                else Toast.makeText(context,"Nieprawidłowe dane",Toast.LENGTH_LONG).show();
             }
 
             @Override
