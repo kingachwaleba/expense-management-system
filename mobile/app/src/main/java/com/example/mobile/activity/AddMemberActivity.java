@@ -59,11 +59,11 @@ public class AddMemberActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if(infixEt.getText().toString().length()>0){
-                    walletService.getMembersByInfix(members -> {
+                    walletService.getMembersByInfixInWallet(members -> {
                             SearchUserAdapter searchUserAdapter = new SearchUserAdapter(AddMemberActivity.this, members);
                             browseMembersRv.setAdapter(searchUserAdapter);
                             searchUserAdapter.notifyDataSetChanged();
-                    }, accessToken, infixEt.getText().toString());
+                    }, accessToken, walletId, infixEt.getText().toString());
                 }
 
                 if(infixEt.getText().toString().length()==0){
@@ -78,6 +78,7 @@ public class AddMemberActivity extends AppCompatActivity {
 
         sendInvitationsBtn.setOnClickListener(v -> {
             for(int i = 0; i < searchUserAdapterInit.getSelectedUser().size(); i++){
+                System.out.println(searchUserAdapterInit.getSelectedUser().get(i));
                 walletService.sendInvitationToUser(accessToken, walletId, searchUserAdapterInit.getSelectedUser().get(i));
             }
             finish();

@@ -11,8 +11,8 @@ public class Account {
     private String email;
     @SerializedName("image")
     private String image;
-    @SerializedName("userListCounter")
-    private int userListCounter;
+    @SerializedName("walletsNumber")
+    private int walletsNumber;
 
     public int getId() {
         return id;
@@ -46,11 +46,11 @@ public class Account {
         this.image = image;
     }
 
-    public int getUserListCounter() {
-        return userListCounter;
+    public int getWalletsNumber() {
+        return walletsNumber;
     }
 
-    public void setUserListCounter(int userListCounter) {
-        this.userListCounter = userListCounter;
+    public void setWalletsNumber(int walletsNumber) {
+        this.walletsNumber = walletsNumber;
     }
 }
