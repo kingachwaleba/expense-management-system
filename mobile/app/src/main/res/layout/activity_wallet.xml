@@ -235,6 +235,17 @@
                 app:backgroundTint="@null" />
 
             <Button
+                android:id="@+id/edit_wallet_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_simple"
+                android:text="@string/edit_wallet"
+                android:textAppearance="@style/simple_button"
+                android:textColor="@color/light_gray"
+                app:backgroundTint="@null" />
+
+            <Button
                 android:id="@+id/delete_wallet_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
