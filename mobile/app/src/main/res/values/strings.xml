@@ -63,4 +63,8 @@
     <string name="statue_text_2">2. Bla bla</string>
     <string name="statue_text_3">3. Bla bla</string>
     <string name="statue_text_4">4. Bla bla</string>
+    <string name="insert_old_password_label">Podaj aktualne hasło:</string>
+    <string name="insert_new_password_label">Podaj nowe hasło: </string>
+    <string name="repeat_new_password_label">Powtórz nowe hasło: </string>
+
 </resources>
