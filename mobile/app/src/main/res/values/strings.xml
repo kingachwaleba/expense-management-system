@@ -54,4 +54,9 @@
     <string name="profil">Profil</string>
     <string name="warning_info_text">Użytkownik przypomina Ci o uregulowaniu należności</string>
     <string name="warning_debth">NIEUREGULOWANA NALEŻNOSC</string>
+    <string name="statue_label">Regulamin:</string>
+    <string name="statue_text_1">1. Bla bla</string>
+    <string name="statue_text_2">2. Bla bla</string>
+    <string name="statue_text_3">3. Bla bla</string>
+    <string name="statue_text_4">4. Bla bla</string>
 </resources>

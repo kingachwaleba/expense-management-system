@@ -11,7 +11,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Custom_Theme">
-        <activity android:name=".activity.ProfileActivity"></activity>
+        <activity android:name=".activity.StatueActivity"></activity>
+        <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.CreateWalletActivity" />
         <activity android:name=".activity.WalletActivity" />
         <activity android:name=".activity.RegistrationActivity" />
