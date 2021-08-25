@@ -2,6 +2,7 @@ package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ import java.util.Objects;
 public class ProfileActivity extends AppCompatActivity {
 
     ImageView profileImage;
-    Button openNotificationBtn;
+    Button openNotificationBtn, editProfileBtn;
     Boolean ifOpenNotification;
     RecyclerView notificationInvitationRv; // notificationWarningRv, notificationMessageRv;
     SessionManager session;
@@ -79,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         numberOfWalletTv = findViewById(R.id.number_of_wallets_tv);
         balanceTv = findViewById(R.id.balance_tv);
         goToStatuteTv = findViewById(R.id.go_to_statue_tv);
+        editProfileBtn = findViewById(R.id.edit_profile_btn);
 
         accountService.getAccount(account -> {
             loginTv.setText(getResources().getString(R.string.login_label) + " " + account.getLogin());
@@ -108,6 +110,11 @@ public class ProfileActivity extends AppCompatActivity {
                 notificationInvitationRv.setAdapter(invitationAdapterInit);
                 invitationAdapterInit.notifyDataSetChanged();
             }
+        });
+
+        editProfileBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivity(intent);
         });
     }
 }
