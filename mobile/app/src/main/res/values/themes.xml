@@ -17,6 +17,6 @@
     <style name="Custom_Theme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:itemBackground">@color/dark_gray</item>
         <item name="android:textColor">@color/light_gray</item>
-        <item name="android:itemTextAppearance">@style/label</item>
+        <item name="android:itemTextAppearance">@style/simple_label</item>
     </style>
 </resources>

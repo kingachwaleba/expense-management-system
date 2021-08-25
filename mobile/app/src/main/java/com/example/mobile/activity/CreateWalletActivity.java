@@ -83,7 +83,7 @@ public class CreateWalletActivity extends AppCompatActivity {
                         SearchUserAdapter searchUserAdapter = new SearchUserAdapter(CreateWalletActivity.this, members);
                         browseMembersRv.setAdapter(searchUserAdapter);
                         searchUserAdapter.notifyDataSetChanged();
-                    }, infixEt.getText().toString());
+                    }, accessToken, infixEt.getText().toString());
                 }
 
                 if(infixEt.getText().toString().length()==0){

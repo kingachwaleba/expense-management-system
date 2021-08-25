@@ -13,12 +13,9 @@
         />
     <padding
         android:left="3dp"
-        android:top="0dp"
+        android:top="10dp"
         android:right="3dp"
-        android:bottom="0dp"
+        android:bottom="10dp"
         />
-    <size
-        android:width="270dp"
-        android:height="60dp"
-        />
+
 </shape>

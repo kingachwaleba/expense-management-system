@@ -63,5 +63,5 @@ public interface ApiInterface  {
 
     @GET("{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<String>> getMembersByInfix(@Path("infix") String infix);
+    Call<List<String>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
 }
