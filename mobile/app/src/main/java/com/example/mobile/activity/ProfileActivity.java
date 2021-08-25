@@ -17,6 +17,7 @@ import com.example.mobile.service.adapter.InvitationAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -33,6 +34,11 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_pagename);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         session = new SessionManager(this);
         accessToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
