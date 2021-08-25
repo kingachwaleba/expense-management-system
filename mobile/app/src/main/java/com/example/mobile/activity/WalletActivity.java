@@ -26,7 +26,8 @@ public class WalletActivity extends AppCompatActivity {
     String TAG = "MEMBERS_FRAGMENT";
 
     TextView walletNameTv, descriptionTv, ownerTv, numberOfMembersTv;
-    Button showMembersBtn, addMemberBtn;
+    Button showMembersBtn, addMemberBtn, editWalletBtn;
+    int categoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class WalletActivity extends AppCompatActivity {
         showMembersBtn = findViewById(R.id.show_members_btn);
         addMemberBtn = findViewById(R.id.add_member_btn);
         showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
+        editWalletBtn = findViewById(R.id.edit_wallet_btn);
     }
 
     @Override
@@ -63,7 +65,6 @@ public class WalletActivity extends AppCompatActivity {
                 descriptionTv.setText(getResources().getString(R.string.description_label) + " " + walletModel.getDescription());
             ownerTv.setText(getResources().getString(R.string.owner_label) + " " + walletModel.getOwner());
             numberOfMembersTv.setText(getResources().getString(R.string.number_of_members_label) + " " + walletModel.getUserListCounter());
-
             showMembersBtn.setOnClickListener(v -> {
                 if (!showMembersControl) {
                     Bundle bundle = new Bundle();
@@ -92,7 +93,15 @@ public class WalletActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
+        editWalletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WalletActivity.this, EditWalletActivity.class);
+                intent.putExtra("accessToken", accesToken);
+                intent.putExtra("walletId",id);
+                startActivity(intent);
+            }
+        });
     }
 
 }
