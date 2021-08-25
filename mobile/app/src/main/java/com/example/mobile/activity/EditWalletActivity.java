@@ -68,18 +68,15 @@ public class EditWalletActivity extends AppCompatActivity {
             category = new Category(checkedId, radioText);
         });
 
-        updateWalletBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nameS = nameEt.getText().toString();
-                WalletCreate walletCreate;
-                if(validateName(nameS)){
-                    String descriptionS = descriptionEt.getText().toString();
-                    walletCreate = new WalletCreate(nameS, descriptionS, category);
-                    walletService.updateWallet(accessToken, walletId, walletCreate);
-                    finish();
-                } else Toast.makeText(EditWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();
-            }
+        updateWalletBtn.setOnClickListener(v -> {
+            String nameS = nameEt.getText().toString();
+            WalletCreate walletCreate;
+            if(validateName(nameS)){
+                String descriptionS = descriptionEt.getText().toString();
+                walletCreate = new WalletCreate(nameS, descriptionS, category);
+                walletService.updateWallet(accessToken, walletId, walletCreate);
+                finish();
+            } else Toast.makeText(EditWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();
         });
     }
 
