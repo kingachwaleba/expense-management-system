@@ -1,102 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@drawable/bg_background">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bg_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/edit_profile_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/edit_profile_label"
+                android:textAppearance="@style/simple_label_bold"
+                android:textSize="36sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.22"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/vector"
+                android:layout_width="200dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/v_underline"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.578"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/edit_profile_label"
+                app:layout_constraintVertical_bias="1.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/edit_profile_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/edit_profile_label"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/choose_image_text"
             android:textAppearance="@style/simple_label_bold"
-            android:textSize="36sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.22"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="24sp"/>
 
-        <View
-            android:id="@+id/vector"
-            android:layout_width="200dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/v_underline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.578"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/edit_profile_label"
-            app:layout_constraintVertical_bias="1.0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/choose_image_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/et_edittext"
+            android:drawableStart="@drawable/ic_image"
+            android:paddingStart="20dp"
+            android:text="@string/browse"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/gray"
+            app:backgroundTint="@null"
+            tools:ignore="RtlSymmetry" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/choose_image_text"
-        android:textAppearance="@style/simple_label_bold"
-        android:textSize="24sp"/>
+        <Button
+            android:id="@+id/change_password_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_simple"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="40dp"
+            android:text="@string/change_password"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
 
-    <Button
-        android:id="@+id/choose_image_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:layout_marginHorizontal="40dp"
-        android:background="@drawable/et_edittext"
-        android:drawableStart="@drawable/ic_image"
-        android:paddingStart="20dp"
-        android:text="@string/browse"
-        android:textAppearance="@style/simple_button"
-        android:textColor="@color/gray"
-        app:backgroundTint="@null"
-        tools:ignore="RtlSymmetry" />
+        <Button
+            android:id="@+id/delete_account_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/btn_simple"
+            android:layout_marginVertical="20dp"
+            android:text="@string/delete_account"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
 
-    <Button
-        android:id="@+id/change_password_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_simple"
-        android:layout_marginVertical="20dp"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/change_password"
-        android:textAppearance="@style/simple_button"
-        android:textColor="@color/light_gray"
-        app:backgroundTint="@null" />
+        <Button
+            android:id="@+id/save_changes_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_simple"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="40dp"
+            android:text="@string/save_changes"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
 
-    <Button
-        android:id="@+id/delete_account_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:background="@drawable/btn_simple"
-        android:layout_marginVertical="20dp"
-        android:text="@string/delete_account"
-        android:textAppearance="@style/simple_button"
-        android:textColor="@color/light_gray"
-        app:backgroundTint="@null" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/save_changes_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_simple"
-        android:layout_marginVertical="20dp"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/save_changes"
-        android:textAppearance="@style/simple_button"
-        android:textColor="@color/light_gray"
-        app:backgroundTint="@null" />
-
-</LinearLayout>
+</ScrollView>
