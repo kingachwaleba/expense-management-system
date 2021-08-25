@@ -96,8 +96,8 @@ public class WalletService {
         });
     }
 
-    public void getMembersByInfix(WalletService.OnMemberSearchCallback callback, String infix){
-        Call<List<String>> call = apiInterface.getMembersByInfix(infix);
+    public void getMembersByInfix(WalletService.OnMemberSearchCallback callback,String accessToken, String infix){
+        Call<List<String>> call = apiInterface.getMembersByInfix("Bearer " + accessToken, infix);
         call.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(@NotNull Call<List<String>> call, @NotNull Response<List<String>> response) {

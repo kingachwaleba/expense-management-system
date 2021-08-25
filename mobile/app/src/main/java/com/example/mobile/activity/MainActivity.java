@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_pagename);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -67,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
         }
         if(id == R.id.goToProfile){
             Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.goToWallets){
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             return true;
         }

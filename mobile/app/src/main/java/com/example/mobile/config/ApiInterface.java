@@ -5,6 +5,7 @@ import com.example.mobile.model.Category;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
+import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.model.WalletDetail;
@@ -28,6 +29,10 @@ public interface ApiInterface  {
     @POST("register")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> register(@Body User user);
+
+    @PUT("account/change-password")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> changePassword(@Header("Authorization") String accessToken, @Body UpdatePasswordHolder updatePasswordHolder);
 
     @GET("account")
     @Headers("Content-Type: application/json")
@@ -63,5 +68,5 @@ public interface ApiInterface  {
 
     @GET("{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<String>> getMembersByInfix(@Path("infix") String infix);
+    Call<List<String>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
 }

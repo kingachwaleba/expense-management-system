@@ -43,6 +43,7 @@ public class CreateWalletActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_wallet);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_pagename);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -82,7 +83,7 @@ public class CreateWalletActivity extends AppCompatActivity {
                         SearchUserAdapter searchUserAdapter = new SearchUserAdapter(CreateWalletActivity.this, members);
                         browseMembersRv.setAdapter(searchUserAdapter);
                         searchUserAdapter.notifyDataSetChanged();
-                    }, infixEt.getText().toString());
+                    }, accessToken, infixEt.getText().toString());
                 }
 
                 if(infixEt.getText().toString().length()==0){
