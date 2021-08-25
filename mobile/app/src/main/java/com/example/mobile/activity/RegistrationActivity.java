@@ -1,10 +1,14 @@
 package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.mobile.R;
 import com.example.mobile.model.User;
@@ -17,6 +21,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText loginEt, emailEt, passwordEt, passwordConfirmEt;
     CheckBox statueCb;
     Button signUpBtn;
+    TextView statueTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +39,20 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordEt = findViewById(R.id.password_reg_et);
         passwordConfirmEt = findViewById(R.id.password_confirm_reg_et);
         statueCb = findViewById(R.id.statue_reg_cb);
+        statueTv = findViewById(R.id.statue_reg_tv);
 
         signUpBtn.setOnClickListener(v -> {
             UserService userService = new UserService(RegistrationActivity.this);
             if (validateUser() != null)
                 userService.register(validateUser());
+        });
+
+        statueTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegistrationActivity.this, StatueActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
