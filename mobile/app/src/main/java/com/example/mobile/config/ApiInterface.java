@@ -69,4 +69,12 @@ public interface ApiInterface  {
     @GET("{infix}")
     @Headers("Content-Type: application/json")
     Call<List<String>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
+
+    @GET("wallet/{id}/{infix}")
+    @Headers("Content-Type: application/json")
+    Call<List<String>> getMembersByInfixInWallet(@Header("Authorization") String accessToken, @Path("infix") String infix, @Path("id") int id);
+
+    @PUT("wallet/{id}/users/{userLogin}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> sendInvitationToUser(@Header("Authorization") String accessToken, @Path("id") int id, @Path("id") String userLogin);
 }
