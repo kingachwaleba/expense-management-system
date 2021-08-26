@@ -17,6 +17,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.util.Map;
 
 public class WalletService {
 
@@ -144,8 +145,8 @@ public class WalletService {
         });
     }
 
-    public void updateWallet(String accessToken, int id, WalletCreate walletCreate){
-        Call<ResponseBody> call = apiInterface.editWallet("Bearer " + accessToken, id, walletCreate);
+    public void updateWallet(String accessToken, int id, Map<String, String> map){
+        Call<ResponseBody> call = apiInterface.editWallet("Bearer " + accessToken, id, map);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {

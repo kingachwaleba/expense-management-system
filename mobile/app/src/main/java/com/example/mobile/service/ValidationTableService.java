@@ -31,8 +31,8 @@ public class ValidationTableService  {
         void onUnits(List<Unit> units);
     }
 
-    public void getCategories(OnValidationTableCategory callback){
-        Call<List<Category>> call = apiInterface.getCategories();
+    public void getWalletCategories(OnValidationTableCategory callback){
+        Call<List<Category>> call = apiInterface.getWalletCategories();
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(@NotNull Call<List<Category>> call, @NotNull Response<List<Category>> response) {

@@ -18,7 +18,9 @@ import com.example.mobile.service.ListService;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.adapter.ProductCreateListAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CreateListActivity extends AppCompatActivity {
@@ -96,13 +98,13 @@ public class CreateListActivity extends AppCompatActivity {
             } else Toast.makeText(CreateListActivity.this, "Wprowadź nazwe i ilość produktu", Toast.LENGTH_SHORT).show();
         });
 
-        createListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(nameListEt.getText().toString().length()>0){
-                    listService.createList(accessToken, walletId, new ListCreate(nameListEt.getText().toString(), productList));
-                } else Toast.makeText(CreateListActivity.this, "Podaj nazwe listy", Toast.LENGTH_SHORT);
-            }
+        createListBtn.setOnClickListener(v -> {
+            if(nameListEt.getText().toString().length()>0){
+                ListCreate l = new ListCreate(nameListEt.getText().toString(), productList);
+                Map<String, ListCreate> list = new HashMap<>();
+                list.put("list",l);
+                listService.createList(accessToken, walletId, list);
+            } else Toast.makeText(CreateListActivity.this, "Podaj nazwe listy", Toast.LENGTH_SHORT);
         });
     }
 
