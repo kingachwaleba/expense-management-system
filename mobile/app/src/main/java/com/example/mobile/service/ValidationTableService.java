@@ -5,6 +5,8 @@ import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Category;
+import com.example.mobile.model.Unit;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import retrofit2.Call;
@@ -21,11 +23,15 @@ public class ValidationTableService  {
         this.apiInterface = new ApiClient().getService();
     }
 
-    public interface OnValidationTable{
+    public interface OnValidationTableCategory {
         void onCategories(List<Category> categories);
     }
 
-    public void getCategories(OnValidationTable callback){
+    public interface OnValidationTableUnit{
+        void onUnits(List<Unit> units);
+    }
+
+    public void getCategories(OnValidationTableCategory callback){
         Call<List<Category>> call = apiInterface.getCategories();
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -39,4 +45,20 @@ public class ValidationTableService  {
             }
         });
     }
+
+    public void getUnits(OnValidationTableUnit callback){
+        Call<List<Unit>> call = apiInterface.getUnits();
+        call.enqueue(new Callback<List<Unit>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<Unit>> call, @NotNull Response<List<Unit>> response) {
+                callback.onUnits(response.body());
+            }
+            @Override
+            public void onFailure(@NotNull Call<List<Unit>> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
 }

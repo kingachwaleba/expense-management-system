@@ -1,18 +1,19 @@
 package com.example.mobile.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import com.example.mobile.fragment.MembersFragment;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
+import com.example.mobile.fragment.MembersFragment;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.WalletService;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class WalletActivity extends AppCompatActivity {
     String TAG = "MEMBERS_FRAGMENT";
 
     TextView walletNameTv, descriptionTv, ownerTv, numberOfMembersTv;
-    Button showMembersBtn, addMemberBtn, editWalletBtn;
+    Button showMembersBtn, addMemberBtn, editWalletBtn, showListsBtn, addListBtn;
     int categoryId;
 
     @Override
@@ -53,6 +54,7 @@ public class WalletActivity extends AppCompatActivity {
         addMemberBtn = findViewById(R.id.add_member_btn);
         showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
         editWalletBtn = findViewById(R.id.edit_wallet_btn);
+        addListBtn = findViewById(R.id.add_shop_list_btn);
     }
 
     @Override
@@ -93,14 +95,18 @@ public class WalletActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        editWalletBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WalletActivity.this, EditWalletActivity.class);
-                intent.putExtra("accessToken", accesToken);
-                intent.putExtra("walletId",id);
-                startActivity(intent);
-            }
+        editWalletBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, EditWalletActivity.class);
+            intent.putExtra("accessToken", accesToken);
+            intent.putExtra("walletId",id);
+            startActivity(intent);
+        });
+
+        addListBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, CreateListActivity.class);
+            intent.putExtra("accessToken", accesToken);
+            intent.putExtra("walletId",id);
+            startActivity(intent);
         });
     }
 

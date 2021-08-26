@@ -70,5 +70,11 @@
     <string name="send_invitations">Wyślij zaproszenia</string>
     <string name="edit_wallet">Edytuj portfel</string>
     <string name="edit_wallet_label">Edytuj portfel:</string>
+    <string name="create_list_label">Utwórz listę:</string>
+    <string name="create_list">Utwórz listę</string>
+    <string name="added_product_label">Dodane produkty:</string>
+    <string name="add_product_to_list_label">Dodaj produkty do listy:</string>
+    <string name="quantity_hint">Wpisz ilość...</string>
+    <string name="add">Dodaj</string>
 
 </resources>
