@@ -24,7 +24,7 @@ public class ListServiceImpl implements ListService {
 
     @Override
     public void save(ListHolder listHolder, Wallet wallet) {
-        Status status = statusRepository.findById(3).orElseThrow(RuntimeException::new);
+        Status status = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
 
         java.util.List<ListDetail> listDetailList = listHolder.getListDetailList();
         List shoppingList = listHolder.getList();
