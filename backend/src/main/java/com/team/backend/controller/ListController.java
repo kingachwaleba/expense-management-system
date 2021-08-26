@@ -46,7 +46,7 @@ public class ListController {
 
     @Transactional
     @PostMapping("/wallet/{id}/create-shopping-list")
-    public ResponseEntity<?> createWallet(@PathVariable int id, @Valid @RequestBody ListHolder listHolder) {
+    public ResponseEntity<?> createList(@PathVariable int id, @Valid @RequestBody ListHolder listHolder) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
         listService.save(listHolder, wallet);
