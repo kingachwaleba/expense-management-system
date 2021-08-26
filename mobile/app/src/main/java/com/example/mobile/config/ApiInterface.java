@@ -3,6 +3,7 @@ package com.example.mobile.config;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.Invitation;
+import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
@@ -12,6 +13,9 @@ import com.example.mobile.model.WalletHolder;
 import com.example.mobile.model.WalletDetail;
 import com.example.mobile.model.WalletItem;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -54,6 +58,10 @@ public interface ApiInterface  {
     @POST("create-wallet")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> createWallet(@Header("Authorization") String accessToken, @Body WalletHolder walletHolder);
+
+    @POST("wallet/{id}/create-shopping-list")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> createList(@Header("Authorization") String accessToken, @Path("id") int id, @Body ListCreate list);
 
     @GET("wallet/{id}")
     @Headers("Content-Type: application/json")

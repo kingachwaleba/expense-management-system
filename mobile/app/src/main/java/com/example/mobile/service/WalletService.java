@@ -97,7 +97,7 @@ public class WalletService {
         });
     }
 
-    public void getMembersByInfix(WalletService.OnMemberSearchCallback callback,String accessToken, String infix){
+    public void getMembersByInfix(WalletService.OnMemberSearchCallback callback, String accessToken, String infix){
         Call<List<String>> call = apiInterface.getMembersByInfix("Bearer " + accessToken, infix);
         call.enqueue(new Callback<List<String>>() {
             @Override
@@ -113,7 +113,7 @@ public class WalletService {
         });
     }
 
-    public void getMembersByInfixInWallet(WalletService.OnMemberSearchCallback callback, String accessToken,  int walletId, String infix){
+    public void getMembersByInfixInWallet(WalletService.OnMemberSearchCallback callback, String accessToken, int walletId, String infix){
         Call<List<String>> call = apiInterface.getMembersByInfixInWallet("Bearer " + accessToken, walletId, infix);
         call.enqueue(new Callback<List<String>>() {
             @Override

@@ -12,6 +12,7 @@ import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.service.AccountService;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -26,6 +27,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_pagename);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         oldPasswordEt = findViewById(R.id.password_old_et);
         newPasswordEt = findViewById(R.id.password_new_et);
