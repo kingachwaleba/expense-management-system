@@ -43,6 +43,7 @@ public class WalletController {
 
         map.put("walletId", wallet.getId());
         map.put("name", wallet.getName());
+        map.put("walletCategory", wallet.getWalletCategory());
         map.put("description", wallet.getDescription());
         map.put("owner", walletService.findOwner(wallet).getLogin());
         map.put("userListCounter", walletService.findUserList(wallet).size());
@@ -65,6 +66,7 @@ public class WalletController {
 
             map.put("walletId", wallet.getId());
             map.put("name", wallet.getName());
+            map.put("walletCategory", wallet.getWalletCategory());
             map.put("owner", walletService.findOwner(wallet).getLogin());
             map.put("userListCounter", walletService.findUserList(wallet).size());
 
