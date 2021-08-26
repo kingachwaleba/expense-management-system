@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import com.example.mobile.R;
 import com.example.mobile.model.ListCreate;
+import com.example.mobile.model.ListShop;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.service.ListService;
@@ -100,10 +101,8 @@ public class CreateListActivity extends AppCompatActivity {
 
         createListBtn.setOnClickListener(v -> {
             if(nameListEt.getText().toString().length()>0){
-                ListCreate l = new ListCreate(nameListEt.getText().toString(), productList);
-                Map<String, ListCreate> list = new HashMap<>();
-                list.put("list",l);
-                listService.createList(accessToken, walletId, list);
+                listService.createList(accessToken, walletId, new ListCreate(new ListShop(nameListEt.getText().toString()), productList));
+                finish();
             } else Toast.makeText(CreateListActivity.this, "Podaj nazwe listy", Toast.LENGTH_SHORT);
         });
     }

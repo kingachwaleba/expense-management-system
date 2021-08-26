@@ -4,6 +4,7 @@ import com.example.mobile.model.Account;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
+import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
@@ -57,13 +58,9 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> createWallet(@Header("Authorization") String accessToken, @Body WalletHolder walletHolder);
 
-    /*@POST("wallet/{id}/create-shopping-list")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> createList(@Header("Authorization") String accessToken, @Path("id") int id, @Body ListCreate list);*/
-
     @POST("wallet/{id}/create-shopping-list")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> createList(@Header("Authorization") String accessToken, @Path("id") int id, @Body Map<String, ListCreate> list);
+    Call<ResponseBody> createList(@Header("Authorization") String accessToken, @Path("id") int id, @Body ListCreate list);
 
     @GET("wallet/{id}")
     @Headers("Content-Type: application/json")
@@ -93,4 +90,9 @@ public interface ApiInterface  {
     @PUT("wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body Map<String, String> map);
+
+
+    @GET("wallet/{id}/shopping-lists")
+    @Headers("Content-Type: application/json")
+    Call<List<ListShop>> getWalletLists(@Header("Authorization") String accessToken, @Path("id") int id);
 }
