@@ -6,7 +6,6 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
-import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.model.WalletDetail;
 import com.example.mobile.model.WalletItem;

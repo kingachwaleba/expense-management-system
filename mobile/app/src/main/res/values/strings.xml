@@ -76,5 +76,8 @@
     <string name="add_product_to_list_label">Dodaj produkty do listy:</string>
     <string name="quantity_hint">Wpisz ilość...</string>
     <string name="add">Dodaj</string>
+    <string name="go_to_list">Przejdź do listy</string>
+    <string name="number_of_elements_label">Liczba pozycji:</string>
+    <string name="see_details">Zobacz szczegóły</string>
 
 </resources>

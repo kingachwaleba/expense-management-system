@@ -29,6 +29,7 @@ public class EditWalletActivity extends AppCompatActivity {
     Button updateWalletBtn;
     WalletService walletService;
     int walletId;
+    String walletName, walletDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,9 @@ public class EditWalletActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        walletName = getIntent().getStringExtra("walletName");
+        walletDescription = getIntent().getStringExtra("walletDescription");
+
         walletService = new WalletService(this);
 
         accessToken = getIntent().getStringExtra("accessToken");
@@ -47,8 +51,10 @@ public class EditWalletActivity extends AppCompatActivity {
         categoryRg = findViewById(R.id.category_RG);
         nameEt = findViewById(R.id.name_et);
         descriptionEt = findViewById(R.id.description_et);
-
         updateWalletBtn = findViewById(R.id.update_wallet_btn);
+
+        nameEt.setText(walletName);
+        descriptionEt.setText(walletDescription);
 
         ValidationTableService validationTableService = new ValidationTableService(this);
         validationTableService.getWalletCategories(categories -> {
@@ -72,7 +78,6 @@ public class EditWalletActivity extends AppCompatActivity {
 
         updateWalletBtn.setOnClickListener(v -> {
             String nameS = nameEt.getText().toString();
-            WalletCreate walletCreate;
             if(validateName(nameS)){
                 String descriptionS = descriptionEt.getText().toString();
                 Map<String, String> map = new HashMap<>();
