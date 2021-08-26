@@ -16,6 +16,8 @@ import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class EditWalletActivity extends AppCompatActivity {
@@ -49,7 +51,7 @@ public class EditWalletActivity extends AppCompatActivity {
         updateWalletBtn = findViewById(R.id.update_wallet_btn);
 
         ValidationTableService validationTableService = new ValidationTableService(this);
-        validationTableService.getCategories(categories -> {
+        validationTableService.getWalletCategories(categories -> {
             for(int i = 0; i < categories.size(); i++){
                 RadioButton rdbtn = new RadioButton(EditWalletActivity.this);
                 rdbtn.setId(View.generateViewId());
@@ -73,8 +75,11 @@ public class EditWalletActivity extends AppCompatActivity {
             WalletCreate walletCreate;
             if(validateName(nameS)){
                 String descriptionS = descriptionEt.getText().toString();
-                walletCreate = new WalletCreate(nameS, descriptionS, category);
-                walletService.updateWallet(accessToken, walletId, walletCreate);
+                Map<String, String> map = new HashMap<>();
+                map.put("name", nameS);
+                map.put("description", descriptionS);
+                map.put("walletCategory", category.getName());
+                walletService.updateWallet(accessToken, walletId, map);
                 finish();
             } else Toast.makeText(EditWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();
         });

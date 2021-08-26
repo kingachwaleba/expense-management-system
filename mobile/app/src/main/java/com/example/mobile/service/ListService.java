@@ -7,6 +7,9 @@ import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.ListCreate;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +26,7 @@ public class ListService {
         this.apiInterface = new ApiClient().getService();
     }
 
-    public void createList(String accessToken, int id, ListCreate list){
+    public void createList(String accessToken, int id, Map<String, ListCreate> list){
         Call<ResponseBody> call = apiInterface.createList("Bearer " + accessToken, id, list);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
