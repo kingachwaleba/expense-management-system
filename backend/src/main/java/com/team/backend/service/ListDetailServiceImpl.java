@@ -22,7 +22,7 @@ public class ListDetailServiceImpl implements ListDetailService {
 
     @Override
     public void save(ListDetail listDetail, List shoppingList) {
-        Status status = statusRepository.findById(3).orElseThrow(RuntimeException::new);
+        Status status = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
 
         listDetail.setUser(null);
         listDetail.setStatus(status);
