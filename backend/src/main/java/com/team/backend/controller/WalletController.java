@@ -111,11 +111,6 @@ public class WalletController {
     public ResponseEntity<?> addUsers(@PathVariable int id, @PathVariable String userLogin) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
-        for (WalletUser walletUser : updatedWallet.getWalletUserSet()) {
-            if (walletUser.getUser().getLogin().equals(userLogin))
-                return new ResponseEntity<>("Person already exists for login " + userLogin + " in this wallet!", HttpStatus.CONFLICT);
-        }
-
         UserStatus waitingStatus = userStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
 
         walletService.saveUser(userLogin, updatedWallet, waitingStatus);
