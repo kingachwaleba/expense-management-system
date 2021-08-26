@@ -1,11 +1,9 @@
 package com.team.backend.controller;
 
 import com.team.backend.helpers.WalletHolder;
-import com.team.backend.model.User;
-import com.team.backend.model.UserStatus;
-import com.team.backend.model.Wallet;
-import com.team.backend.model.WalletUser;
+import com.team.backend.model.*;
 import com.team.backend.repository.UserStatusRepository;
+import com.team.backend.repository.WalletCategoryRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -25,12 +23,15 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
+    private final WalletCategoryRepository walletCategoryRepository;
 
     public WalletController(WalletService walletService, UserService userService,
-                            UserStatusRepository userStatusRepository) {
+                            UserStatusRepository userStatusRepository,
+                            WalletCategoryRepository walletCategoryRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
+        this.walletCategoryRepository = walletCategoryRepository;
     }
 
     @GetMapping("/wallet/{id}")
@@ -90,12 +91,16 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}")
-    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Wallet newWallet) {
+    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Map<String, String> map) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
-        updatedWallet.setName(newWallet.getName());
-        updatedWallet.setDescription(newWallet.getDescription());
-        updatedWallet.setWalletCategory(newWallet.getWalletCategory());
+        updatedWallet.setName(map.get("name"));
+        updatedWallet.setDescription(map.get("description"));
+
+        WalletCategory walletCategory = walletCategoryRepository
+                .findByName(map.get("walletCategory")).orElseThrow(RuntimeException::new);
+
+        updatedWallet.setWalletCategory(walletCategory);
 
         walletService.save(updatedWallet);
 
