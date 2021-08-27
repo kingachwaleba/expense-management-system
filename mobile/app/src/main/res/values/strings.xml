@@ -79,5 +79,6 @@
     <string name="go_to_list">Przejdź do listy</string>
     <string name="number_of_elements_label">Liczba pozycji:</string>
     <string name="see_details">Zobacz szczegóły</string>
+    <string name="edit_list_label">Edytuj listę:</string>
 
 </resources>

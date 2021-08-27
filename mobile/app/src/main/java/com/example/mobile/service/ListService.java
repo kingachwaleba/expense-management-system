@@ -7,6 +7,7 @@ import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
+import com.example.mobile.model.Product;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -78,6 +79,51 @@ public class ListService {
 
             @Override
             public void onFailure(@NotNull Call<ListShop> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void addListItem(String accessToken, int id, Product product){
+        Call<ResponseBody> call = apiInterface.addListItem("Bearer " + accessToken, id, product);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void editListItem(String accessToken, int id, Product product){
+        Call<ResponseBody> call = apiInterface.editListItem("Bearer " + accessToken, id, product);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void editListName(String accessToken, int id, String name){
+        Call<ResponseBody> call = apiInterface.editListName("Bearer " + accessToken, id, name);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }

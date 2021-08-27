@@ -41,8 +41,6 @@ public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreate
         holder.quantityTv.setText(String.valueOf(productItem.getQuantity()));
         holder.unitTv.setText(productItem.getUnit().getName());
 
-
-
         holder.editProductBtn.setOnClickListener(v -> {
             mProducts.remove(position);
             CreateListActivity.setNameQuantityProductEt(productItem.getName(), String.valueOf(productItem.getQuantity()), productItem.getUnit());

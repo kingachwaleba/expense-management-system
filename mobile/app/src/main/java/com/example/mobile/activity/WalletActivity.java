@@ -34,7 +34,7 @@ public class WalletActivity extends AppCompatActivity {
     TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv;
     Button showMembersBtn, addMemberBtn, editWalletBtn, showListsBtn, addListBtn;
     int categoryId;
-    String walletName, walletDescription;
+    String walletName, walletDescription, walletCategory;
     ListsAdapter listAdapter;
     RecyclerView shopListsRv;
     List<ListShop> lists1;
@@ -81,6 +81,7 @@ public class WalletActivity extends AppCompatActivity {
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
             walletName = walletModel.getName();
+            walletCategory = walletModel.getCategory().getName();
             walletDescription = walletModel.getDescription();
             walletNameTv.setText(walletModel.getName());
             walletCategoryTv.setText(getResources().getString(R.string.category_label) + " " + walletModel.getCategory().getName());
@@ -123,7 +124,7 @@ public class WalletActivity extends AppCompatActivity {
             intent.putExtra("walletId",id);
             intent.putExtra("walletName", walletName);
             intent.putExtra("walletDescription", walletDescription);
-            intent.putExtra("walletCategory", walletCategoryTv.getText().toString());
+            intent.putExtra("walletCategory", walletCategory);
             startActivity(intent);
         });
 
