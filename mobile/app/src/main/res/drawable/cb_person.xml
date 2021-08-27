@@ -6,6 +6,9 @@
         android:state_checked="true"
         android:drawable="@drawable/cb_person_checked" />
     <item
+        android:state_enabled="false"
+        android:drawable="@drawable/cb_person_not_active" />
+    <item
         android:drawable="@drawable/cb_person_not_checked"/>
 
 </selector>
