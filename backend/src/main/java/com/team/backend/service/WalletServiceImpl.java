@@ -40,7 +40,7 @@ public class WalletServiceImpl implements WalletService {
         walletUser.setUser(user);
         walletUser.setCreated_at(date);
 
-        if (userStatus.getId() == 1)
+        if (userStatus.getName().equals("właściciel"))
             walletUser.setAccepted_at(date);
         else
             walletUser.setAccepted_at(null);
@@ -138,7 +138,7 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public User findOwner(Wallet wallet) {
         for (WalletUser walletUser : wallet.getWalletUserSet())
-            if (walletUser.getUserStatus().getId() == 1)
+            if (walletUser.getUserStatus().getName().equals("właściciel"))
                 return walletUser.getUser();
 
         return null;
