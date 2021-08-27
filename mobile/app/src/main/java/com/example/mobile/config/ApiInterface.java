@@ -109,7 +109,7 @@ public interface ApiInterface  {
     Call<ResponseBody> editListItem(@Header("Authorization") String accessToken, @Path("id") int id, @Body Product product);
 
     @PUT("shopping-list/edit/{id}")
-    @Headers("Content-Type: text/plain")
+    @Headers("Content-Type: application/json")
     Call<ResponseBody> editListName(@Header("Authorization") String accessToken, @Path("id") int id, @Body String name);
 
     @PUT("change-list-status/{id}")

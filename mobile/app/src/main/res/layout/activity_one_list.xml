@@ -48,6 +48,14 @@
                     android:textColor="@color/yellow"
                     android:textSize="30sp" />
 
+                <Button
+                    android:id="@+id/who_take_list_btn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/btn_person"
+                    android:visibility="invisible"
+                    />
+
                 <CheckBox
                     android:id="@+id/take_list_cb"
                     android:layout_width="wrap_content"
