@@ -6,14 +6,14 @@
 
     <Button
         android:id="@+id/delete_list_item_btn"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/btn_delete_active"/>
     <Button
         android:id="@+id/edit_list_item_btn"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/btn_edit"/>
     <TextView

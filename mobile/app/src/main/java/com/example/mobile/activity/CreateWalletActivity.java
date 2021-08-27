@@ -98,7 +98,7 @@ public class CreateWalletActivity extends AppCompatActivity {
         validationTableService.getWalletCategories(categories -> {
             for(int i = 0; i < categories.size(); i++){
                 RadioButton rdbtn = new RadioButton(CreateWalletActivity.this);
-                rdbtn.setId(View.generateViewId());
+                rdbtn.setId(categories.get(i).getId());
                 rdbtn.setText(categories.get(i).getName());
                 rdbtn.setTextAppearance(R.style.simple_label);
                 rdbtn.setTextSize(18);

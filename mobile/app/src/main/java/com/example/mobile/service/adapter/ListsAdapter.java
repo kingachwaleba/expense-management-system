@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
+import com.example.mobile.activity.OneListActivity;
+import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.model.ListShop;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,9 +42,10 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
         holder.listId = listShop.getId();
         holder.numberOfElementsTv.setText(mInflater.getContext().getResources().getString(R.string.number_of_elements_label) + " " + listShop.getListDetailSet().size());
 
-        holder.numberOfElementsTv.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), ListActivity.class);
+        holder.goToListBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), OneListActivity.class);
             intent.putExtra("listId", holder.listId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             holder.itemView.getContext().startActivity(intent);
         });
     }

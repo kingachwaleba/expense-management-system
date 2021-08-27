@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_background">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_round_box_dark">
+
+            <TextView
+                android:id="@+id/edit_list_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/simple_label_bold"
+                android:textSize="30sp"
+                android:text="@string/edit_list_label"
+                android:textColor="@color/yellow" />
+
+            <View
+                android:id="@+id/vector"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/v_line_white" />
+
+            <EditText
+                android:id="@+id/new_name_list_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/name_hint"
+                android:background="@drawable/et_simple"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/light_gray"
+                android:importantForAutofill="no"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/update_list_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/btn_simple"
+            android:text="@string/save_changes"
+            android:textAppearance="@style/simple_button" />
+    </LinearLayout>
+</ScrollView>

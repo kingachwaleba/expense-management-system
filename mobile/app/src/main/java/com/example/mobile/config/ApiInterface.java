@@ -5,6 +5,7 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
@@ -17,6 +18,7 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -93,4 +95,32 @@ public interface ApiInterface  {
     @GET("wallet/{id}/shopping-lists")
     @Headers("Content-Type: application/json")
     Call<List<ListShop>> getWalletLists(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @GET("shopping-list/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ListShop> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @POST("shopping-list/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> addListItem(@Header("Authorization") String accessToken, @Path("id") int id, @Body Product product);
+
+    @PUT("edit-list-element/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> editListItem(@Header("Authorization") String accessToken, @Path("id") int id, @Body Product product);
+
+    @PUT("shopping-list/edit/{id}")
+    @Headers("Content-Type: text/plain")
+    Call<ResponseBody> editListName(@Header("Authorization") String accessToken, @Path("id") int id, @Body String name);
+
+    @PUT("change-list-status/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> changeListStatus(@Header("Authorization") String accessToken, @Path("id") int id, @Body int statusId);
+
+    @PUT("change-element-status/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> changeListElementStatus(@Header("Authorization") String accessToken, @Path("id") int id, @Body int statusId);
+
+    @DELETE("/delete-list-element/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteListElement(@Header("Authorization") String accessToken, @Path("id") int id);
 }

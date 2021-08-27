@@ -11,7 +11,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Custom_Theme">
-        <activity android:name=".activity.ListActivity"></activity>
+        <activity android:name=".activity.EditListActivity"></activity>
+        <activity android:name=".activity.OneListActivity" />
         <activity android:name=".activity.CreateListActivity" />
         <activity android:name=".activity.EditWalletActivity" />
         <activity android:name=".activity.AddMemberActivity" />

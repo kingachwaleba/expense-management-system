@@ -1,8 +1,5 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +7,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
@@ -18,10 +20,9 @@ import com.example.mobile.model.Unit;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.adapter.ProductCreateListAdapter;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class CreateListActivity extends AppCompatActivity {
