@@ -33,7 +33,7 @@
  float: right;
  margin-left: auto;
  margin-right: 2%;
- flex-wrap: wrap;
+ /*flex-wrap: wrap;*/
 }
 
 .nav-item{
@@ -94,7 +94,7 @@ input[type='text'], input[type='password']{
   border-color: transparent;
 }
 
-.login-container{
+.form-container{
   position: relative;
   display: flex;
   flex-direction: column;
@@ -181,7 +181,7 @@ input[type='text'], input[type='password']{
   .href-text{
     font-size: 2vw;
 }
-.login-container{
+.form-container{
     font-size: 2vw;
 }
 }
@@ -224,7 +224,7 @@ input[type='text'], input[type='password']{
   .href-text{
     font-size: 3vw;
   }
-  .login-container{
+  .form-container{
       font-size: 3vw;
   }
   .form-label{
@@ -270,7 +270,7 @@ input[type='text'], input[type='password']{
   .href-text{
     font-size: 3vw;
   }
-  .login-container{
+  .form-container{
       font-size: 3vw;
   }
   .form-label{
@@ -315,7 +315,7 @@ input[type='text'], input[type='password']{
   .href-text{
     font-size: 3vw;
   }
-  .login-container{
+  .form-container{
       font-size: 3vw;
   }
 
@@ -360,7 +360,7 @@ input[type='text'], input[type='password']{
   .href-text{
     font-size: 4vw;
   }
-  .login-container{
+  .form-container{
       font-size: 4vw;
   }
 

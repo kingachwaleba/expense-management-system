@@ -6,6 +6,7 @@ import {LoginPage} from "./pages/login/LoginPage";
 import {RegisterPage} from "./pages/register/RegisterPage";
 import {HomePage} from "./pages/home/HomePage";
 import {StartPage} from "./pages/start/StartPage";
+import {CreateWalletPage} from "./pages/create-wallet/CreateWalletPage";
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
 import FooterPage from './components/Footer';
@@ -23,7 +24,7 @@ class App extends React.Component {
 
     componentDidMount() {
         const user = UserService.getCurrentUser();
-
+        
         if (user) {
             this.setState({
                 login: true,
@@ -54,7 +55,7 @@ class App extends React.Component {
                             <li className="nav-item">
                                 <a className="nav-link" href="/home">
                                     <span className="fa fa-home"/>
-                                    Home
+                                    Portfele
                                 </a>
                             </li>
                         
@@ -67,9 +68,15 @@ class App extends React.Component {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#" onClick={this.logOut}>
+                                <a className="nav-link" href="/" onClick={this.logOut}>
                                     <span className="fa fa-sign-out"/>
-                                    LogOut
+                                    Wyloguj
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link">
+                                    
+                                   
                                 </a>
                             </li>
                         </div>
@@ -115,6 +122,7 @@ class App extends React.Component {
                         <Route exact path="/" component={StartPage}/>
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/register" component={RegisterPage}/>
+                        <AuthGuard path="/create-wallet" component={CreateWalletPage}/>
                         <AuthGuard path="/home" component={HomePage}/>
                     </Switch>
                 </div>

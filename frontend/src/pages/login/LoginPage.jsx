@@ -42,7 +42,7 @@ class LoginPage extends React.Component {
         return (
             <div className="login-page">
                  <Header title='Zaloguj się' />
-                <div className="login-container">
+                <div className="form-container">
                     <div className="header-container">
                         <i className="fa fa-user"/>
                     </div>

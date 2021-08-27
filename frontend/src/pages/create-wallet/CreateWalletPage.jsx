@@ -1,20 +1,22 @@
+/*
 import React from 'react';
-import UserService from '../../services/user.service';
+import WalletService from '../../services/wallet.service';
 import {User} from '../../models/user';
-import { Button, Form, FormGroup, Input, Label, Row, Col } from "reactstrap";
+import {Wallet} from '../../models/wallet';
+import {WalletHolder} from '../../models/helpers/wallet-holder';
 import Header from '../../components/Header';
 
-class RegisterPage extends React.Component {
+class CreateWalletPage extends React.Component {
 
     constructor(props, context) {
         super(props, context);
 
-        if (UserService.getCurrentUser()) {
-            this.props.history.push('/home');
-        }
+    
 
         this.state = {
-            user: new User('', '', '', '', ''),
+            wallet_holder: new WalletHolder('', ''),
+            wallet: new Wallet('','',''), 
+            userList: new Array,
             submitted: false,
             loading: false,
             errorMessage: '',
@@ -23,26 +25,35 @@ class RegisterPage extends React.Component {
 
     handleChange(e) {
         var {name, value} = e.target;
-        var user = this.state.user;
-
-        user[name] = value;
-        this.setState({user: user});
+        var wallet_holder = this.state.wallet_holder;
+        var wallet = this.state.wallet;
+        var userList = this.state.userList;
+       
+        wallet_holder[wallet.name] = value;
+        wallet_holder[wallet.description] = value;
+         
+        wallet_holder[wallet.walletCategory] = value;
+        /*
+        wallet_holder[] = value;
+        
+        wallet_holder[userList] = value;
+        this.setState({wallet_holder: wallet_holder});
     }
 
-    handleRegister(e) {
+    handleCreateWallet(e) {
         e.preventDefault();
         this.setState({submitted: true});
-        const {user} = this.state;
+        const {wallet_holder} = this.state;
 
         //validate form
-        if (!user.login || !user.password || !user.email) {
+        if (!wallet_holder.wallet.name || !wallet_holder.wallet.description) {
             return;
         }
 
         this.setState(({loading: true}));
-        UserService.register(user)
+        WalletService.create_wallet(wallet_holder)
             .then(data => {
-                    this.props.history.push('/login');
+                    this.props.history.push('/');
                 },
                 error => {
                     if (error && error.response && error.response.status === 409) {
@@ -60,10 +71,10 @@ class RegisterPage extends React.Component {
     }
 
     render() {
-        const {user, submitted, loading, errorMessage} = this.state;
+        const {wallet_holder, submitted, loading, errorMessage} = this.state;
         return (
-            <div className="register-page">
-                 <Header title='Zarejestruj się' />
+            <div className="create-wallet-page">
+                 <Header title='Utwórz portfel:' />
                 <div className="form-container">
                     <div className="header-container">
                         <i className="fa fa-user"/>
@@ -80,14 +91,14 @@ class RegisterPage extends React.Component {
                         method="post"
                         onSubmit={(e) => this.handleRegister(e)}>
                         <div className={'form-group'}>
-                            <label className="form-label"  htmlFor="login">Login: </label>
+                            <label className="form-label"  htmlFor="Name">Nazwa: </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                name="login"
-                                placeholder=""
+                                name="name"
+                                placeholder="Wpisz nazwę..."
                                 required
-                                value={user.login}
+                                value={wallet_holder.wallet.name}
                                 onChange={(e) => this.handleChange(e)}/>
                             <div className="invalid-feedback">
                                 A valid login is required.
@@ -95,53 +106,36 @@ class RegisterPage extends React.Component {
                         </div>
 
                         <div className={'form-group'}>
-                            <label className="form-label" htmlFor="Password">Hasło: </label>
+                            <label className="form-label" htmlFor="Description">Opis: </label>
                             <input
-                                type="password"
+                                type="text"
                                 className="form-control"
-                                name="password"
-                                placeholder=""
+                                name="description"
+                                placeholder="Wpisz opis..."
                                 required
-                                value={user.password}
+                                value={wallet_holder.wallet.description}
                                 onChange={(e) => this.handleChange(e)}/>
                             <div className="invalid-feedback">
                                 Password is required.
                             </div>
                         </div>
 
-                        <div className={'form-group'}>
-                            <label className="form-label" htmlFor="email">Email: </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="email"
-                                placeholder=""
-                                required
-                                value={user.email}
-                                onChange={(e) => this.handleChange(e)}/>
-                            <div className="invalid-feedback">
-                                A valid email is required.
-                            </div>
-                        </div>
+                    
                         <br></br>
                         <br></br>
                         <button
                             className="btn btn-primary btn-block form-button"
                             id = "mainbuttonstyle"
                             onClick={() => this.setState({submitted: true})}
-                            
                             disabled={loading}>
-                            Zarejestruj
+                            Utwórz
                         </button>
-                        console.log({user.email});
-                        console.log({user.login});
-                        console.log({user.password});
                     </form>
-                    <a href="/login" className="card-link href-text center-content">Mam już konto, zaloguj</a>
+                  
                 </div>
             </div>
         );
     }
 }
 
-export {RegisterPage};
+export {CreateWalletPage};*/
