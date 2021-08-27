@@ -4,19 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.fragment.MembersFragment;
 import com.example.mobile.model.ListShop;
-import com.example.mobile.model.Member;
+import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.ListsAdapter;
@@ -34,7 +31,7 @@ public class WalletActivity extends AppCompatActivity {
     String accesToken;
     String TAG = "MEMBERS_FRAGMENT";
 
-    TextView walletNameTv, descriptionTv, ownerTv, numberOfMembersTv;
+    TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv;
     Button showMembersBtn, addMemberBtn, editWalletBtn, showListsBtn, addListBtn;
     int categoryId;
     String walletName, walletDescription;
@@ -69,6 +66,7 @@ public class WalletActivity extends AppCompatActivity {
         editWalletBtn = findViewById(R.id.edit_wallet_btn);
         addListBtn = findViewById(R.id.add_shop_list_btn);
         showListsBtn = findViewById(R.id.show_shop_lists_btn);
+        walletCategoryTv = findViewById(R.id.category_tv);
 
         shopListsRv = findViewById(R.id.shop_lists_rv);
         lists1 = new ArrayList<>();
@@ -85,6 +83,7 @@ public class WalletActivity extends AppCompatActivity {
             walletName = walletModel.getName();
             walletDescription = walletModel.getDescription();
             walletNameTv.setText(walletModel.getName());
+            walletCategoryTv.setText(getResources().getString(R.string.category_label) + " " + walletModel.getCategory().getName());
             if(walletModel.getDescription()!=null)
                 descriptionTv.setText(getResources().getString(R.string.description_label) + " " + walletModel.getDescription());
             ownerTv.setText(getResources().getString(R.string.owner_label) + " " + walletModel.getOwner());
@@ -92,7 +91,7 @@ public class WalletActivity extends AppCompatActivity {
             showMembersBtn.setOnClickListener(v -> {
                 if (!showMembersControl) {
                     Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("members", (ArrayList<Member>)walletModel.getUserList());
+                    bundle.putParcelableArrayList("members", (ArrayList<User>)walletModel.getUserList());
                         getSupportFragmentManager().beginTransaction()
                                 .setReorderingAllowed(true)
                                 .replace(R.id.fragment_container_view, MembersFragment.class, bundle, TAG)
@@ -108,6 +107,7 @@ public class WalletActivity extends AppCompatActivity {
                 }
             });
         }, accesToken, id);
+
 
         addMemberBtn.setOnClickListener(v -> {
             Intent intent = new Intent(WalletActivity.this, AddMemberActivity.class);
