@@ -2,19 +2,27 @@ package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.fragment.MembersFragment;
+import com.example.mobile.model.ListShop;
 import com.example.mobile.model.Member;
+import com.example.mobile.service.ListService;
 import com.example.mobile.service.WalletService;
+import com.example.mobile.service.adapter.ListsAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class WalletActivity extends AppCompatActivity {
@@ -22,13 +30,17 @@ public class WalletActivity extends AppCompatActivity {
     SessionManager session;
 
     int id;
-    Boolean showMembersControl;
+    Boolean showMembersControl, showListsControl;
     String accesToken;
     String TAG = "MEMBERS_FRAGMENT";
 
     TextView walletNameTv, descriptionTv, ownerTv, numberOfMembersTv;
     Button showMembersBtn, addMemberBtn, editWalletBtn, showListsBtn, addListBtn;
     int categoryId;
+    String walletName, walletDescription;
+    ListsAdapter listAdapter;
+    RecyclerView shopListsRv;
+    List<ListShop> lists1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +57,7 @@ public class WalletActivity extends AppCompatActivity {
         id = Integer.parseInt(getIntent().getStringExtra("id"));
         accesToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
         showMembersControl = false;
+        showListsControl=false;
 
         walletNameTv = findViewById(R.id.name_tv);
         descriptionTv = findViewById(R.id.description_tv);
@@ -55,6 +68,13 @@ public class WalletActivity extends AppCompatActivity {
         showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
         editWalletBtn = findViewById(R.id.edit_wallet_btn);
         addListBtn = findViewById(R.id.add_shop_list_btn);
+        showListsBtn = findViewById(R.id.show_shop_lists_btn);
+
+        shopListsRv = findViewById(R.id.shop_lists_rv);
+        lists1 = new ArrayList<>();
+        shopListsRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
+        listAdapter = new ListsAdapter(this, lists1, accesToken);
+        shopListsRv.setAdapter(listAdapter);
     }
 
     @Override
@@ -62,6 +82,8 @@ public class WalletActivity extends AppCompatActivity {
         super.onStart();
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
+            walletName = walletModel.getName();
+            walletDescription = walletModel.getDescription();
             walletNameTv.setText(walletModel.getName());
             if(walletModel.getDescription()!=null)
                 descriptionTv.setText(getResources().getString(R.string.description_label) + " " + walletModel.getDescription());
@@ -99,6 +121,8 @@ public class WalletActivity extends AppCompatActivity {
             Intent intent = new Intent(WalletActivity.this, EditWalletActivity.class);
             intent.putExtra("accessToken", accesToken);
             intent.putExtra("walletId",id);
+            intent.putExtra("walletName", walletName);
+            intent.putExtra("walletDescription", walletDescription);
             startActivity(intent);
         });
 
@@ -108,6 +132,26 @@ public class WalletActivity extends AppCompatActivity {
             intent.putExtra("walletId",id);
             startActivity(intent);
         });
-    }
 
+
+        showListsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ListService listService = new ListService(getParent());
+                listService.getAllLists(lists -> {
+                    if (!showListsControl) {
+                        ListsAdapter listsAdapter1 = new ListsAdapter(getApplicationContext(), lists, accesToken);
+                        shopListsRv.setAdapter(listsAdapter1);
+                        listsAdapter1.notifyDataSetChanged();
+                        showListsBtn.setBackgroundResource(R.drawable.btn_list_opened);
+                        showListsControl = true;
+                    } else {
+
+                        showListsBtn.setBackgroundResource(R.drawable.btn_list_closed);
+                        showListsControl = false;
+                    }
+                }, accesToken, id);
+            }
+        });
+    }
 }

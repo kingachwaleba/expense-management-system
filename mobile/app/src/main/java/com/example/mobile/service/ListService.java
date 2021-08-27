@@ -6,7 +6,13 @@ import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.ListCreate;
+import com.example.mobile.model.ListShop;
+
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Map;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,12 +29,15 @@ public class ListService {
         this.apiInterface = new ApiClient().getService();
     }
 
+    public interface OnListCallback{
+        void onAllList(List<ListShop> lists);
+    }
+
     public void createList(String accessToken, int id, ListCreate list){
         Call<ResponseBody> call = apiInterface.createList("Bearer " + accessToken, id, list);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                Log.d("CREATE_LIST", response.toString());
             }
 
             @Override
@@ -38,4 +47,21 @@ public class ListService {
             }
         });
     }
+
+    public void getAllLists(ListService.OnListCallback callback, String accessToken, int id){
+        Call<List<ListShop>> call = apiInterface.getWalletLists("Bearer " + accessToken, id);
+        call.enqueue(new Callback<List<ListShop>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<ListShop>> call, @NotNull Response<List<ListShop>> response) {
+                callback.onAllList(response.body());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<ListShop>> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
 }

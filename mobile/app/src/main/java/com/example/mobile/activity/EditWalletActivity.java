@@ -16,6 +16,8 @@ import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class EditWalletActivity extends AppCompatActivity {
@@ -27,6 +29,7 @@ public class EditWalletActivity extends AppCompatActivity {
     Button updateWalletBtn;
     WalletService walletService;
     int walletId;
+    String walletName, walletDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ public class EditWalletActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        walletName = getIntent().getStringExtra("walletName");
+        walletDescription = getIntent().getStringExtra("walletDescription");
+
         walletService = new WalletService(this);
 
         accessToken = getIntent().getStringExtra("accessToken");
@@ -45,11 +51,13 @@ public class EditWalletActivity extends AppCompatActivity {
         categoryRg = findViewById(R.id.category_RG);
         nameEt = findViewById(R.id.name_et);
         descriptionEt = findViewById(R.id.description_et);
-
         updateWalletBtn = findViewById(R.id.update_wallet_btn);
 
+        nameEt.setText(walletName);
+        descriptionEt.setText(walletDescription);
+
         ValidationTableService validationTableService = new ValidationTableService(this);
-        validationTableService.getCategories(categories -> {
+        validationTableService.getWalletCategories(categories -> {
             for(int i = 0; i < categories.size(); i++){
                 RadioButton rdbtn = new RadioButton(EditWalletActivity.this);
                 rdbtn.setId(View.generateViewId());
@@ -70,11 +78,13 @@ public class EditWalletActivity extends AppCompatActivity {
 
         updateWalletBtn.setOnClickListener(v -> {
             String nameS = nameEt.getText().toString();
-            WalletCreate walletCreate;
             if(validateName(nameS)){
                 String descriptionS = descriptionEt.getText().toString();
-                walletCreate = new WalletCreate(nameS, descriptionS, category);
-                walletService.updateWallet(accessToken, walletId, walletCreate);
+                Map<String, String> map = new HashMap<>();
+                map.put("name", nameS);
+                map.put("description", descriptionS);
+                map.put("walletCategory", category.getName());
+                walletService.updateWallet(accessToken, walletId, map);
                 finish();
             } else Toast.makeText(EditWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();
         });

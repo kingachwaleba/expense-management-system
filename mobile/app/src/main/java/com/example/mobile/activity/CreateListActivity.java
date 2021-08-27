@@ -12,13 +12,16 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import com.example.mobile.R;
 import com.example.mobile.model.ListCreate;
+import com.example.mobile.model.ListShop;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.adapter.ProductCreateListAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CreateListActivity extends AppCompatActivity {
@@ -96,13 +99,11 @@ public class CreateListActivity extends AppCompatActivity {
             } else Toast.makeText(CreateListActivity.this, "Wprowadź nazwe i ilość produktu", Toast.LENGTH_SHORT).show();
         });
 
-        createListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(nameListEt.getText().toString().length()>0){
-                    listService.createList(accessToken, walletId, new ListCreate(nameListEt.getText().toString(), productList));
-                } else Toast.makeText(CreateListActivity.this, "Podaj nazwe listy", Toast.LENGTH_SHORT);
-            }
+        createListBtn.setOnClickListener(v -> {
+            if(nameListEt.getText().toString().length()>0){
+                listService.createList(accessToken, walletId, new ListCreate(new ListShop(nameListEt.getText().toString()), productList));
+                finish();
+            } else Toast.makeText(CreateListActivity.this, "Podaj nazwe listy", Toast.LENGTH_SHORT);
         });
     }
 

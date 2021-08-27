@@ -95,7 +95,7 @@ public class CreateWalletActivity extends AppCompatActivity {
         });
 
         ValidationTableService validationTableService = new ValidationTableService(this);
-        validationTableService.getCategories(categories -> {
+        validationTableService.getWalletCategories(categories -> {
             for(int i = 0; i < categories.size(); i++){
                 RadioButton rdbtn = new RadioButton(CreateWalletActivity.this);
                 rdbtn.setId(View.generateViewId());

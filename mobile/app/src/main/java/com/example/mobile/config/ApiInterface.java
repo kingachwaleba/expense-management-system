@@ -4,19 +4,18 @@ import com.example.mobile.model.Account;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
+import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
-import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.model.WalletDetail;
 import com.example.mobile.model.WalletItem;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -67,9 +66,9 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<WalletDetail> getWalletById(@Header("Authorization") String accessToken, @Path("id") int id);
 
-    @GET("categories")
+    @GET("wallet-categories")
     @Headers("Content-Type: application/json")
-    Call<List<Category>> getCategories();
+    Call<List<Category>> getWalletCategories();
 
     @GET("units")
     @Headers("Content-Type: application/json")
@@ -90,5 +89,10 @@ public interface ApiInterface  {
 
     @PUT("wallet/{id}")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body WalletCreate walletCreate);
+    Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body Map<String, String> map);
+
+
+    @GET("wallet/{id}/shopping-lists")
+    @Headers("Content-Type: application/json")
+    Call<List<ListShop>> getWalletLists(@Header("Authorization") String accessToken, @Path("id") int id);
 }
