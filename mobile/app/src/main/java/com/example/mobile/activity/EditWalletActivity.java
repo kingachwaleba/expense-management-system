@@ -29,7 +29,7 @@ public class EditWalletActivity extends AppCompatActivity {
     Button updateWalletBtn;
     WalletService walletService;
     int walletId;
-    String walletName, walletDescription;
+    String walletName, walletDescription, walletCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,7 @@ public class EditWalletActivity extends AppCompatActivity {
 
         walletName = getIntent().getStringExtra("walletName");
         walletDescription = getIntent().getStringExtra("walletDescription");
+        walletCategory = getIntent().getStringExtra("walletCategory");
 
         walletService = new WalletService(this);
 
@@ -66,7 +67,7 @@ public class EditWalletActivity extends AppCompatActivity {
                 rdbtn.setTextSize(18);
                 rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
                 categoryRg.addView(rdbtn);
-                if(i == 0) rdbtn.setChecked(true);
+                if(categories.get(i).getName().equals(walletCategory)) rdbtn.setChecked(true);
             }
         });
 

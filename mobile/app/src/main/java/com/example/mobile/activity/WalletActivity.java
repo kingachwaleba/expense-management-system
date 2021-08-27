@@ -123,6 +123,7 @@ public class WalletActivity extends AppCompatActivity {
             intent.putExtra("walletId",id);
             intent.putExtra("walletName", walletName);
             intent.putExtra("walletDescription", walletDescription);
+            intent.putExtra("walletCategory", walletCategoryTv.getText().toString());
             startActivity(intent);
         });
 
