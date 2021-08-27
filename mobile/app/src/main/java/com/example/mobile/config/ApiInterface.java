@@ -1,6 +1,5 @@
 package com.example.mobile.config;
 
-import com.example.mobile.model.Account;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
@@ -9,9 +8,8 @@ import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
+import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
-import com.example.mobile.model.WalletDetail;
-import com.example.mobile.model.WalletItem;
 import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,7 @@ public interface ApiInterface  {
 
     @GET("account")
     @Headers("Content-Type: application/json")
-    Call<Account> getAccount(@Header("Authorization") String accessToken);
+    Call<User> getAccount(@Header("Authorization") String accessToken);
 
     @GET("notifications/invitations")
     @Headers("Content-Type: application/json")
@@ -52,7 +50,7 @@ public interface ApiInterface  {
 
     @GET("wallets")
     @Headers("Content-Type: application/json")
-    Call<List<WalletItem>> getUserWallets(@Header("Authorization") String accessToken);
+    Call<List<WalletCreate>> getUserWallets(@Header("Authorization") String accessToken);
 
     @POST("create-wallet")
     @Headers("Content-Type: application/json")
@@ -64,7 +62,7 @@ public interface ApiInterface  {
 
     @GET("wallet/{id}")
     @Headers("Content-Type: application/json")
-    Call<WalletDetail> getWalletById(@Header("Authorization") String accessToken, @Path("id") int id);
+    Call<WalletCreate> getWalletById(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @GET("wallet-categories")
     @Headers("Content-Type: application/json")

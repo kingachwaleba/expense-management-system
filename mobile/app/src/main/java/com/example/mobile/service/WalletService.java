@@ -6,9 +6,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
+import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
-import com.example.mobile.model.WalletDetail;
-import com.example.mobile.model.WalletItem;
 import com.example.mobile.service.adapter.WalletAdapter;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -36,7 +35,7 @@ public class WalletService {
     }
 
     public interface OnWalletCallback{
-        void onOneWallet(WalletDetail walletDetail);
+        void onOneWallet(WalletCreate walletCreate);
     }
 
     public interface OnMemberSearchCallback{
@@ -44,13 +43,13 @@ public class WalletService {
     }
 
     public void getUserWallets(String accessToken) {
-        Call<List<WalletItem>> call = apiInterface.getUserWallets("Bearer " + accessToken);
-        call.enqueue(new Callback<List<WalletItem>>() {
+        Call<List<WalletCreate>> call = apiInterface.getUserWallets("Bearer " + accessToken);
+        call.enqueue(new Callback<List<WalletCreate>>() {
             @Override
-            public void onResponse(@NotNull Call<List<WalletItem>> call, @NotNull Response<List<WalletItem>> response) {
+            public void onResponse(@NotNull Call<List<WalletCreate>> call, @NotNull Response<List<WalletCreate>> response) {
                     try {
                         if (response.isSuccessful()) {
-                            List<WalletItem> walletItems = response.body();
+                            List<WalletCreate> walletItems = response.body();
                             WalletAdapter walletAdapter = new WalletAdapter(context, walletItems);
                             walletsRv.setAdapter(walletAdapter);
                             walletAdapter.notifyDataSetChanged();
@@ -60,7 +59,7 @@ public class WalletService {
                     }
             }
             @Override
-            public void onFailure(@NotNull Call<List<WalletItem>> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<List<WalletCreate>> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }
@@ -68,14 +67,16 @@ public class WalletService {
     }
 
     public void getWalletById(OnWalletCallback callback, String accessToken, int id) {
-        Call<WalletDetail> call = apiInterface.getWalletById("Bearer " + accessToken, id);
-        call.enqueue(new Callback<WalletDetail>() {
+        Call<WalletCreate> call = apiInterface.getWalletById("Bearer " + accessToken, id);
+        call.enqueue(new Callback<WalletCreate>() {
             @Override
-            public void onResponse(@NotNull Call<WalletDetail> call, @NotNull Response<WalletDetail> response) {
+            public void onResponse(@NotNull Call<WalletCreate> call, @NotNull Response<WalletCreate> response) {
                 callback.onOneWallet(response.body());
             }
             @Override
-            public void onFailure(@NotNull Call<WalletDetail> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<WalletCreate> call, @NotNull Throwable t) {
+                Log.d("Wallet", t.toString());
+                Log.d("Wallet", call.toString());
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }

@@ -5,13 +5,11 @@ import android.content.Context;
 import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
-import com.example.mobile.model.Account;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.UpdatePasswordHolder;
-
+import com.example.mobile.model.User;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +25,7 @@ public class AccountService {
     }
 
     public interface OnAccountCallback{
-        void onMyAccount(Account account);
+        void onMyAccount(User user);
     }
 
     public interface OnInvitationCallback{
@@ -36,15 +34,15 @@ public class AccountService {
 
 
     public void getAccount(OnAccountCallback callback, String accessToken){
-        Call<Account> call = apiInterface.getAccount("Bearer " + accessToken);
-        call.enqueue(new Callback<Account>() {
+        Call<User> call = apiInterface.getAccount("Bearer " + accessToken);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(@NotNull Call<Account> call, @NotNull Response<Account> response) {
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                 callback.onMyAccount(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<Account> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }

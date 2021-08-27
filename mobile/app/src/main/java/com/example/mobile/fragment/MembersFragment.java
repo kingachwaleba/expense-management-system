@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.mobile.R;
-import com.example.mobile.model.Member;
+import com.example.mobile.model.User;
 import com.example.mobile.service.adapter.MemberAdapter;
 import java.util.List;
 
 public class MembersFragment extends Fragment {
 
-    private List<Member> members;
+    private List<User> members;
 
     public MembersFragment() {}
 

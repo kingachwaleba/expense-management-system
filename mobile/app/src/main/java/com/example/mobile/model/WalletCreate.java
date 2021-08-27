@@ -2,6 +2,9 @@ package com.example.mobile.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+import java.util.Map;
+
 public class WalletCreate {
     @SerializedName("id")
     private int id;
@@ -11,6 +14,13 @@ public class WalletCreate {
     private String description;
     @SerializedName("walletCategory")
     private Category category;
+    @SerializedName("owner")
+    String owner;
+    @SerializedName("userListCounter")
+    int userListCounter;
+    @SerializedName("userList")
+    List<User> userList;
+
 
     public WalletCreate(int id, String name,String description, Category category) {
         this.id = id;
@@ -23,6 +33,33 @@ public class WalletCreate {
         this.name = name;
         this.category = category;
         this.description = description;
+    }
+
+    public WalletCreate(int id, String name, Category category, String login, int userListCounter) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.owner = login;
+        this.userListCounter = userListCounter;
+    }
+
+    public WalletCreate(int id, String name, String description, Category category, String login, int userListCounter) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.owner = login;
+        this.userListCounter = userListCounter;
+    }
+
+    public WalletCreate(int id, String name, String description, Category category, String owner, int userListCounter, List<User> userList) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.owner = owner;
+        this.userListCounter = userListCounter;
+        this.userList = userList;
     }
 
     public int getId() {
@@ -55,6 +92,30 @@ public class WalletCreate {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public int getUserListCounter() {
+        return userListCounter;
+    }
+
+    public void setUserListCounter(int userListCounter) {
+        this.userListCounter = userListCounter;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 }
 
