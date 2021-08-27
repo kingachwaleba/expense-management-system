@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.team.backend.helpers.ListHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.StatusRepository;
@@ -55,10 +56,10 @@ public class ListController {
     }
 
     @PutMapping("/shopping-list/edit/{id}")
-    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody String name) {
+    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody TextNode name) {
         List updatedShoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
 
-        updatedShoppingList.setName(name);
+        updatedShoppingList.setName(name.asText());
 
         listService.save(updatedShoppingList);
 
