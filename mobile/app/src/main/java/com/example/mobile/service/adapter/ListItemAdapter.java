@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
+import com.example.mobile.activity.OneListActivity;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.User;
@@ -39,6 +40,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
     public void onBindViewHolder(ListItemAdapter.ViewHolder holder, int position) {
         Product product = mProduct.get(position);
 
+        holder.itemId = product.getId();
         if(product.getUser()!=null){
             holder.cbUserStatus = 2;
             holder.user = product.getUser();
@@ -60,7 +62,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         holder.editItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                OneListActivity.setNameQuantityProductEt(product.getName(), String.valueOf(product.getQuantity()), product.getUnit(), holder.itemId);
             }
         });
 

@@ -5,6 +5,7 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
@@ -97,5 +98,18 @@ public interface ApiInterface  {
     @GET("shopping-list/{id}")
     @Headers("Content-Type: application/json")
     Call<ListShop> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @POST("shopping-list/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> addListItem(@Header("Authorization") String accessToken, @Path("id") int id, @Body Product product);
+
+    @PUT("edit-list-element/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> editListItem(@Header("Authorization") String accessToken, @Path("id") int id, @Body Product product);
+
+    @PUT("shopping-list/edit/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> editListName(@Header("Authorization") String accessToken, @Path("id") int id, @Body String name);
+
 
 }

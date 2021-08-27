@@ -1,7 +1,6 @@
 package com.example.mobile.activity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -12,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mobile.R;
 import com.example.mobile.model.Category;
-import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
 
@@ -61,7 +59,7 @@ public class EditWalletActivity extends AppCompatActivity {
         validationTableService.getWalletCategories(categories -> {
             for(int i = 0; i < categories.size(); i++){
                 RadioButton rdbtn = new RadioButton(EditWalletActivity.this);
-                rdbtn.setId(View.generateViewId());
+                rdbtn.setId(categories.get(i).getId());
                 rdbtn.setText(categories.get(i).getName());
                 rdbtn.setTextAppearance(R.style.simple_label);
                 rdbtn.setTextSize(18);
