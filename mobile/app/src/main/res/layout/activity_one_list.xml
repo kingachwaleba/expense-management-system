@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_background">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_round_box_dark">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:id="@+id/delete_list_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/btn_delete_active" />
+
+                <Button
+                    android:id="@+id/edit_list_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/btn_edit" />
+
+                <TextView
+                    android:id="@+id/list_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginHorizontal="10dp"
+                    android:ellipsize="none"
+                    android:scrollHorizontally="false"
+                    android:textAppearance="@style/simple_label_bold"
+                    android:textColor="@color/yellow"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/cb_person" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/cb_simple" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vector"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/v_line_white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_item_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_list"
+                android:layout_marginBottom="20dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_round_box_dark">
+
+            <TextView
+                android:id="@+id/add_product_to_list_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/simple_label_bold"
+                android:textSize="24sp"
+                android:text="@string/add_product_to_list_label"
+                android:textColor="@color/yellow" />
+
+            <View
+                android:id="@+id/vector_3"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/v_line_white" />
+
+            <EditText
+                android:id="@+id/name_prodcut_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/name_hint"
+                android:background="@drawable/et_simple"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/light_gray"
+                android:importantForAutofill="no"/>
+
+
+            <EditText
+                android:id="@+id/quantity_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/quantity_hint"
+                android:background="@drawable/et_simple"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/light_gray"
+                android:importantForAutofill="no"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round_box_light"
+                android:padding="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+                <RadioGroup
+                    android:id="@+id/unit_RG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/add_product_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_simple"
+                android:text="@string/add"
+                android:textAppearance="@style/simple_button" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

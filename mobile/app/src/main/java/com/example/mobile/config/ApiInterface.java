@@ -93,4 +93,9 @@ public interface ApiInterface  {
     @GET("wallet/{id}/shopping-lists")
     @Headers("Content-Type: application/json")
     Call<List<ListShop>> getWalletLists(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @GET("shopping-list/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ListShop> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
+
 }

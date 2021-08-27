@@ -11,8 +11,27 @@ public class Product {
     double quantity;
     @SerializedName("unit")
     Unit unit;
+    @SerializedName("status")
+    Status status;
     @SerializedName("user")
     User user;
+
+    public Product(int id, String name, double quantity, Unit unit, Status status, User user) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.status = status;
+        this.user = user;
+    }
+
+    public Product(String name, double quantity, Unit unit, Status status, User user) {
+        this.name = name;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.status = status;
+        this.user = user;
+    }
 
     public Product(String name, double quantity, Unit unit) {
         this.name = name;
@@ -65,5 +84,21 @@ public class Product {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
