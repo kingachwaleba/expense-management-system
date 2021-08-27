@@ -78,7 +78,6 @@ public class AddMemberActivity extends AppCompatActivity {
 
         sendInvitationsBtn.setOnClickListener(v -> {
             for(int i = 0; i < searchUserAdapterInit.getSelectedUser().size(); i++){
-                System.out.println(searchUserAdapterInit.getSelectedUser().get(i));
                 walletService.sendInvitationToUser(accessToken, walletId, searchUserAdapterInit.getSelectedUser().get(i));
             }
             finish();

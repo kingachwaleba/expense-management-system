@@ -10,16 +10,16 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.activity.WalletActivity;
-import com.example.mobile.model.WalletItem;
+import com.example.mobile.model.WalletCreate;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder> {
 
-    private final List<WalletItem> mWalletItem;
+    private final List<WalletCreate> mWalletItem;
     private final LayoutInflater mInflater;
 
-    public WalletAdapter(Context context, List<WalletItem> walletItems){
+    public WalletAdapter(Context context, List<WalletCreate> walletItems){
         mWalletItem = walletItems;
         mInflater = LayoutInflater.from(context);
     }
@@ -32,12 +32,12 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(WalletAdapter.ViewHolder holder, int position) {
-        WalletItem walletItem = mWalletItem.get(position);
+        WalletCreate walletItem = mWalletItem.get(position);
         holder.nameTv.setText(walletItem.getName());
         holder.ownerTv.setText(mInflater.getContext().getResources().getString(R.string.owner_label) + " " + walletItem.getOwner());
         holder.numberOfMembersTv.setText(mInflater.getContext().getResources().getString(R.string.number_of_members_label) + " " + walletItem.getUserListCounter());
       //holder.balance.setText(mInflater.getContext().getResources().getString(R.string.balance) + " " + Double.toString(walletItem.getBalance()));
-        holder.id = walletItem.getWalletId();
+        holder.id = walletItem.getId();
 
         holder.goToWalletBtn.setOnClickListener(v -> {
             Intent i = new Intent(holder.itemView.getContext(), WalletActivity.class);

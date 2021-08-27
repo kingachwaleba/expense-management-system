@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
-import com.example.mobile.model.WalletItem;
+import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.WalletAdapter;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         walletRv = findViewById(R.id.wallets_rv);
 
         walletRv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        List<WalletItem> walletItemsInit = new ArrayList<>();
+        List<WalletCreate> walletItemsInit = new ArrayList<>();
         WalletAdapter walletAdapterInit = new WalletAdapter(MainActivity.this, walletItemsInit);
         walletRv.setAdapter(walletAdapterInit);
 
