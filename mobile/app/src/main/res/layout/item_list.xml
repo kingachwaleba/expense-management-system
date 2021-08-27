@@ -47,6 +47,14 @@
         android:textSize="16sp"
         android:textAppearance="@style/simple_label"/>
 
+    <Button
+        android:id="@+id/who_take_item_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/btn_person"
+        android:visibility="invisible"
+        />
+
     <CheckBox
         android:id="@+id/take_element_cb"
         android:layout_width="wrap_content"

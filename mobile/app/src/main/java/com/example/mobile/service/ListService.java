@@ -116,7 +116,6 @@ public class ListService {
     }
 
     public void editListName(String accessToken, int id, String name){
-        System.out.println(name);
         Call<ResponseBody> call = apiInterface.editListName("Bearer " + accessToken, id, name);
         call.enqueue(new Callback<ResponseBody>() {
             @Override

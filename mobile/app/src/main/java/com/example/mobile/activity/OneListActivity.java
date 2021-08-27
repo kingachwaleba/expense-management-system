@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Product;
+import com.example.mobile.model.Status;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
@@ -33,7 +34,7 @@ public class OneListActivity extends AppCompatActivity {
 
     TextView nameListTv;
     static EditText nameItemEt, quantityItemEt;
-    Button addItemBtn, deleteListShopBtn, editListBtn;
+    Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn;
     static RadioGroup unitRg;
     Unit unit;
     int firstRadioButton;
@@ -45,8 +46,6 @@ public class OneListActivity extends AppCompatActivity {
     static Boolean ifEdit;
     static int productEditId;
     CheckBox personListCb, listCb;
-    User user;
-    int cbUserStatus, cbListStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,8 @@ public class OneListActivity extends AppCompatActivity {
         listItemRv = findViewById(R.id.list_item_rv);
         unitRg = findViewById(R.id.unit_RG);
         personListCb = findViewById(R.id.take_list_cb);
-        listCb = findViewById(R.id.taken_element_cb);
+        listCb = findViewById(R.id.taken_list_cb);
+        whoTakeListBtn = findViewById(R.id.who_take_list_btn);
 
         List<Product> productsInit = new ArrayList<>();
         listItemRv.setLayoutManager(new LinearLayoutManager(OneListActivity.this));
@@ -110,22 +110,6 @@ public class OneListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-        /*personListCb.setOnClickListener(v -> {
-            if(cbUserStatus==2){
-                Toast.makeText(OneListActivity.this, "Zaklepane przez " + user.getLogin(), Toast.LENGTH_SHORT);
-            } else {
-                listService.changeListStatus(accessToken, listId, 2);
-                cbUserStatus = 2;
-            }
-        });*/
-
-        /*listCb.setOnClickListener(v -> {
-            if(cbUserStatus==2 && user.getLogin().equals(login)){
-                listService.changeListStatus(accessToken,listId,1);
-                cbListStatus = 1;
-            }
-        });*/
     }
 
     public static void setNameQuantityProductEt(String name, String quantity, Unit unit, int itemEditId){
@@ -144,22 +128,69 @@ public class OneListActivity extends AppCompatActivity {
     }
 
     protected void initView(){
+
         listService.getListById(listShop -> {
             nameListTv.setText(listShop.getName());
             ListItemAdapter listItemAdapter= new ListItemAdapter(OneListActivity.this, listShop.getListDetailSet(), accessToken, login);
             listItemRv.setAdapter(listItemAdapter);
 
             if(listShop.getUser()!=null){
-                cbUserStatus = 2;
-                user = listShop.getUser();
                 personListCb.setChecked(true);
-            } else cbUserStatus = 3;
+                personListCb.setEnabled(listShop.getUser().getLogin().equals(login));
+                whoTakeListBtn.setVisibility(View.VISIBLE);
+            } else {
+                personListCb.setEnabled(true);
+                personListCb.setChecked(false);
+                whoTakeListBtn.setVisibility(View.INVISIBLE);
+            }
 
             if(listShop.getStatus().getId()==1){
-                cbListStatus = 1;
-                personListCb.setEnabled(false);
                 listCb.setChecked(true);
-            } else cbListStatus = 3;
+                personListCb.setEnabled(false);
+            } else {
+                listCb.setChecked(false);
+            }
+
+            whoTakeListBtn.setOnClickListener(v -> Toast.makeText(this, "To kupi " + listShop.getUser().getLogin(), Toast.LENGTH_SHORT).show());
+
+            personListCb.setOnClickListener(v -> {
+                if(listShop.getUser()==null){
+                    listShop.setUser(new User(login));
+                    whoTakeListBtn.setVisibility(View.VISIBLE);
+                    listService.changeListStatus(accessToken, listId, 2);
+                } else if(listShop.getUser().getLogin().equals(login)){
+                    listShop.setUser(null);
+                    whoTakeListBtn.setVisibility(View.INVISIBLE);
+                    listService.changeListStatus(accessToken, listId, 3);
+                }
+                listItemAdapter.notifyDataSetChanged();
+            });
+
+            listCb.setOnClickListener(v -> {
+                if(listShop.getStatus().getId() == 3) {
+                    listShop.setUser(new User(login));
+                    listShop.setStatus(new Status(1, "zrealizowany"));
+                    personListCb.setChecked(true);
+                    personListCb.setEnabled(false);
+                    whoTakeListBtn.setVisibility(View.VISIBLE);
+                    listService.changeListStatus(accessToken, listId, 1);
+                }
+                else if(listShop.getStatus().getId() == 2){
+                    listShop.setUser(new User(login));
+                    listShop.setStatus(new Status(1, "zrealizowany"));
+                    listService.changeListStatus(accessToken, listId, 1);
+
+                } else {
+                    listShop.setUser(null);
+                    personListCb.setChecked(false);
+                    personListCb.setEnabled(true);
+                    whoTakeListBtn.setVisibility(View.INVISIBLE);
+                    listShop.setStatus(new Status(3, "oczekujący"));
+                    listService.changeListStatus(accessToken, listId, 3);
+                }
+                listItemAdapter.notifyDataSetChanged();
+            });
+
         }, accessToken, listId);
 
         ValidationTableService validationTableService = new ValidationTableService(this);
