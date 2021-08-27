@@ -41,7 +41,7 @@ public class WalletController {
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("walletId", wallet.getId());
+        map.put("id", wallet.getId());
         map.put("name", wallet.getName());
         map.put("walletCategory", wallet.getWalletCategory());
         map.put("description", wallet.getDescription());
@@ -64,7 +64,7 @@ public class WalletController {
         for (Wallet wallet : wallets) {
             Map<String, Object> map = new HashMap<>();
 
-            map.put("walletId", wallet.getId());
+            map.put("id", wallet.getId());
             map.put("name", wallet.getName());
             map.put("walletCategory", wallet.getWalletCategory());
             map.put("owner", walletService.findOwner(wallet).getLogin());
