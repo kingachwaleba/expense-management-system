@@ -18,6 +18,7 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -108,8 +109,18 @@ public interface ApiInterface  {
     Call<ResponseBody> editListItem(@Header("Authorization") String accessToken, @Path("id") int id, @Body Product product);
 
     @PUT("shopping-list/edit/{id}")
-    @Headers("Content-Type: application/json")
+    @Headers("Content-Type: text/plain")
     Call<ResponseBody> editListName(@Header("Authorization") String accessToken, @Path("id") int id, @Body String name);
 
+    @PUT("change-list-status/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> changeListStatus(@Header("Authorization") String accessToken, @Path("id") int id, @Body int statusId);
 
+    @PUT("change-element-status/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> changeListElementStatus(@Header("Authorization") String accessToken, @Path("id") int id, @Body int statusId);
+
+    @DELETE("/delete-list-element/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteListElement(@Header("Authorization") String accessToken, @Path("id") int id);
 }

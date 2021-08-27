@@ -49,11 +49,13 @@
                     android:textSize="30sp" />
 
                 <CheckBox
+                    android:id="@+id/take_list_cb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@drawable/cb_person" />
 
                 <CheckBox
+                    android:id="@+id/taken_list_cb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@drawable/cb_simple" />

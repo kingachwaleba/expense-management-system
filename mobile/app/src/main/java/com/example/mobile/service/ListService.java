@@ -116,7 +116,53 @@ public class ListService {
     }
 
     public void editListName(String accessToken, int id, String name){
+        System.out.println(name);
         Call<ResponseBody> call = apiInterface.editListName("Bearer " + accessToken, id, name);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void changeListStatus(String accessToken, int id, int statusId){
+        Call<ResponseBody> call = apiInterface.changeListStatus("Bearer " + accessToken, id, statusId);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void changeListElementStatus(String accessToken, int id, int statusId){
+        Call<ResponseBody> call = apiInterface.changeListElementStatus("Bearer " + accessToken, id, statusId);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void deleteListElement(String accessToken, int id){
+        Call<ResponseBody> call = apiInterface.deleteListElement("Bearer " + accessToken, id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
