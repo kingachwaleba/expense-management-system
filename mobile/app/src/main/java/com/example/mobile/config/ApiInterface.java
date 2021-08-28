@@ -5,6 +5,7 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
@@ -120,7 +121,11 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> changeListElementStatus(@Header("Authorization") String accessToken, @Path("id") int id, @Body int statusId);
 
-    @DELETE("/delete-list-element/{id}")
+    @DELETE("delete-list-element/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteListElement(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @POST("wallet/{id}/message")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> sendMessage(@Header("Authorization") String accessToken, @Path("id") int id, @Body Message massage);
 }
