@@ -80,5 +80,6 @@
     <string name="number_of_elements_label">Liczba pozycji:</string>
     <string name="see_details">Zobacz szczegóły</string>
     <string name="edit_list_label">Edytuj listę:</string>
+    <string name="enter_message">Napisz wiadomość...</string>
 
 </resources>
