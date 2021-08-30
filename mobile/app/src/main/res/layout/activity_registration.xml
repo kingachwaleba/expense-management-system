@@ -161,6 +161,7 @@
                 android:text="@string/statute_text"
                 android:textAppearance="@style/simple_label"
                 android:textColor="@color/light_gray"
+                android:button="@drawable/cb_simple"
                 android:textSize="16sp" />
 
             <TextView
