@@ -8,18 +8,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
-import com.example.mobile.activity.OneListActivity;
+import com.example.mobile.SetActivityField;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Status;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> {
@@ -28,13 +24,15 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
     private final String mAccessToken;
     private final String mLogin;
     private final ListService listService;
+    private final SetActivityField editInterface;
 
-    public ListItemAdapter(Context context, List<Product> product, String accessToken, String login){
+    public ListItemAdapter(Context context, List<Product> product, String accessToken, String login, SetActivityField setActivityField){
         mProduct = product;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
         mLogin = login;
         listService = new ListService(context);
+        editInterface = setActivityField;
     }
 
     @Override
@@ -115,7 +113,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             notifyDataSetChanged();
         });
 
-        holder.editItem.setOnClickListener(v -> OneListActivity.setNameQuantityProductEt(product.getName(), String.valueOf(product.getQuantity()), product.getUnit(), holder.itemId));
+        holder.editItem.setOnClickListener(v -> editInterface.editProduct(product.getName(), String.valueOf(product.getQuantity()), product.getUnit(), holder.itemId));
 
     }
 

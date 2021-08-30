@@ -1,21 +1,20 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.SearchUserAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddMemberActivity extends AppCompatActivity {
+public class AddMemberActivity extends BaseActivity {
 
     RecyclerView browseMembersRv;
     EditText infixEt;
@@ -74,7 +73,6 @@ public class AddMemberActivity extends AppCompatActivity {
 
             }
         });
-
 
         sendInvitationsBtn.setOnClickListener(v -> {
             for(int i = 0; i < searchUserAdapterInit.getSelectedUser().size(); i++){

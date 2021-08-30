@@ -5,20 +5,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.mobile.R;
 import com.example.mobile.model.Category;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class EditWalletActivity extends AppCompatActivity {
+public class EditWalletActivity extends BaseActivity {
 
     EditText nameEt, descriptionEt;
     RadioGroup categoryRg;
@@ -33,11 +27,6 @@ public class EditWalletActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_wallet);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_pagename);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         walletName = getIntent().getStringExtra("walletName");
         walletDescription = getIntent().getStringExtra("walletDescription");
@@ -85,7 +74,7 @@ public class EditWalletActivity extends AppCompatActivity {
                 map.put("walletCategory", category.getName());
                 walletService.updateWallet(accessToken, walletId, map);
                 finish();
-            } else Toast.makeText(EditWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();
+            } else nameEt.setError("Podaj nazwę portfela");
         });
     }
 

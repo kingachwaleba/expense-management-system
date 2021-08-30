@@ -1,20 +1,17 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.mobile.R;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaseActivity {
 
     String accessToken;
     int walletId;
@@ -58,15 +55,12 @@ public class ChatActivity extends AppCompatActivity {
             public void onTextReceived(String s) {
                 Log.i("WebSocket", "Message received");
                 final String message = s;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            TextView textView = findViewById(R.id.name_tv);
-                            textView.setText(message);
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
+                runOnUiThread(() -> {
+                    try{
+                        TextView textView = findViewById(R.id.name_tv);
+                        textView.setText(message);
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
                 });
             }

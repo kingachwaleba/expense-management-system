@@ -49,12 +49,12 @@
     <string name="deny">Odrzuć</string>
     <string name="accept">Zaakceptuj</string>
     <string name="go_to_expense">Przejdź do wydatku</string>
-    <string name="debth">Wysyokość należności</string>
+    <string name="debth">Wysokość należności</string>
     <string name="find_user_hint">Szukaj użytkowników...</string>
     <string name="go_to_statue">Przejdź do regulaminu</string>
     <string name="profil">Profil</string>
     <string name="warning_info_text">Użytkownik przypomina Ci o uregulowaniu należności</string>
-    <string name="warning_debth">NIEUREGULOWANA NALEŻNOSC</string>
+    <string name="warning_debth">NIEUREGULOWANA NALEŻNOŚĆ</string>
     <string name="change_password">Zmień hasło</string>
     <string name="delete_account">Usuń konto</string>
     <string name="save_changes">Zapisz zmiany</string>
@@ -107,6 +107,6 @@
     <string name="delete_expense">Usuń wydatek</string>
     <string name="back">Wróć</string>
     <string name="biggest_expense_label">Największy wydatek:</string>
-    <string name="all_expenses_label">Lącznie wydano:</string>
+    <string name="all_expenses_label">Łącznie wydano:</string>
 
 </resources>

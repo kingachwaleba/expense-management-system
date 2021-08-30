@@ -1,16 +1,13 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import com.example.mobile.R;
 
-public class DeleteMemberActivity extends AppCompatActivity {
+public class DeleteMemberActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete_member2);
+        setContentView(R.layout.activity_delete_member);
     }
 }

@@ -1,12 +1,9 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import com.example.mobile.R;
 
-public class EditExpenseActivity extends AppCompatActivity {
+public class EditExpenseActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
