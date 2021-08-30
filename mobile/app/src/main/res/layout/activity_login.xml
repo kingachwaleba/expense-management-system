@@ -15,29 +15,29 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp">
+            android:layout_marginBottom="90dp">
 
             <View
                 android:id="@+id/vector"
                 android:layout_width="156dp"
                 android:layout_height="15dp"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="137dp"
                 android:background="@drawable/v_underline"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.749"
+                app:layout_constraintHorizontal_bias="0.300"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/log_in_label" />
 
             <TextView
                 android:id="@+id/log_in_label"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="39dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="59dp"
-                android:text="@string/log_in_label"
+                android:text="@string/baner_label"
                 android:textAppearance="@style/simple_label"
-                android:textSize="48sp"
+                android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

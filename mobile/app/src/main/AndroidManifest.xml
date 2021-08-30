@@ -11,7 +11,16 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Custom_Theme">
-        <activity android:name=".activity.EditListActivity"></activity>
+        <activity android:name=".activity.EditMembersActivity"></activity>
+        <activity android:name=".activity.EditExpenseActivity" />
+        <activity android:name=".activity.ExpenseActivity" />
+        <activity android:name=".activity.CreateExpenseActivity" />
+        <activity android:name=".activity.StatisticsActivity" />
+        <activity android:name=".activity.DeleteMemberActivity" />
+        <activity android:name=".activity.DeleteProfileActivity" />
+        <activity android:name=".activity.PasswordRestoreActivity" />
+        <activity android:name=".activity.ChatActivity" />
+        <activity android:name=".activity.EditListActivity" />
         <activity android:name=".activity.OneListActivity" />
         <activity android:name=".activity.CreateListActivity" />
         <activity android:name=".activity.EditWalletActivity" />

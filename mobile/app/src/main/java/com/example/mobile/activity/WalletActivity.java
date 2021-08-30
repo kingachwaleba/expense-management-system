@@ -32,7 +32,7 @@ public class WalletActivity extends AppCompatActivity {
     String TAG = "MEMBERS_FRAGMENT";
 
     TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv;
-    Button showMembersBtn, addMemberBtn, editWalletBtn, showListsBtn, addListBtn;
+    Button showMembersBtn, addMemberBtn, editWalletBtn, showListsBtn, addListBtn, goToChatBtn;
     int categoryId;
     String walletName, walletDescription, walletCategory;
     ListsAdapter listAdapter;
@@ -67,12 +67,23 @@ public class WalletActivity extends AppCompatActivity {
         addListBtn = findViewById(R.id.add_shop_list_btn);
         showListsBtn = findViewById(R.id.show_shop_lists_btn);
         walletCategoryTv = findViewById(R.id.category_tv);
+        goToChatBtn = findViewById(R.id.open_chat_btn);
 
         shopListsRv = findViewById(R.id.shop_lists_rv);
         lists1 = new ArrayList<>();
         shopListsRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
         listAdapter = new ListsAdapter(this, lists1, accessToken);
         shopListsRv.setAdapter(listAdapter);
+
+        goToChatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WalletActivity.this, ChatActivity.class);
+                intent.putExtra("accessToken", accessToken);
+                intent.putExtra("walletId", id);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

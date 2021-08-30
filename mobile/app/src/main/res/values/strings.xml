@@ -80,5 +80,33 @@
     <string name="number_of_elements_label">Liczba pozycji:</string>
     <string name="see_details">Zobacz szczegóły</string>
     <string name="edit_list_label">Edytuj listę:</string>
+    <string name="enter_message">Napisz wiadomość...</string>
+    <string name="add_expense_label">Dodaj wydatek:</string>
+    <string name="period_label">Cykliczność:</string>
+    <string name="expense_users_label">Kogo dotyczy wydatek:</string>
+    <string name="cancel">Anuluj</string>
+    <string name="edit_members_label">Edytuj członków:</string>
+    <string name="send_invitations_to_wallet">Zaproś do portfela</string>
+    <string name="delete_members_label">Usuwanie osoby z portfela</string>
+    <string name="warning">Uwaga ten proces jest nieodwracalny</string>
+    <string name="delete_members_question_label">Czy na pewno chcesz usunać członka portfela?</string>
+    <string name="yes_delete">Tak - usuń</string>
+    <string name="no_exit">Nie - zabierz mnie stąd</string>
+    <string name="delete_account_label">Usuwanie konta</string>
+    <string name="delete_account_question_label">Czy na pewno chcesz usunąć konto?</string>
+    <string name="password_hint">Podaj hasło...</string>
+    <string name="baner_label">Kotrolowanie wydatków jeszcze nigdy nie było takie proste</string>
+    <string name="insert_email_label">Podaj adres email:</string>
+    <string name="restore_pasword_label">Odzyskiwanie hasła:</string>
+    <string name="restore_password">Przypomnij hasło</string>
+    <string name="edit_expense">Edytuj wydatek</string>
+    <string name="edit_expense_label">Edytuj wydatek</string>
+    <string name="owner_expense_label">Wykonany przez:</string>
+    <string name="period_expense_label">Cykliczność:</string>
+    <string name="cost_expense_label">"Koszt: "</string>
+    <string name="delete_expense">Usuń wydatek</string>
+    <string name="back">Wróć</string>
+    <string name="biggest_expense_label">Największy wydatek:</string>
+    <string name="all_expenses_label">Lącznie wydano:</string>
 
 </resources>
