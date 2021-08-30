@@ -32,7 +32,7 @@ public class CreateListActivity extends AppCompatActivity {
     Unit unit;
     ListService listService;
 
-    Button addProductBtn, createListBtn;
+    Button addProductBtn, createListBtn, cancelListBtn;
     static EditText nameListEt, nameProductEt, quantityProductEt;
     static RadioGroup unitRg;
     RecyclerView addedProductsRv;
@@ -60,6 +60,7 @@ public class CreateListActivity extends AppCompatActivity {
         nameProductEt = findViewById(R.id.name_prodcut_et);
         quantityProductEt = findViewById(R.id.quantity_et);
         unitRg = findViewById(R.id.unit_RG);
+        cancelListBtn = findViewById(R.id.cancel_list_btn);
 
         addedProductsRv = findViewById(R.id.added_products_rv);
         addedProductsRv.setLayoutManager(new LinearLayoutManager(CreateListActivity.this));
@@ -67,6 +68,8 @@ public class CreateListActivity extends AppCompatActivity {
         productCreateListAdapter = new ProductCreateListAdapter(this, productList);
         addedProductsRv.setAdapter(productCreateListAdapter);
 
+
+        cancelListBtn.setOnClickListener(v -> finish());
 
         ValidationTableService validationTableService = new ValidationTableService(this);
         validationTableService.getUnits(units -> {

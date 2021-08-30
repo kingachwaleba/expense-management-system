@@ -149,8 +149,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/btn_simple"
             android:text="@string/create_list"
+            android:textAppearance="@style/simple_button" />
+
+        <Button
+            android:id="@+id/cancel_list_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_danger"
+            android:text="@string/cancel"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="20dp"
             android:textAppearance="@style/simple_button" />
     </LinearLayout>
 </ScrollView>

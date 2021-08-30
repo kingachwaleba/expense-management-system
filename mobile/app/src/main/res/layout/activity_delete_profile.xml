@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bg_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/delete_account_label"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/delete_account_label"
+                android:textAppearance="@style/simple_label_bold"
+                android:textSize="36sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.22"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/vector"
+                android:layout_width="200dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/v_underline"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.218"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/delete_account_label"
+                app:layout_constraintVertical_bias="1.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:layout_margin="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/delete_account_question_label"
+                android:textAppearance="@style/simple_label_bold"
+                android:textSize="30sp"
+                android:textColor="@color/light_gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/warning"
+                android:textAppearance="@style/simple_label_bold"
+                android:textSize="24sp"
+                android:layout_marginVertical="20dp"
+                android:textColor="@color/yellow" />
+
+            <EditText
+                android:id="@+id/password_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/password_hint"
+                android:background="@drawable/et_simple"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/light_gray"
+                android:importantForAutofill="no"/>
+
+
+            <Button
+                android:id="@+id/delete_account_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_simple"
+                android:text="@string/yes_delete"
+                android:layout_marginBottom="20dp"
+                android:textAppearance="@style/simple_button" />
+
+            <Button
+                android:id="@+id/cancel_account_delete_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_danger"
+                android:text="@string/no_exit"
+                android:layout_marginBottom="10dp"
+                android:textAppearance="@style/simple_button" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
