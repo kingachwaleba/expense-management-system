@@ -6,12 +6,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
@@ -20,12 +16,10 @@ import com.example.mobile.model.Unit;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.adapter.ProductCreateListAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class CreateListActivity extends AppCompatActivity {
+public class CreateListActivity extends BaseActivity {
 
     String accessToken;
     int walletId;
@@ -33,8 +27,8 @@ public class CreateListActivity extends AppCompatActivity {
     ListService listService;
 
     Button addProductBtn, createListBtn, cancelListBtn;
-    static EditText nameListEt, nameProductEt, quantityProductEt;
-    static RadioGroup unitRg;
+    EditText nameListEt, nameProductEt, quantityProductEt;
+    RadioGroup unitRg;
     RecyclerView addedProductsRv;
     List<Product> productList;
     ProductCreateListAdapter productCreateListAdapter;
@@ -44,11 +38,6 @@ public class CreateListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_list);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_pagename);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         accessToken = getIntent().getStringExtra("accessToken");
         walletId = getIntent().getIntExtra("walletId", 0);
@@ -65,7 +54,11 @@ public class CreateListActivity extends AppCompatActivity {
         addedProductsRv = findViewById(R.id.added_products_rv);
         addedProductsRv.setLayoutManager(new LinearLayoutManager(CreateListActivity.this));
         productList = new ArrayList<>();
-        productCreateListAdapter = new ProductCreateListAdapter(this, productList);
+        productCreateListAdapter = new ProductCreateListAdapter(this, productList, (nameProduct, quantityProduct, unit, id) -> {
+            nameProductEt.setText(nameProduct);
+            quantityProductEt.setText(quantityProduct);
+            unitRg.check(unit.getId());
+        });
         addedProductsRv.setAdapter(productCreateListAdapter);
 
 
@@ -93,27 +86,22 @@ public class CreateListActivity extends AppCompatActivity {
         });
 
         addProductBtn.setOnClickListener(v -> {
-            if(nameProductEt.getText().toString().length()>0 && quantityProductEt.getText().toString().length()>0){
-                productList.add(new Product(nameProductEt.getText().toString(), Double.parseDouble(quantityProductEt.getText().toString()), unit));
-                productCreateListAdapter.notifyDataSetChanged();
-                nameProductEt.setText("");
-                quantityProductEt.setText("");
-                unitRg.check(firstRadioButton);
-
-            } else Toast.makeText(CreateListActivity.this, "Wprowadź nazwe i ilość produktu", Toast.LENGTH_SHORT).show();
+            if(nameProductEt.getText().toString().length()==0) nameProductEt.setError("Wprowadź nazwe produktu!");
+                else if(quantityProductEt.getText().toString().length()==0) quantityProductEt.setError("Wprowadź ilość produku!");
+                    else {
+                        productList.add(new Product(nameProductEt.getText().toString(), Double.parseDouble(quantityProductEt.getText().toString()), unit));
+                        productCreateListAdapter.notifyDataSetChanged();
+                        nameProductEt.setText("");
+                        quantityProductEt.setText("");
+                        unitRg.check(firstRadioButton);
+                    }
         });
 
         createListBtn.setOnClickListener(v -> {
             if(nameListEt.getText().toString().length()>0){
                 listService.createList(accessToken, walletId, new ListCreate(new ListShop(nameListEt.getText().toString()), productList));
                 finish();
-            } else Toast.makeText(CreateListActivity.this, "Podaj nazwe listy", Toast.LENGTH_SHORT);
+            } else nameListEt.setError("Podaj nazwe listy zakupów!");
         });
-    }
-
-    public static void setNameQuantityProductEt(String name, String quantity, Unit unit){
-        nameProductEt.setText(name);
-        quantityProductEt.setText(quantity);
-        unitRg.check(unit.getId());
     }
 }

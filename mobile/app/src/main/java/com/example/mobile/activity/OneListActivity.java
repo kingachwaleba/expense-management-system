@@ -11,11 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Product;
@@ -25,17 +22,15 @@ import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.adapter.ListItemAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class OneListActivity extends AppCompatActivity {
+public class OneListActivity extends BaseActivity {
 
     TextView nameListTv;
-    static EditText nameItemEt, quantityItemEt;
+    EditText nameItemEt, quantityItemEt;
     Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn;
-    static RadioGroup unitRg;
+    RadioGroup unitRg;
     Unit unit;
     int firstRadioButton;
     RecyclerView listItemRv;
@@ -51,11 +46,6 @@ public class OneListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_list);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_pagename);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         session = new SessionManager(this);
 
@@ -79,24 +69,32 @@ public class OneListActivity extends AppCompatActivity {
 
         List<Product> productsInit = new ArrayList<>();
         listItemRv.setLayoutManager(new LinearLayoutManager(OneListActivity.this));
-        ListItemAdapter listItemAdapterInit = new ListItemAdapter(this, productsInit, accessToken, login);
+        ListItemAdapter listItemAdapterInit = new ListItemAdapter(this, productsInit, accessToken, login, (nameProduct, quantityProduct, unit, id) -> {
+            nameItemEt.setText(nameProduct);
+            quantityItemEt.setText(quantityProduct);
+            unitRg.check(unit.getId());
+            ifEdit = true;
+            productEditId = id;
+        });
         listItemRv.setAdapter(listItemAdapterInit);
 
         addItemBtn.setOnClickListener(v -> {
-            if(nameItemEt.getText().toString().length()>0 && quantityItemEt.getText().toString().length()>0){
-                Product product = new Product(nameItemEt.getText().toString(), Double.parseDouble(quantityItemEt.getText().toString()), unit);
-                if(!ifEdit){
-                    listService.addListItem(accessToken, listId, product);
-                } else {
-                    listService.editListItem(accessToken, productEditId, product);
-                    ifEdit = true;
-                }
-                unitRg.check(firstRadioButton);
-                nameItemEt.setText("");
-                quantityItemEt.setText("");
-                finish();
-                startActivity(getIntent());
-            } else Toast.makeText(OneListActivity.this, "Wprowadź nazwe i ilość produktu", Toast.LENGTH_SHORT).show();
+            if(nameItemEt.getText().toString().length()==0) nameItemEt.setError("Podaj nazwe produktu");
+                else if(quantityItemEt.getText().toString().length()==0) quantityItemEt.setError("Podaj ilość produktu");
+                    else{
+                        Product product = new Product(nameItemEt.getText().toString(), Double.parseDouble(quantityItemEt.getText().toString()), unit);
+                        if(!ifEdit){
+                            listService.addListItem(accessToken, listId, product);
+                        } else {
+                            listService.editListItem(accessToken, productEditId, product);
+                            ifEdit = true;
+                        }
+                        unitRg.check(firstRadioButton);
+                        nameItemEt.setText("");
+                        quantityItemEt.setText("");
+                        finish();
+                        startActivity(getIntent());
+                   }
         });
 
         deleteListShopBtn.setOnClickListener(v -> {
@@ -112,14 +110,6 @@ public class OneListActivity extends AppCompatActivity {
 
     }
 
-    public static void setNameQuantityProductEt(String name, String quantity, Unit unit, int itemEditId){
-        nameItemEt.setText(name);
-        quantityItemEt.setText(quantity);
-        unitRg.check(unit.getId());
-        ifEdit = true;
-        productEditId = itemEditId;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -131,7 +121,13 @@ public class OneListActivity extends AppCompatActivity {
 
         listService.getListById(listShop -> {
             nameListTv.setText(listShop.getName());
-            ListItemAdapter listItemAdapter= new ListItemAdapter(OneListActivity.this, listShop.getListDetailSet(), accessToken, login);
+            ListItemAdapter listItemAdapter= new ListItemAdapter(OneListActivity.this, listShop.getListDetailSet(), accessToken, login, (nameProduct, quantityProduct, unit, id) -> {
+                nameItemEt.setText(nameProduct);
+                quantityItemEt.setText(quantityProduct);
+                unitRg.check(unit.getId());
+                ifEdit = true;
+                productEditId = id;
+            });
             listItemRv.setAdapter(listItemAdapter);
 
             if(listShop.getUser()!=null){
@@ -214,5 +210,4 @@ public class OneListActivity extends AppCompatActivity {
             unit = new Unit(checkedId, radioText);
         });
     }
-
 }

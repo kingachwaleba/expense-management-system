@@ -39,7 +39,7 @@
             android:id="@+id/statue_1_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_1"/>
@@ -48,7 +48,7 @@
             android:id="@+id/statue_2_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_2"/>
@@ -57,7 +57,7 @@
             android:id="@+id/statue_3_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_3"/>
@@ -66,7 +66,7 @@
             android:id="@+id/statue_4_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_4"/>

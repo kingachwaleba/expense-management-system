@@ -3,7 +3,6 @@ package com.example.mobile.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.mobile.R;
-
 import java.util.Objects;
 
 public class StatueActivity extends AppCompatActivity {

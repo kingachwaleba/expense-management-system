@@ -1,17 +1,14 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Category;
@@ -22,9 +19,8 @@ import com.example.mobile.service.adapter.SearchUserAdapter;
 import com.example.mobile.service.ValidationTableService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class CreateWalletActivity extends AppCompatActivity {
+public class CreateWalletActivity extends BaseActivity{
 
     SessionManager session;
     WalletService walletService;
@@ -42,11 +38,6 @@ public class CreateWalletActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_wallet);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_pagename);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         walletService = new WalletService(getParent());
 
@@ -122,7 +113,7 @@ public class CreateWalletActivity extends AppCompatActivity {
                 WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapterInit.getSelectedUser());
                 walletService.createWallet(accessToken, walletHolder);
                 finish();
-            } else Toast.makeText(CreateWalletActivity.this, "Brak nazwy portfela", Toast.LENGTH_LONG).show();
+            } else nameEt.setError("Podaj nazwe portfela!");
         });
     }
 

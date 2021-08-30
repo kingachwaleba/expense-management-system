@@ -26,7 +26,7 @@
         android:layout_marginEnd="24dp"
         android:text="John Doe"
         android:textAppearance="@style/simple_label"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/profile_user_image"
         app:layout_constraintTop_toTopOf="@+id/profile_user_image" />
 

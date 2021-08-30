@@ -3,12 +3,10 @@ package com.example.mobile.activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import com.example.mobile.R;
 import com.example.mobile.service.ListService;
 
-public class EditListActivity extends AppCompatActivity {
+public class EditListActivity extends BaseActivity {
 
     EditText newNameListEt;
     Button saveChangeBtn;
@@ -33,7 +31,7 @@ public class EditListActivity extends AppCompatActivity {
             if(newNameListEt.getText().toString().length()>0){
                 listService.editListName(accessToken, listId, newNameListEt.getText().toString());
                 finish();
-            } else Toast.makeText(EditListActivity.this, "Wpisz nazwę list", Toast.LENGTH_SHORT);
+            } else newNameListEt.setError("Podaj nazwe listy zakupw!");
         });
     }
 }
