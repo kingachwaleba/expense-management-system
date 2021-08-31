@@ -5,7 +5,7 @@
     <string name="email_label">Email:</string>
     <string name="password_label">Hasło:</string>
     <string name="password_forget_text">Nie pamiętam hasła, przypomnij hasło.</string>
-    <string name="no_account_text">Nie masz konta?</string>
+    <string name="no_account_text">Nie masz konta? </string>
     <string name="sign_up_text">Zarejestruj się!</string>
     <string name="sign_up_label">Zarejestruj się:</string>
     <string name="sign_up">Zarejestruj się</string>
@@ -97,7 +97,7 @@
     <string name="password_hint">Podaj hasło...</string>
     <string name="baner_label">Kotrolowanie wydatków jeszcze nigdy nie było takie proste</string>
     <string name="insert_email_label">Podaj adres email:</string>
-    <string name="restore_pasword_label">Odzyskiwanie hasła:</string>
+    <string name="restore_password_label">Odzyskiwanie hasła:</string>
     <string name="restore_password">Przypomnij hasło</string>
     <string name="edit_expense">Edytuj wydatek</string>
     <string name="edit_expense_label">Edytuj wydatek</string>
@@ -108,5 +108,6 @@
     <string name="back">Wróć</string>
     <string name="biggest_expense_label">Największy wydatek:</string>
     <string name="all_expenses_label">Łącznie wydano:</string>
+    <string name="change_password_label">Zmień hasło:</string>
 
 </resources>

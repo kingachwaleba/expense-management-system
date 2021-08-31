@@ -2,6 +2,7 @@
 <ScrollView xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -9,18 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:background="@drawable/bg_background">
+        android:gravity="center">
 
-        <TextView
-            android:id="@+id/profile_label"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textAppearance="@style/simple_label_bold"
-            android:textSize="36sp"
-            android:text="@string/profil"
-            android:textColor="@color/light_gray" />
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp">
+
+            <TextView
+                android:id="@+id/profile_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profil"
+                android:textAppearance="@style/simple_label"
+                android:textSize="40sp"
+                android:layout_alignParentStart="true" />
+
+            <View
+                android:id="@+id/vector_1"
+                android:layout_width="156dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginStart="50dp"
+                android:layout_below="@+id/profile_label"
+                android:layout_alignEnd="@+id/profile_label"
+                android:background="@drawable/v_underline" />
+
+        </RelativeLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
