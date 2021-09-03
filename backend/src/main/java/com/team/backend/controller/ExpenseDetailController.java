@@ -70,6 +70,14 @@ public class ExpenseDetailController {
 
         expenseDetailRepository.delete(deletedUser);
 
+        BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
+                .getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
+
+        for (ExpenseDetail expenseDetail : expense.getExpenseDetailSet()) {
+            expenseDetail.setCost(cost);
+            expenseDetailRepository.save(expenseDetail);
+        }
+
         return new ResponseEntity<>(expense, HttpStatus.OK);
     }
 }
