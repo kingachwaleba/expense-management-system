@@ -28,9 +28,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public void save(ExpenseHolder expenseHolder, Wallet wallet) {
         Expense expense = expenseHolder.getExpense();
-        String ownerLogin = expenseHolder.getOwnerLogin();
         List<String> userList = expenseHolder.getUserList();
-        User owner = userService.findByLogin(ownerLogin).orElseThrow(RuntimeException::new);
+        User owner = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         LocalDateTime date = LocalDateTime.now();
 
@@ -51,7 +50,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             expenseDetail.setCost(cost);
             expenseDetail.setUser(member);
 
-            if (member.getLogin().equals(ownerLogin))
+            if (member.getLogin().equals(owner.getLogin()))
                 expenseDetail.setPaymentStatus(completedStatus);
             else
                 expenseDetail.setPaymentStatus(waitingStatus);
