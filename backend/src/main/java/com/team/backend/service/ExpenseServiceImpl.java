@@ -28,8 +28,9 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public void save(ExpenseHolder expenseHolder, Wallet wallet) {
         Expense expense = expenseHolder.getExpense();
+        String ownerLogin = expenseHolder.getOwnerLogin();
         List<String> userList = expenseHolder.getUserList();
-        User owner = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User owner = userService.findByLogin(ownerLogin).orElseThrow(RuntimeException::new);
 
         LocalDateTime date = LocalDateTime.now();
 
@@ -39,25 +40,21 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         PaymentStatus waitingStatus = paymentStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
         PaymentStatus completedStatus = paymentStatusRepository.findByName("zrealizowany").orElseThrow(RuntimeException::new);
-
-        BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
-                .getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
-
-        ExpenseDetail expenseDetail = new ExpenseDetail();
-        expenseDetail.setCost(cost);
-        expenseDetail.setUser(owner);
-        expenseDetail.setPaymentStatus(completedStatus);
-
-        expense.addExpenseDetail(expenseDetail);
+        
+        BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(userList.size()), 2, RoundingMode.CEILING);
 
         for (String login : userList) {
             User member = userService.findByLogin(login).orElseThrow(RuntimeException::new);
 
-            expenseDetail = new ExpenseDetail();
+            ExpenseDetail expenseDetail = new ExpenseDetail();
 
             expenseDetail.setCost(cost);
             expenseDetail.setUser(member);
-            expenseDetail.setPaymentStatus(waitingStatus);
+
+            if (member.getLogin().equals(ownerLogin))
+                expenseDetail.setPaymentStatus(completedStatus);
+            else
+                expenseDetail.setPaymentStatus(waitingStatus);
 
             expense.addExpenseDetail(expenseDetail);
         }
