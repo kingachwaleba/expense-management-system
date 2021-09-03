@@ -15,6 +15,5 @@ import java.util.List;
 public class ExpenseHolder {
 
     private Expense expense;
-    private String ownerLogin;
     private List<String> userList;
 }
