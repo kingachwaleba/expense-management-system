@@ -7,7 +7,7 @@ public class ApiClient {
     private static ApiInterface apiInterface;
 
     public ApiClient(){
-        String BASE_URL = "http://192.168.100.8:8080/";
+        String BASE_URL = "http://192.168.0.31:8080/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

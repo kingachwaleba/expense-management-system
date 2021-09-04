@@ -109,5 +109,9 @@
     <string name="biggest_expense_label">Największy wydatek:</string>
     <string name="all_expenses_label">Łącznie wydano:</string>
     <string name="change_password_label">Zmień hasło:</string>
+    <string name="cost_hint">Wpisz koszt...</string>
+    <string name="who_make_label">Wykonany przez: </string>
+    <string name="cost_label">Koszt: </string>
+    <string name="date_label">Data:</string>
 
 </resources>

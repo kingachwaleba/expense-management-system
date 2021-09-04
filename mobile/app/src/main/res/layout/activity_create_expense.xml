@@ -31,7 +31,7 @@
             android:background="@drawable/v_line_white" />
 
         <EditText
-            android:id="@+id/name_et"
+            android:id="@+id/name_expense_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -42,11 +42,11 @@
             android:importantForAutofill="no"/>
 
         <EditText
-            android:id="@+id/description_et"
+            android:id="@+id/cost_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/description_hint"
+            android:hint="@string/cost_hint"
             android:background="@drawable/et_simple"
             android:layout_marginBottom="20dp"
             android:textColor="@color/light_gray"
@@ -69,7 +69,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <RadioGroup
-                android:id="@+id/category_RG"
+                android:id="@+id/category_expense_RG"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -103,6 +103,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/members_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_round_box_light"

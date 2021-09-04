@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
+import com.example.mobile.model.Category;
+import com.example.mobile.model.Unit;
 import com.example.mobile.model.WalletCreate;
+import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.WalletAdapter;
 import java.util.ArrayList;
@@ -17,10 +20,14 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
+    static List<Category> categoriesWallet,  categoriesExpense;
+    static List<Unit> productUnits;
+    static List<String> periods;
     SessionManager session;
     RecyclerView walletRv;
     TextView helloTv;
     Button addNewWalletBtn;
+    ValidationTableService validationTableService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,23 @@ public class MainActivity extends BaseActivity {
         List<WalletCreate> walletItemsInit = new ArrayList<>();
         WalletAdapter walletAdapterInit = new WalletAdapter(MainActivity.this, walletItemsInit);
         walletRv.setAdapter(walletAdapterInit);
+
+        validationTableService = new ValidationTableService(this);
+
+        validationTableService.getWalletCategories(categories -> categoriesWallet = categories);
+
+        validationTableService.getExpenseCategories(categories -> categoriesExpense = categories);
+
+        validationTableService.getUnits(units -> productUnits = units);
+
+        periods = new ArrayList<>();
+
+        periods.add("brak");
+        periods.add("dzienne");
+        periods.add("tygodniowe");
+        periods.add("miesięczne");
+        periods.add("kwartalne");
+        periods.add("roczne");
 
         addNewWalletBtn.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, CreateWalletActivity.class);
@@ -57,5 +81,21 @@ public class MainActivity extends BaseActivity {
             WalletService walletService = new WalletService(MainActivity.this, walletRv);
             walletService.getUserWallets(user.get(SessionManager.KEY_TOKEN));
         }
+    }
+
+    static public List<Category> getCategoriesWallet() {
+        return categoriesWallet;
+    }
+
+    static public List<Category> getCategoriesExpense() {
+        return categoriesExpense;
+    }
+
+    static public List<Unit> getProductUnits() {
+        return productUnits;
+    }
+
+    public static List<String> getPeriods() {
+        return periods;
     }
 }

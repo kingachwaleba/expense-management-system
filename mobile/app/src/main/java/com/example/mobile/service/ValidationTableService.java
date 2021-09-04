@@ -31,6 +31,21 @@ public class ValidationTableService  {
         void onUnits(List<Unit> units);
     }
 
+    public void getExpenseCategories(OnValidationTableCategory callback){
+        Call<List<Category>> call = apiInterface.getExpenseCategories();
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<Category>> call, @NotNull Response<List<Category>> response) {
+                callback.onCategories(response.body());
+            }
+            @Override
+            public void onFailure(@NotNull Call<List<Category>> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
     public void getWalletCategories(OnValidationTableCategory callback){
         Call<List<Category>> call = apiInterface.getWalletCategories();
         call.enqueue(new Callback<List<Category>>() {

@@ -22,7 +22,7 @@ public class WalletCreate {
     List<User> userList;
 
 
-    public WalletCreate(int id, String name,String description, Category category) {
+    public WalletCreate(int id, String name, Category category, String description) {
         this.id = id;
         this.name = name;
         this.category = category;
