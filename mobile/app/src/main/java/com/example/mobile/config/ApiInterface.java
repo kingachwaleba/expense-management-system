@@ -1,6 +1,8 @@
 package com.example.mobile.config;
 
 import com.example.mobile.model.Category;
+import com.example.mobile.model.Expense;
+import com.example.mobile.model.ExpenseHolder;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
@@ -71,6 +73,11 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<List<Category>> getWalletCategories();
 
+    @GET("categories")
+    @Headers("Content-Type: application/json")
+    Call<List<Category>> getExpenseCategories();
+
+
     @GET("units")
     @Headers("Content-Type: application/json")
     Call<List<Unit>> getUnits();
@@ -128,4 +135,16 @@ public interface ApiInterface  {
     @POST("wallet/{id}/message")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> sendMessage(@Header("Authorization") String accessToken, @Path("id") int id, @Body Message massage);
+
+    @POST("wallet/{id}/add-expense")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> createExpense(@Header("Authorization") String accessToken, @Path("id") int id, @Body ExpenseHolder expenseHolder);
+
+    @GET("wallet/{id}/expenses")
+    @Headers("Content-Type: application/json")
+    Call<List<Expense>> getAllExpense(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @GET("expense/{id}")
+    @Headers("Content-Type: application/json")
+    Call<Expense> getExpenseById(@Header("Authorization") String accessToken, @Path("id") int id);
 }

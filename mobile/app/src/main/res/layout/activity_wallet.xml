@@ -200,6 +200,13 @@
                 </Button>
             </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/expenses_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_expense"
+            />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

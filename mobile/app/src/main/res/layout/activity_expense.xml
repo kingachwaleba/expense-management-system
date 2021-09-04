@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bg_background"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -62,11 +62,20 @@
                 android:id="@+id/cost_expense_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
                 android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
                 android:text="@string/cost_expense_label" />
+
+            <TextView
+                android:id="@+id/date_expense_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:textAppearance="@style/simple_label"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:text="@string/date_label" />
 
             <View
                 android:id="@+id/vector_3"
@@ -84,8 +93,10 @@
               android:background="@drawable/bg_round_box_light">
 
               <androidx.recyclerview.widget.RecyclerView
+                  android:id="@+id/for_who_rv"
                   android:layout_width="match_parent"
-                  android:layout_height="wrap_content"/>
+                  android:layout_height="wrap_content"
+                  tools:listitem="@layout/item_member" />
 
           </LinearLayout>
 
