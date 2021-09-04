@@ -4,44 +4,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_background">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="@drawable/bg_background">
+        android:gravity="center_horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp">
 
             <TextView
                 android:id="@+id/edit_members_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="@string/edit_members_label"
-                android:textAppearance="@style/simple_label_bold"
-                android:textSize="36sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.22"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textAppearance="@style/simple_label"
+                android:textSize="40sp"
+                android:layout_alignParentStart="true" />
 
             <View
                 android:id="@+id/vector"
-                android:layout_width="200dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/v_underline"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.578"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/edit_members_label"
-                app:layout_constraintVertical_bias="1.0" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_width="156dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="-10dp"
+                android:layout_below="@+id/edit_members_label"
+                android:layout_alignEnd="@+id/edit_members_label"
+                android:background="@drawable/v_underline" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+
 import com.example.mobile.activity.LoginActivity;
 import com.example.mobile.activity.MainActivity;
 import com.example.mobile.activity.RegistrationActivity;
@@ -12,6 +13,7 @@ import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
 import com.google.gson.JsonObject;
+
 import org.jetbrains.annotations.NotNull;
 
 import okhttp3.ResponseBody;
@@ -36,9 +38,11 @@ public class UserService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                Intent i = new Intent(context, MainActivity.class);
-                context.startActivity(i);
-                ((RegistrationActivity)context).finish();
+                if(response.code()==200){
+                    Intent i = new Intent(context, MainActivity.class);
+                    context.startActivity(i);
+                    ((RegistrationActivity)context).finish();
+                } else Toast.makeText(context,"Nie udało się zarejestrować użytkownika",Toast.LENGTH_LONG).show();
             }
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {

@@ -6,25 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
-import com.example.mobile.activity.CreateListActivity;
+import com.example.mobile.SetActivityField;
 import com.example.mobile.model.Product;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreateListAdapter.ViewHolder> {
 
     private final List<Product> mProducts;
     private final LayoutInflater mInflater;
+    private final SetActivityField editInterface;
 
-    public ProductCreateListAdapter(Context context, List<Product> productsItems){
+    public ProductCreateListAdapter(Context context, List<Product> productsItems, SetActivityField setActivityField){
         mProducts = productsItems;
         mInflater = LayoutInflater.from(context);
+        editInterface = setActivityField;
     }
 
     @Override
@@ -43,7 +41,7 @@ public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreate
 
         holder.editProductBtn.setOnClickListener(v -> {
             mProducts.remove(position);
-            CreateListActivity.setNameQuantityProductEt(productItem.getName(), String.valueOf(productItem.getQuantity()), productItem.getUnit());
+            editInterface.editProduct(productItem.getName(), String.valueOf(productItem.getQuantity()),productItem.getUnit(), productItem.getId());
             notifyDataSetChanged();
         });
 

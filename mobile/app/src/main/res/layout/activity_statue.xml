@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_background"
-    android:orientation="vertical">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:background="@drawable/bg_background">
 
-        <TextView
-            android:id="@+id/statue_label"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/statue_label"
-            android:textAppearance="@style/simple_label_bold"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.22"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginBottom="50dp">
 
-        <View
-            android:id="@+id/vector"
-            android:layout_width="200dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/v_underline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.578"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/statue_label"
-            app:layout_constraintVertical_bias="1.0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/statue_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/statue_label"
+                android:textAppearance="@style/simple_label"
+                android:textSize="40sp"
+                android:layout_alignParentStart="true" />
+
+            <View
+                android:id="@+id/vector"
+                android:layout_width="156dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="-10dp"
+                android:layout_below="@+id/statue_label"
+                android:layout_alignEnd="@+id/statue_label"
+                android:background="@drawable/v_underline" />
+
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/statue_1_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_1"/>
@@ -48,7 +50,7 @@
             android:id="@+id/statue_2_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_2"/>
@@ -57,7 +59,7 @@
             android:id="@+id/statue_3_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_3"/>
@@ -66,9 +68,11 @@
             android:id="@+id/statue_4_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:textSize="24sp"
             android:textAppearance="@style/simple_label"
             android:text="@string/statue_text_4"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
+<ScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_background"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@drawable/bg_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,7 +106,5 @@
                 android:text="@string/delete_expense"
                 android:layout_marginBottom="10dp"
                 android:textAppearance="@style/simple_button" />
-
         </LinearLayout>
-    </LinearLayout>
 </ScrollView>

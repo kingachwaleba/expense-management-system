@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mobile.R;
 import com.example.mobile.model.LoginForm;
@@ -41,32 +40,32 @@ public class LoginActivity extends AppCompatActivity {
 
         logInBtn.setOnClickListener(v -> {
            UserService userService = new UserService(LoginActivity.this);
-           userService.login(validateLoginForm());
+           if(validateLoginForm()!=null){
+               userService.login(validateLoginForm());
+           }
         });
     }
 
     public LoginForm validateLoginForm() {
-        String e = emailEt.getText().toString();
-        String p = passwordEt.getText().toString();
-        if (validateEmail(e) && validatePassword(p))
-            return new LoginForm(e,p);
+        if (validateEmail(emailEt) && validatePassword(passwordEt))
+            return new LoginForm(emailEt.getText().toString(),passwordEt.getText().toString());
         else return null;
     }
 
-    public boolean validateEmail(String s) {
-        if (Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$").matcher(s).matches())
+    public boolean validateEmail(EditText s) {
+        if (Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$").matcher(s.getText().toString()).matches())
             return true;
         else {
-            Toast.makeText(LoginActivity.this, "Incorrect format of an email (example@gmail.com)!", Toast.LENGTH_LONG).show();
+            s.setError("Niepoprawna forma adresu email");
             return false;
         }
     }
 
-    public boolean validatePassword(String s) {
-        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(s).matches())
+    public boolean validatePassword(EditText s) {
+        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(s.getText().toString()).matches())
             return true;
         else {
-            Toast.makeText(LoginActivity.this, "Incorrect password!", Toast.LENGTH_LONG).show();
+            s.setError("Niepoprawne hasło");
             return false;
         }
     }

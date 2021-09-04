@@ -1,10 +1,8 @@
 package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -47,56 +45,49 @@ public class RegistrationActivity extends AppCompatActivity {
                 userService.register(validateUser());
         });
 
-        statueTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegistrationActivity.this, StatueActivity.class);
-                startActivity(intent);
-            }
+        statueTv.setOnClickListener(v -> {
+            Intent intent = new Intent(RegistrationActivity.this, StatueActivity.class);
+            startActivity(intent);
         });
     }
 
     public User validateUser() {
-        String l = loginEt.getText().toString();
-        String e = emailEt.getText().toString();
-        String p = passwordEt.getText().toString();
-        String pc = passwordConfirmEt.getText().toString();
-        if (validateLogin(l) && validateEmail(e) && validatePassword(p) && validateConfirmPassword(p, pc) && validateReg())
-            return new User(l, e, p);
+        if (validateLogin(loginEt) && validateEmail(emailEt) && validatePassword(passwordEt) && validateConfirmPassword(passwordEt, passwordConfirmEt) && validateReg())
+            return new User(loginEt.getText().toString(), emailEt.getText().toString(), passwordEt.getText().toString());
         else return null;
     }
 
-    public boolean validateLogin(String s) {
-        if (Pattern.compile("^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\\d.-]{4,45}$").matcher(s).matches())
+    public boolean validateLogin(EditText s) {
+        if (Pattern.compile("^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\\d.-]{4,45}$").matcher(s.getText().toString()).matches())
             return true;
         else {
-            Toast.makeText(RegistrationActivity.this, "Incorrect format of a login (it could contain letters, numbers, -, " + "it should start with letter, it should have 5-45 characters)!", Toast.LENGTH_LONG).show();
+            s.setError("Niepoprawny format loginu. Min 5 znaków.");
             return false;
         }
     }
 
-    public boolean validateEmail(String s) {
-        if (Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$").matcher(s).matches())
+    public boolean validateEmail(EditText s) {
+        if (Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$").matcher(s.getText().toString()).matches())
             return true;
         else {
-            Toast.makeText(RegistrationActivity.this, "Incorrect format of an email (example@gmail.com)!", Toast.LENGTH_LONG).show();
+            s.setError("Niepoprawny format adresu email");
             return false;
         }
     }
 
-    public boolean validatePassword(String s) {
-        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(s).matches())
+    public boolean validatePassword(EditText s) {
+        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(s.getText().toString()).matches())
             return true;
         else {
-            Toast.makeText(RegistrationActivity.this, "Incorrect password!", Toast.LENGTH_LONG).show();
+            s.setError("Niepoprawna forma hasła. Hasło ma składać się z min. 8 znaków w tym 1 cyfra, 1 duża litera, 1 mała litera");
             return false;
         }
     }
 
-    public boolean validateConfirmPassword(String s1, String s2) {
-        if (s1.equals(s2)) return true;
+    public boolean validateConfirmPassword(EditText s1, EditText s2) {
+        if ((s1.getText().toString()).equals(s2.getText().toString())) return true;
         else {
-            Toast.makeText(RegistrationActivity.this, "Incorret confirm password!", Toast.LENGTH_LONG).show();
+            s2.setError("Niepoprawne hasło");
             return false;
         }
     }
@@ -104,7 +95,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean validateReg() {
         if (statueCb.isChecked()) return true;
         else {
-            Toast.makeText(RegistrationActivity.this, "Consend to the regulations is required", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this, "Akceptacja regulaminu jest wymagana", Toast.LENGTH_LONG).show();
             return false;
         }
     }

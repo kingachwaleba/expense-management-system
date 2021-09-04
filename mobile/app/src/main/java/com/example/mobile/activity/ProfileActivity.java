@@ -5,22 +5,17 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     ImageView profileImage;
     Button openNotificationBtn, editProfileBtn;
@@ -35,11 +30,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_pagename);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         session = new SessionManager(this);
         accessToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
@@ -78,9 +68,12 @@ public class ProfileActivity extends AppCompatActivity {
         editProfileBtn = findViewById(R.id.edit_profile_btn);
 
         accountService.getAccount(account -> {
-            loginTv.setText(getResources().getString(R.string.login_label) + " " + account.getLogin());
-            emailTv.setText(getResources().getString(R.string.email_label) + " " + account.getEmail());
-            numberOfWalletTv.setText(getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber());
+            String loginText = getResources().getString(R.string.login_label) + " " + account.getLogin();
+            String emailText = getResources().getString(R.string.email_label) + " " + account.getEmail();
+            String numberOfWalletText = getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber();
+            loginTv.setText(loginText);
+            emailTv.setText(emailText);
+            numberOfWalletTv.setText(numberOfWalletText);
             //balanceTv.setText(getResources().getString(R.string.login_string) + " " + account.getLogin());
         }, accessToken);
 
