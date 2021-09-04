@@ -31,7 +31,7 @@
             android:background="@drawable/v_line_white" />
 
         <EditText
-            android:id="@+id/name_et"
+            android:id="@+id/name_expense_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -42,7 +42,7 @@
             android:importantForAutofill="no"/>
 
         <EditText
-            android:id="@+id/description_et"
+            android:id="@+id/cost_expense_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -103,6 +103,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/members_expense_l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_round_box_light"
