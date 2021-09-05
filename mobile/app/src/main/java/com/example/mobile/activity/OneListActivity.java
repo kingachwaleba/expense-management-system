@@ -20,7 +20,6 @@ import com.example.mobile.model.Status;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
-import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.adapter.ListItemAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,7 @@ public class OneListActivity extends BaseActivity {
     static Boolean ifEdit;
     static int productEditId;
     CheckBox personListCb, listCb;
+    List<Unit> units;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,20 +189,18 @@ public class OneListActivity extends BaseActivity {
 
         }, accessToken, listId);
 
-        ValidationTableService validationTableService = new ValidationTableService(this);
-        validationTableService.getUnits(units -> {
-            for(int i = 0; i < units.size(); i++){
-                RadioButton rdbtn = new RadioButton(OneListActivity.this);
-                rdbtn.setId(units.get(i).getId());
-                rdbtn.setText(units.get(i).getName());
-                rdbtn.setTextAppearance(R.style.simple_label);
-                rdbtn.setTextSize(18);
-                rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
-                unitRg.addView(rdbtn);
-                if(i == 0) rdbtn.setChecked(true);
-            }
-            firstRadioButton = unitRg.getCheckedRadioButtonId();
-        });
+        units = MainActivity.getProductUnits();
+        for(int i = 0; i < units.size(); i++){
+            RadioButton rdbtn = new RadioButton(OneListActivity.this);
+            rdbtn.setId(units.get(i).getId());
+            rdbtn.setText(units.get(i).getName());
+            rdbtn.setTextAppearance(R.style.simple_label);
+            rdbtn.setTextSize(18);
+            rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
+            unitRg.addView(rdbtn);
+            if(i == 0) rdbtn.setChecked(true);
+        }
+        firstRadioButton = unitRg.getCheckedRadioButtonId();
 
         unitRg.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton rb=findViewById(checkedId);
