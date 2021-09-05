@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:textAppearance="@style/simple_label"
         android:textSize="18sp"
-        android:layout_marginHorizontal="20dp">
+        android:layout_marginHorizontal="5dp">
     </TextView>
     <TextView
         android:id="@+id/member_balance_tv"
@@ -19,6 +19,29 @@
         android:layout_height="match_parent"
         android:textAppearance="@style/simple_label_bold"
         android:textSize="18sp"
-        android:layout_marginHorizontal="20dp">
+        android:text="-10zł"
+        android:textColor="@color/red"
+        android:layout_marginHorizontal="5dp">
     </TextView>
+    <TextView
+        android:id="@+id/member_balance_to_you_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textAppearance="@style/simple_label_bold"
+        android:textSize="18sp"
+        android:text="+10zł"
+        android:textColor="@color/green"
+        android:layout_marginHorizontal="5dp">
+    </TextView>
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_bell" />
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_handshake"/>
+
 </LinearLayout>
