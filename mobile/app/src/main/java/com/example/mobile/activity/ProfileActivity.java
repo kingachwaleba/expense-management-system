@@ -3,6 +3,7 @@ package com.example.mobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,8 @@ import java.util.List;
 public class ProfileActivity extends BaseActivity {
 
     ImageView profileImage;
-    Button openNotificationBtn, editProfileBtn;
+    Button editProfileBtn;
+    ImageButton openNotificationBtn;
     Boolean ifOpenNotification;
     RecyclerView notificationInvitationRv; // notificationWarningRv, notificationMessageRv;
     SessionManager session;
