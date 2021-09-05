@@ -3,6 +3,7 @@ package com.example.mobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ public class WalletActivity extends BaseActivity {
     String TAG = "MEMBERS_FRAGMENT";
 
     TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv;
-    Button showMembersBtn, addMemberBtn, editWalletBtn, showListsBtn, addListBtn, goToChatBtn, addExpenseBtn, showExpensesBtn;
+    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn;
     String walletName, walletDescription, walletCategory;
     ListsAdapter listAdapter;
     ExpensesAdapter expensesAdapter;
@@ -40,6 +41,7 @@ public class WalletActivity extends BaseActivity {
     List<Expense> expenses1;
     List<User> members;
     ExpenseService expenseService;
+    ImageButton showMembersBtn, showListsBtn, showExpensesBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +183,8 @@ public class WalletActivity extends BaseActivity {
                     showListsBtn.setBackgroundResource(R.drawable.btn_list_opened);
                     showListsControl = true;
                 } else {
-
+                    shopListsRv.setAdapter(listAdapter);
+                    listAdapter.notifyDataSetChanged();
                     showListsBtn.setBackgroundResource(R.drawable.btn_list_closed);
                     showListsControl = false;
                 }
@@ -191,12 +194,13 @@ public class WalletActivity extends BaseActivity {
         showExpensesBtn.setOnClickListener(v -> expenseService.getAllExpenses(expenses -> {
             if (!showExpensesControl) {
                 ExpensesAdapter expensesAdapter1 = new ExpensesAdapter(getApplicationContext(), expenses, accessToken, members);
-                shopListsRv.setAdapter(expensesAdapter1);
+                expensesRv.setAdapter(expensesAdapter1);
                 expensesAdapter1.notifyDataSetChanged();
                 showExpensesBtn.setBackgroundResource(R.drawable.btn_list_opened);
                 showExpensesControl = true;
             } else {
-
+                expensesRv.setAdapter(expensesAdapter);
+                expensesAdapter.notifyDataSetChanged();
                 showExpensesBtn.setBackgroundResource(R.drawable.btn_list_closed);
                 showExpensesControl = false;
             }
