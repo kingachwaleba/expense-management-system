@@ -7,9 +7,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.example.mobile.R;
 import com.example.mobile.model.Category;
-import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditWalletActivity extends BaseActivity {
@@ -22,6 +22,7 @@ public class EditWalletActivity extends BaseActivity {
     WalletService walletService;
     int walletId;
     String walletName, walletDescription, walletCategory;
+    List<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +45,17 @@ public class EditWalletActivity extends BaseActivity {
         nameEt.setText(walletName);
         descriptionEt.setText(walletDescription);
 
-        ValidationTableService validationTableService = new ValidationTableService(this);
-        validationTableService.getWalletCategories(categories -> {
-            for(int i = 0; i < categories.size(); i++){
-                RadioButton rdbtn = new RadioButton(EditWalletActivity.this);
-                rdbtn.setId(categories.get(i).getId());
-                rdbtn.setText(categories.get(i).getName());
-                rdbtn.setTextAppearance(R.style.simple_label);
-                rdbtn.setTextSize(18);
-                rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
-                categoryRg.addView(rdbtn);
-                if(categories.get(i).getName().equals(walletCategory)) rdbtn.setChecked(true);
-            }
-        });
+        categories = MainActivity.getCategoriesWallet();
+        for(int i = 0; i < categories.size(); i++){
+            RadioButton rdbtn = new RadioButton(EditWalletActivity.this);
+            rdbtn.setId(categories.get(i).getId());
+            rdbtn.setText(categories.get(i).getName());
+            rdbtn.setTextAppearance(R.style.simple_label);
+            rdbtn.setTextSize(18);
+            rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
+            categoryRg.addView(rdbtn);
+            if(categories.get(i).getName().equals(walletCategory)) rdbtn.setChecked(true);
+        }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton rb=findViewById(checkedId);

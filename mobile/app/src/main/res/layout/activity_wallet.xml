@@ -2,6 +2,7 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     android:background="@drawable/bg_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,8 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="40dp"
-        android:layout_margin="20dp"
+        android:padding="20dp"
         android:orientation="vertical"
         android:gravity="center"
         android:background="@drawable/bg_round_box_dark">
@@ -126,7 +126,7 @@
                 android:id="@+id/open_chat_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_round_box_light"
                 android:gravity="center_horizontal"
                 android:paddingVertical="15dp"
@@ -135,70 +135,82 @@
                 android:textColor="@color/yellow"
                 android:textSize="24sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="30dp"
+            android:gravity="center"
+            android:background="@drawable/bg_round_box_light">
+
+            <Button
+                android:id="@+id/add_member_btn"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_plus"/>
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round_box_light"
-                android:paddingVertical="15dp"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="20dp">
-                <Button
-                    android:id="@+id/add_member_btn"
-                    android:layout_width="30dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/btn_plus">
-                </Button>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:textColor="@color/yellow"
-                    android:text="@string/members"
-                    android:textSize="24sp">
-                </TextView>
-                <Button
-                    android:id="@+id/show_members_btn"
-                    android:layout_width="30dp"
-                    android:layout_height="40dp">
-                </Button>
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/yellow"
+                android:text="@string/members"
+                android:layout_alignParentStart="false"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="24sp"/>
+            <ImageButton
+                android:id="@+id/show_members_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
 
-            </LinearLayout>
-
+        </RelativeLayout>
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_container_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_members" />
+                tools:layout="@layout/fragment_members"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round_box_light"
                 android:paddingVertical="15dp"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="20dp">
+                android:paddingHorizontal="30dp"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_round_box_light">
                 <Button
                     android:id="@+id/add_expense_btn"
                     android:layout_width="30dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/btn_plus">
-                </Button>
+                    android:layout_height="35dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_plus"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:textColor="@color/yellow"
                     android:text="@string/expenses"
-                    android:textSize="24sp">
-                </TextView>
-                <Button
+                    android:layout_alignParentStart="false"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="24sp"/>
+
+                <ImageButton
                     android:id="@+id/show_expenses_btn"
-                    android:layout_width="30dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/btn_list_closed">
-                </Button>
-            </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/btn_list_closed"/>
+            </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/expenses_rv"
@@ -207,34 +219,39 @@
             tools:listitem="@layout/item_expense"
             />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round_box_light"
                 android:paddingVertical="15dp"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="20dp">
+                android:paddingHorizontal="30dp"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_round_box_light">
                 <Button
                     android:id="@+id/add_shop_list_btn"
                     android:layout_width="30dp"
                     android:layout_height="35dp"
-                    android:background="@drawable/btn_plus">
-                </Button>
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_plus"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:textColor="@color/yellow"
                     android:text="@string/shop_lists"
-                    android:textSize="24sp">
-                </TextView>
-                <Button
+                    android:layout_alignParentStart="false"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="24sp"/>
+                <ImageButton
                     android:id="@+id/show_shop_lists_btn"
-                    android:layout_width="30dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/btn_list_closed">
-                </Button>
-            </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/btn_list_closed"/>
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/shop_lists_rv"
@@ -270,6 +287,7 @@
                 android:id="@+id/delete_wallet_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_danger"
                 android:text="@string/delete_wallet"
                 android:textAppearance="@style/simple_button"

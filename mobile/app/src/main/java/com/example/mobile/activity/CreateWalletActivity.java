@@ -16,7 +16,6 @@ import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.SearchUserAdapter;
-import com.example.mobile.service.ValidationTableService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,7 @@ public class CreateWalletActivity extends BaseActivity{
     EditText nameEt, descriptionEt, infixEt;
     Button createBtn;
     RecyclerView browseMembersRv;
+    List<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,19 +85,17 @@ public class CreateWalletActivity extends BaseActivity{
             }
         });
 
-        ValidationTableService validationTableService = new ValidationTableService(this);
-        validationTableService.getWalletCategories(categories -> {
-            for(int i = 0; i < categories.size(); i++){
-                RadioButton rdbtn = new RadioButton(CreateWalletActivity.this);
-                rdbtn.setId(categories.get(i).getId());
-                rdbtn.setText(categories.get(i).getName());
-                rdbtn.setTextAppearance(R.style.simple_label);
-                rdbtn.setTextSize(18);
-                rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
-                categoryRg.addView(rdbtn);
-                if(i == 0) rdbtn.setChecked(true);
-            }
-        });
+        categories = MainActivity.getCategoriesWallet();
+        for(int i = 0; i < categories.size(); i++){
+            RadioButton rdbtn = new RadioButton(CreateWalletActivity.this);
+            rdbtn.setId(categories.get(i).getId());
+            rdbtn.setText(categories.get(i).getName());
+            rdbtn.setTextAppearance(R.style.simple_label);
+            rdbtn.setTextSize(18);
+            rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
+            categoryRg.addView(rdbtn);
+            if(i == 0) rdbtn.setChecked(true);
+        }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton rb=findViewById(checkedId);
