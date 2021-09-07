@@ -47,6 +47,11 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
+    public void delete(List list) {
+        listRepository.delete(list);
+    }
+
+    @Override
     public Optional<List> findById(int id) {
         return listRepository.findById(id);
     }
