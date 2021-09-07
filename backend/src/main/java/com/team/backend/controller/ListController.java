@@ -92,4 +92,13 @@ public class ListController {
 
         return new ResponseEntity<>(updatedList, HttpStatus.OK);
     }
+
+    @DeleteMapping("/shopping-list/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+
+        listService.delete(shoppingList);
+
+        return new ResponseEntity<>("The given list was deleted!", HttpStatus.OK);
+    }
 }
