@@ -67,6 +67,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public void delete(Expense expense) {
+        expenseRepository.delete(expense);
+    }
+
+    @Override
     public Optional<Expense> findById(int id) {
         return expenseRepository.findById(id);
     }
