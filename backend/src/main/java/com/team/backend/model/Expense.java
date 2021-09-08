@@ -9,8 +9,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -62,5 +64,18 @@ public class Expense {
     public void addExpenseDetail(ExpenseDetail expenseDetail) {
         expenseDetailSet.add(expenseDetail);
         expenseDetail.setExpense(this);
+    }
+
+    @JsonIgnore
+    public List<ExpenseDetail> getUnpaidPayments() {
+        List<ExpenseDetail> expenseDetailList = new ArrayList<>();
+
+        for (ExpenseDetail expenseDetail : getExpenseDetailSet()) {
+            if (expenseDetail.getPaymentStatus().getName().equals("oczekujący")) {
+                expenseDetailList.add(expenseDetail);
+            }
+        }
+
+        return expenseDetailList;
     }
 }
