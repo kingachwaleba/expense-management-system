@@ -96,108 +96,62 @@ public class ExpenseController {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
         List<Expense> expenseList = expenseService.findAllByWalletOrderByDate(wallet);
-        List<List<ExpenseDetail>> expenses = new ArrayList<>();
+        List<DebtsHolder> debts = new ArrayList<>();
 
-        System.out.println("0");
+        // Find unpaid payments for all expenses in the given wallet
         for (Expense expense : expenseList) {
             List<ExpenseDetail> unpaidPayments = expense.getUnpaidPayments();
-            for (ExpenseDetail e : unpaidPayments)
-                System.out.println(unpaidPayments.size() + " " + e.getUser().getLogin() + " " + e.getExpense().getUser().getLogin() + " " + e.getCost());
             if (unpaidPayments.size() != 0) {
-                expenses.add(unpaidPayments);
+                for (ExpenseDetail expenseDetail : unpaidPayments) {
+                    DebtsHolder debtsHolder = new DebtsHolder();
+
+                    debtsHolder.setDebtor(expenseDetail.getUser().getLogin());
+                    debtsHolder.setCreditor(String.valueOf(expenseDetail.getExpense().getUser().getLogin()));
+                    debtsHolder.setBalance(expenseDetail.getCost());
+                    debtsHolder.setId(expenseDetail.getId());
+
+                    debts.add(debtsHolder);
+                }
             }
         }
 
-        List<DebtsHolder> debts = new ArrayList<>();
-        List<Map<String, Object>> peopleTemp = walletService.findUserList(wallet);
-        List<String> people = new ArrayList<>();
+        // Find people belong to the wallet
+        List<String> people = wallet.getUserList();
 
-        for (Map<String, Object> map : peopleTemp)
-            people.add(String.valueOf(map.get("login")));
+        // Order debts that the debtor comes before the creditor
+        debts.forEach(DebtsHolder::orderDebt);
 
-        DebtsHolder debtsHolder = new DebtsHolder();
-
-        for (List<ExpenseDetail> list : expenses) {
-            for (ExpenseDetail ed : list) {
-                debtsHolder = new DebtsHolder();
-
-                debtsHolder.setDebtor(ed.getUser().getLogin());
-                debtsHolder.setCreditor(String.valueOf(ed.getExpense().getUser().getLogin()));
-                debtsHolder.setBalance(ed.getCost());
-
-                debts.add(debtsHolder);
-            }
-        }
-
-        System.out.println("I");
-        for (DebtsHolder d : debts) {
-            System.out.println(d.getDebtor() + " " + d.getCreditor() + " " + d.getBalance());
-        }
-        System.out.println();
-
-        List<DebtsHolder> tempList = new ArrayList<>();
-        for (DebtsHolder debt : debts) {
-            tempList.add(debt.orderDebt());
-        }
-
-        System.out.println("I i pół");
-        for (DebtsHolder d : tempList) {
-            System.out.println(d.getDebtor() + " " + d.getCreditor() + " " + d.getBalance());
-        }
-        System.out.println();
-
-        List<DebtsHolder> newList = new ArrayList<>(debts.stream()
+        // Group together all debts owed by the same debtor to the same creditor and count their final balance
+        debts = new ArrayList<>(debts.stream()
                 .collect(Collectors.toMap(
                         e -> new AbstractMap.SimpleEntry<>(e.getDebtor(), e.getCreditor()),
                         Function.identity(),
-                        (a, b) -> new DebtsHolder(a.getDebtor(), a.getCreditor(), a.getBalance().add(b.getBalance()))
+                        (a, b) -> new DebtsHolder(a.getDebtor(), a.getCreditor(), a.getBalance().add(b.getBalance()), a.getId())
                         )
                 )
                 .values());
 
-        System.out.println("II");
-        for (DebtsHolder holder : newList) {
-            System.out.println(holder.getDebtor() + " " + holder.getCreditor() + " " + holder.getBalance());
-        }
-        System.out.println();
+        // Remove an element if the balance between two users is equal to 0
+        debts.removeIf(d -> d.getBalance().equals(BigDecimal.ZERO));
 
-        newList.removeIf(d -> d.getBalance().equals(BigDecimal.ZERO));
+        // Check if the balance is equal to 0 and change the debtor with the creditor and balance to positive
+        debts.stream()
+                .filter(debtsHolder -> debtsHolder.getBalance().compareTo(BigDecimal.ZERO) < 0)
+                .forEach(DebtsHolder::changeBalance);
 
         System.out.println("III");
-        for (DebtsHolder holder : newList) {
+        for (DebtsHolder holder : debts) {
             System.out.println(holder.getDebtor() + " " + holder.getCreditor() + " " + holder.getBalance());
         }
-        System.out.println();
-
-        Comparator<DebtsHolder> compareByDebtor = Comparator.comparing(DebtsHolder::getDebtor);
-        Comparator<DebtsHolder> compareByCreditor = Comparator.comparing(DebtsHolder::getCreditor);
-        Comparator<DebtsHolder> comparator = compareByDebtor.thenComparing(compareByCreditor);
-
-        newList = newList.stream().sorted(comparator).collect(Collectors.toList());
-
-        System.out.println("IV");
-        for (DebtsHolder holder : newList) {
-            System.out.println(holder.getDebtor() + " " + holder.getCreditor() + " " + holder.getBalance());
-        }
-        System.out.println();
 
         SimpleDirectedWeightedGraph<String, DefaultWeightedEdge> simpleDirectedWeightedGraph
                 = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
-        for (String person : people) {
-            simpleDirectedWeightedGraph.addVertex(person);
-        }
-
-        for (DebtsHolder d2 : newList) {
-            if (d2.getBalance().doubleValue() > 0) {
-                DefaultWeightedEdge e10 = simpleDirectedWeightedGraph.addEdge(d2.getDebtor(), d2.getCreditor());
-                simpleDirectedWeightedGraph.setEdgeWeight(e10, d2.getBalance().doubleValue());
-            }
-            else {
-                DefaultWeightedEdge e10 = simpleDirectedWeightedGraph.addEdge(d2.getCreditor(), d2.getDebtor());
-                simpleDirectedWeightedGraph.setEdgeWeight(e10, (-1) * d2.getBalance().doubleValue());
-            }
-        }
+        people.forEach(simpleDirectedWeightedGraph::addVertex);
+        debts.forEach(debtsHolder -> simpleDirectedWeightedGraph.setEdgeWeight(simpleDirectedWeightedGraph
+                    .addEdge(debtsHolder.getDebtor(), debtsHolder.getCreditor()),
+                    debtsHolder.getBalance().doubleValue())
+        );
 
         AsUndirectedGraph<String, DefaultWeightedEdge> undirectedGraph
                 = new AsUndirectedGraph<>(simpleDirectedWeightedGraph);
@@ -245,12 +199,6 @@ public class ExpenseController {
                 vertexes.add(element.getVertexList().get(j) + element.getVertexList().get(j + 1));
             }
 
-//            for (DefaultWeightedEdge defaultWeightedEdge : edgeList) {
-//                System.out.println(defaultWeightedEdge + " " + simpleDirectedWeightedGraph.getEdgeWeight(defaultWeightedEdge));
-//                vertexes.add(simpleDirectedWeightedGraph.getEdgeSource(defaultWeightedEdge)
-//                        + simpleDirectedWeightedGraph.getEdgeTarget(defaultWeightedEdge));
-//            }
-
             System.out.println("VERTEXES ");
             for (String s : vertexes) {
                 System.out.println(s);
@@ -284,7 +232,6 @@ public class ExpenseController {
             System.out.println(minEdge + " " + min);
 
             List<String> vertexList = element.getVertexList();
-//            vertexList.remove(vertexList.get(vertexList.size() - 1));
             System.out.println("Old vertex list");
             for (String ve : vertexList) {
                 System.out.println(ve);
@@ -329,11 +276,6 @@ public class ExpenseController {
                 }
             }
 
-//            List<DefaultWeightedEdge> tempEdgeList = new ArrayList<>(tempGraph.edgeSet());
-//            while (tempEdgeList.size() != 0) {
-//
-//            }
-
             for (DefaultWeightedEdge ed : tempGraph.edgeSet()) {
                 double newWeight = 0.0;
 
@@ -342,31 +284,11 @@ public class ExpenseController {
                 System.out.println("Vertexes contains");
                 System.out.println(tempGraph.getEdgeSource(ed) + tempGraph.getEdgeTarget(ed));
 
-//                if (vertexes.contains(tempGraph.getEdgeSource(ed) + tempGraph.getEdgeTarget(ed))) {
-//                    System.out.println("IF TAK");
-//                    newWeight = tempGraph.getEdgeWeight(ed) - min;
-//                }
-//                else {
-//                    System.out.println("IF NIE");
-//                    newWeight = tempGraph.getEdgeWeight(ed) + min;
-//                }
-
                 String source = tempGraph.getEdgeSource(ed);
                 String target = tempGraph.getEdgeTarget(ed);
 
                 Integer sourceKey = Integer.valueOf("1");
                 Integer targetKey = Integer.valueOf("1");
-//                for (Integer key : newVertexMap.keySet())
-//                {
-//                    if (newVertexMap.get(key).equals(source) )
-//                    {
-//                        sourceKey = key;
-//                    }
-//                    if (newVertexMap.get(key).equals(target) )
-//                    {
-//                        targetKey = key;
-//                    }
-//                }
 
                 for (Map.Entry<Integer, String> arr : newVertexMap.entrySet()){
                     System.out.println("###########################");

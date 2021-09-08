@@ -9,8 +9,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,5 +44,18 @@ public class Wallet {
     public void addWalletUser(WalletUser walletUser) {
         walletUserSet.add(walletUser);
         walletUser.setWallet(this);
+    }
+
+    @JsonIgnore
+    public List<String> getUserList() {
+        List<String> userList = new ArrayList<>();
+
+        for (WalletUser walletUser : getWalletUserSet())
+            if (walletUser.getUserStatus().getName().equals("właściciel")
+                    || walletUser.getUserStatus().getName().equals("członek")) {
+                userList.add(walletUser.getUser().getLogin());
+            }
+
+        return userList;
     }
 }
