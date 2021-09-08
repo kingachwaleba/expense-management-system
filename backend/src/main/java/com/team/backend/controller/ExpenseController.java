@@ -139,11 +139,6 @@ public class ExpenseController {
                 .filter(debtsHolder -> debtsHolder.getBalance().compareTo(BigDecimal.ZERO) < 0)
                 .forEach(DebtsHolder::changeBalance);
 
-        System.out.println("III");
-        for (DebtsHolder holder : debts) {
-            System.out.println(holder.getDebtor() + " " + holder.getCreditor() + " " + holder.getBalance());
-        }
-
         SimpleDirectedWeightedGraph<String, DefaultWeightedEdge> simpleDirectedWeightedGraph
                 = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
@@ -157,184 +152,81 @@ public class ExpenseController {
                 = new AsUndirectedGraph<>(simpleDirectedWeightedGraph);
 
         PatonCycleBase<String, DefaultWeightedEdge> patonCycleBase = new PatonCycleBase<>(undirectedGraph);
+        List<GraphPath<String, DefaultWeightedEdge>> graphPathList = new ArrayList<>(patonCycleBase.getCycleBasis().getCyclesAsGraphPaths());
 
-        List<GraphPath<String, DefaultWeightedEdge>> gp = new ArrayList<>(patonCycleBase.getCycleBasis().getCyclesAsGraphPaths());
+        while (graphPathList.size() != 0) {
+            GraphPath<String, DefaultWeightedEdge> element = graphPathList.get(0);
 
-        System.out.println("V");
-        for (DefaultWeightedEdge edge : simpleDirectedWeightedGraph.edgeSet()) {
-            System.out.println(simpleDirectedWeightedGraph.getEdgeSource(edge) + " --- "
-                    + simpleDirectedWeightedGraph.getEdgeWeight(edge)
-                    + " ---> " + simpleDirectedWeightedGraph.getEdgeTarget(edge));
-        }
-
-        System.out.println("GP");
-        for (GraphPath<String, DefaultWeightedEdge> gp2 : gp) {
-            System.out.println(gp2);
-        }
-
-        System.out.println("GET CYCLES");
-        for (List<DefaultWeightedEdge> temp : patonCycleBase.getCycleBasis().getCycles()) {
-            System.out.println(temp);
-        }
-
-        while (gp.size() != 0) {
-            GraphPath<String, DefaultWeightedEdge> element = gp.get(0);
-
-            List<DefaultWeightedEdge> edgeList = element.getEdgeList();
-            System.out.println("element.getVertexList()");
-
-            for (String v : element.getVertexList()) {
-                System.out.println(v);
-            }
-
-            System.out.println("EDGE LIST");
-            for (DefaultWeightedEdge defaultWeightedEdge : edgeList) {
-                System.out.println(defaultWeightedEdge + " " + simpleDirectedWeightedGraph.getEdgeWeight(defaultWeightedEdge));
-            }
-
-            Set<String> cycleVertices2 = new HashSet<>(element.getVertexList());
-            List<String> vertexes = new ArrayList<>();
-
-            for (int j = 0; j < cycleVertices2.size(); j++) {
-                vertexes.add(element.getVertexList().get(j) + element.getVertexList().get(j + 1));
-            }
-
-            System.out.println("VERTEXES ");
-            for (String s : vertexes) {
-                System.out.println(s);
-            }
-
-            AsSubgraph<String, DefaultWeightedEdge> tempGraph
-                    = new AsSubgraph<>(simpleDirectedWeightedGraph, cycleVertices2);
+            AsSubgraph<String, DefaultWeightedEdge> cycleSubgraph
+                    = new AsSubgraph<>(simpleDirectedWeightedGraph, new HashSet<>(element.getVertexList()));
 
             Map<String, Double> weightMap = new HashMap<>();
-            for (DefaultWeightedEdge edge : tempGraph.edgeSet()) {
-                weightMap.put(tempGraph.getEdgeSource(edge) + tempGraph.getEdgeTarget(edge), tempGraph.getEdgeWeight(edge));
+            for (DefaultWeightedEdge defaultWeightedEdge : cycleSubgraph.edgeSet()) {
+                weightMap.put(cycleSubgraph.getEdgeSource(defaultWeightedEdge)
+                        + cycleSubgraph.getEdgeTarget(defaultWeightedEdge),
+                        cycleSubgraph.getEdgeWeight(defaultWeightedEdge));
             }
 
-            System.out.println("Weight map");
-            for (String wM : weightMap.keySet()) {
-                System.out.println(wM + " " + weightMap.get(wM));
-            }
-
-            double min = Collections.min(weightMap.values());
-            String minEdge = "";
-
-            for (Map.Entry<String, Double> ar : weightMap.entrySet()){
-                System.out.println("###########################");
-                if (ar.getValue() == min) {
-                    minEdge = ar.getKey();
-                    break;
-                }
-            }
-
-            System.out.println("!!!!!!!");
-            System.out.println(minEdge + " " + min);
+            double minValue = Collections.min(weightMap.values());
+            String minEdge = Objects
+                    .requireNonNull(weightMap
+                    .entrySet()
+                    .stream()
+                    .min(Map.Entry.comparingByValue())
+                    .orElse(null)
+            )
+                    .getKey();
 
             List<String> vertexList = element.getVertexList();
-            System.out.println("Old vertex list");
-            for (String ve : vertexList) {
-                System.out.println(ve);
-            }
 
-            List<String> edges = new ArrayList<>();
-            for (String ver : vertexList) {
-                edges.add(vertexList.get(vertexList.indexOf(ver)) + vertexList.get(vertexList.indexOf(ver) + 1));
-            }
+            List<String> edgeList = new ArrayList<>();
+            for (String ver : vertexList)
+                edgeList.add(vertexList.get(vertexList.indexOf(ver)) + vertexList.get(vertexList.indexOf(ver) + 1));
 
-            System.out.println("EDGES");
-            for (String e : edges) {
-                System.out.println(e);
-            }
+            List<String> newVertexList = new ArrayList<>();
 
-            Map<Integer, String> newVertexMap = new HashMap<>();
+            if (edgeList.contains(minEdge))
+                for (int l = vertexList.size() - 1; l >= 1; l--)
+                    newVertexList.add(vertexList.get(l));
+            else
+                for (int l = 0; l < vertexList.size() - 1; l++)
+                    newVertexList.add(vertexList.get(l));
 
-            int k = 0;
-            if (edges.contains(minEdge)) {
 
-                for (int l = vertexList.size() - 1; l >= 1; l--) {
-                    newVertexMap.put(k, vertexList.get(l));
-                    k++;
-                }
-                k--;
-
-                System.out.println("New vertex list");
-                for (String ve : newVertexMap.values()) {
-                    System.out.println(ve);
-                }
-            }
-            else {
-                for (int l = 0; l < vertexList.size() - 1; l++) {
-                    newVertexMap.put(k, vertexList.get(l));
-                    k++;
-                }
-                k--;
-
-                System.out.println("New vertex list");
-                for (String ve : newVertexMap.values()) {
-                    System.out.println(ve);
-                }
-            }
-
-            for (DefaultWeightedEdge ed : tempGraph.edgeSet()) {
+            for (DefaultWeightedEdge ed : cycleSubgraph.edgeSet()) {
                 double newWeight = 0.0;
 
-                System.out.println("EDGE = " + ed);
+                String source = cycleSubgraph.getEdgeSource(ed);
+                String target = cycleSubgraph.getEdgeTarget(ed);
 
-                System.out.println("Vertexes contains");
-                System.out.println(tempGraph.getEdgeSource(ed) + tempGraph.getEdgeTarget(ed));
+                int sourceKey = 0;
+                int targetKey = 0;
 
-                String source = tempGraph.getEdgeSource(ed);
-                String target = tempGraph.getEdgeTarget(ed);
-
-                Integer sourceKey = Integer.valueOf("1");
-                Integer targetKey = Integer.valueOf("1");
-
-                for (Map.Entry<Integer, String> arr : newVertexMap.entrySet()){
-                    System.out.println("###########################");
-                    System.out.println(arr.getValue().equals(source));
-                    System.out.println(arr.getValue().equals(target));
-                    System.out.println(arr.getValue());
-                    System.out.println(arr.getKey());
-                    if (arr.getValue().equals(source))
-                        sourceKey = arr.getKey();
-                    if (arr.getValue().equals(target))
-                        targetKey = arr.getKey();
+                for (String string : newVertexList) {
+                    if (string.equals(source))
+                        sourceKey = newVertexList.indexOf(string);
+                    if (string.equals(target))
+                        targetKey = newVertexList.indexOf(string);
                 }
 
-                System.out.println("Source " + source + " key " + sourceKey);
-                System.out.println("Target " + target + " key " + targetKey);
+                if (sourceKey > targetKey)
+                    newWeight = cycleSubgraph.getEdgeWeight(ed) - minValue;
+                else if (sourceKey == 0 && targetKey == newVertexList.size() - 1)
+                    newWeight = cycleSubgraph.getEdgeWeight(ed) - minValue;
+                else if (sourceKey < targetKey)
+                    newWeight = cycleSubgraph.getEdgeWeight(ed) + minValue;
 
-                System.out.println("K = " + k);
-                if (sourceKey > targetKey) {
-                    System.out.println("IF TAK");
-                    newWeight = tempGraph.getEdgeWeight(ed) - min;
-                }
-                else if (sourceKey == 0 && targetKey == k) {
-                    System.out.println("IF NIE");
-                    newWeight = tempGraph.getEdgeWeight(ed) - min;
-                }
-                else if (sourceKey < targetKey) {
-                    System.out.println("IF 0");
-                    newWeight = tempGraph.getEdgeWeight(ed) + min;
-                }
-
-                if (newWeight == 0) {
+                if (newWeight == 0)
                     simpleDirectedWeightedGraph.removeEdge(ed);
-                }
                 else
                     simpleDirectedWeightedGraph.setEdgeWeight(ed, newWeight);
-
-                System.out.println("New edge weight = " + newWeight);
             }
 
             undirectedGraph = new AsUndirectedGraph<>(simpleDirectedWeightedGraph);
             patonCycleBase = new PatonCycleBase<>(undirectedGraph);
-            gp = new ArrayList<>(patonCycleBase.getCycleBasis().getCyclesAsGraphPaths());
+            graphPathList = new ArrayList<>(patonCycleBase.getCycleBasis().getCyclesAsGraphPaths());
         }
-        System.out.println();
 
-        System.out.println("VI");
         for (DefaultWeightedEdge edge : simpleDirectedWeightedGraph.edgeSet()) {
             System.out.println(simpleDirectedWeightedGraph.getEdgeSource(edge) + " --- "
                     + simpleDirectedWeightedGraph.getEdgeWeight(edge)
