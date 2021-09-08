@@ -144,8 +144,8 @@ public class ExpenseController {
 
         people.forEach(simpleDirectedWeightedGraph::addVertex);
         debts.forEach(debtsHolder -> simpleDirectedWeightedGraph.setEdgeWeight(simpleDirectedWeightedGraph
-                    .addEdge(debtsHolder.getDebtor(), debtsHolder.getCreditor()),
-                    debtsHolder.getBalance().doubleValue())
+                        .addEdge(debtsHolder.getDebtor(), debtsHolder.getCreditor()),
+                debtsHolder.getBalance().doubleValue())
         );
 
         AsUndirectedGraph<String, DefaultWeightedEdge> undirectedGraph
@@ -163,18 +163,18 @@ public class ExpenseController {
             Map<String, Double> weightMap = new HashMap<>();
             for (DefaultWeightedEdge defaultWeightedEdge : cycleSubgraph.edgeSet()) {
                 weightMap.put(cycleSubgraph.getEdgeSource(defaultWeightedEdge)
-                        + cycleSubgraph.getEdgeTarget(defaultWeightedEdge),
+                                + cycleSubgraph.getEdgeTarget(defaultWeightedEdge),
                         cycleSubgraph.getEdgeWeight(defaultWeightedEdge));
             }
 
             double minValue = Collections.min(weightMap.values());
             String minEdge = Objects
                     .requireNonNull(weightMap
-                    .entrySet()
-                    .stream()
-                    .min(Map.Entry.comparingByValue())
-                    .orElse(null)
-            )
+                            .entrySet()
+                            .stream()
+                            .min(Map.Entry.comparingByValue())
+                            .orElse(null)
+                    )
                     .getKey();
 
             List<String> vertexList = element.getVertexList();
