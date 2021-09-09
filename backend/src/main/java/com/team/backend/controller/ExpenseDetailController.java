@@ -49,7 +49,6 @@ public class ExpenseDetailController {
         expenseDetail.setCost(cost);
         expenseDetail.setUser(user);
         expenseDetail.setExpense(expense);
-        expenseDetail.setPaymentStatus(waitingStatus);
 
         expenseDetailRepository.save(expenseDetail);
 

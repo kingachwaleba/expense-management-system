@@ -65,17 +65,4 @@ public class Expense {
         expenseDetailSet.add(expenseDetail);
         expenseDetail.setExpense(this);
     }
-
-    @JsonIgnore
-    public List<ExpenseDetail> getUnpaidPayments() {
-        List<ExpenseDetail> expenseDetailList = new ArrayList<>();
-
-        for (ExpenseDetail expenseDetail : getExpenseDetailSet()) {
-            if (expenseDetail.getPaymentStatus().getName().equals("oczekujący")) {
-                expenseDetailList.add(expenseDetail);
-            }
-        }
-
-        return expenseDetailList;
-    }
 }

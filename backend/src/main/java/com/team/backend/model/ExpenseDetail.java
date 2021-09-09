@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Getter
@@ -19,10 +17,6 @@ public class ExpenseDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "payment_status_id", referencedColumnName="id")
-    private PaymentStatus paymentStatus;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
