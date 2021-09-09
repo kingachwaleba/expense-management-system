@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -157,5 +158,86 @@ public class WalletServiceImpl implements WalletService {
                 return walletUser.getUser();
 
         return null;
+    }
+
+    @Override
+    public void simplifyDebts(Map<Integer, BigDecimal> balanceMap) {
+        System.out.println("I");
+        balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
+//        TreeMap<Integer, BigDecimal> debtorMap = balanceMap.entrySet()
+//                .stream()
+//                .filter(a -> a.getValue().compareTo(BigDecimal.ZERO) <= 0)
+//                .collect(Collectors.toMap(
+//                        Map.Entry::getKey,
+//                        Map.Entry::getValue,
+//                        (v1, v2) -> { throw new IllegalStateException(); },
+//                        TreeMap::new)
+//                );
+//        TreeMap<Integer, BigDecimal> creditorMap = balanceMap.entrySet()
+//                .stream()
+//                .filter(a -> a.getValue().compareTo(BigDecimal.ZERO) >= 0)
+//                .collect(Collectors.toMap(
+//                        Map.Entry::getKey,
+//                        Map.Entry::getValue,
+//                        (v1, v2) -> { throw new IllegalStateException(); },
+//                        TreeMap::new)
+//                );
+
+//        System.out.println();
+//        System.out.println("II debtor map");
+//        debtorMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
+//        System.out.println();
+//        System.out.println("III creditor map");
+//        creditorMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
+//
+//        BigDecimal minBalance = debtorMap.lastEntry().getValue();
+//        BigDecimal maxBalance = creditorMap.lastEntry().getValue();
+//
+////        BigDecimal minBalance = balanceMap.lastEntry().getValue();
+////        BigDecimal maxBalance = balanceMap.lastEntry().getValue();
+//
+//        Integer minKey = debtorMap.firstKey();
+//        Integer maxKey = creditorMap.lastKey();
+
+        System.out.println();
+        System.out.println("II debtor map");
+        balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
+        System.out.println();
+        System.out.println("III creditor map");
+        balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
+
+        Integer key = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+
+//        BigDecimal minBalance = balanceMap.lastEntry().getValue();
+//        BigDecimal maxBalance = balanceMap.lastEntry().getValue();
+//
+//        Integer minKey = balanceMap.firstKey();
+//        Integer maxKey = balanceMap.lastKey();
+
+        BigDecimal minBalance = Collections.min(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
+        BigDecimal maxBalance = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
+
+        Integer minKey = Collections.min(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        Integer maxKey = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+
+        System.out.println();
+        System.out.println(minKey + " min = " + minBalance + " " + maxKey + " max = " + maxBalance);
+
+        BigDecimal min = minBalance.min(maxBalance);
+        if (minBalance.compareTo(BigDecimal.ZERO) < 0)
+            min = minBalance.multiply(BigDecimal.valueOf(-1)).min(maxBalance);
+
+        balanceMap.replace(minKey, balanceMap.get(minKey).add(min).setScale(2, RoundingMode.HALF_UP));
+        balanceMap.replace(maxKey, balanceMap.get(maxKey).subtract(min).setScale(2, RoundingMode.HALF_UP));
+
+        System.out.println("Person " + minKey + " " + " pays " + min + " to person " + maxKey);
+
+        if (minBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
+            balanceMap.replace(minKey, BigDecimal.valueOf(0.00));
+        if (maxBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
+            balanceMap.replace(maxKey, BigDecimal.valueOf(0.00));
+
+        if (!minBalance.equals(BigDecimal.valueOf(0.00)) && !maxBalance.equals(BigDecimal.valueOf(0.00)))
+            simplifyDebts(balanceMap);
     }
 }

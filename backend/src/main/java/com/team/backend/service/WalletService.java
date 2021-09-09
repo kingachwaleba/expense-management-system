@@ -6,6 +6,7 @@ import com.team.backend.model.UserStatus;
 import com.team.backend.model.Wallet;
 import com.team.backend.model.WalletUser;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,4 +25,6 @@ public interface WalletService {
     List<Map<String, Object>> findAllUsers(Wallet wallet);
     List<WalletUser> findWalletUserList(Wallet wallet);
     User findOwner(Wallet wallet);
+
+    void simplifyDebts(Map<Integer, BigDecimal> balanceMap);
 }
