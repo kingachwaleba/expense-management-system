@@ -106,7 +106,7 @@ public class ExpenseController {
                     DebtsHolder debtsHolder = new DebtsHolder();
 
                     debtsHolder.setDebtor(expenseDetail.getUser().getLogin());
-                    debtsHolder.setCreditor(String.valueOf(expenseDetail.getExpense().getUser().getLogin()));
+                    debtsHolder.setCreditor(expenseDetail.getExpense().getUser().getLogin());
                     debtsHolder.setBalance(expenseDetail.getCost());
                     debtsHolder.setId(expenseDetail.getId());
 
