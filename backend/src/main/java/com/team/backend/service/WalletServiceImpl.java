@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -39,6 +40,7 @@ public class WalletServiceImpl implements WalletService {
         WalletUser walletUser = new WalletUser();
         walletUser.setUser(user);
         walletUser.setCreated_at(date);
+        walletUser.setBalance(BigDecimal.valueOf(0.00));
 
         if (userStatus.getName().equals("właściciel"))
             walletUser.setAccepted_at(date);
@@ -114,6 +116,19 @@ public class WalletServiceImpl implements WalletService {
             }
 
         return userList;
+    }
+
+    @Override
+    public List<WalletUser> findWalletUserList(Wallet wallet) {
+        List<WalletUser> walletUserList = new ArrayList<>();
+
+        for (WalletUser walletUser : wallet.getWalletUserSet())
+            if (walletUser.getUserStatus().getName().equals("właściciel")
+                    || walletUser.getUserStatus().getName().equals("członek")) {
+                walletUserList.add(walletUser);
+            }
+
+        return walletUserList;
     }
 
     @Override
