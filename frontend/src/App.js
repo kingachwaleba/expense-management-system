@@ -6,7 +6,23 @@ import {LoginPage} from "./pages/login/LoginPage";
 import {RegisterPage} from "./pages/register/RegisterPage";
 import {HomePage} from "./pages/home/HomePage";
 import {StartPage} from "./pages/start/StartPage";
+import {ProfilePage} from "./pages/profile/ProfilePage";
 import {CreateWalletPage} from "./pages/create-wallet/CreateWalletPage";
+import StatutesPage from "./pages/statutes/StatutesPage";
+import EditProfilePage from "./pages/edit-profile/EditProfilePage";
+import DeleteAccountPage from "./pages/delete-account/DeleteAccountPage";
+import ChangePasswordPage from './pages/change-password/ChangePasswordPage';
+import AddMembersPage from './pages/add-members/AddMembersPage';
+import ChatPage from './pages/chat/ChatPage';
+import EditUsersPage from './pages/edit-users-list/EditUsersPage';
+import AddExpensePage from './pages/add-expense/AddExpensePage';
+import ExpenseDetailPage from './pages/expense-detail/ExpenseDetailPage';
+import CreateListPage from './pages/Create-list/CreateListPage';
+import ListDetailPage from './pages/list-detail/ListDetailPage';
+import StatisticsPage from './pages/wallet-stats/StatisticsPage';
+import EditWalletPage
+ from './pages/edit-wallet/EditWalletPage';
+import WalletPage from './pages/wallet/WalletPage';
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
 import FooterPage from './components/Footer';
@@ -19,7 +35,8 @@ class App extends React.Component {
         this.state = {
             username: undefined,
             login: false
-        };
+        }
+        this.logOut = this.logOut.bind(this);
     }
 
     componentDidMount() {
@@ -37,7 +54,7 @@ class App extends React.Component {
 
     logOut() {
         UserService.logOut();
-        //this.props.history.push('/login');
+        this.props.history.push('/login');
         window.location.reload();
     }
 
@@ -64,7 +81,7 @@ class App extends React.Component {
                             <li className="nav-item">
                                 <a className="nav-link" href="/profile">
                                     <span className="fa fa-user"/>
-                                    {this.state.username}
+                                    Profil
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -75,8 +92,7 @@ class App extends React.Component {
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link">
-                                    
-                                   
+                                    <img src="./photo_placeholder.png" alt="Picture"></img>                                   
                                 </a>
                             </li>
                         </div>
@@ -122,8 +138,31 @@ class App extends React.Component {
                         <Route exact path="/" component={StartPage}/>
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/register" component={RegisterPage}/>
+                        <Route exact path="/statutes" component={StatutesPage}/>
+
+
                         <AuthGuard path="/create-wallet" component={CreateWalletPage}/>
+                        <AuthGuard path="/edit-profile" component={EditProfilePage}/>
+                        <AuthGuard path="/delete-account" component={DeleteAccountPage}/>
+                        <AuthGuard path="/change-password" component={ChangePasswordPage}/>
+                        <AuthGuard path="/wallet" component={WalletPage}/>
+                        <AuthGuard path="/add-members" component={AddMembersPage}/>
+                        <AuthGuard path="/chat" component={ChatPage}/>
+                        <AuthGuard path="/edit-users-list" component={EditUsersPage}/>
+                        <AuthGuard path="/add-expense" component={AddExpensePage}/>
+                        <AuthGuard path="/expense-detail" component={ExpenseDetailPage}/>
+                        <AuthGuard path="/create-list" component={CreateListPage}/>
+                        <AuthGuard path="/list-detail" component={ListDetailPage}/>
+                        <AuthGuard path="/wallet-stats" component={StatisticsPage}/>
+                        <AuthGuard path="/edit-wallet" component={EditWalletPage}/>
+
                         <AuthGuard path="/home" component={HomePage}/>
+                        <AuthGuard path="/profile" component={ProfilePage}/>
+                        <AuthGuard path="/start" component={HomePage}/>
+                        <AuthGuard path="/" component={HomePage}/>
+                        <AuthGuard path="/login" component={HomePage}/>
+                        <AuthGuard path="/register" component={HomePage}/>
+                        
                     </Switch>
                 </div>
             </Router>

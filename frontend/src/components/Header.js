@@ -4,10 +4,10 @@ import "./components.css"
 
 const Header = ({title, pretitle}) => {
     const text = title;
-    const newText = text.split('\n').map(str=><h1 className="title-text">{str}</h1>);
+    const newText = text.split('\n').map(str=><h1 key={text.id} className="title-text">{str}</h1>);
     return (
         <header>
-            <h6 className="text-size title-text">{pretitle}</h6>
+            <h6 key={text.id} className="text-size title-text">{pretitle}</h6>
             {newText}
         </header>
         

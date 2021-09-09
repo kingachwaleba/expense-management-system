@@ -1,27 +1,35 @@
-/*
+
 import React from 'react';
-import WalletService from '../../services/wallet.service';
+import WalletService from '../../services/WalletService';
 import {User} from '../../models/user';
 import {Wallet} from '../../models/wallet';
+import {WalletCategory} from '../../models/walletCategory';
 import {WalletHolder} from '../../models/helpers/wallet-holder';
 import Header from '../../components/Header';
-
+import WalletCategoryComponent from '../../components/WalletCategoryComponent';
+import AddUsersToNewWalletComponent from '../../components/AddUsersToNewWalletComponent';
 class CreateWalletPage extends React.Component {
 
     constructor(props, context) {
         super(props, context);
 
-    
+     }
 
-        this.state = {
+        state = {
             wallet_holder: new WalletHolder('', ''),
             wallet: new Wallet('','',''), 
             userList: new Array,
+           
             submitted: false,
             loading: false,
             errorMessage: '',
         };
-    }
+
+       
+   
+    
+    
+
 
     handleChange(e) {
         var {name, value} = e.target;
@@ -35,7 +43,7 @@ class CreateWalletPage extends React.Component {
         wallet_holder[wallet.walletCategory] = value;
         /*
         wallet_holder[] = value;
-        
+        */
         wallet_holder[userList] = value;
         this.setState({wallet_holder: wallet_holder});
     }
@@ -69,23 +77,29 @@ class CreateWalletPage extends React.Component {
                     }
                 });
     }
+    changeWalletCategory(checkedID){
+        var wallet_category = this.wallet_holder.walletCategory;
+        this.setState({
+            //wallet_category = checkedID
+            //Dane między komponentami można pozyskiwać jako props gdy mają np wspólnego parenta, pozystakć dane z komponentu Wallet category (dziecko), tutaj (rodzic)
+        })
+        console.log({wallet_category})
+    }
 
     render() {
         const {wallet_holder, submitted, loading, errorMessage} = this.state;
         return (
-            <div className="create-wallet-page">
+            <div className="container">
                  <Header title='Utwórz portfel:' />
                 <div className="form-container">
-                    <div className="header-container">
-                        <i className="fa fa-user"/>
-                    </div>
+                 
 
                     {errorMessage &&
                     <div className="alert alert-danger" role="alert">
                         {errorMessage}
                     </div>
                     }
-
+                <div className="box-content">
                     <form
                         name="form"
                         method="post"
@@ -119,23 +133,35 @@ class CreateWalletPage extends React.Component {
                                 Password is required.
                             </div>
                         </div>
-
+                        <div className={'form-group'}>
+                        <AddUsersToNewWalletComponent/>
+                        </div>
+                        <div>
+                        <WalletCategoryComponent />
+                    
+                        
+                        
+                        </div>
                     
                         <br></br>
                         <br></br>
                         <button
                             className="btn btn-primary btn-block form-button"
                             id = "mainbuttonstyle"
-                            onClick={() => this.setState({submitted: true})}
+                            onClick={() =>  this.setState({submitted: true})
+                                            
+
+                                    }
                             disabled={loading}>
                             Utwórz
                         </button>
+                    
                     </form>
-                  
+                  </div>
                 </div>
             </div>
         );
     }
 }
 
-export {CreateWalletPage};*/
+export {CreateWalletPage};

@@ -1,4 +1,9 @@
 import React from 'react';
+import Header from '../../components/Header';
+import ProfileDataComponent from '../../components/ProfileDataComponent';
+import NotificationComponent from '../../components/NotificationComponent';
+
+
 
 class ProfilePage extends React.Component {
 
@@ -21,9 +26,30 @@ class ProfilePage extends React.Component {
 
     render() {
         return (
-            <div>Profile Page
+            <div id='container'>
+               
+                <Header title="Profil"/>
+                <div className="center-content">
+                    <ProfileDataComponent />
+                
+                    <div className="box-content">
+                        <div className="box-subcontent"> 
+                        Powiadomienia
+                        <NotificationComponent />
+                        <NotificationComponent />
+                        <NotificationComponent />
+                        </div>
+
+                    </div>
+                </div>
 
 
+                
+                <div className="box-content center-content">
+                    
+                <a href="/statutes" className="card-link  href-text">Przejdź do regulaminu</a>
+                </div>
+                
 
             </div>
         );

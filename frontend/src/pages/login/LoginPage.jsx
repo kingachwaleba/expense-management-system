@@ -33,7 +33,7 @@ class LoginPage extends React.Component {
                 },
                 error => {
                     console.log("Login fail: error = { " + error.toString() + " }");
-                    this.setState({error: "Can not signin successfully! Please check login/password again"});
+                    this.setState({error: "Logowanie nie powiodło się! Proszę sprawdź login/hasło ponownie"});
                 }
             );
     };

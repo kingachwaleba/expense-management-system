@@ -133,11 +133,12 @@ class RegisterPage extends React.Component {
                             disabled={loading}>
                             Zarejestruj
                         </button>
-                        console.log({user.email});
-                        console.log({user.login});
-                        console.log({user.password});
+                        
                     </form>
-                    <a href="/login" className="card-link href-text center-content">Mam już konto, zaloguj</a>
+                    <div className = "center-content">
+                         <a href="/login" className="card-link href-text center-content">Mam już konto, zaloguj</a>
+                    </div>
+                   
                 </div>
             </div>
         );
