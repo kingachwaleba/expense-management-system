@@ -164,40 +164,6 @@ public class WalletServiceImpl implements WalletService {
     public void simplifyDebts(Map<Integer, BigDecimal> balanceMap) {
         System.out.println("I");
         balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
-//        TreeMap<Integer, BigDecimal> debtorMap = balanceMap.entrySet()
-//                .stream()
-//                .filter(a -> a.getValue().compareTo(BigDecimal.ZERO) <= 0)
-//                .collect(Collectors.toMap(
-//                        Map.Entry::getKey,
-//                        Map.Entry::getValue,
-//                        (v1, v2) -> { throw new IllegalStateException(); },
-//                        TreeMap::new)
-//                );
-//        TreeMap<Integer, BigDecimal> creditorMap = balanceMap.entrySet()
-//                .stream()
-//                .filter(a -> a.getValue().compareTo(BigDecimal.ZERO) >= 0)
-//                .collect(Collectors.toMap(
-//                        Map.Entry::getKey,
-//                        Map.Entry::getValue,
-//                        (v1, v2) -> { throw new IllegalStateException(); },
-//                        TreeMap::new)
-//                );
-
-//        System.out.println();
-//        System.out.println("II debtor map");
-//        debtorMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
-//        System.out.println();
-//        System.out.println("III creditor map");
-//        creditorMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
-//
-//        BigDecimal minBalance = debtorMap.lastEntry().getValue();
-//        BigDecimal maxBalance = creditorMap.lastEntry().getValue();
-//
-////        BigDecimal minBalance = balanceMap.lastEntry().getValue();
-////        BigDecimal maxBalance = balanceMap.lastEntry().getValue();
-//
-//        Integer minKey = debtorMap.firstKey();
-//        Integer maxKey = creditorMap.lastKey();
 
         System.out.println();
         System.out.println("II debtor map");
@@ -205,14 +171,6 @@ public class WalletServiceImpl implements WalletService {
         System.out.println();
         System.out.println("III creditor map");
         balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
-
-        Integer key = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
-
-//        BigDecimal minBalance = balanceMap.lastEntry().getValue();
-//        BigDecimal maxBalance = balanceMap.lastEntry().getValue();
-//
-//        Integer minKey = balanceMap.firstKey();
-//        Integer maxKey = balanceMap.lastKey();
 
         BigDecimal minBalance = Collections.min(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
         BigDecimal maxBalance = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
