@@ -1,0 +1,12 @@
+import axios from "axios";
+const WALLET_CATEGORY_API_BASE_URL = "http://localhost:8080/wallet-categories"
+
+class WalletCategoryService {
+
+    getCategories(){
+        return axios.get(WALLET_CATEGORY_API_BASE_URL);
+    }
+
+}
+
+export default new WalletCategoryService();
