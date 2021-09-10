@@ -1,11 +1,9 @@
 package com.team.backend.controller;
 
-import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.Expense;
 import com.team.backend.model.ExpenseDetail;
 import com.team.backend.model.Wallet;
-import com.team.backend.model.WalletUser;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -16,10 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class ExpenseController {
@@ -85,17 +79,5 @@ public class ExpenseController {
         expenseService.delete(expense);
 
         return new ResponseEntity<>("The given expense was deleted!", HttpStatus.OK);
-    }
-
-    @GetMapping("/wallet/{id}/balance")
-    public ResponseEntity<?> getWalletBalance(@PathVariable int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
-        Map<Integer, BigDecimal> balanceMap = new HashMap<>();
-        walletUserList.forEach(walletUser -> balanceMap.put(walletUser.getUser().getId(), walletUser.getBalance()));
-        List<DebtsHolder> debtsList = new ArrayList<>();
-        walletService.simplifyDebts(balanceMap, debtsList);
-
-        return new ResponseEntity<>(debtsList, HttpStatus.OK);
     }
 }
