@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.Expense;
 import com.team.backend.model.ExpenseDetail;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,8 +93,9 @@ public class ExpenseController {
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
         Map<Integer, BigDecimal> balanceMap = new HashMap<>();
         walletUserList.forEach(walletUser -> balanceMap.put(walletUser.getUser().getId(), walletUser.getBalance()));
-        walletService.simplifyDebts(balanceMap);
+        List<DebtsHolder> debtsList = new ArrayList<>();
+        walletService.simplifyDebts(balanceMap, debtsList);
 
-        return new ResponseEntity<>("Aaaa", HttpStatus.OK);
+        return new ResponseEntity<>(debtsList, HttpStatus.OK);
     }
 }

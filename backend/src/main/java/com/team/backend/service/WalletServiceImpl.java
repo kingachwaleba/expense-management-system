@@ -1,8 +1,8 @@
 package com.team.backend.service;
 
+import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
-import com.team.backend.repository.UserRepository;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletRepository;
 import com.team.backend.repository.WalletUserRepository;
@@ -21,20 +21,21 @@ public class WalletServiceImpl implements WalletService {
 
     private final UserStatusRepository userStatusRepository;
     private final WalletRepository walletRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final WalletUserRepository walletUserRepository;
 
-    public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository, UserRepository userRepository,
+    public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository,
+                             UserService userService,
                              WalletUserRepository walletUserRepository) {
         this.userStatusRepository = userStatusRepository;
         this.walletRepository = walletRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.walletUserRepository = walletUserRepository;
     }
 
     @Override
     public void saveUser(String userLogin, Wallet wallet, UserStatus userStatus) {
-        User user = userRepository.findByLogin(userLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findByLogin(userLogin).orElseThrow(RuntimeException::new);
 
         LocalDateTime date = LocalDateTime.now();
 
@@ -161,25 +162,12 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void simplifyDebts(Map<Integer, BigDecimal> balanceMap) {
-        System.out.println("I");
-        balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
-
-        System.out.println();
-        System.out.println("II debtor map");
-        balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
-        System.out.println();
-        System.out.println("III creditor map");
-        balanceMap.forEach(((integer, bigDecimal) -> System.out.println(integer + " " + bigDecimal)));
-
+    public void simplifyDebts(Map<Integer, BigDecimal> balanceMap, List<DebtsHolder> debtsList) {
         BigDecimal minBalance = Collections.min(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
         BigDecimal maxBalance = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
 
         Integer minKey = Collections.min(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
         Integer maxKey = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
-
-        System.out.println();
-        System.out.println(minKey + " min = " + minBalance + " " + maxKey + " max = " + maxBalance);
 
         BigDecimal min = minBalance.min(maxBalance);
         if (minBalance.compareTo(BigDecimal.ZERO) < 0)
@@ -188,14 +176,14 @@ public class WalletServiceImpl implements WalletService {
         balanceMap.replace(minKey, balanceMap.get(minKey).add(min).setScale(2, RoundingMode.HALF_UP));
         balanceMap.replace(maxKey, balanceMap.get(maxKey).subtract(min).setScale(2, RoundingMode.HALF_UP));
 
-        System.out.println("Person " + minKey + " " + " pays " + min + " to person " + maxKey);
+        User debtor = userService.findById(minKey).orElseThrow(RuntimeException::new);
+        User creditor = userService.findById(maxKey).orElseThrow(RuntimeException::new);
 
-        if (minBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
-            balanceMap.replace(minKey, BigDecimal.valueOf(0.00));
-        if (maxBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
-            balanceMap.replace(maxKey, BigDecimal.valueOf(0.00));
+        DebtsHolder debtsHolder = new DebtsHolder(debtor, creditor, min);
+        debtsList.add(debtsHolder);
 
-        if (!minBalance.equals(BigDecimal.valueOf(0.00)) && !maxBalance.equals(BigDecimal.valueOf(0.00)))
-            simplifyDebts(balanceMap);
+        if (balanceMap.get(minKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0
+                || balanceMap.get(maxKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0)
+            simplifyDebts(balanceMap, debtsList);
     }
 }

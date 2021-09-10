@@ -10,6 +10,7 @@ public interface UserService {
     void save(User user);
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
+    Optional<User> findById(int id);
     List<User> findByLoginContaining(String infix);
     Boolean existsByLogin(String login);
     Boolean existsByEmail(String email);

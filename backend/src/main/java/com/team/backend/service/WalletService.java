@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
@@ -26,5 +27,5 @@ public interface WalletService {
     List<WalletUser> findWalletUserList(Wallet wallet);
     User findOwner(Wallet wallet);
 
-    void simplifyDebts(Map<Integer, BigDecimal> balanceMap);
+    void simplifyDebts(Map<Integer, BigDecimal> balanceMap, List<DebtsHolder> debtsList);
 }

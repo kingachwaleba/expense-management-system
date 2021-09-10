@@ -1,5 +1,6 @@
 package com.team.backend.helpers;
 
+import com.team.backend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,22 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class DebtsHolder {
 
-    private String debtor;
-    private String creditor;
-    private BigDecimal balance;
-    private int id;
-
-    public void orderDebt() {
-        if (this.getDebtor().compareTo(this.getCreditor()) >= 0)
-            changeBalance();
-    }
-
-    public void changeBalance() {
-        String newDebtor = this.getCreditor();
-        String newCreditor = this.getDebtor();
-
-        this.setDebtor(newDebtor);
-        this.setCreditor(newCreditor);
-        this.setBalance(this.getBalance().multiply(BigDecimal.valueOf(-1)));
-    }
+    private User debtor;
+    private User creditor;
+    private BigDecimal howMuch;
 }
