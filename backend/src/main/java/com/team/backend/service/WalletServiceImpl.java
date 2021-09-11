@@ -105,15 +105,28 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public List<Map<String, Object>> findUserList(Wallet wallet) {
         List<Map<String, Object>> userList = new ArrayList<>();
+        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         for (WalletUser walletUser : wallet.getWalletUserSet())
             if (walletUser.getUserStatus().getName().equals("właściciel")
                     || walletUser.getUserStatus().getName().equals("członek")) {
                 Map<String, Object> userMap = new HashMap<>();
 
-                userMap.put("userId", walletUser.getUser().getId());
-                userMap.put("login", walletUser.getUser().getLogin());
-                userMap.put("balance", walletUser.getBalance());
+                User user = walletUser.getUser();
+                userMap.put("userId", user.getId());
+                userMap.put("login", user.getLogin());
+                userMap.put("debt", null);
+
+                List<WalletUser> walletUserList = findWalletUserList(wallet);
+                Map<Integer, BigDecimal> balanceMap = new HashMap<>();
+                walletUserList.forEach(wu -> balanceMap.put(wu.getUser().getId(), wu.getBalance()));
+                List<DebtsHolder> debtsList = new ArrayList<>();
+                simplifyDebts(balanceMap, debtsList);
+
+                for (DebtsHolder debtsHolder : debtsList)
+                    if ((debtsHolder.getDebtor().equals(user) || debtsHolder.getCreditor().equals(user))
+                            && (debtsHolder.getDebtor().equals(loggedInUser) || debtsHolder.getCreditor().equals(loggedInUser)))
+                        userMap.replace("debt", debtsHolder);
 
                 userList.add(userMap);
             }
