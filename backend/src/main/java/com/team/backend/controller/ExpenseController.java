@@ -1,7 +1,9 @@
 package com.team.backend.controller;
 
 import com.team.backend.helpers.ExpenseHolder;
-import com.team.backend.model.*;
+import com.team.backend.model.Expense;
+import com.team.backend.model.ExpenseDetail;
+import com.team.backend.model.Wallet;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;

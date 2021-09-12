@@ -24,14 +24,11 @@ public class ExpenseDetailController {
 
     private final ExpenseService expenseService;
     private final UserService userService;
-    private final PaymentStatusRepository paymentStatusRepository;
     private final ExpenseDetailRepository expenseDetailRepository;
 
-    public ExpenseDetailController(ExpenseService expenseService, UserService userService,
-                                   PaymentStatusRepository paymentStatusRepository, ExpenseDetailRepository expenseDetailRepository) {
+    public ExpenseDetailController(ExpenseService expenseService, UserService userService,ExpenseDetailRepository expenseDetailRepository) {
         this.expenseService = expenseService;
         this.userService = userService;
-        this.paymentStatusRepository = paymentStatusRepository;
         this.expenseDetailRepository = expenseDetailRepository;
     }
 
@@ -40,7 +37,6 @@ public class ExpenseDetailController {
     public ResponseEntity<?> addUser(@PathVariable int id, @PathVariable String login) {
         Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
         User user = userService.findByLogin(login).orElseThrow(RuntimeException::new);
-        PaymentStatus waitingStatus = paymentStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
 
         BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
                 .getExpenseDetailSet().size() + 1), 2, RoundingMode.CEILING);
@@ -49,7 +45,6 @@ public class ExpenseDetailController {
         expenseDetail.setCost(cost);
         expenseDetail.setUser(user);
         expenseDetail.setExpense(expense);
-        expenseDetail.setPaymentStatus(waitingStatus);
 
         expenseDetailRepository.save(expenseDetail);
 
