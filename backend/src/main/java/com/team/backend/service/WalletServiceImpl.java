@@ -115,6 +115,7 @@ public class WalletServiceImpl implements WalletService {
                 User user = walletUser.getUser();
                 userMap.put("userId", user.getId());
                 userMap.put("login", user.getLogin());
+                userMap.put("balance", walletUser.getBalance());
                 userMap.put("debt", null);
 
                 List<WalletUser> walletUserList = findWalletUserList(wallet);
