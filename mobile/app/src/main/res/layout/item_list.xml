@@ -8,19 +8,19 @@
         android:id="@+id/delete_item_btn"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:background="@drawable/btn_delete_active"/>
     <Button
         android:id="@+id/edit_item_btn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:background="@drawable/btn_edit"/>
     <TextView
         android:id="@+id/name_item_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_weight="1.2"
         android:ellipsize="none"
         android:scrollHorizontally="false"
@@ -33,7 +33,7 @@
         android:layout_weight="0.4"
         android:ellipsize="none"
         android:scrollHorizontally="false"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:textSize="16sp"
         android:textAppearance="@style/simple_label"/>
     <TextView
@@ -43,7 +43,7 @@
         android:layout_weight="0.4"
         android:ellipsize="none"
         android:scrollHorizontally="false"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:textSize="16sp"
         android:textAppearance="@style/simple_label"/>
 

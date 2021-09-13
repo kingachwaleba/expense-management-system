@@ -38,6 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.logout){
             session.logoutUser();
+            finish();
             return true;
         }
         if(id == R.id.goToProfile){
