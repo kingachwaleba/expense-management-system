@@ -78,6 +78,7 @@ public class AddMemberActivity extends BaseActivity {
             for(int i = 0; i < searchUserAdapterInit.getSelectedUser().size(); i++){
                 walletService.sendInvitationToUser(accessToken, walletId, searchUserAdapterInit.getSelectedUser().get(i));
             }
+            searchUserAdapterInit.clearSelected();
             finish();
         });
     }

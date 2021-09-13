@@ -110,6 +110,7 @@ public class CreateWalletActivity extends BaseActivity{
                 walletCreate = new WalletCreate(nameS, descriptionS, category);
                 WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapterInit.getSelectedUser());
                 walletService.createWallet(accessToken, walletHolder);
+                searchUserAdapterInit.clearSelected();
                 finish();
             } else nameEt.setError("Podaj nazwe portfela!");
         });

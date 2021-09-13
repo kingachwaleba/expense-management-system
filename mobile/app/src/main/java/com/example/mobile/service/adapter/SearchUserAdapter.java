@@ -16,7 +16,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
 
     private final List<String> mMember;
     private final LayoutInflater mInflater;
-    public static final List<String> selectedUser = new ArrayList<>();
+    public static List<String> selectedUser = new ArrayList<>();
 
     public SearchUserAdapter(Context context, List<String> members){
         mMember= members;
@@ -75,6 +75,10 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Vi
 
     public void clear(){
         mMember.clear();
+    }
+
+    public void clearSelected(){
+        selectedUser.clear();
     }
 
     public List<String> getSelectedUser(){
