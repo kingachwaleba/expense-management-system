@@ -84,7 +84,7 @@ public class ExpenseController {
                 for (ExpenseDetail expenseDetail : expenseDetailList)
                     if (expenseDetail.getUser().equals(w.getUser()))
                         tempList.add(w);
-                    
+
             BigDecimal cost = oldCost.subtract(newCost).divide(
                     BigDecimal.valueOf(updatedExpense.getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
             WalletUser ownerDetails = walletUserList.stream()
@@ -108,8 +108,34 @@ public class ExpenseController {
     @DeleteMapping("/expense/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = expense.getWallet();
+        User owner = expense.getUser();
+        List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
+        List<ExpenseDetail> expenseDetailList = new ArrayList<>(expense.getExpenseDetailSet());
+        WalletUser ownerDetails = walletUserList.stream()
+                .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(RuntimeException::new);
+        BigDecimal cost = expense.getTotal_cost().divide(
+                BigDecimal.valueOf(expense.getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
+
+        List<WalletUser> tempList = new ArrayList<>();
+        for (WalletUser w : walletUserList)
+            for (ExpenseDetail expenseDetail : expenseDetailList)
+                if (expenseDetail.getUser().equals(w.getUser()))
+                    tempList.add(w);
 
         expenseService.delete(expense);
+
+        tempList.stream().filter(walletUser -> !walletUser.equals(ownerDetails))
+                .forEach(wu -> {
+                    BigDecimal oldBalance = wu.getBalance();
+                    wu.setBalance(oldBalance.add(cost));
+                    walletUserRepository.save(wu);
+
+                    oldBalance = ownerDetails.getBalance();
+                    ownerDetails.setBalance(oldBalance.subtract(cost));
+                    walletUserRepository.save(ownerDetails);
+                });
+
 
         return new ResponseEntity<>("The given expense was deleted!", HttpStatus.OK);
     }
