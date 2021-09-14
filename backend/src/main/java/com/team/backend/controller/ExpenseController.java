@@ -2,7 +2,6 @@ package com.team.backend.controller;
 
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.*;
-import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.WalletService;
@@ -14,21 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
-
 @RestController
 public class ExpenseController {
 
     private final WalletService walletService;
     private final ExpenseService expenseService;
     private final WalletUserRepository walletUserRepository;
-    private final ExpenseDetailRepository expenseDetailRepository;
 
-    public ExpenseController(WalletService walletService, ExpenseService expenseService, WalletUserRepository walletUserRepository, ExpenseDetailRepository expenseDetailRepository) {
+    public ExpenseController(WalletService walletService, ExpenseService expenseService, WalletUserRepository walletUserRepository) {
         this.walletService = walletService;
         this.expenseService = expenseService;
         this.walletUserRepository = walletUserRepository;
-        this.expenseDetailRepository = expenseDetailRepository;
     }
 
     @GetMapping("/expense/{id}")
@@ -79,13 +76,21 @@ public class ExpenseController {
         if (oldCost.compareTo(newCost) != 0) {
             Wallet wallet = updatedExpense.getWallet();
             User owner = updatedExpense.getUser();
+            List<ExpenseDetail> expenseDetailList = new ArrayList<>(updatedExpense.getExpenseDetailSet());
             List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
+
+            List<WalletUser> tempList = new ArrayList<>();
+            for (WalletUser w : walletUserList)
+                for (ExpenseDetail expenseDetail : expenseDetailList)
+                    if (expenseDetail.getUser().equals(w.getUser()))
+                        tempList.add(w);
+                    
             BigDecimal cost = oldCost.subtract(newCost).divide(
                     BigDecimal.valueOf(updatedExpense.getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
             WalletUser ownerDetails = walletUserList.stream()
                     .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(RuntimeException::new);
 
-            walletUserList.stream().filter(walletUser -> !walletUser.equals(ownerDetails))
+            tempList.stream().filter(walletUser -> !walletUser.equals(ownerDetails))
                     .forEach(wu -> {
                         BigDecimal oldBalance = wu.getBalance();
                         wu.setBalance(oldBalance.add(cost));
