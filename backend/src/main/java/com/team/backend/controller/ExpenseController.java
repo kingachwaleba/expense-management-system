@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.*;
+import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.WalletService;
@@ -21,11 +22,13 @@ public class ExpenseController {
     private final WalletService walletService;
     private final ExpenseService expenseService;
     private final WalletUserRepository walletUserRepository;
+    private final ExpenseDetailRepository expenseDetailRepository;
 
-    public ExpenseController(WalletService walletService, ExpenseService expenseService, WalletUserRepository walletUserRepository) {
+    public ExpenseController(WalletService walletService, ExpenseService expenseService, WalletUserRepository walletUserRepository, ExpenseDetailRepository expenseDetailRepository) {
         this.walletService = walletService;
         this.expenseService = expenseService;
         this.walletUserRepository = walletUserRepository;
+        this.expenseDetailRepository = expenseDetailRepository;
     }
 
     @GetMapping("/expense/{id}")
@@ -75,29 +78,23 @@ public class ExpenseController {
 
         if (oldCost.compareTo(newCost) != 0) {
             Wallet wallet = updatedExpense.getWallet();
+            User owner = updatedExpense.getUser();
             List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
-            BigDecimal cost = newCost.subtract(oldCost).divide(
+            BigDecimal cost = oldCost.subtract(newCost).divide(
                     BigDecimal.valueOf(updatedExpense.getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
+            WalletUser ownerDetails = walletUserList.stream()
+                    .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(RuntimeException::new);
 
-            for (WalletUser walletUser : walletUserList) {
-                if (walletUser.getUserStatus().getName().equals("właściciel")) {
-                    System.out.println("Wlasciciel");
-                    System.out.println(walletUser.getBalance());
-                    BigDecimal oldBalance = walletUser.getBalance();
-                    walletUser.setBalance(oldBalance.add(cost));
-                    System.out.println(walletUser.getBalance());
-                    System.out.println();
-                }
-                else {
-                    System.out.println("Nie wlasciciel");
-                    System.out.println(walletUser.getBalance());
-                    BigDecimal oldBalance = walletUser.getBalance();
-                    walletUser.setBalance(oldBalance.subtract(cost));
-                    System.out.println(walletUser.getBalance());
-                    System.out.println();
-                }
-                walletUserRepository.save(walletUser);
-            }
+            walletUserList.stream().filter(walletUser -> !walletUser.equals(ownerDetails))
+                    .forEach(wu -> {
+                        BigDecimal oldBalance = wu.getBalance();
+                        wu.setBalance(oldBalance.add(cost));
+                        walletUserRepository.save(wu);
+
+                        oldBalance = ownerDetails.getBalance();
+                        ownerDetails.setBalance(oldBalance.subtract(cost));
+                        walletUserRepository.save(ownerDetails);
+                    });
         }
 
         return new ResponseEntity<>(updatedExpense, HttpStatus.OK);
