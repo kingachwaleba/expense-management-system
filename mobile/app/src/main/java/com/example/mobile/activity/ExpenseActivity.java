@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
-import com.example.mobile.model.Expense;
+import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.ExpenseDetail;
-import com.example.mobile.model.User;
+import com.example.mobile.model.Member;
 import com.example.mobile.service.ExpenseService;
 import com.example.mobile.service.adapter.MemberAdapter;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ExpenseActivity extends BaseActivity {
     Button editExpenseBtn;
     RecyclerView forWhoRv;
     MemberAdapter memberAdapter;
-    List<User> members, allMembers;
+    List<Member> members, allMembers;
     String nameExpense, costExpense, categoryExpense, periodExpense;
 
     @Override
@@ -50,7 +50,7 @@ public class ExpenseActivity extends BaseActivity {
         forWhoRv = findViewById(R.id.for_who_rv);
 
         members = new ArrayList<>();
-        memberAdapter = new MemberAdapter(this, members);
+        memberAdapter = new MemberAdapter(this, members, session.getUserDetails().get(SessionManager.KEY_LOGIN));
         forWhoRv.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
         forWhoRv.setAdapter(memberAdapter);
 
@@ -72,7 +72,7 @@ public class ExpenseActivity extends BaseActivity {
             dateTv.setText(date);
             members.clear();
             for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
-                members.add(item.getUser());
+                members.add(item.getMember());
             }
             memberAdapter.notifyDataSetChanged();
 

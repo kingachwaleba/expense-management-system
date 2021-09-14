@@ -8,14 +8,14 @@ public class ExpenseDetail {
     @SerializedName("paymentStatus")
     Status status;
     @SerializedName("user")
-    User user;
+    Member member;
     @SerializedName("cost")
     Double cost;
 
-    public ExpenseDetail(int id, Status status, User user, Double cost) {
+    public ExpenseDetail(int id, Status status, Member member, Double cost) {
         this.id = id;
         this.status = status;
-        this.user = user;
+        this.member = member;
         this.cost = cost;
     }
 
@@ -35,12 +35,12 @@ public class ExpenseDetail {
         this.status = status;
     }
 
-    public User getUser() {
-        return user;
+    public Member getMember() {
+        return member;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public Double getCost() {

@@ -140,6 +140,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="15dp"
             android:paddingHorizontal="30dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:background="@drawable/bg_round_box_light">
 
@@ -164,18 +165,43 @@
                 android:id="@+id/show_members_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_list_closed"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragment_container_view"
+        <LinearLayout
+            android:id="@+id/members_list_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:background="@drawable/bg_round_box_light"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/members_wallet_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_members"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"/>
+                tools:listitem="@layout/item_member" />
+            <View
+                android:id="@+id/vector_4"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/v_line_gradient" />
+            <TextView
+                android:id="@+id/edit_members_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_members_list"
+                android:textSize="18sp"
+                android:textAppearance="@style/simple_button" />
+        </LinearLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

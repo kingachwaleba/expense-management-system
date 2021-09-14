@@ -12,9 +12,8 @@ import com.example.mobile.R;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.ExpenseHolder;
-import com.example.mobile.model.User;
+import com.example.mobile.model.Member;
 import com.example.mobile.service.ExpenseService;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class CreateExpenseActivity extends BaseActivity {
     Button createExpenseBtn, cancelBtn;
     int walletId;
     String accessToken;
-    List<User> members;
+    List<Member> members;
     LinearLayout membersCb;
     List<Category> categoriesExpense;
     List<String> periods;
@@ -94,7 +93,7 @@ public class CreateExpenseActivity extends BaseActivity {
 
         for(int i = 0; i < members.size(); i++){
             CheckBox cb = new CheckBox(CreateExpenseActivity.this);
-            cb.setId(members.get(i).getId());
+            cb.setId(members.get(i).getUserId());
             cb.setText(members.get(i).getLogin());
             cb.setTextAppearance(R.style.simple_label);
             cb.setTextSize(18);
