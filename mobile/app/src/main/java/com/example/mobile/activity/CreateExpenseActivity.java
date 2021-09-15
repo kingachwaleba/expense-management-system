@@ -66,7 +66,10 @@ public class CreateExpenseActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             categoryRg.addView(rdbtn);
-            if(i == 0) rdbtn.setChecked(true);
+            if(i == 0) {
+                rdbtn.setChecked(true);
+                selectedCategory = new Category(rdbtn.getId(), categoriesExpense.get(i).getName());
+            }
         }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
@@ -83,7 +86,10 @@ public class CreateExpenseActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             perdiodRg.addView(rdbtn);
-            if(i == 0) rdbtn.setChecked(true);
+            if(i == 0) {
+                rdbtn.setChecked(true);
+                selectedPeriod = periods.get(i);
+            }
         }
 
         perdiodRg.setOnCheckedChangeListener((group, checkedId) -> {
@@ -111,7 +117,7 @@ public class CreateExpenseActivity extends BaseActivity {
                 else if(expenseCostEt.getText().toString().length()==0) expenseCostEt.setError("Wpisz kwote wydatku!");
                 else if(selectedMebers.size()==0) Toast.makeText(CreateExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
                 else {
-                Expense expense = new Expense(expenseNameEt.getText().toString(), null, Double.parseDouble(expenseCostEt.getText().toString()), selectedPeriod, selectedCategory);
+                Expense expense = new Expense(expenseNameEt.getText().toString(), null, Double.parseDouble(expenseCostEt.getText().toString()), null, selectedCategory);
                 ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMebers);
                 expenseService.createExpense(accessToken, walletId, expenseHolder);
                 finish();

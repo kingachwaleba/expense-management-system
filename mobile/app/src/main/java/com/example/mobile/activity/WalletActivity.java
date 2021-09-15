@@ -81,7 +81,7 @@ public class WalletActivity extends BaseActivity {
         membersRv = findViewById(R.id.members_wallet_rv);
         members1 = new ArrayList<>();
         membersRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
-        memberAdapter = new MemberAdapter(this, members1, session.getUserDetails().get(SessionManager.KEY_LOGIN));
+        memberAdapter = new MemberAdapter(this, members1, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
         membersRv.setAdapter(memberAdapter);
 
 
@@ -141,7 +141,7 @@ public class WalletActivity extends BaseActivity {
             showMembersBtn.setOnClickListener(v -> {
                 if (!showMembersControl) {
                     membersListL .setVisibility(View.VISIBLE);
-                    MemberAdapter memberAdapter1 = new MemberAdapter(getApplicationContext(), members, session.getUserDetails().get(SessionManager.KEY_LOGIN));
+                    MemberAdapter memberAdapter1 = new MemberAdapter(getApplicationContext(), members, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
                     membersRv.setAdapter(memberAdapter1);
                     memberAdapter1.notifyDataSetChanged();
                     showMembersBtn.setBackgroundResource(R.drawable.btn_list_opened);

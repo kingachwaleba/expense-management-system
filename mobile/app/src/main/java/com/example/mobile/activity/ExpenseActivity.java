@@ -3,6 +3,7 @@ package com.example.mobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,11 +20,11 @@ import java.util.List;
 public class ExpenseActivity extends BaseActivity {
 
     String accessToken;
-    int expenseId;
+    int expenseId, walletId;
     ExpenseService expenseService;
 
     TextView nameExpenseTv, makeWhoTv, categoryTv, periodTv, dateTv, costTv;
-    Button editExpenseBtn;
+    Button editExpenseBtn, deleteExpenseBtn;
     RecyclerView forWhoRv;
     MemberAdapter memberAdapter;
     List<Member> members, allMembers;
@@ -36,7 +37,9 @@ public class ExpenseActivity extends BaseActivity {
 
         accessToken = getIntent().getStringExtra("accessToken");
         expenseId = getIntent().getIntExtra("expenseId", 0);
+        walletId = getIntent().getIntExtra("walletId", 0);
         allMembers = getIntent().getParcelableArrayListExtra("allMembers");
+        Log.d("aaa",  " " + walletId);
 
         expenseService = new ExpenseService(this);
 
@@ -47,6 +50,7 @@ public class ExpenseActivity extends BaseActivity {
         dateTv = findViewById(R.id.date_expense_tv);
         costTv = findViewById(R.id.cost_expense_tv);
         editExpenseBtn = findViewById(R.id.edit_expense_btn);
+        deleteExpenseBtn = findViewById(R.id.delete_expense_btn);
         forWhoRv = findViewById(R.id.for_who_rv);
 
         members = new ArrayList<>();
@@ -72,8 +76,10 @@ public class ExpenseActivity extends BaseActivity {
             dateTv.setText(date);
             members.clear();
             for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
+                item.getMember().setBalance(item.getCost());
                 members.add(item.getMember());
             }
+
             memberAdapter.notifyDataSetChanged();
 
         }, accessToken, expenseId);
@@ -91,5 +97,10 @@ public class ExpenseActivity extends BaseActivity {
             startActivity(intent);
         });
 
+        deleteExpenseBtn.setOnClickListener(v -> {
+            expenseService.deleteExpense(accessToken, expenseId);
+            finish();
+        });
     }
+
 }

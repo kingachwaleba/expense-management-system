@@ -1,6 +1,7 @@
 package com.example.mobile.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,13 +68,16 @@ public class CreateListActivity extends BaseActivity {
         units = MainActivity.getProductUnits();
         for(int i = 0; i < units.size(); i++){
             RadioButton rdbtn = new RadioButton(CreateListActivity.this);
-            rdbtn.setId(View.generateViewId());
+            rdbtn.setId(units.get(i).getId());
             rdbtn.setText(units.get(i).getName());
             rdbtn.setTextAppearance(R.style.simple_label);
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             unitRg.addView(rdbtn);
-            if(i == 0) rdbtn.setChecked(true);
+            if(i == 0) {
+                rdbtn.setChecked(true);
+                unit = new Unit(rdbtn.getId(), units.get(i).getName());
+            }
         }
         firstRadioButton = unitRg.getCheckedRadioButtonId();
 
@@ -87,6 +91,7 @@ public class CreateListActivity extends BaseActivity {
             if(nameProductEt.getText().toString().length()==0) nameProductEt.setError("Wprowadź nazwe produktu!");
                 else if(quantityProductEt.getText().toString().length()==0) quantityProductEt.setError("Wprowadź ilość produku!");
                     else {
+                        Log.d("ddd", unit.getId() + " " + unit.getName());
                         productList.add(new Product(nameProductEt.getText().toString(), Double.parseDouble(quantityProductEt.getText().toString()), unit));
                         productCreateListAdapter.notifyDataSetChanged();
                         nameProductEt.setText("");

@@ -1,6 +1,7 @@
 package com.example.mobile.config;
 
 import com.example.mobile.model.Category;
+import com.example.mobile.model.DebtsHolder;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.ExpenseHolder;
 import com.example.mobile.model.Invitation;
@@ -65,6 +66,10 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> createList(@Header("Authorization") String accessToken, @Path("id") int id, @Body ListCreate list);
 
+    @DELETE("/shopping-list/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteList(@Header("Authorization") String accessToken, @Path("id") int id);
+
     @GET("wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<WalletCreate> getWalletById(@Header("Authorization") String accessToken, @Path("id") int id);
@@ -76,7 +81,6 @@ public interface ApiInterface  {
     @GET("categories")
     @Headers("Content-Type: application/json")
     Call<List<Category>> getExpenseCategories();
-
 
     @GET("units")
     @Headers("Content-Type: application/json")
@@ -140,6 +144,10 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> createExpense(@Header("Authorization") String accessToken, @Path("id") int id, @Body ExpenseHolder expenseHolder);
 
+    @DELETE("expense/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteExpense(@Header("Authorization") String accessToken, @Path("id") int id);
+
     @GET("wallet/{id}/expenses")
     @Headers("Content-Type: application/json")
     Call<List<Expense>> getAllExpense(@Header("Authorization") String accessToken, @Path("id") int id);
@@ -147,4 +155,8 @@ public interface ApiInterface  {
     @GET("expense/{id}")
     @Headers("Content-Type: application/json")
     Call<Expense> getExpenseById(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @PUT("pay-debt/wallet/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> payDebt(@Header("Authorization") String accessToken, @Path("id") int id, @Body DebtsHolder debtsHolder);
 }
