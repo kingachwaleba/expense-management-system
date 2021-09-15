@@ -76,7 +76,7 @@ public class MessageController {
         BigDecimal debt = debtsHolder.getHowMuch();
         String content = "Użytkownik przypomina ci o uregulowaniu należności o wysokości " + debt;
 
-        messageService.saveNotifications(wallet, debtor, creditor, content, "E");
+        messageService.saveNotifications(wallet, debtor, creditor, content, String.valueOf(Message.MessageType.E));
 
         return new ResponseEntity<>("The notification has been sent!", HttpStatus.OK);
     }
