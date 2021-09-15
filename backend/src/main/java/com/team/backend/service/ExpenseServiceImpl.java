@@ -145,8 +145,6 @@ public class ExpenseServiceImpl implements ExpenseService {
                 if (expenseDetail.getUser().equals(w.getUser()))
                     tempList.add(w);
 
-        delete(expense);
-
         tempList.stream().filter(walletUser -> !walletUser.equals(ownerDetails))
                 .forEach(wu -> {
                     BigDecimal oldBalance = wu.getBalance();
