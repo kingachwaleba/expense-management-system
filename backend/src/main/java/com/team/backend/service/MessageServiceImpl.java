@@ -32,15 +32,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void saveNotifications(Wallet wallet, User user, User messageSender) {
+    public void saveNotifications(Wallet wallet, User user, User messageSender, String content, String type) {
         Message message = new Message();
 
         message.setReceiver(user);
         message.setSender(messageSender);
         message.setWallet(wallet);
-        message.setContent("Nowa wiadomość");
+        message.setContent(content);
         message.setDate(LocalDateTime.now());
-        message.setType("S");
+        message.setType(type);
 
         messageRepository.save(message);
     }
