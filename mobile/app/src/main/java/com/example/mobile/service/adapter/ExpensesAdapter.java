@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.activity.ExpenseActivity;
 import com.example.mobile.model.Expense;
-import com.example.mobile.model.User;
+import com.example.mobile.model.Member;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     private final List<Expense> mExpenses;
     private final LayoutInflater mInflater;
     private final String mAccessToken;
-    private final List<User> mAllMembers;
+    private final List<Member> mAllMembers;
 
-    public ExpensesAdapter(Context context, List<Expense> expenses, String accessToken, List<User> allMembers){
+    public ExpensesAdapter(Context context, List<Expense> expenses, String accessToken, List<Member> allMembers){
         mExpenses = expenses;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;

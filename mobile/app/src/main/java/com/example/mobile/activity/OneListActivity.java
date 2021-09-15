@@ -98,6 +98,8 @@ public class OneListActivity extends BaseActivity {
         });
 
         deleteListShopBtn.setOnClickListener(v -> {
+            listService.deleteList(accessToken, listId);
+            finish();
         });
 
         editListBtn.setOnClickListener(v -> {

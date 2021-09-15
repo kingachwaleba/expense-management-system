@@ -94,7 +94,10 @@ public class CreateWalletActivity extends BaseActivity{
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             categoryRg.addView(rdbtn);
-            if(i == 0) rdbtn.setChecked(true);
+            if(i == 0){
+                rdbtn.setChecked(true);
+                category = new Category(rdbtn.getId(), categories.get(i).getName());
+            }
         }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
@@ -106,12 +109,14 @@ public class CreateWalletActivity extends BaseActivity{
         createBtn.setOnClickListener(v -> {
             String nameS = nameEt.getText().toString();
             if(validateName(nameS)){
-                String descriptionS = descriptionEt.getText().toString();
-                walletCreate = new WalletCreate(nameS, descriptionS, category);
-                WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapterInit.getSelectedUser());
-                walletService.createWallet(accessToken, walletHolder);
-                searchUserAdapterInit.clearSelected();
-                finish();
+                if(searchUserAdapterInit.getSelectedUser().size()>0){
+                    String descriptionS = descriptionEt.getText().toString();
+                    walletCreate = new WalletCreate(nameS, descriptionS, category);
+                    WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapterInit.getSelectedUser());
+                    walletService.createWallet(accessToken, walletHolder);
+                    searchUserAdapterInit.clearSelected();
+                    finish();
+                }
             } else nameEt.setError("Podaj nazwe portfela!");
         });
     }

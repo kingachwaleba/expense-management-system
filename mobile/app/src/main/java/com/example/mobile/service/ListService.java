@@ -175,4 +175,19 @@ public class ListService {
         });
     }
 
+    public void deleteList(String accessToken, int id){
+        Call<ResponseBody> call = apiInterface.deleteList("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
 }

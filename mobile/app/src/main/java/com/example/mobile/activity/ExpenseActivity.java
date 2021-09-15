@@ -3,14 +3,15 @@ package com.example.mobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
-import com.example.mobile.model.Expense;
+import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.ExpenseDetail;
-import com.example.mobile.model.User;
+import com.example.mobile.model.Member;
 import com.example.mobile.service.ExpenseService;
 import com.example.mobile.service.adapter.MemberAdapter;
 import java.util.ArrayList;
@@ -19,14 +20,14 @@ import java.util.List;
 public class ExpenseActivity extends BaseActivity {
 
     String accessToken;
-    int expenseId;
+    int expenseId, walletId;
     ExpenseService expenseService;
 
     TextView nameExpenseTv, makeWhoTv, categoryTv, periodTv, dateTv, costTv;
-    Button editExpenseBtn;
+    Button editExpenseBtn, deleteExpenseBtn;
     RecyclerView forWhoRv;
     MemberAdapter memberAdapter;
-    List<User> members, allMembers;
+    List<Member> members, allMembers;
     String nameExpense, costExpense, categoryExpense, periodExpense;
 
     @Override
@@ -36,7 +37,9 @@ public class ExpenseActivity extends BaseActivity {
 
         accessToken = getIntent().getStringExtra("accessToken");
         expenseId = getIntent().getIntExtra("expenseId", 0);
+        walletId = getIntent().getIntExtra("walletId", 0);
         allMembers = getIntent().getParcelableArrayListExtra("allMembers");
+        Log.d("aaa",  " " + walletId);
 
         expenseService = new ExpenseService(this);
 
@@ -47,10 +50,11 @@ public class ExpenseActivity extends BaseActivity {
         dateTv = findViewById(R.id.date_expense_tv);
         costTv = findViewById(R.id.cost_expense_tv);
         editExpenseBtn = findViewById(R.id.edit_expense_btn);
+        deleteExpenseBtn = findViewById(R.id.delete_expense_btn);
         forWhoRv = findViewById(R.id.for_who_rv);
 
         members = new ArrayList<>();
-        memberAdapter = new MemberAdapter(this, members);
+        memberAdapter = new MemberAdapter(this, members, session.getUserDetails().get(SessionManager.KEY_LOGIN));
         forWhoRv.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
         forWhoRv.setAdapter(memberAdapter);
 
@@ -72,8 +76,10 @@ public class ExpenseActivity extends BaseActivity {
             dateTv.setText(date);
             members.clear();
             for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
-                members.add(item.getUser());
+                item.getMember().setBalance(item.getCost());
+                members.add(item.getMember());
             }
+
             memberAdapter.notifyDataSetChanged();
 
         }, accessToken, expenseId);
@@ -91,5 +97,10 @@ public class ExpenseActivity extends BaseActivity {
             startActivity(intent);
         });
 
+        deleteExpenseBtn.setOnClickListener(v -> {
+            expenseService.deleteExpense(accessToken, expenseId);
+            finish();
+        });
     }
+
 }

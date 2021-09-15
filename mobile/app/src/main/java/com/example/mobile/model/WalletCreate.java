@@ -19,7 +19,7 @@ public class WalletCreate {
     @SerializedName("userListCounter")
     int userListCounter;
     @SerializedName("userList")
-    List<User> userList;
+    List<Member> userList;
 
 
     public WalletCreate(int id, String name, Category category, String description) {
@@ -52,7 +52,7 @@ public class WalletCreate {
         this.userListCounter = userListCounter;
     }
 
-    public WalletCreate(int id, String name, String description, Category category, String owner, int userListCounter, List<User> userList) {
+    public WalletCreate(int id, String name, String description, Category category, String owner, int userListCounter, List<Member> userList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -110,11 +110,11 @@ public class WalletCreate {
         this.userListCounter = userListCounter;
     }
 
-    public List<User> getUserList() {
+    public List<Member> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<Member> userList) {
         this.userList = userList;
     }
 }

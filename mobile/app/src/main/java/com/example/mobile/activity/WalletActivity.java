@@ -2,23 +2,25 @@ package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
-import com.example.mobile.fragment.MembersFragment;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.ListShop;
-import com.example.mobile.model.User;
+import com.example.mobile.model.Member;
 import com.example.mobile.service.ExpenseService;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.ExpensesAdapter;
 import com.example.mobile.service.adapter.ListsAdapter;
+import com.example.mobile.service.adapter.MemberAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,19 +31,21 @@ public class WalletActivity extends BaseActivity {
     int id;
     Boolean showMembersControl, showListsControl, showExpensesControl;
     String accessToken;
-    String TAG = "MEMBERS_FRAGMENT";
-
     TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv;
     Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn;
     String walletName, walletDescription, walletCategory;
     ListsAdapter listAdapter;
     ExpensesAdapter expensesAdapter;
-    RecyclerView shopListsRv, expensesRv;
+    RecyclerView shopListsRv, expensesRv, membersRv;
     List<ListShop> lists1;
     List<Expense> expenses1;
-    List<User> members;
+    List<Member> members1, members;
+    MemberAdapter memberAdapter;
     ExpenseService expenseService;
     ImageButton showMembersBtn, showListsBtn, showExpensesBtn;
+
+    LinearLayout membersListL;
+    TextView editMembersBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,8 @@ public class WalletActivity extends BaseActivity {
         id = Integer.parseInt(getIntent().getStringExtra("id"));
         accessToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
         showMembersControl = false;
-        showListsControl=false;
-        showExpensesControl=false;
+        showListsControl = false;
+        showExpensesControl = false;
         expenseService = new ExpenseService(this);
 
         walletNameTv = findViewById(R.id.name_tv);
@@ -63,7 +67,6 @@ public class WalletActivity extends BaseActivity {
         numberOfMembersTv = findViewById(R.id.number_of_members_tv);
         showMembersBtn = findViewById(R.id.show_members_btn);
         addMemberBtn = findViewById(R.id.add_member_btn);
-        showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
         editWalletBtn = findViewById(R.id.edit_wallet_btn);
         addListBtn = findViewById(R.id.add_shop_list_btn);
         showListsBtn = findViewById(R.id.show_shop_lists_btn);
@@ -71,6 +74,16 @@ public class WalletActivity extends BaseActivity {
         goToChatBtn = findViewById(R.id.open_chat_btn);
         addExpenseBtn = findViewById(R.id.add_expense_btn);
         showExpensesBtn = findViewById(R.id.show_expenses_btn);
+
+        membersListL = findViewById(R.id.members_list_l);
+        editMembersBtn = findViewById(R.id.edit_members_btn);
+
+        membersRv = findViewById(R.id.members_wallet_rv);
+        members1 = new ArrayList<>();
+        membersRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
+        memberAdapter = new MemberAdapter(this, members1, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
+        membersRv.setAdapter(memberAdapter);
+
 
         shopListsRv = findViewById(R.id.shop_lists_rv);
         lists1 = new ArrayList<>();
@@ -95,7 +108,7 @@ public class WalletActivity extends BaseActivity {
             Intent intent = new Intent(WalletActivity.this, CreateExpenseActivity.class);
             intent.putExtra("accessToken", accessToken);
             intent.putExtra("walletId", id);
-            intent.putParcelableArrayListExtra("members", (ArrayList<User>)members);
+            intent.putParcelableArrayListExtra("members", (ArrayList<Member>)members);
             startActivity(intent);
         });
     }
@@ -105,7 +118,6 @@ public class WalletActivity extends BaseActivity {
         super.onStart();
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
-            members = walletModel.getUserList();
             walletName = walletModel.getName();
             walletCategory = walletModel.getCategory().getName();
             walletDescription = walletModel.getDescription();
@@ -128,18 +140,16 @@ public class WalletActivity extends BaseActivity {
             numberOfMembersTv.setText(numberOfMembersText);
             showMembersBtn.setOnClickListener(v -> {
                 if (!showMembersControl) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("members", (ArrayList<User>)walletModel.getUserList());
-                        getSupportFragmentManager().beginTransaction()
-                                .setReorderingAllowed(true)
-                                .replace(R.id.fragment_container_view, MembersFragment.class, bundle, TAG)
-                                .commit();
-                        showMembersBtn.setBackgroundResource(R.drawable.btn_list_opened);
-                        showMembersControl = true;
+                    membersListL .setVisibility(View.VISIBLE);
+                    MemberAdapter memberAdapter1 = new MemberAdapter(getApplicationContext(), members, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
+                    membersRv.setAdapter(memberAdapter1);
+                    memberAdapter1.notifyDataSetChanged();
+                    showMembersBtn.setBackgroundResource(R.drawable.btn_list_opened);
+                    showMembersControl = true;
                 } else {
-                    Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
-                    if(fragment != null)
-                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    membersListL.setVisibility(View.GONE);
+                    membersRv.setAdapter(memberAdapter);
+                    memberAdapter.notifyDataSetChanged();
                     showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
                     showMembersControl = false;
                 }
