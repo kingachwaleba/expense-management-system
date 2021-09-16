@@ -2,6 +2,7 @@ package com.team.backend.service;
 
 import com.team.backend.model.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,6 @@ public interface UserService {
     void changeUserPassword(User user, String password);
 
     Optional<User> findCurrentLoggedInUser();
+
+    BigDecimal calculateUserBalance(User user);
 }

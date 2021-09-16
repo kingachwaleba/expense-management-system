@@ -98,6 +98,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public List<Expense> findAllByWalletAndUser(Wallet wallet, User user) {
+        return expenseRepository.findAllByWalletAndUser(wallet, user);
+    }
+
+    @Override
     public void editUserList(Expense updatedExpense, Expense newExpense, List<String> userList) {
         Wallet wallet = updatedExpense.getWallet();
         List<String> tempList = new ArrayList<>();
@@ -214,5 +219,27 @@ public class ExpenseServiceImpl implements ExpenseService {
                     ownerDetails.setBalance(oldBalance.subtract(cost));
                     walletUserRepository.save(ownerDetails);
                 });
+    }
+
+    @Override
+    public BigDecimal calculateExpensesCost(Wallet wallet) {
+        List<Expense> expenseList = findAllByWalletOrderByDate(wallet);
+        BigDecimal totalCost = BigDecimal.valueOf(0.00);
+
+        for (Expense expense : expenseList)
+            totalCost = totalCost.add(expense.getTotal_cost());
+
+        return totalCost;
+    }
+
+    @Override
+    public BigDecimal calculateExpensesCostForUser(Wallet wallet, User user) {
+        List<Expense> expenseList = findAllByWalletAndUser(wallet, user);
+        BigDecimal totalCost = BigDecimal.valueOf(0.00);
+
+        for (Expense expense : expenseList)
+            totalCost = totalCost.add(expense.getTotal_cost());
+
+        return totalCost;
     }
 }
