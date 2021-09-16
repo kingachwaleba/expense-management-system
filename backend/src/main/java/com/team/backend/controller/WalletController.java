@@ -5,6 +5,7 @@ import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletCategoryRepository;
+import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
@@ -28,15 +29,18 @@ public class WalletController {
     private final UserStatusRepository userStatusRepository;
     private final WalletCategoryRepository walletCategoryRepository;
     private final ExpenseService expenseService;
+    private final WalletUserRepository walletUserRepository;
 
     public WalletController(WalletService walletService, UserService userService,
                             UserStatusRepository userStatusRepository,
-                            WalletCategoryRepository walletCategoryRepository, ExpenseService expenseService) {
+                            WalletCategoryRepository walletCategoryRepository, ExpenseService expenseService,
+                            WalletUserRepository walletUserRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
         this.walletCategoryRepository = walletCategoryRepository;
         this.expenseService = expenseService;
+        this.walletUserRepository = walletUserRepository;
     }
 
     @GetMapping("/wallet/{id}")
@@ -54,6 +58,8 @@ public class WalletController {
         map.put("userListCounter", walletService.findUserList(wallet).size());
         map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
         map.put("userExpensesCost", expenseService.calculateExpensesCostForUser(wallet, loggedInUser));
+        map.put("loggedInUserBalance", walletUserRepository.findByWalletAndUser(wallet, loggedInUser)
+                .orElseThrow(RuntimeException::new).getBalance());
 
         List<Map<String, Object>> userList = walletService.findUserList(wallet);
         map.put("userList", userList);
