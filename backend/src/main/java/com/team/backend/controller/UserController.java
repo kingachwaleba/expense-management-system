@@ -31,7 +31,8 @@ public class UserController {
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
 
-    public UserController(UserService userService, WalletService walletService, JwtProvider jwtProvider, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, WalletService walletService, JwtProvider jwtProvider,
+                          AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.walletService = walletService;
         this.jwtProvider = jwtProvider;
@@ -84,6 +85,7 @@ public class UserController {
         userDetailsMap.put("email", user.getEmail());
         userDetailsMap.put("image", user.getImage());
         userDetailsMap.put("walletsNumber", String.valueOf(wallets.size()));
+        userDetailsMap.put("userBalance", String.valueOf(userService.calculateUserBalance(user)));
 
         return new ResponseEntity<>(userDetailsMap, HttpStatus.OK);
     }

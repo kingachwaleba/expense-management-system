@@ -1,12 +1,16 @@
 package com.team.backend.service;
 
+import com.team.backend.model.Expense;
 import com.team.backend.model.User;
+import com.team.backend.model.WalletUser;
 import com.team.backend.repository.UserRepository;
+import com.team.backend.repository.WalletUserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,10 +19,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final WalletUserRepository walletUserRepository;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                           WalletUserRepository walletUserRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.walletUserRepository = walletUserRepository;
     }
 
     @Override
@@ -76,5 +83,16 @@ public class UserServiceImpl implements UserService {
         String currentUserLogin = authentication.getName();
 
         return userRepository.findByLogin(currentUserLogin);
+    }
+
+    @Override
+    public BigDecimal calculateUserBalance(User user) {
+        List<WalletUser> balanceList = walletUserRepository.findAllByUser(user);
+        BigDecimal totalBalance = BigDecimal.valueOf(0.00);
+
+        for (WalletUser walletUser : balanceList)
+            totalBalance = totalBalance.add(walletUser.getBalance());
+
+        return totalBalance;
     }
 }
