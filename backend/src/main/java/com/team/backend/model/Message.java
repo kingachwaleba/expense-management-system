@@ -1,5 +1,6 @@
 package com.team.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,4 +43,9 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender", referencedColumnName="id")
     private User sender;
+
+    public enum MessageType {
+        S,
+        E
+    }
 }

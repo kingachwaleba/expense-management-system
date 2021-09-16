@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface MessageService {
 
     void save(Message message, Wallet wallet, User user);
-    void saveNotifications(Wallet wallet, User user, User messageSender);
+    void saveNotifications(Wallet wallet, User user, User messageSender, String content, String type);
 
     void delete(Message message);
 
