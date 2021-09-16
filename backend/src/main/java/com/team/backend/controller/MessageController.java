@@ -74,7 +74,7 @@ public class MessageController {
         User creditor = walletUserRepository
                 .findByWalletAndUser(wallet, debtsHolder.getCreditor()).orElseThrow(RuntimeException::new).getUser();
         BigDecimal debt = debtsHolder.getHowMuch();
-        String content = "Użytkownik przypomina ci o uregulowaniu należności o wysokości " + debt;
+        String content = String.valueOf(debt);
 
         messageService.saveNotifications(wallet, debtor, creditor, content, String.valueOf(Message.MessageType.E));
 
