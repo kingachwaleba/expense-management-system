@@ -21,4 +21,5 @@ public interface ExpenseService {
     void edit(Expense updatedExpense, Expense newExpense);
     void deleteExpense(Expense expense);
     void calculateNewBalance(Wallet wallet, Expense expense, BigDecimal cost);
+    BigDecimal calculateExpensesCost(Wallet wallet);
 }

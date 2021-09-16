@@ -5,6 +5,7 @@ import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletCategoryRepository;
+import com.team.backend.service.ExpenseService;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -26,14 +27,16 @@ public class WalletController {
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
     private final WalletCategoryRepository walletCategoryRepository;
+    private final ExpenseService expenseService;
 
     public WalletController(WalletService walletService, UserService userService,
                             UserStatusRepository userStatusRepository,
-                            WalletCategoryRepository walletCategoryRepository) {
+                            WalletCategoryRepository walletCategoryRepository, ExpenseService expenseService) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
         this.walletCategoryRepository = walletCategoryRepository;
+        this.expenseService = expenseService;
     }
 
     @GetMapping("/wallet/{id}")
@@ -49,6 +52,7 @@ public class WalletController {
         map.put("description", wallet.getDescription());
         map.put("owner", walletService.findOwner(wallet).getLogin());
         map.put("userListCounter", walletService.findUserList(wallet).size());
+        map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
 
         List<Map<String, Object>> userList = walletService.findUserList(wallet);
         map.put("userList", userList);

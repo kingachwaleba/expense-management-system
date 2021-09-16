@@ -215,4 +215,15 @@ public class ExpenseServiceImpl implements ExpenseService {
                     walletUserRepository.save(ownerDetails);
                 });
     }
+
+    @Override
+    public BigDecimal calculateExpensesCost(Wallet wallet) {
+        List<Expense> expenseList = findAllByWalletOrderByDate(wallet);
+        BigDecimal totalCost = BigDecimal.valueOf(0.00);
+
+        for (Expense expense : expenseList)
+            totalCost = totalCost.add(expense.getTotal_cost());
+
+        return totalCost;
+    }
 }
