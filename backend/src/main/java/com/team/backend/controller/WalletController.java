@@ -41,8 +41,8 @@ public class WalletController {
 
     @GetMapping("/wallet/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
-        Wallet wallet = walletService.findById(id)
-                .orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -53,6 +53,7 @@ public class WalletController {
         map.put("owner", walletService.findOwner(wallet).getLogin());
         map.put("userListCounter", walletService.findUserList(wallet).size());
         map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
+        map.put("userExpensesCost", expenseService.calculateExpensesCostForUser(wallet, loggedInUser));
 
         List<Map<String, Object>> userList = walletService.findUserList(wallet);
         map.put("userList", userList);
