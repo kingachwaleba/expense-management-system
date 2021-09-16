@@ -58,6 +58,7 @@ public class Expense {
     @Size(min = 1, max = 1)
     private String period;
 
+    @JsonIgnore
     @OneToMany(mappedBy="expense", cascade = CascadeType.ALL)
     private Set<ExpenseDetail> expenseDetailSet = new HashSet<>();
 
