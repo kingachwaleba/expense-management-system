@@ -76,6 +76,7 @@ public class WalletController {
             map.put("walletCategory", wallet.getWalletCategory());
             map.put("owner", walletService.findOwner(wallet).getLogin());
             map.put("userListCounter", walletService.findUserList(wallet).size());
+            map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
 
             walletsList.add(map);
         }
