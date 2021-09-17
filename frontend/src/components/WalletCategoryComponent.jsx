@@ -8,11 +8,14 @@ class WalletCategoryComponent extends Component {
         super(props)
         this.state={
             categories: [],
-            checkedID: ''
+            
 
         }
     }
     
+    test(){
+        console.log("Klik");
+    }
     componentDidMount(){
         WalletCategoryService.getCategories().then((response)=>{
                 this.setState({categories: response.data})
@@ -21,16 +24,7 @@ class WalletCategoryComponent extends Component {
         )
     }
 
-    onCheckChanged=(event)=>{
-       
-        this.setState({
-          checkedID: event.target.id
-          
-          
-          });
-          console.log("Checked category's ID:" + event.target.id);
-          
-      }
+
     render() {
         return (
             <div className="box-subcontent">
@@ -45,7 +39,9 @@ class WalletCategoryComponent extends Component {
                                       <label className = "form-label" htmlFor={category.id}>
                                         <input type="radio" id={category.id} name  ="category" value={category.name} 
                                            
-                                            onChange={this.onCheckChanged}>
+                                           // onChange={this.onCheckChanged}
+                                            onChange={this.props.readWalletCategory}
+                                            >
                                                 
                                         </input>
                                         

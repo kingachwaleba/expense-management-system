@@ -250,6 +250,13 @@ input[type='text'], input[type='password']{
   background-position: center;
 }
 
+.delete-user-from-list{
+  background-color: rgb(243, 35, 35);
+}
+.add-user-to-list{
+  background-color: green;
+}
+
 
 @media all and (max-width: 1750px){ 
 
