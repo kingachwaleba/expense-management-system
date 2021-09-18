@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/simple_label_bold"
-        android:textSize="30sp"
+        android:textSize="26sp"
         android:text="@string/warning_debth"
         android:textColor="@color/red" />
 
@@ -53,13 +53,13 @@
             android:text="@string/owner_label" />
 
         <TextView
-            android:id="@+id/debth_tv"
+            android:id="@+id/debt_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAppearance="@style/simple_label"
             android:textSize="20sp"
-            android:text="@string/debth" />
+            android:text="@string/debt" />
 
     </LinearLayout>
 

@@ -8,6 +8,7 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
@@ -168,5 +169,5 @@ public interface ApiInterface  {
 
     @GET("debts-notifications")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> getDebtNotification(@Header("Authorization") String accessToken);
+    Call<List<Message>> getDebtNotification(@Header("Authorization") String accessToken);
 }

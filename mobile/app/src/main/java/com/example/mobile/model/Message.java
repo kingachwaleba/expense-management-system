@@ -2,8 +2,6 @@ package com.example.mobile.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.LocalDateTime;
-
 public class Message {
     @SerializedName("id")
     private int id;
@@ -12,7 +10,7 @@ public class Message {
     @SerializedName("wallet")
     private WalletCreate wallet;
     @SerializedName("date")
-    private LocalDateTime date;
+    private String date;
     @SerializedName("content")
     private String content;
     @SerializedName("type")
@@ -30,7 +28,7 @@ public class Message {
         this.sender = sender;
     }
 
-    public Message(User receiver, WalletCreate wallet, LocalDateTime date, String content, String type, User sender) {
+    public Message(User receiver, WalletCreate wallet, String date, String content, String type, User sender) {
         this.receiver = receiver;
         this.wallet = wallet;
         this.date = date;
@@ -39,7 +37,7 @@ public class Message {
         this.sender = sender;
     }
 
-    public Message(int id, User receiver, WalletCreate wallet, LocalDateTime date, String content, String type, User sender) {
+    public Message(int id, User receiver, WalletCreate wallet, String date, String content, String type, User sender) {
         this.id = id;
         this.receiver = receiver;
         this.wallet = wallet;
@@ -73,11 +71,11 @@ public class Message {
         this.wallet = wallet;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
