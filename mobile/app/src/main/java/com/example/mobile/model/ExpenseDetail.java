@@ -5,16 +5,22 @@ import com.google.gson.annotations.SerializedName;
 public class ExpenseDetail {
     @SerializedName("id")
     int id;
-    @SerializedName("paymentStatus")
-    Status status;
+    @SerializedName("expense")
+    Expense expense;
     @SerializedName("user")
     Member member;
     @SerializedName("cost")
     Double cost;
 
-    public ExpenseDetail(int id, Status status, Member member, Double cost) {
+    public ExpenseDetail(int id, Member member, Double cost) {
         this.id = id;
-        this.status = status;
+        this.member = member;
+        this.cost = cost;
+    }
+
+    public ExpenseDetail(int id, Expense expense, Member member, Double cost) {
+        this.id = id;
+        this.expense = expense;
         this.member = member;
         this.cost = cost;
     }
@@ -25,14 +31,6 @@ public class ExpenseDetail {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public Member getMember() {
@@ -49,5 +47,13 @@ public class ExpenseDetail {
 
     public void setCost(Double cost) {
         this.cost = cost;
+    }
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
     }
 }
