@@ -1,9 +1,7 @@
 package com.example.mobile.model;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
-import java.util.Map;
 
 public class WalletCreate {
     @SerializedName("id")
@@ -20,7 +18,12 @@ public class WalletCreate {
     int userListCounter;
     @SerializedName("userList")
     List<Member> userList;
-
+    @SerializedName("walletExpensesCost")
+    Double walletExpensesCost;
+    @SerializedName("userExpensesCost")
+    Double userExpensesCost;
+    @SerializedName("loggedInUserBalance")
+    Double loggedInUserBalance;
 
     public WalletCreate(int id, String name, Category category, String description) {
         this.id = id;
@@ -60,6 +63,19 @@ public class WalletCreate {
         this.owner = owner;
         this.userListCounter = userListCounter;
         this.userList = userList;
+    }
+
+    public WalletCreate(int id, String name, String description, Category category, String owner, int userListCounter, List<Member> userList, Double walletExpensesCost, Double userExpensesCost, Double loggedInUserBalance) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.owner = owner;
+        this.userListCounter = userListCounter;
+        this.userList = userList;
+        this.walletExpensesCost = walletExpensesCost;
+        this.userExpensesCost = userExpensesCost;
+        this.loggedInUserBalance = loggedInUserBalance;
     }
 
     public int getId() {
@@ -116,6 +132,30 @@ public class WalletCreate {
 
     public void setUserList(List<Member> userList) {
         this.userList = userList;
+    }
+
+    public Double getWalletExpensesCost() {
+        return walletExpensesCost;
+    }
+
+    public void setWalletExpensesCost(Double walletExpensesCost) {
+        this.walletExpensesCost = walletExpensesCost;
+    }
+
+    public Double getUserExpensesCost() {
+        return userExpensesCost;
+    }
+
+    public void setUserExpensesCost(Double userExpensesCost) {
+        this.userExpensesCost = userExpensesCost;
+    }
+
+    public Double getLoggedInUserBalance() {
+        return loggedInUserBalance;
+    }
+
+    public void setLoggedInUserBalance(Double loggedInUserBalance) {
+        this.loggedInUserBalance = loggedInUserBalance;
     }
 }
 
