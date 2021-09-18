@@ -159,4 +159,8 @@ public interface ApiInterface  {
     @PUT("pay-debt/wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> payDebt(@Header("Authorization") String accessToken, @Path("id") int id, @Body DebtsHolder debtsHolder);
+
+    @POST("send-notification/wallet/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> sendDebtNotification(@Header("Authorization") String accessToken, @Path("id") int id, @Body DebtsHolder debtsHolder);
 }
