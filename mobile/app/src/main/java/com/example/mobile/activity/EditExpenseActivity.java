@@ -134,9 +134,6 @@ public class EditExpenseActivity extends BaseActivity {
                 Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, Double.parseDouble(costExpenseEt.getText().toString()), null, selectedCategory, expenseOwner);
                 ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
                 expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
-                for(int i = 0; i < selectedUsersLogin.size(); i++){
-                    System.out.println(selectedUsersLogin.get(i));
-                }
                 finish();
             }
         });
