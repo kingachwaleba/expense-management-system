@@ -92,4 +92,5 @@ public class Member implements Parcelable {
         dest.writeString(login);
         dest.writeInt(userId);
     }
+
 }

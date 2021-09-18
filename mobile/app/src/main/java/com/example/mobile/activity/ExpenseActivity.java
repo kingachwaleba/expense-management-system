@@ -12,6 +12,7 @@ import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.ExpenseDetail;
 import com.example.mobile.model.Member;
+import com.example.mobile.model.User;
 import com.example.mobile.service.ExpenseService;
 import com.example.mobile.service.adapter.MemberAdapter;
 import java.util.ArrayList;
@@ -22,13 +23,15 @@ public class ExpenseActivity extends BaseActivity {
     String accessToken;
     int expenseId, walletId;
     ExpenseService expenseService;
+    User expenseOwner;
 
     TextView nameExpenseTv, makeWhoTv, categoryTv, periodTv, dateTv, costTv;
     Button editExpenseBtn, deleteExpenseBtn;
     RecyclerView forWhoRv;
     MemberAdapter memberAdapter;
-    List<Member> members, allMembers;
-    String nameExpense, costExpense, categoryExpense, periodExpense;
+    List<Member> seletedUsers, walletUsers;
+    String nameExpense, costExpense, categoryExpense;
+    //String periodExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ public class ExpenseActivity extends BaseActivity {
         accessToken = getIntent().getStringExtra("accessToken");
         expenseId = getIntent().getIntExtra("expenseId", 0);
         walletId = getIntent().getIntExtra("walletId", 0);
-        allMembers = getIntent().getParcelableArrayListExtra("allMembers");
+        walletUsers = getIntent().getParcelableArrayListExtra("allMembers");
         Log.d("aaa",  " " + walletId);
 
         expenseService = new ExpenseService(this);
@@ -53,8 +56,8 @@ public class ExpenseActivity extends BaseActivity {
         deleteExpenseBtn = findViewById(R.id.delete_expense_btn);
         forWhoRv = findViewById(R.id.for_who_rv);
 
-        members = new ArrayList<>();
-        memberAdapter = new MemberAdapter(this, members, session.getUserDetails().get(SessionManager.KEY_LOGIN));
+        seletedUsers = new ArrayList<>();
+        memberAdapter = new MemberAdapter(this, seletedUsers, session.getUserDetails().get(SessionManager.KEY_LOGIN));
         forWhoRv.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
         forWhoRv.setAdapter(memberAdapter);
 
@@ -63,6 +66,7 @@ public class ExpenseActivity extends BaseActivity {
             nameExpense = expense.getName();
             costExpense = String.valueOf(expense.getTotal_cost());
             categoryExpense = expense.getCategory().getName();
+            expenseOwner = expense.getUser();
            // periodExpense = expense.getPeriod();
             String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getUser().getLogin();
            // String period = getResources().getString(R.string.period_label) + " " +  expense.getPeriod();
@@ -74,11 +78,11 @@ public class ExpenseActivity extends BaseActivity {
             costTv.setText(cost);
             categoryTv.setText(category);
             dateTv.setText(date);
-            members.clear();
-           /* for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
+            seletedUsers.clear();
+            for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
                 item.getMember().setBalance(item.getCost());
-                members.add(item.getMember());
-            }*/
+                seletedUsers.add(item.getMember());
+            }
 
             memberAdapter.notifyDataSetChanged();
 
@@ -91,9 +95,10 @@ public class ExpenseActivity extends BaseActivity {
             intent.putExtra("nameExpense", nameExpense);
             intent.putExtra("costExpense", costExpense);
             intent.putExtra("categoryExpense", categoryExpense);
+            intent.putExtra("expenseOwner", expenseOwner);
             //intent.putExtra("periodExpanse", expense1.getPeriod());
-            intent.putParcelableArrayListExtra("membersExpense", (ArrayList<? extends Parcelable>) members);
-            intent.putParcelableArrayListExtra("allMembers", (ArrayList<? extends Parcelable>) allMembers);
+            intent.putParcelableArrayListExtra("selectedUsers", (ArrayList<? extends Parcelable>) seletedUsers);
+            intent.putParcelableArrayListExtra("walletUsers", (ArrayList<? extends Parcelable>) walletUsers);
             startActivity(intent);
         });
 

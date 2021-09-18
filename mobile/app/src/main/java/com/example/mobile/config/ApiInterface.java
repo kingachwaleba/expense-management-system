@@ -8,7 +8,6 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
-import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
@@ -18,7 +17,6 @@ import com.example.mobile.model.WalletHolder;
 import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -136,10 +134,6 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteListElement(@Header("Authorization") String accessToken, @Path("id") int id);
 
-    @POST("wallet/{id}/message")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> sendMessage(@Header("Authorization") String accessToken, @Path("id") int id, @Body Message massage);
-
     @POST("wallet/{id}/add-expense")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> createExpense(@Header("Authorization") String accessToken, @Path("id") int id, @Body ExpenseHolder expenseHolder);
@@ -155,6 +149,10 @@ public interface ApiInterface  {
     @GET("expense/{id}")
     @Headers("Content-Type: application/json")
     Call<Expense> getExpenseById(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @PUT("expense/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> editExpenseById(@Header("Authorization") String accessToken, @Path("id") int id, @Body ExpenseHolder expense);
 
     @PUT("pay-debt/wallet/{id}")
     @Headers("Content-Type: application/json")

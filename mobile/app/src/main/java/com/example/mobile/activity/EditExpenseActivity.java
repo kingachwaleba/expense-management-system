@@ -7,10 +7,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
 import com.example.mobile.R;
 import com.example.mobile.model.Category;
+import com.example.mobile.model.Expense;
+import com.example.mobile.model.ExpenseHolder;
+import com.example.mobile.model.Member;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ExpenseService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +25,9 @@ public class EditExpenseActivity extends BaseActivity {
     String accessToken;
     int expenseId;
     ExpenseService expenseService;
-    String nameExpense, costExpense, period, category;
-    List<User> selectedUser, allMembers;
+    String nameExpense, costExpense, category;
+    //String period
+    List<Member> selectedUser, allMembers;
     List<String> selectedUsersLogin;
     List<Category> categoriesExpense;
     List<String> periods;
@@ -30,6 +37,7 @@ public class EditExpenseActivity extends BaseActivity {
     EditText nameExpenseEt, costExpenseEt;
     Category selectedCategory;
     String selectedPeriod;
+    User expenseOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +50,9 @@ public class EditExpenseActivity extends BaseActivity {
         costExpense = getIntent().getStringExtra("costExpense");
         category = getIntent().getStringExtra("categoryExpense");
        // periodExpense = getIntent().getStringExtra("periodExpanse");
-        selectedUser = getIntent().getParcelableArrayListExtra("membersExpense");
-        allMembers = getIntent().getParcelableArrayListExtra("allMembers");
+        selectedUser = getIntent().getParcelableArrayListExtra("selectedUsers");
+        allMembers = getIntent().getParcelableArrayListExtra("walletUsers");
+        expenseOwner = getIntent().getParcelableExtra("expenseOwner");
 
         nameExpenseEt = findViewById(R.id.name_expense_et);
         costExpenseEt = findViewById(R.id.cost_expense_et);
@@ -102,7 +111,7 @@ public class EditExpenseActivity extends BaseActivity {
 
         for(int i = 0; i < allMembers.size(); i++){
             CheckBox cb = new CheckBox(EditExpenseActivity.this);
-            cb.setId(allMembers.get(i).getId());
+            cb.setId(allMembers.get(i).getUserId());
             cb.setText(allMembers.get(i).getLogin());
             cb.setTextAppearance(R.style.simple_label);
             cb.setTextSize(18);
@@ -116,5 +125,17 @@ public class EditExpenseActivity extends BaseActivity {
         }
 
         cancelEditBtn.setOnClickListener(v -> finish());
+
+        editExpenseBtn.setOnClickListener(v -> {
+            if(nameExpenseEt.getText().toString().length()==0) nameExpenseEt.setError("Wpisz nazwe wydatku!");
+            else if(costExpenseEt.getText().toString().length()==0) costExpenseEt.setError("Wpisz kwote wydatku!");
+            else if(selectedUsersLogin.size()==0) Toast.makeText(EditExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
+            else {
+                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, Double.parseDouble(costExpenseEt.getText().toString()), null, selectedCategory, expenseOwner);
+                ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
+                expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
+                finish();
+            }
+        });
     }
 }

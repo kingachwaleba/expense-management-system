@@ -47,6 +47,15 @@ public class Expense {
         this.category = category;
     }
 
+    public Expense(String name, String receipt_image, Double total_cost, String period, Category category, User user) {
+        this.name = name;
+        this.receipt_image = receipt_image;
+        this.total_cost = total_cost;
+        this.period = period;
+        this.category = category;
+        this.user = user;
+    }
+
     public String getName() {
         return name;
     }

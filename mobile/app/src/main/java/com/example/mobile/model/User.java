@@ -85,10 +85,9 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         id = in.readInt();
         login = in.readString();
-        /*email = in.readString();
-        password = in.readString();
         image = in.readString();
-        walletsNumber = in.readInt();*/
+        deleted = in.readString();
+        roles = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -176,9 +175,8 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(login);
-        /*dest.writeString(email);
-        dest.writeString(password);
         dest.writeString(image);
-        dest.writeInt(walletsNumber);*/
+        dest.writeString(deleted);
+        dest.writeString(roles);
     }
 }
