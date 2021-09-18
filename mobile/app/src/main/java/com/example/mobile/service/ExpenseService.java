@@ -1,7 +1,6 @@
 package com.example.mobile.service;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
@@ -96,6 +95,21 @@ public class ExpenseService {
 
     public void payDebt(String accessToken, int id, DebtsHolder debtsHolder) {
         Call<ResponseBody> call = apiInterface.payDebt("Bearer " + accessToken, id, debtsHolder);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+
+            }
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void sendDebtNotification(String accessToken, int id, DebtsHolder debtsHolder) {
+        Call<ResponseBody> call = apiInterface.sendDebtNotification("Bearer " + accessToken, id, debtsHolder);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {

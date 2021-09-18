@@ -33,10 +33,13 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
     @Override
     public void onBindViewHolder(WalletAdapter.ViewHolder holder, int position) {
         WalletCreate walletItem = mWalletItem.get(position);
+        String ownerS = mInflater.getContext().getResources().getString(R.string.owner_label) + " " + walletItem.getOwner();
+        String numberOfMembersS = mInflater.getContext().getResources().getString(R.string.number_of_members_label) + " " + walletItem.getUserListCounter();
+        String balance = mInflater.getContext().getResources().getString(R.string.all_balance_label) + " " + walletItem.getWalletExpensesCost();
         holder.nameTv.setText(walletItem.getName());
-        holder.ownerTv.setText(mInflater.getContext().getResources().getString(R.string.owner_label) + " " + walletItem.getOwner());
-        holder.numberOfMembersTv.setText(mInflater.getContext().getResources().getString(R.string.number_of_members_label) + " " + walletItem.getUserListCounter());
-      //holder.balance.setText(mInflater.getContext().getResources().getString(R.string.balance) + " " + Double.toString(walletItem.getBalance()));
+        holder.ownerTv.setText(ownerS);
+        holder.numberOfMembersTv.setText(numberOfMembersS);
+        holder.balanceTv.setText(balance);
         holder.id = walletItem.getId();
 
         holder.goToWalletBtn.setOnClickListener(v -> {

@@ -58,7 +58,7 @@
                 android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/balance_label" />
+                android:text="@string/all_balance_label" />
 
         </LinearLayout>
 

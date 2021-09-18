@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
@@ -95,6 +97,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         holder.handshakeBtn.setOnClickListener(v -> {
             ExpenseService expenseService = new ExpenseService(holder.itemView.getContext());
             expenseService.payDebt(mAccessToken, mWalletId, member.getDebt());
+            Toast.makeText(holder.itemView.getContext(), "Dług został uregulowany", Toast.LENGTH_LONG).show();
+        });
+
+        holder.reminderBtn.setOnClickListener(v -> {
+            ExpenseService expenseService = new ExpenseService(holder.itemView.getContext());
+            expenseService.sendDebtNotification(mAccessToken, mWalletId, member.getDebt());
+            Toast.makeText(holder.itemView.getContext(), "Przypomnienie o długu zostało wysłane", Toast.LENGTH_LONG).show();
         });
     }
 

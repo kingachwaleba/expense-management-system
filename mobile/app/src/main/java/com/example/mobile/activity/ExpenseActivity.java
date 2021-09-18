@@ -75,10 +75,10 @@ public class ExpenseActivity extends BaseActivity {
             categoryTv.setText(category);
             dateTv.setText(date);
             members.clear();
-            for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
+           /* for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
                 item.getMember().setBalance(item.getCost());
                 members.add(item.getMember());
-            }
+            }*/
 
             memberAdapter.notifyDataSetChanged();
 

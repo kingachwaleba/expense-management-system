@@ -78,23 +78,14 @@
                 android:text="@string/number_of_members_label" />
 
             <TextView
-                android:id="@+id/saldo_tv"
+                android:id="@+id/wallet_expenses_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
                 android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/saldo_label" />
-
-            <TextView
-                android:id="@+id/expanses_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:text="@string/expanses_label" />
+                android:text="@string/all_balance_label" />
 
             <TextView
                 android:id="@+id/your_expanses_tv"
@@ -106,13 +97,13 @@
                 android:text="@string/your_expanses_label" />
 
             <TextView
-                android:id="@+id/balance_tv"
+                android:id="@+id/your_balance_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/simple_label"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="@string/balance_label" />
+                android:text="@string/your_balance_label" />
 
             <View
                 android:id="@+id/vector_3"
