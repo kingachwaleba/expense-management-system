@@ -1,6 +1,7 @@
 package com.team.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -58,7 +59,7 @@ public class Expense {
     @Size(min = 1, max = 1)
     private String period;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy="expense", cascade = CascadeType.ALL)
     private Set<ExpenseDetail> expenseDetailSet = new HashSet<>();
 
