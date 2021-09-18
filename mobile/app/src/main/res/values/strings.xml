@@ -49,7 +49,7 @@
     <string name="deny">Odrzuć</string>
     <string name="accept">Zaakceptuj</string>
     <string name="go_to_expense">Przejdź do wydatku</string>
-    <string name="debth">Wysokość należności</string>
+    <string name="debt">Wysokość należności:</string>
     <string name="find_user_hint">Szukaj użytkowników...</string>
     <string name="go_to_statue">Przejdź do regulaminu</string>
     <string name="profil">Profil</string>
@@ -116,5 +116,6 @@
     <string name="regulate">UREGULUJ</string>
     <string name="all_balance_label">Wydatki: </string>
     <string name="your_balance_label">Twój bilans:</string>
+    <string name="delete_notification">Usuń przypomnienie</string>
 
 </resources>

@@ -8,6 +8,7 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
@@ -161,4 +162,12 @@ public interface ApiInterface  {
     @POST("send-notification/wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> sendDebtNotification(@Header("Authorization") String accessToken, @Path("id") int id, @Body DebtsHolder debtsHolder);
+
+    @DELETE("notifications/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteNotification(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @GET("debts-notifications")
+    @Headers("Content-Type: application/json")
+    Call<List<Message>> getDebtNotification(@Header("Authorization") String accessToken);
 }

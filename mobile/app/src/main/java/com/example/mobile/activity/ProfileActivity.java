@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
+import com.example.mobile.model.Message;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
+import com.example.mobile.service.adapter.WarningAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class ProfileActivity extends BaseActivity {
     Button editProfileBtn;
     ImageButton openNotificationBtn;
     Boolean ifOpenNotification;
-    RecyclerView notificationInvitationRv; // notificationWarningRv, notificationMessageRv;
+    RecyclerView notificationInvitationRv, notificationWarningRv;
     SessionManager session;
     String accessToken;
     AccountService accountService;
@@ -38,24 +41,19 @@ public class ProfileActivity extends BaseActivity {
         accountService = new AccountService(this);
 
         notificationInvitationRv = findViewById(R.id.notification_invitation_rv);
-       /* notificationWarningRv = findViewById(R.id.notification_warning_rv);
-        notificationMessageRv = findViewById(R.id.notification_message_rv);*/
+        notificationWarningRv = findViewById(R.id.notification_warning_rv);
 
         notificationInvitationRv.setLayoutManager(new LinearLayoutManager(this));
-       /* notificationWarningRv.setLayoutManager(new LinearLayoutManager(this));
-        notificationMessageRv.setLayoutManager(new LinearLayoutManager(this));*/
+        notificationWarningRv.setLayoutManager(new LinearLayoutManager(this));
 
         List<Invitation> invitationsInit = new ArrayList<>();
-       /* List<Warning> warningsInit = new ArrayList<>();
-        List<MessageNotification> messageNotificationsInit = new ArrayList<>();*/
+        List<Message> warningsInit = new ArrayList<>();
 
         InvitationAdapter invitationAdapterInit = new InvitationAdapter(this, invitationsInit, accessToken);
-       /* WarningAdapter warningAdapterInit = new WarningAdapter(this, warningsInit);
-        MessageNotificationAdapter messageNotificationAdapterInit = new MessageNotificationAdapter(this, messageNotificationsInit);*/
+        WarningAdapter warningAdapterInit = new WarningAdapter(this, warningsInit, accessToken);
 
         notificationInvitationRv.setAdapter(invitationAdapterInit);
-        /*notificationWarningRv.setAdapter(warningAdapterInit);
-        notificationMessageRv.setAdapter(messageNotificationAdapterInit);*/
+        notificationWarningRv.setAdapter(warningAdapterInit);
 
         ifOpenNotification = false;
         openNotificationBtn = findViewById(R.id.open_notification_btn);
@@ -92,6 +90,11 @@ public class ProfileActivity extends BaseActivity {
                     InvitationAdapter invitationAdapter = new InvitationAdapter(ProfileActivity.this, invitations, accessToken);
                     notificationInvitationRv.setAdapter(invitationAdapter);
                     invitationAdapter.notifyDataSetChanged();
+                }, accessToken);
+                accountService.getDebtNotification(messages -> {
+                    WarningAdapter warningAdapter = new WarningAdapter(ProfileActivity.this, messages, accessToken);
+                    notificationWarningRv.setAdapter(warningAdapter);
+                    warningAdapter.notifyDataSetChanged();
                 }, accessToken);
 
             } else {

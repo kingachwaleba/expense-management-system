@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Invitation;
+import com.example.mobile.model.Message;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,9 @@ public class AccountService {
         void onAllInvitations(List<Invitation> invitations);
     }
 
+    public interface OnNotificationCallback{
+        void onAllNotifications(List<Message> messages);
+    }
 
     public void getAccount(OnAccountCallback callback, String accessToken){
         Call<User> call = apiInterface.getAccount("Bearer " + accessToken);
@@ -98,4 +102,38 @@ public class AccountService {
             }
         });
     }
+
+
+    public void deleteNotification(String accessToken, int id){
+        Call<ResponseBody> call = apiInterface.deleteNotification("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void getDebtNotification(OnNotificationCallback callback, String accessToken){
+        Call<List<Message>> call = apiInterface.getDebtNotification("Bearer " + accessToken);
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<Message>> call, @NotNull Response<List<Message>> response) {
+                callback.onAllNotifications(response.body());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<Message>> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
 }
