@@ -47,6 +47,7 @@ public class Expense {
     @JoinColumn(name = "category_id", referencedColumnName="id", nullable = false)
     private Category category;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "wallet_id", referencedColumnName="id", nullable = false)
     private Wallet wallet;
