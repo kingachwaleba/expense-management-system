@@ -118,7 +118,7 @@ public class ExpenseServiceImpl implements ExpenseService {
                 if (!userList.contains(login)) {
                     User temp = userService.findByLogin(login).orElseThrow(RuntimeException::new);
                     ExpenseDetail expenseDetail = expenseDetailRepository
-                            .findByUser(temp).orElseThrow(RuntimeException::new);
+                            .findByUserAndExpense(temp, updatedExpense).orElseThrow(RuntimeException::new);
                     updatedExpense.getExpenseDetailSet().remove(expenseDetail);
                     expenseDetailRepository.delete(expenseDetail);
                 }
