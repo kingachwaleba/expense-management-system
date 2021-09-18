@@ -116,5 +116,6 @@
     <string name="regulate">UREGULUJ</string>
     <string name="all_balance_label">Wydatki: </string>
     <string name="your_balance_label">Twój bilans:</string>
+    <string name="delete_notification">Usuń przypomnienie</string>
 
 </resources>
