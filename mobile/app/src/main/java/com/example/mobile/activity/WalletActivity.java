@@ -31,7 +31,7 @@ public class WalletActivity extends BaseActivity {
     int id;
     Boolean showMembersControl, showListsControl, showExpensesControl;
     String accessToken;
-    TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv;
+    TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
     Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn;
     String walletName, walletDescription, walletCategory;
     ListsAdapter listAdapter;
@@ -74,6 +74,10 @@ public class WalletActivity extends BaseActivity {
         goToChatBtn = findViewById(R.id.open_chat_btn);
         addExpenseBtn = findViewById(R.id.add_expense_btn);
         showExpensesBtn = findViewById(R.id.show_expenses_btn);
+
+        walletExpensesTv = findViewById(R.id.wallet_expenses_tv);
+        userExpensesTv = findViewById(R.id.your_expanses_tv);
+        userBalanceTv = findViewById(R.id.your_balance_tv);
 
         membersListL = findViewById(R.id.members_list_l);
         editMembersBtn = findViewById(R.id.edit_members_btn);
@@ -127,8 +131,16 @@ public class WalletActivity extends BaseActivity {
             String ownerText = getResources().getString(R.string.owner_label) + " " + walletModel.getOwner();
             String numberOfMembersText = getResources().getString(R.string.number_of_members_label) + " " + walletModel.getUserListCounter();
 
+            String walletExpensesS = getResources().getString(R.string.all_balance_label) + " " + walletModel.getWalletExpensesCost();
+            String userExpensesS = getResources().getString(R.string.your_expanses_label) + " " + walletModel.getUserExpensesCost();
+            String yourBalanceS = getResources().getString(R.string.your_balance_label) + " " + walletModel.getLoggedInUserBalance();
+
             walletNameTv.setText(walletModel.getName());
             walletCategoryTv.setText(categoryText);
+
+            walletExpensesTv.setText(walletExpensesS);
+            userExpensesTv.setText(userExpensesS);
+            userBalanceTv.setText(yourBalanceS);
 
             if(walletDescription!=null){
                 descriptionText = getResources().getString(R.string.description_label) + " " + walletDescription;
