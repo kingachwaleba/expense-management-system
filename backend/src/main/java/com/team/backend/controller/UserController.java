@@ -39,7 +39,7 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping("/{infix}")
+    @GetMapping("/find-users/{infix}")
     public ResponseEntity<?> findUser(@PathVariable String infix) {
         User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 

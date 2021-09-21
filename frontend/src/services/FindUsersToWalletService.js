@@ -1,5 +1,5 @@
 import axios from "axios";
-const FIND_USERS_TO_WALLET_API_BASE_URL = "http://localhost:8080/"
+const FIND_USERS_TO_WALLET_API_BASE_URL = "http://localhost:8080/find-users/"
 
 class FindUsersToWalletService {
 
