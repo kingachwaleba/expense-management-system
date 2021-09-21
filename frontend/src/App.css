@@ -251,10 +251,29 @@ input[type='text'], input[type='password']{
 }
 
 .delete-user-from-list{
-  background-color: rgb(243, 35, 35);
+  
+  background-image: url(icon_person-added.svg);
+  size:auto;
+  margin:auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  color: transparent;
+  border-color:transparent;
+}
+
+.delete-user-from-list:hover{
+  background-image: url(icon_person-delete.svg);
 }
 .add-user-to-list{
-  background-color: green;
+  background-image: url(icon_person-add.svg);
+  size:auto;
+  margin:auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  color: transparent;
+  border-color:transparent;
 }
 
 

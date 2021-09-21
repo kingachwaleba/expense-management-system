@@ -13,9 +13,7 @@ class WalletCategoryComponent extends Component {
         }
     }
     
-    test(){
-        console.log("Klik");
-    }
+    
     componentDidMount(){
         WalletCategoryService.getCategories().then((response)=>{
                 this.setState({categories: response.data})
@@ -39,13 +37,13 @@ class WalletCategoryComponent extends Component {
                                       <label className = "form-label" htmlFor={category.id}>
                                         <input type="radio" id={category.id} name  ="category" value={category.name} 
                                            
-                                           // onChange={this.onCheckChanged}
+                                         
                                             onChange={this.props.readWalletCategory}
                                             >
                                                 
                                         </input>
                                         
-                                        <span className="checkmark"></span>
+                                        <div className="checkmark"></div>
                                          {category.name} </label>
                                         
                                     </div>

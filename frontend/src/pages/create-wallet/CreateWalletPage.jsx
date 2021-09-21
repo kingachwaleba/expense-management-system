@@ -44,11 +44,10 @@ class CreateWalletPage extends React.Component {
                 
             });
 
-           // console.log(currentUser.login);
+           
         }
-        console.log(currentUser);
-       // console.log("Token to: " + this.state.username);
-        //console.log("Type to: " + user.type);
+        
+       
     }
 
     
@@ -59,16 +58,7 @@ class CreateWalletPage extends React.Component {
         var {value} = e.target;
         var wallet_holder = this.state.wallet_holder;
         var wallet = this.state.wallet;
-        //var userList = this.state.userList;
-       
-         /*
-         wallet_holder[wallet.name] = value;
-        wallet_holder[wallet.description] = value;
-         
-        wallet_holder[wallet.walletCategory] = value;
-       
-        wallet_holder[] = value;
-        */
+     
         wallet.name = value;
         wallet.walletCategory = this.state.walletCategory;
 
@@ -84,15 +74,10 @@ class CreateWalletPage extends React.Component {
         
         
         wallet.description = value;
-        //wallet.walletCategory = this.state.walletCategory; 
-        //wallet_holder.wallet = this.state.wallet;
-       
-        //this.setState({wallet_holder: wallet_holder});
-       // console.log(wallet_holder)
-        
+     
     }
-    //---------------------------------------------------
-    testFunction(e){
+    
+    walletHolderHelper(e){
         var wallet_holder = this.state.wallet_holder;
         var wallet = this.state.wallet;
         var userList = this.state.userList;
@@ -100,55 +85,29 @@ class CreateWalletPage extends React.Component {
     
        wallet_holder.wallet = this.state.wallet;
        wallet_holder.userList = this.state.userList;
-       console.log(wallet_holder);
+       //console.log(wallet_holder);
     }
-    //----------------------------------------------------
+    
     handleCreateWallet(e) {
 
         e.preventDefault();
         this.setState({
             submitted: true
-        //---
-        
-        //---
         
         });
-       // const {wallet_holder} = this.state;
-       var wallet_holder = this.state.wallet_holder;
-        var wallet = this.state.wallet;
-        var userList = this.state.userList;
-        var userToken = this.state.usertoken;
     
-       wallet_holder.wallet = this.state.wallet;
-       wallet_holder.userList = this.state.userList;
-       console.log("Wallet_holder: " + wallet_holder)
-       //console.log(userList)
-        //validate form
+       var wallet_holder = this.state.wallet_holder;
+      
+    
+      
         if (!wallet_holder.wallet.name || !wallet_holder.wallet.description) {
             return;
         }
 
         this.setState(({loading: true}));
         WalletService.create_wallet(wallet_holder,this.state.usertoken)
-        console.log(this.state.usertoken)
-        /*
-            .then(data => {
-                    this.props.history.push('/');
-                },
-                error => {
-                    if (error && error.response && error.response.status === 409) {
-                        this.setState({
-                            errorMessage: 'This login is not available.',
-                            loading: false,
-                        });
-                    } else {
-                        this.setState({
-                            errorMessage: 'Unexpected error occurred.',
-                            loading: false,
-                        });
-                    }
-                });
-                */
+       
+   
     }
     readWalletCategory = (event) => {
         var {id, value} = event.target;
@@ -159,44 +118,24 @@ class CreateWalletPage extends React.Component {
         this.setState({
           
           [event.target.id]: event.target.id,
-        
-            //Dane między komponentami można pozyskiwać jako props gdy mają np wspólnego parenta, pozystakć dane z komponentu Wallet category (dziecko), tutaj (rodzic)
+       
         });
-        console.log([event.target.id]);
-        console.log([wallet]);
-        console.log([walletCategory]);
-        console.log(this.state.userList)
+        
     }
     
     createUsersList = (event) =>{
         var{value} = event.target;
         var wallet = this.state.wallet;
         var userList = this.state.userList;
-         /*
-        if (event.target.checked) {
-            if (!this.state.userList.includes(event.target.value)) {
-              this.setState(prevState => ({ userList: [...prevState.userList, event.target.value]}))
-              console.log(event.target.value)
-              console.log(userList);
-            }
-          } else {
-            this.setState(prevState => ({ userList: prevState.userList.filter(user => user !== event.target.value) }));
-          }
-        */
+     
          
             if (!this.state.userList.includes(event.target.id)) {
               this.setState(prevState => ({ userList: [...prevState.userList, event.target.id]}))
-              console.log(event.target.id)
-              console.log(userList);
+              
             }else {
             this.setState(prevState => ({ userList: prevState.userList.filter(user => user !== event.target.id) }));
           
           } 
-
-          
-        
-       //userList = Array.from(document.querySelectorAll('input[class=DisplayedUsersList]:checked'), el=>el.value);
-       
 
     }
 
@@ -227,10 +166,9 @@ class CreateWalletPage extends React.Component {
                                 name="name"
                                 placeholder="Wpisz nazwę..."
                                 required
-                                //value={wallet_holder.wallet.name || ''}
                                 onChange={(e) => this.handleChangeName(e)}/>
                             <div className="invalid-feedback">
-                                A valid login is required.
+                                Nazwa jest wymagana.
                             </div>
                         </div>
 
@@ -242,20 +180,16 @@ class CreateWalletPage extends React.Component {
                                 name="description"
                                 placeholder="Wpisz opis..."
                                 required
-                                //value={wallet_holder.wallet.description || ''}
                                 onChange={(e) => this.handleChangeDescription(e)}/>
                             <div className="invalid-feedback">
-                                Password is required.
+                                Opis jest wymagany.
                             </div>
                         </div>
                         <div className={'form-group'}>
-                        <AddUsersToNewWalletComponent createUsersList={this.createUsersList} currentList = {this.state.userList}/>
+                            <AddUsersToNewWalletComponent createUsersList={this.createUsersList} currentList = {this.state.userList}/>
                         </div>
                         <div>
-                        <WalletCategoryComponent  readWalletCategory={this.readWalletCategory} />
-                    
-                        
-                        
+                            <WalletCategoryComponent  readWalletCategory={this.readWalletCategory} />
                         </div>
                     
                         <br></br>
@@ -266,10 +200,10 @@ class CreateWalletPage extends React.Component {
                             onClick={e =>{ 
 
                                         this.setState({submitted: true});
-                                         this.testFunction(e);   
+                                         this.walletHolderHelper(e);   
 
                                     }}
-                            //disabled={loading}
+                            
                             >
                             Utwórz
                         </button>
