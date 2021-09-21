@@ -11,6 +11,7 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -146,5 +147,15 @@ public class WalletController {
         walletService.save(updatedWallet);
 
         return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
+    public ResponseEntity<?> deleteOne(@PathVariable int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+
+        walletService.delete(wallet);
+
+        return new ResponseEntity<>("Wallet has been deleted!", HttpStatus.OK);
     }
 }

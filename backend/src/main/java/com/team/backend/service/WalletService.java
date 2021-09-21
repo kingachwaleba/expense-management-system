@@ -17,6 +17,7 @@ public interface WalletService {
     void saveUser(String userLogin, Wallet wallet, UserStatus userStatus);
     void save(WalletHolder walletHolder);
     void save(Wallet wallet);
+    void delete(Wallet wallet);
 
     Optional<Wallet> findById(int id);
 
