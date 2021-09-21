@@ -81,6 +81,11 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public void delete(Wallet wallet) {
+        walletRepository.delete(wallet);
+    }
+
+    @Override
     public Optional<Wallet> findById(int id) {
         return walletRepository.findById(id);
     }
