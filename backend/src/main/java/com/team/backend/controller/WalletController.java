@@ -149,6 +149,18 @@ public class WalletController {
         return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
     }
 
+    @DeleteMapping("/wallet/{id}/user/{userLogin}")
+    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
+    public ResponseEntity<?> deleteUserFromWallet(@PathVariable int id, @PathVariable String userLogin) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        User user = userService.findByLogin(userLogin).orElseThrow(RuntimeException::new);
+
+        if (walletService.deleteUser(wallet, user))
+            return new ResponseEntity<>("User has been deleted from the wallet!", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Cannot delete user from the wallet!", HttpStatus.CONFLICT);
+    }
+
     @DeleteMapping("/wallet/{id}")
     @PreAuthorize("@authenticationService.isWalletOwner(#id)")
     public ResponseEntity<?> deleteOne(@PathVariable int id) {
