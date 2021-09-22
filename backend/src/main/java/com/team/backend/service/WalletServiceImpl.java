@@ -4,9 +4,11 @@ import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.*;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,11 +26,14 @@ public class WalletServiceImpl implements WalletService {
     private final ListService listService;
     private final StatusRepository statusRepository;
     private final ListDetailService listDetailService;
+    private final MessageService messageService;
+    private final ExpenseService expenseService;
 
     public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository,
                              UserService userService, WalletUserRepository walletUserRepository,
                              ListService listService, StatusRepository statusRepository,
-                             ListDetailService listDetailService) {
+                             ListDetailService listDetailService, MessageService messageService,
+                             @Lazy ExpenseService expenseService) {
         this.userStatusRepository = userStatusRepository;
         this.walletRepository = walletRepository;
         this.userService = userService;
@@ -36,6 +41,8 @@ public class WalletServiceImpl implements WalletService {
         this.listService = listService;
         this.statusRepository = statusRepository;
         this.listDetailService = listDetailService;
+        this.messageService = messageService;
+        this.expenseService = expenseService;
     }
 
     @Override
@@ -86,7 +93,12 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
     public void delete(Wallet wallet) {
+        expenseService.deleteAllByWallet(wallet);
+        listService.deleteAllByWallet(wallet);
+        messageService.deleteAllByWallet(wallet);
+
         walletRepository.delete(wallet);
     }
 
@@ -259,5 +271,51 @@ public class WalletServiceImpl implements WalletService {
         if (balanceMap.get(minKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0
                 || balanceMap.get(maxKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0)
             simplifyDebts(balanceMap, debtsList);
+    }
+
+    @Override
+    public Map<String, Object> getOne(Wallet wallet) {
+        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("id", wallet.getId());
+        map.put("name", wallet.getName());
+        map.put("walletCategory", wallet.getWalletCategory());
+        map.put("description", wallet.getDescription());
+        map.put("owner", findOwner(wallet).getLogin());
+        map.put("userListCounter", findUserList(wallet).size());
+        map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
+        map.put("userExpensesCost", expenseService.calculateExpensesCostForUser(wallet, loggedInUser));
+        map.put("loggedInUserBalance", walletUserRepository.findByWalletAndUser(wallet, loggedInUser)
+                .orElseThrow(RuntimeException::new).getBalance());
+
+        List<Map<String, Object>> userList = findUserList(wallet);
+        map.put("userList", userList);
+
+        return map;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAll() {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        List<Wallet> wallets = findWallets(user);
+
+        List<Map<String, Object>> walletsList = new ArrayList<>();
+
+        for (Wallet wallet : wallets) {
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("id", wallet.getId());
+            map.put("name", wallet.getName());
+            map.put("walletCategory", wallet.getWalletCategory());
+            map.put("owner", findOwner(wallet).getLogin());
+            map.put("userListCounter", findUserList(wallet).size());
+            map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
+
+            walletsList.add(map);
+        }
+
+        return walletsList;
     }
 }

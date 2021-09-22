@@ -13,4 +13,5 @@ public interface ListRepository extends JpaRepository<List, Integer> {
     Optional<List> findById(int id);
     java.util.List<List> findAllByWallet(Wallet wallet);
     java.util.List<List> findAllByUserAndWalletAndStatus(User user, Wallet wallet, Status status);
+    void deleteAllByWallet(Wallet wallet);
 }

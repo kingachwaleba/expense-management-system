@@ -49,6 +49,11 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
+    public void deleteAllByWallet(Wallet wallet) {
+        listRepository.deleteAllByWallet(wallet);
+    }
+
+    @Override
     public Optional<List> findById(int id) {
         return listRepository.findById(id);
     }

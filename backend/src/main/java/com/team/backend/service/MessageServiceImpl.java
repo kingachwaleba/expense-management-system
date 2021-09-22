@@ -51,6 +51,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public void deleteAllByWallet(Wallet wallet) {
+        messageRepository.deleteAllByWallet(wallet);
+    }
+
+    @Override
     public List<Message> findAllByWalletAndTypeOrderByDate(Wallet wallet, String type) {
         return messageRepository.findAllByWalletAndTypeOrderByDate(wallet, type);
     }
@@ -58,6 +63,11 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> findAllByReceiverAndTypeOrderByDate(User user, String type) {
         return messageRepository.findAllByReceiverAndTypeOrderByDate(user, type);
+    }
+
+    @Override
+    public List<Message> findAllByWallet(Wallet wallet) {
+        return messageRepository.findAllByWallet(wallet);
     }
 
     @Override

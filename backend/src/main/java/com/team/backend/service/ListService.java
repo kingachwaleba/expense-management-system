@@ -13,6 +13,7 @@ public interface ListService {
     void save(ListHolder listHolder, Wallet wallet);
     void save(List list);
     void delete(List list);
+    void deleteAllByWallet(Wallet wallet);
 
     Optional<List> findById(int id);
     java.util.List<List> findAllByWallet(Wallet wallet);

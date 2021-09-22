@@ -33,7 +33,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public void save(ExpenseHolder expenseHolder, Wallet wallet) {
+    public void save(ExpenseHolder expenseHolder, int walletId) {
+        Wallet wallet = walletService.findById(walletId).orElseThrow(RuntimeException::new);
         Expense expense = expenseHolder.getExpense();
         List<String> userList = expenseHolder.getUserList();
         User owner = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
@@ -85,6 +86,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public void delete(Expense expense) {
         expenseRepository.delete(expense);
+    }
+
+    @Override
+    public void deleteAllByWallet(Wallet wallet) {
+        expenseRepository.deleteAllByWallet(wallet);
     }
 
     @Override
@@ -241,5 +247,27 @@ public class ExpenseServiceImpl implements ExpenseService {
             totalCost = totalCost.add(expense.getTotal_cost());
 
         return totalCost;
+    }
+
+    @Override
+    public Map<String, Object> getOne(int id) {
+        Expense expense = findById(id).orElseThrow(RuntimeException::new);
+        List<String> deletedUserList = walletService.findDeletedUserList(expense.getWallet());
+        Map<String, Object> map = new HashMap<>();
+        map.put("expense", expense);
+        map.put("deletedUserList", deletedUserList);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getAll(int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        List<String> deletedUserList = walletService.findDeletedUserList(wallet);
+        Map<String, Object> map = new HashMap<>();
+        map.put("allExpenses", findAllByWalletOrderByDate(wallet));
+        map.put("deletedUserList", deletedUserList);
+
+        return map;
     }
 }

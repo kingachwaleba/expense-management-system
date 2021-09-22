@@ -29,66 +29,26 @@ public class WalletController {
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
     private final WalletCategoryRepository walletCategoryRepository;
-    private final ExpenseService expenseService;
-    private final WalletUserRepository walletUserRepository;
 
     public WalletController(WalletService walletService, UserService userService,
                             UserStatusRepository userStatusRepository,
-                            WalletCategoryRepository walletCategoryRepository, ExpenseService expenseService,
-                            WalletUserRepository walletUserRepository) {
+                            WalletCategoryRepository walletCategoryRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
         this.walletCategoryRepository = walletCategoryRepository;
-        this.expenseService = expenseService;
-        this.walletUserRepository = walletUserRepository;
     }
 
     @GetMapping("/wallet/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("id", wallet.getId());
-        map.put("name", wallet.getName());
-        map.put("walletCategory", wallet.getWalletCategory());
-        map.put("description", wallet.getDescription());
-        map.put("owner", walletService.findOwner(wallet).getLogin());
-        map.put("userListCounter", walletService.findUserList(wallet).size());
-        map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
-        map.put("userExpensesCost", expenseService.calculateExpensesCostForUser(wallet, loggedInUser));
-        map.put("loggedInUserBalance", walletUserRepository.findByWalletAndUser(wallet, loggedInUser)
-                .orElseThrow(RuntimeException::new).getBalance());
-
-        List<Map<String, Object>> userList = walletService.findUserList(wallet);
-        map.put("userList", userList);
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(walletService.getOne(wallet), HttpStatus.OK);
     }
 
     @GetMapping("/wallets")
     public ResponseEntity<?> all() {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
-        List<Wallet> wallets = walletService.findWallets(user);
-
-        List<Map<String, Object>> walletsList = new ArrayList<>();
-
-        for (Wallet wallet : wallets) {
-            Map<String, Object> map = new HashMap<>();
-
-            map.put("id", wallet.getId());
-            map.put("name", wallet.getName());
-            map.put("walletCategory", wallet.getWalletCategory());
-            map.put("owner", walletService.findOwner(wallet).getLogin());
-            map.put("userListCounter", walletService.findUserList(wallet).size());
-            map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
-
-            walletsList.add(map);
-        }
-
-        return new ResponseEntity<>(walletsList, HttpStatus.OK);
+        return new ResponseEntity<>(walletService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/wallet/{id}/balance")
