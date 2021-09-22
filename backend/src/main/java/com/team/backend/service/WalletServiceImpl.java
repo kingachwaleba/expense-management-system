@@ -151,8 +151,7 @@ public class WalletServiceImpl implements WalletService {
 
         for (WalletUser walletUser : wallet.getWalletUserSet())
             if (walletUser.getUserStatus().getName().equals("właściciel")
-                    || walletUser.getUserStatus().getName().equals("członek")
-                    || walletUser.getUserStatus().getName().equals("usunięty")) {
+                    || walletUser.getUserStatus().getName().equals("członek")) {
                 Map<String, Object> userMap = new HashMap<>();
 
                 User user = walletUser.getUser();
@@ -160,7 +159,6 @@ public class WalletServiceImpl implements WalletService {
                 userMap.put("login", user.getLogin());
                 userMap.put("balance", walletUser.getBalance());
                 userMap.put("debt", null);
-                userMap.put("status", walletUser.getUserStatus().getName());
 
                 List<WalletUser> walletUserList = findWalletUserList(wallet);
                 Map<Integer, BigDecimal> balanceMap = new HashMap<>();
@@ -190,6 +188,24 @@ public class WalletServiceImpl implements WalletService {
             }
 
         return walletUserList;
+    }
+
+    @Override
+    public List<String> findDeletedUserList(Wallet wallet) {
+        List<String> deletedUserList = new ArrayList<>();
+
+        wallet.getWalletUserSet()
+                .stream().filter(
+                        walletUser -> walletUser.getUserStatus().getName().equals("usunięty"))
+                .forEach(
+                        w -> deletedUserList.add(w.getUser().getLogin()));
+//
+//        for (WalletUser walletUser : wallet.getWalletUserSet())
+//            if (walletUser.getUserStatus().getName().equals("usunięty")) {
+//                deletedUserList.add(walletUser.getUser().getLogin());
+//            }
+
+        return deletedUserList;
     }
 
     @Override

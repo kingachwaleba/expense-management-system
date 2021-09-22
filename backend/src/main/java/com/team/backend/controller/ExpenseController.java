@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ExpenseController {
@@ -29,15 +31,23 @@ public class ExpenseController {
     @GetMapping("/expense/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
         Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        List<String> deletedUserList = walletService.findDeletedUserList(expense.getWallet());
+        Map<String, Object> map = new HashMap<>();
+        map.put("expense", expense);
+        map.put("deletedUserList", deletedUserList);
 
-        return new ResponseEntity<>(expense, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/wallet/{id}/expenses")
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        List<String> deletedUserList = walletService.findDeletedUserList(wallet);
+        Map<String, Object> map = new HashMap<>();
+        map.put("allExpenses", expenseService.findAllByWalletOrderByDate(wallet));
+        map.put("deletedUserList", deletedUserList);
 
-        return new ResponseEntity<>(expenseService.findAllByWalletOrderByDate(wallet), HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @Transactional

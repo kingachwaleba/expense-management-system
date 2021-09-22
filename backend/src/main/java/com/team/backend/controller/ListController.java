@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class ListController {
@@ -33,16 +35,24 @@ public class ListController {
     @GetMapping("/shopping-list/{id}")
     public ResponseEntity<?> one(@PathVariable int id) {
         List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        java.util.List<String> deletedUserList = walletService.findDeletedUserList(shoppingList.getWallet());
+        Map<String, Object> map = new HashMap<>();
+        map.put("shoppingList", shoppingList);
+        map.put("deletedUserList", deletedUserList);
 
-        return new ResponseEntity<>(shoppingList, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/wallet/{id}/shopping-lists")
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        java.util.List<List> shoppingList = listService.findAllByWallet(wallet);
+        java.util.List<List> shoppingLists = listService.findAllByWallet(wallet);
+        java.util.List<String> deletedUserList = walletService.findDeletedUserList(wallet);
+        Map<String, Object> map = new HashMap<>();
+        map.put("allShoppingLists", shoppingLists);
+        map.put("deletedUserList", deletedUserList);
 
-        return new ResponseEntity<>(shoppingList, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @Transactional
