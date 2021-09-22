@@ -199,11 +199,6 @@ public class WalletServiceImpl implements WalletService {
                         walletUser -> walletUser.getUserStatus().getName().equals("usunięty"))
                 .forEach(
                         w -> deletedUserList.add(w.getUser().getLogin()));
-//
-//        for (WalletUser walletUser : wallet.getWalletUserSet())
-//            if (walletUser.getUserStatus().getName().equals("usunięty")) {
-//                deletedUserList.add(walletUser.getUser().getLogin());
-//            }
 
         return deletedUserList;
     }
