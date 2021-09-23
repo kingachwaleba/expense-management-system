@@ -19,6 +19,7 @@ public interface WalletService {
     void save(Wallet wallet);
     void delete(Wallet wallet);
     boolean deleteUser(Wallet wallet, User user);
+    void leaveWallet(WalletUser walletUser, Wallet wallet, User user);
 
     Optional<Wallet> findById(int id);
 
