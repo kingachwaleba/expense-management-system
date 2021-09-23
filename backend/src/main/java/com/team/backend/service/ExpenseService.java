@@ -7,13 +7,15 @@ import com.team.backend.model.Wallet;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ExpenseService {
 
-    void save(ExpenseHolder expenseHolder, Wallet wallet);
+    void save(ExpenseHolder expenseHolder, int walletId);
     void save(Expense expense);
     void delete(Expense expense);
+    void deleteAllByWallet(Wallet wallet);
 
     Optional<Expense> findById(int id);
     List<Expense> findAllByWalletOrderByDate(Wallet wallet);
@@ -25,4 +27,7 @@ public interface ExpenseService {
     void calculateNewBalance(Wallet wallet, Expense expense, BigDecimal cost);
     BigDecimal calculateExpensesCost(Wallet wallet);
     BigDecimal calculateExpensesCostForUser(Wallet wallet, User user);
+
+    Map<String, Object> getOne(int id);
+    Map<String, Object> getAll(int id);
 }

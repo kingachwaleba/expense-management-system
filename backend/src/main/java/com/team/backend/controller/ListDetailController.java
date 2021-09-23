@@ -10,6 +10,7 @@ import com.team.backend.service.ListService;
 import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class ListDetailController {
     }
 
     @PostMapping("/shopping-list/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> addOne(@PathVariable int id, @Valid @RequestBody ListDetail listDetail) {
         List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -39,6 +41,7 @@ public class ListDetailController {
     }
 
     @PutMapping("/change-element-status/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         ListDetail updatedElement = listDetailService.findById(id).orElseThrow(RuntimeException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
@@ -57,6 +60,7 @@ public class ListDetailController {
     }
 
     @PutMapping("/edit-list-element/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> editListElement(@PathVariable int id, @RequestBody ListDetail listDetail) {
         ListDetail updatedElement = listDetailService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -70,6 +74,7 @@ public class ListDetailController {
     }
 
     @DeleteMapping("/delete-list-element/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> deleteOne(@PathVariable int id) {
         ListDetail listDetail = listDetailService.findById(id).orElseThrow(RuntimeException::new);
         List shoppingList = listDetail.getList();
