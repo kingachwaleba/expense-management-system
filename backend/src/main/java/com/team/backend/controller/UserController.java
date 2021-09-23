@@ -44,7 +44,7 @@ public class UserController {
     public ResponseEntity<?> findUser(@PathVariable String infix) {
         User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
-        List<User> userList = userService.findByLoginContaining(infix);
+        List<User> userList = userService.findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
         List<String> userLoginList = new ArrayList<>();
         for (User user : userList) {
             if (user.getId() != loggedInUser.getId())
@@ -60,7 +60,7 @@ public class UserController {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
 
-        List<User> userListInfix = userService.findByLoginContaining(infix);
+        List<User> userListInfix = userService.findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N),infix);
         List<String> userLoginList = new ArrayList<>();
         for (User user : userListInfix) {
             Map<String, Object> userMap = new HashMap<>();

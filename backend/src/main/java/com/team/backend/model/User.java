@@ -50,4 +50,9 @@ public class User {
 
     @Transient
     private String roles = "ROLE_USER";
+
+    public enum AccountType {
+        Y, // yes - deleted account
+        N // no - active account
+    }
 }
