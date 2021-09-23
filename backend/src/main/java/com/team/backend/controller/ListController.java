@@ -86,22 +86,27 @@ public class ListController {
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         List updatedList = listService.findById(id).orElseThrow(RuntimeException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
+        Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        Status completedStatus = statusRepository.findByName("zrealizowany").orElseThrow(RuntimeException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
         updatedList.setStatus(chosenStatus);
 
-        if (statusId == 3)
+        if (chosenStatus.equals(pendingStatus))
             updatedList.setUser(null);
         else
             updatedList.setUser(user);
 
         for (ListDetail listDetail : updatedList.getListDetailSet()) {
-            listDetail.setStatus(chosenStatus);
+            Status listDetailStatus = listDetail.getStatus();
 
-            if (statusId == 3)
-                listDetail.setUser(null);
-            else
-                listDetail.setUser(user);
+            if (!listDetailStatus.equals(completedStatus)) {
+                listDetail.setStatus(chosenStatus);
+                if (chosenStatus.equals(pendingStatus))
+                    listDetail.setUser(null);
+                else
+                    listDetail.setUser(user);
+            }
         }
 
         listService.save(updatedList);

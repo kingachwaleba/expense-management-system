@@ -103,35 +103,58 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
     public boolean deleteUser(Wallet wallet, User user) {
         WalletUser userDetail = walletUserRepository.findByWalletAndUser(wallet, user)
                 .orElseThrow(RuntimeException::new);
 
-        if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0) {
-            UserStatus deletedUserStatus = userStatusRepository.findByName("usunięty").orElseThrow(RuntimeException::new);
-            userDetail.setUserStatus(deletedUserStatus);
+        if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+                && !user.equals(findOwner(wallet))) {
+            leaveWallet(userDetail, wallet, user);
 
-            Status reservedStatus = statusRepository.findByName("zarezerwowany").orElseThrow(RuntimeException::new);
-            Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
-            List<com.team.backend.model.List> shoppingList = listService.
-                    findAllByUserAndWalletAndStatus(user, wallet, reservedStatus);
-            shoppingList.forEach(list -> {
-                list.setStatus(pendingStatus);
-                list.setUser(null);
-                listService.save(list);
-            });
-            List<com.team.backend.model.List> walletShoppingList = listService.findAllByWallet(wallet);
-            walletShoppingList.forEach(list -> listDetailService
-                    .findAllByUserAndListAndStatus(user, list, reservedStatus)
-                    .forEach(listDetail -> {
-                listDetail.setStatus(pendingStatus);
-                listDetail.setUser(null);
-                listDetailService.save(listDetail);
-            }));
+            return true;
+        } else if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+                && user.equals(findOwner(wallet)) && findWalletUserList(wallet).size() == 1) {
+            delete(wallet);
+            return true;
+        } else if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+                && user.equals(findOwner(wallet)) && findWalletUserList(wallet).size() > 1) {
+            leaveWallet(userDetail, wallet, user);
+
+            List<WalletUser> walletUserList = findWalletUserList(wallet);
+
+            walletUserList.sort(Comparator.comparing(WalletUser::getAccepted_at));
+            UserStatus ownerUserStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
+            walletUserList.get(0).setUserStatus(ownerUserStatus);
 
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void leaveWallet(WalletUser walletUser, Wallet wallet, User user) {
+        UserStatus deletedUserStatus = userStatusRepository.findByName("usunięty").orElseThrow(RuntimeException::new);
+        walletUser.setUserStatus(deletedUserStatus);
+        walletUserRepository.save(walletUser);
+
+        Status reservedStatus = statusRepository.findByName("zarezerwowany").orElseThrow(RuntimeException::new);
+        Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        List<com.team.backend.model.List> shoppingList = listService.
+                findAllByUserAndWalletAndStatus(user, wallet, reservedStatus);
+        shoppingList.forEach(list -> {
+            list.setStatus(pendingStatus);
+            list.setUser(null);
+            listService.save(list);
+        });
+        List<com.team.backend.model.List> walletShoppingList = listService.findAllByWallet(wallet);
+        walletShoppingList.forEach(list -> listDetailService
+                .findAllByUserAndListAndStatus(user, list, reservedStatus)
+                .forEach(listDetail -> {
+                    listDetail.setStatus(pendingStatus);
+                    listDetail.setUser(null);
+                    listDetailService.save(listDetail);
+                }));
     }
 
     @Override
@@ -208,7 +231,7 @@ public class WalletServiceImpl implements WalletService {
 
         wallet.getWalletUserSet()
                 .stream().filter(
-                        walletUser -> walletUser.getUserStatus().getName().equals("usunięty"))
+                walletUser -> walletUser.getUserStatus().getName().equals("usunięty"))
                 .forEach(
                         w -> deletedUserList.add(w.getUser().getLogin()));
 

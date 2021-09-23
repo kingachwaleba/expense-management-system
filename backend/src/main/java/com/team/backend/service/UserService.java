@@ -12,7 +12,7 @@ public interface UserService {
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
     Optional<User> findById(int id);
-    List<User> findByLoginContaining(String infix);
+    List<User> findByDeletedAndLoginContaining(String deleted, String infix);
     Boolean existsByLogin(String login);
     Boolean existsByEmail(String email);
 

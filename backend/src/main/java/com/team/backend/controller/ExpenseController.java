@@ -43,7 +43,7 @@ public class ExpenseController {
     }
 
     @PutMapping("/expense/{id}")
-    @PreAuthorize("@authenticationService.isWalletMemberByExpense(#id)")
+    @PreAuthorize("@authenticationService.ifExpenseOwner(#id) && !@authenticationService.ifContainsDeletedMembers(#id)")
     public ResponseEntity<?> edit(@PathVariable int id, @RequestBody ExpenseHolder expenseHolder) {
         Expense updatedExpense = expenseService.findById(id).orElseThrow(RuntimeException::new);
         Expense newExpense = expenseHolder.getExpense();

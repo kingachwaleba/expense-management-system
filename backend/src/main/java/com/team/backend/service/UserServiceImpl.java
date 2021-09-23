@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setDeleted("N");
+        user.setDeleted(String.valueOf(User.AccountType.N));
         user.setImage(null);
         userRepository.save(user);
     }
@@ -52,8 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findByLoginContaining(String infix) {
-        return userRepository.findByLoginContaining(infix);
+    public List<User> findByDeletedAndLoginContaining(String deleted, String infix) {
+        return userRepository.findByDeletedAndLoginContaining(deleted, infix);
     }
 
     @Override

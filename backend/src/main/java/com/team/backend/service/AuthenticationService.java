@@ -6,6 +6,7 @@ import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletUserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,6 +87,28 @@ public class AuthenticationService {
         Wallet wallet = expense.getWallet();
 
         return checkIfMember(wallet);
+    }
+
+    public boolean ifExpenseOwner(int id) {
+        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        User expenseOwner = expense.getUser();
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
+        return currentUser.equals(expenseOwner);
+    }
+
+    public boolean ifContainsDeletedMembers(int id) {
+        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = expense.getWallet();
+        List<String> deletedUsersList = walletService.findDeletedUserList(wallet);
+        List<String> deletedUsersListInExpense = new ArrayList<>();
+        List<ExpenseDetail> expenseDetailList = new ArrayList<>(expense.getExpenseDetailSet());
+
+        for (ExpenseDetail expenseDetail : expenseDetailList)
+            if (deletedUsersList.contains(expenseDetail.getUser().getLogin()))
+                deletedUsersListInExpense.add(expenseDetail.getUser().getLogin());
+
+        return deletedUsersListInExpense.size() != 0;
     }
 
     public boolean isWalletMemberByExpenseDetail(int id) {
