@@ -110,6 +110,7 @@ public class WalletServiceImpl implements WalletService {
         if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0) {
             UserStatus deletedUserStatus = userStatusRepository.findByName("usunięty").orElseThrow(RuntimeException::new);
             userDetail.setUserStatus(deletedUserStatus);
+            walletUserRepository.save(userDetail);
 
             Status reservedStatus = statusRepository.findByName("zarezerwowany").orElseThrow(RuntimeException::new);
             Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
