@@ -40,6 +40,7 @@ public class WalletController {
     }
 
     @GetMapping("/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> one(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -52,6 +53,7 @@ public class WalletController {
     }
 
     @GetMapping("/wallet/{id}/balance")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> getWalletBalance(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
@@ -64,6 +66,7 @@ public class WalletController {
     }
 
     @GetMapping("/wallet-users/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> findsWalletUsers(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         List<Map<String, Object>> userList = walletService.findUserList(wallet);
@@ -80,6 +83,7 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Map<String, String> map) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -97,6 +101,7 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}/users/{userLogin}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> addUsers(@PathVariable int id, @PathVariable String userLogin) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 

@@ -4,13 +4,13 @@ import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.Message;
 import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
-import com.team.backend.repository.MessageRepository;
 import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.MessageService;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,6 +35,7 @@ public class MessageController {
     }
 
     @GetMapping("/wallet/{id}/message")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -67,6 +68,7 @@ public class MessageController {
     }
 
     @PostMapping("/send-notification/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> sendDebtNotification(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         User debtor = walletUserRepository
@@ -82,6 +84,7 @@ public class MessageController {
     }
 
     @DeleteMapping("/notifications/{id}")
+    @PreAuthorize("@authenticationService.isNotificationOwner(#id)")
     public ResponseEntity<?> deleteNotification(@PathVariable int id) {
         Message notification = messageService.findById(id).orElseThrow(RuntimeException::new);
         messageService.delete(notification);

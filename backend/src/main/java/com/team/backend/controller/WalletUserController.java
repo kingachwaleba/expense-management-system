@@ -11,6 +11,7 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -56,6 +57,7 @@ public class WalletUserController {
     }
 
     @PutMapping("/notifications/invitations/{id}")
+    @PreAuthorize("@authenticationService.isInvitationOwner(#id)")
     public ResponseEntity<?> manageInvitations(@PathVariable int id, @RequestBody boolean flag) {
         WalletUser updatedWalletUser = walletUserRepository.findById(id).orElseThrow(RuntimeException::new);
 
@@ -76,6 +78,7 @@ public class WalletUserController {
     }
 
     @PutMapping("/pay-debt/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> payDebt(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 

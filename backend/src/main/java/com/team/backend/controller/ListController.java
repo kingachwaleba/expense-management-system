@@ -9,6 +9,7 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,7 @@ public class ListController {
     }
 
     @GetMapping("/shopping-list/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> one(@PathVariable int id) {
         List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
         java.util.List<String> deletedUserList = walletService.findDeletedUserList(shoppingList.getWallet());
@@ -44,6 +46,7 @@ public class ListController {
     }
 
     @GetMapping("/wallet/{id}/shopping-lists")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         java.util.List<List> shoppingLists = listService.findAllByWallet(wallet);
@@ -57,6 +60,7 @@ public class ListController {
 
     @Transactional
     @PostMapping("/wallet/{id}/create-shopping-list")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> createList(@PathVariable int id, @Valid @RequestBody ListHolder listHolder) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -66,6 +70,7 @@ public class ListController {
     }
 
     @PutMapping("/shopping-list/edit/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody TextNode name) {
         List updatedShoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -77,6 +82,7 @@ public class ListController {
     }
 
     @PutMapping("/change-list-status/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         List updatedList = listService.findById(id).orElseThrow(RuntimeException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
@@ -104,6 +110,7 @@ public class ListController {
     }
 
     @DeleteMapping("/shopping-list/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> delete(@PathVariable int id) {
         List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
 

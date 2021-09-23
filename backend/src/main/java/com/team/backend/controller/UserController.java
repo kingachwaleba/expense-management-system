@@ -10,6 +10,7 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,6 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/wallet/{id}/{infix}")
+    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
     public ResponseEntity<?> findUserForWallet(@PathVariable int id, @PathVariable String infix) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
