@@ -18,6 +18,7 @@ public interface UserService {
 
     Boolean checkIfValidOldPassword(User user, String oldPassword);
     void changeUserPassword(User user, String password);
+    void changeUserImage(User user, String imageUrl);
 
     Optional<User> findCurrentLoggedInUser();
 
