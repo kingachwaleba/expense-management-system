@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    public void changeUserImage(User user, String imageUrl) {
+        user.setImage(imageUrl);
+        userRepository.save(user);
+    }
+
     @Override
     public Optional<User> findCurrentLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

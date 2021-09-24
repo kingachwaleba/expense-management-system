@@ -168,6 +168,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         BigDecimal oldCost = updatedExpense.getTotal_cost();
         BigDecimal newCost = newExpense.getTotal_cost();
         updatedExpense.setName(newExpense.getName());
+        updatedExpense.setReceipt_image(newExpense.getReceipt_image());
         updatedExpense.setTotal_cost(newExpense.getTotal_cost());
 
         for (ExpenseDetail expenseDetail : updatedExpense.getExpenseDetailSet()) {

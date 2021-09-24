@@ -130,4 +130,13 @@ public class UserController {
 
         return new ResponseEntity<>("User password has been changed!", HttpStatus.OK);
     }
+
+    @PutMapping("/account/change-profile-picture")
+    public ResponseEntity<?> changeImage(@RequestBody String imageUrl) {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
+        userService.changeUserImage(user, imageUrl);
+
+        return new ResponseEntity<>("User image has been changed!", HttpStatus.OK);
+    }
 }
