@@ -26,9 +26,9 @@ public class ImageStorageServiceImpl implements ImageStorageService {
             final Path root = Paths.get("uploads/" + directory);
 
             String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss"));
-            String newImageName = date + "-" + Objects.requireNonNull(multipartFile.getOriginalFilename());
+            String newImageName = root + "\\" + date + "-" + Objects.requireNonNull(multipartFile.getOriginalFilename());
 
-            Files.copy(multipartFile.getInputStream(), root.resolve(newImageName));
+            Files.copy(multipartFile.getInputStream(), Path.of(newImageName));
 
             return newImageName;
         } catch (Exception e) {
@@ -37,10 +37,9 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     }
 
     @Override
-    public Resource load(String imageName, String directory) {
+    public Resource load(String imageName) {
         try {
-            final Path root = Paths.get("uploads/" + directory);
-            Path file = root.resolve(imageName);
+            Path file = Paths.get(imageName);
             Resource resource = new UrlResource(file.toUri());
 
             if (resource.exists() || resource.isReadable()) {

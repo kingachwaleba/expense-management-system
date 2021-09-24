@@ -34,10 +34,9 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/files/{imageName}")
-    @ResponseBody
-    public ResponseEntity<?> getFile(@PathVariable String imageName, @RequestParam("directory") String directory) {
-        Resource file = imageStorageService.load(imageName, directory);
+    @GetMapping("/files")
+    public ResponseEntity<?> getFile(@RequestBody String imageName) {
+        Resource file = imageStorageService.load(imageName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
