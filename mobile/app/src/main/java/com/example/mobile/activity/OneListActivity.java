@@ -200,7 +200,10 @@ public class OneListActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             unitRg.addView(rdbtn);
-            if(i == 0) rdbtn.setChecked(true);
+            if(i == 0) {
+                rdbtn.setChecked(true);
+                unit = new Unit(units.get(i).getId(), units.get(i).getName());
+            }
         }
         firstRadioButton = unitRg.getCheckedRadioButtonId();
 

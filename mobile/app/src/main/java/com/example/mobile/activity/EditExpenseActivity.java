@@ -83,7 +83,10 @@ public class EditExpenseActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             categoryRg.addView(rdbtn);
-            if(categoriesExpense.get(i).getName().equals(category)) rdbtn.setChecked(true);
+            if(categoriesExpense.get(i).getName().equals(category)) {
+                rdbtn.setChecked(true);
+                selectedCategory = new Category(categoriesExpense.get(i).getId(), categoriesExpense.get(i).getName());
+            }
         }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {

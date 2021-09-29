@@ -18,7 +18,7 @@ public class EditWalletActivity extends BaseActivity {
     RadioGroup categoryRg;
     String accessToken;
     Category category;
-    Button updateWalletBtn;
+    Button updateWalletBtn, cancelBtn;
     WalletService walletService;
     int walletId;
     String walletName, walletDescription, walletCategory;
@@ -41,6 +41,7 @@ public class EditWalletActivity extends BaseActivity {
         nameEt = findViewById(R.id.name_et);
         descriptionEt = findViewById(R.id.description_et);
         updateWalletBtn = findViewById(R.id.update_wallet_btn);
+        cancelBtn = findViewById(R.id.cancel_wallet_btn);
 
         nameEt.setText(walletName);
         descriptionEt.setText(walletDescription);
@@ -54,7 +55,10 @@ public class EditWalletActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             categoryRg.addView(rdbtn);
-            if(categories.get(i).getName().equals(walletCategory)) rdbtn.setChecked(true);
+            if(categories.get(i).getName().equals(walletCategory)){
+                rdbtn.setChecked(true);
+                category = new Category(categories.get(i).getId(), categories.get(i).getName());
+            }
         }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
@@ -75,6 +79,8 @@ public class EditWalletActivity extends BaseActivity {
                 finish();
             } else nameEt.setError("Podaj nazwę portfela");
         });
+
+        cancelBtn.setOnClickListener(v -> finish());
     }
 
     public boolean validateName(String s){

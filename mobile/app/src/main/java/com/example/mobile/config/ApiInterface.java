@@ -85,7 +85,7 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<List<Unit>> getUnits();
 
-    @GET("{infix}")
+    @GET("find-users/{infix}")
     @Headers("Content-Type: application/json")
     Call<List<String>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
 
