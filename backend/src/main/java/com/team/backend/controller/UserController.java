@@ -5,9 +5,6 @@ import com.team.backend.config.JwtResponse;
 import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.*;
 import com.team.backend.helpers.LoginForm;
-import com.team.backend.repository.UserStatusRepository;
-import com.team.backend.repository.WalletUserRepository;
-import com.team.backend.service.MessageService;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -18,11 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 
@@ -33,19 +28,13 @@ public class UserController {
     private final WalletService walletService;
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
-    private final WalletUserRepository walletUserRepository;
-    private final UserStatusRepository userStatusRepository;
-    private final MessageService messageService;
 
     public UserController(UserService userService, WalletService walletService, JwtProvider jwtProvider,
-                          AuthenticationManager authenticationManager, WalletUserRepository walletUserRepository, UserStatusRepository userStatusRepository, MessageService messageService) {
+                          AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.walletService = walletService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
-        this.walletUserRepository = walletUserRepository;
-        this.userStatusRepository = userStatusRepository;
-        this.messageService = messageService;
     }
 
     @GetMapping("/find-users/{infix}")
