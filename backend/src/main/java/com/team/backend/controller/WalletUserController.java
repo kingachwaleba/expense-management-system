@@ -66,13 +66,11 @@ public class WalletUserController {
             LocalDateTime date = LocalDateTime.now();
             updatedWalletUser.setAccepted_at(date);
             updatedWalletUser.setUserStatus(memberStatus);
-        }
-        else {
-            UserStatus cancelledStatus = userStatusRepository.findByName("odrzucony").orElseThrow(RuntimeException::new);
-            updatedWalletUser.setUserStatus(cancelledStatus);
-        }
 
-        walletUserRepository.save(updatedWalletUser);
+            walletUserRepository.save(updatedWalletUser);
+        }
+        else 
+            walletUserRepository.delete(updatedWalletUser);
 
         return new ResponseEntity<>("User status has been changed!", HttpStatus.OK);
     }
