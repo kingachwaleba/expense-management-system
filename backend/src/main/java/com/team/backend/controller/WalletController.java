@@ -5,8 +5,6 @@ import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletCategoryRepository;
-import com.team.backend.repository.WalletUserRepository;
-import com.team.backend.service.ExpenseService;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
