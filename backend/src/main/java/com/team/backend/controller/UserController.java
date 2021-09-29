@@ -53,6 +53,13 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+        if (userService.findByEmail(loginRequest.getEmail()).isPresent()) {
+            User user = userService.findByEmail(loginRequest.getEmail()).get();
+
+            if (user.getDeleted().equals("Y"))
+                return new ResponseEntity<>("This account has been deleted!", HttpStatus.CONFLICT);
+        }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
