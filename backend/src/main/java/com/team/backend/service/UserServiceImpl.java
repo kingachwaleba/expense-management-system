@@ -9,8 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -127,5 +127,56 @@ public class UserServiceImpl implements UserService {
             totalBalance = totalBalance.add(walletUser.getBalance());
 
         return totalBalance;
+    }
+
+    @Override
+    public List<String> findUserForWallet(int id, String infix) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
+
+        List<User> userListInfix = findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
+        List<String> userLoginList = new ArrayList<>();
+        for (User user : userListInfix) {
+            Map<String, Object> userMap = new HashMap<>();
+
+            userMap.put("userId", user.getId());
+            userMap.put("login", user.getLogin());
+
+            if (!userList.contains(userMap))
+                userLoginList.add(user.getLogin());
+        }
+
+        return userLoginList;
+    }
+
+    @Override
+    public List<String> findUser(String infix) {
+        User loggedInUser = findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
+        List<User> userList = findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
+        List<String> userLoginList = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getId() != loggedInUser.getId())
+                userLoginList.add(user.getLogin());
+        }
+
+        return userLoginList;
+    }
+
+    @Override
+    public Map<String, String> findUserDetails() {
+        User user = findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
+        List<Wallet> wallets = walletService.findWallets(user);
+
+        Map<String, String> userDetailsMap = new HashMap<>();
+        userDetailsMap.put("id", String.valueOf(user.getId()));
+        userDetailsMap.put("login", user.getLogin());
+        userDetailsMap.put("email", user.getEmail());
+        userDetailsMap.put("image", user.getImage());
+        userDetailsMap.put("walletsNumber", String.valueOf(wallets.size()));
+        userDetailsMap.put("userBalance", String.valueOf(calculateUserBalance(user)));
+
+        return userDetailsMap;
     }
 }

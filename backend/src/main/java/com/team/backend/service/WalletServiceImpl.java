@@ -30,7 +30,7 @@ public class WalletServiceImpl implements WalletService {
     private final ExpenseService expenseService;
 
     public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository,
-                             UserService userService, WalletUserRepository walletUserRepository,
+                             @Lazy UserService userService, WalletUserRepository walletUserRepository,
                              ListService listService, StatusRepository statusRepository,
                              ListDetailService listDetailService, MessageService messageService,
                              @Lazy ExpenseService expenseService) {
