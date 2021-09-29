@@ -1,8 +1,6 @@
 package com.team.backend.service;
 
-import com.team.backend.model.Expense;
-import com.team.backend.model.User;
-import com.team.backend.model.WalletUser;
+import com.team.backend.model.*;
 import com.team.backend.repository.UserRepository;
 import com.team.backend.repository.WalletUserRepository;
 import org.springframework.security.core.Authentication;
@@ -20,12 +18,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final WalletUserRepository walletUserRepository;
+    private final WalletService walletService;
+    private final MessageService messageService;
 
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-                           WalletUserRepository walletUserRepository) {
+                           WalletUserRepository walletUserRepository, WalletService walletService,
+                           MessageService messageService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.walletUserRepository = walletUserRepository;
+        this.walletService = walletService;
+        this.messageService = messageService;
     }
 
     @Override
@@ -34,6 +37,31 @@ public class UserServiceImpl implements UserService {
         user.setDeleted(String.valueOf(User.AccountType.N));
         user.setImage(null);
         userRepository.save(user);
+    }
+
+    @Override
+    public void saveDeleted(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean ifAccountDeleted(User user) {
+        List<WalletUser> walletUserList = walletUserRepository.findAllByUser(user);
+        for (WalletUser walletUser : walletUserList) {
+            Wallet wallet = walletUser.getWallet();
+            if (!walletService.delete(walletUser, wallet, user))
+                return false;
+        }
+
+        List<Message> notificationList = messageService.findAllByReceiver(user);
+        for (Message message : notificationList) {
+            messageService.delete(message);
+        }
+
+        user.setDeleted("Y");
+        saveDeleted(user);
+
+        return true;
     }
 
     @Override

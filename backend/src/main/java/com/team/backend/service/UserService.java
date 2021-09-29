@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface UserService {
 
     void save(User user);
+    void saveDeleted(User user);
+    boolean ifAccountDeleted(User user);
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
     Optional<User> findById(int id);
