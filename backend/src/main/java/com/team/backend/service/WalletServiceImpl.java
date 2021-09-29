@@ -30,7 +30,7 @@ public class WalletServiceImpl implements WalletService {
     private final ExpenseService expenseService;
 
     public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository,
-                             UserService userService, WalletUserRepository walletUserRepository,
+                             @Lazy UserService userService, WalletUserRepository walletUserRepository,
                              ListService listService, StatusRepository statusRepository,
                              ListDetailService listDetailService, MessageService messageService,
                              @Lazy ExpenseService expenseService) {
@@ -104,22 +104,19 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional
-    public boolean deleteUser(Wallet wallet, User user) {
-        WalletUser userDetail = walletUserRepository.findByWalletAndUser(wallet, user)
-                .orElseThrow(RuntimeException::new);
-
-        if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+    public boolean delete(WalletUser walletUser, Wallet wallet, User user) {
+        if (walletUser.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
                 && !user.equals(findOwner(wallet))) {
-            leaveWallet(userDetail, wallet, user);
+            leaveWallet(walletUser, wallet, user);
 
             return true;
-        } else if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+        } else if (walletUser.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
                 && user.equals(findOwner(wallet)) && findWalletUserList(wallet).size() == 1) {
             delete(wallet);
             return true;
-        } else if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+        } else if (walletUser.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
                 && user.equals(findOwner(wallet)) && findWalletUserList(wallet).size() > 1) {
-            leaveWallet(userDetail, wallet, user);
+            leaveWallet(walletUser, wallet, user);
 
             List<WalletUser> walletUserList = findWalletUserList(wallet);
 
@@ -130,6 +127,15 @@ public class WalletServiceImpl implements WalletService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteUser(Wallet wallet, User user) {
+        WalletUser userDetail = walletUserRepository.findByWalletAndUser(wallet, user)
+                .orElseThrow(RuntimeException::new);
+
+        return delete(userDetail, wallet, user);
     }
 
     @Override

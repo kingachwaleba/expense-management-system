@@ -4,11 +4,14 @@ import com.team.backend.model.User;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
 
     void save(User user);
+    void saveDeleted(User user);
+    boolean ifAccountDeleted(User user);
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
     Optional<User> findById(int id);
@@ -23,4 +26,8 @@ public interface UserService {
     Optional<User> findCurrentLoggedInUser();
 
     BigDecimal calculateUserBalance(User user);
+
+    List<String> findUserForWallet(int id, String infix);
+    List<String> findUser(String infix);
+    Map<String, String> findUserDetails();
 }
