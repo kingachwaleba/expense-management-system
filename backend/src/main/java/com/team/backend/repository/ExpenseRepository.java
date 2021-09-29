@@ -13,4 +13,5 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
     Optional<Expense> findById(int id);
     List<Expense> findAllByWalletOrderByDate(Wallet wallet);
     List<Expense> findAllByWalletAndUser(Wallet wallet, User user);
+    void deleteAllByWallet(Wallet wallet);
 }

@@ -10,6 +10,7 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,11 +40,11 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping("/{infix}")
+    @GetMapping("/find-users/{infix}")
     public ResponseEntity<?> findUser(@PathVariable String infix) {
         User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
-        List<User> userList = userService.findByLoginContaining(infix);
+        List<User> userList = userService.findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
         List<String> userLoginList = new ArrayList<>();
         for (User user : userList) {
             if (user.getId() != loggedInUser.getId())
@@ -54,11 +55,12 @@ public class UserController {
     }
 
     @GetMapping("/wallet/{id}/{infix}")
+    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
     public ResponseEntity<?> findUserForWallet(@PathVariable int id, @PathVariable String infix) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
 
-        List<User> userListInfix = userService.findByLoginContaining(infix);
+        List<User> userListInfix = userService.findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N),infix);
         List<String> userLoginList = new ArrayList<>();
         for (User user : userListInfix) {
             Map<String, Object> userMap = new HashMap<>();
@@ -127,5 +129,14 @@ public class UserController {
         userService.changeUserPassword(user, password);
 
         return new ResponseEntity<>("User password has been changed!", HttpStatus.OK);
+    }
+
+    @PutMapping("/account/change-profile-picture")
+    public ResponseEntity<?> changeImage(@RequestBody String imageUrl) {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
+        userService.changeUserImage(user, imageUrl);
+
+        return new ResponseEntity<>("User image has been changed!", HttpStatus.OK);
     }
 }

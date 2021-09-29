@@ -10,6 +10,7 @@ import com.team.backend.service.ExpenseService;
 import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class ExpenseDetailController {
 
     @Transactional
     @PutMapping("/expense/{id}/add-user/{login}")
+    @PreAuthorize("@authenticationService.isWalletMemberByExpense(#id)")
     public ResponseEntity<?> addUser(@PathVariable int id, @PathVariable String login) {
         Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
         User user = userService.findByLogin(login).orElseThrow(RuntimeException::new);
@@ -59,6 +61,7 @@ public class ExpenseDetailController {
     }
 
     @DeleteMapping("/expense/{id}/delete-user")
+    @PreAuthorize("@authenticationService.isWalletMemberByExpenseDetail(#id)")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         ExpenseDetail deletedUser = expenseDetailRepository.findById(id).orElseThrow(RuntimeException::new);
         Expense expense = deletedUser.getExpense();

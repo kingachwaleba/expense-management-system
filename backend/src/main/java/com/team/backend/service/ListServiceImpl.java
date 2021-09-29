@@ -1,10 +1,7 @@
 package com.team.backend.service;
 
 import com.team.backend.helpers.ListHolder;
-import com.team.backend.model.List;
-import com.team.backend.model.ListDetail;
-import com.team.backend.model.Status;
-import com.team.backend.model.Wallet;
+import com.team.backend.model.*;
 import com.team.backend.repository.ListRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
@@ -52,6 +49,11 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
+    public void deleteAllByWallet(Wallet wallet) {
+        listRepository.deleteAllByWallet(wallet);
+    }
+
+    @Override
     public Optional<List> findById(int id) {
         return listRepository.findById(id);
     }
@@ -59,5 +61,10 @@ public class ListServiceImpl implements ListService {
     @Override
     public java.util.List<List> findAllByWallet(Wallet wallet) {
         return listRepository.findAllByWallet(wallet);
+    }
+
+    @Override
+    public java.util.List<List> findAllByUserAndWalletAndStatus(User user, Wallet wallet, Status status) {
+        return listRepository.findAllByUserAndWalletAndStatus(user, wallet, status);
     }
 }

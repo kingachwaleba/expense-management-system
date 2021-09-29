@@ -3,6 +3,7 @@ package com.team.backend.service;
 import com.team.backend.model.List;
 import com.team.backend.model.ListDetail;
 import com.team.backend.model.Status;
+import com.team.backend.model.User;
 import com.team.backend.repository.ListDetailRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class ListDetailServiceImpl implements ListDetailService {
     @Override
     public Optional<ListDetail> findById(int id) {
         return listDetailRepository.findById(id);
+    }
+
+    @Override
+    public java.util.List<ListDetail> findAllByUserAndListAndStatus(User user, List list, Status status) {
+        return listDetailRepository.findAllByUserAndListAndStatus(user, list, status);
     }
 }

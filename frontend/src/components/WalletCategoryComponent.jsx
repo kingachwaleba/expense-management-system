@@ -8,10 +8,11 @@ class WalletCategoryComponent extends Component {
         super(props)
         this.state={
             categories: [],
-            checkedID: ''
+            
 
         }
     }
+    
     
     componentDidMount(){
         WalletCategoryService.getCategories().then((response)=>{
@@ -21,16 +22,7 @@ class WalletCategoryComponent extends Component {
         )
     }
 
-    onCheckChanged=(event)=>{
-       
-        this.setState({
-          checkedID: event.target.id
-          
-          
-          });
-          console.log("Checked category's ID:" + event.target.id);
-          
-      }
+
     render() {
         return (
             <div className="box-subcontent">
@@ -45,11 +37,13 @@ class WalletCategoryComponent extends Component {
                                       <label className = "form-label" htmlFor={category.id}>
                                         <input type="radio" id={category.id} name  ="category" value={category.name} 
                                            
-                                            onChange={this.onCheckChanged}>
+                                         
+                                            onChange={this.props.readWalletCategory}
+                                            >
                                                 
                                         </input>
                                         
-                                        <span className="checkmark"></span>
+                                        <div className="checkmark"></div>
                                          {category.name} </label>
                                         
                                     </div>

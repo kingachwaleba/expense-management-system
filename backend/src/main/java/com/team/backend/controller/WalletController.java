@@ -11,6 +11,7 @@ import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,69 +29,31 @@ public class WalletController {
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
     private final WalletCategoryRepository walletCategoryRepository;
-    private final ExpenseService expenseService;
-    private final WalletUserRepository walletUserRepository;
 
     public WalletController(WalletService walletService, UserService userService,
                             UserStatusRepository userStatusRepository,
-                            WalletCategoryRepository walletCategoryRepository, ExpenseService expenseService,
-                            WalletUserRepository walletUserRepository) {
+                            WalletCategoryRepository walletCategoryRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
         this.walletCategoryRepository = walletCategoryRepository;
-        this.expenseService = expenseService;
-        this.walletUserRepository = walletUserRepository;
     }
 
     @GetMapping("/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> one(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
 
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("id", wallet.getId());
-        map.put("name", wallet.getName());
-        map.put("walletCategory", wallet.getWalletCategory());
-        map.put("description", wallet.getDescription());
-        map.put("owner", walletService.findOwner(wallet).getLogin());
-        map.put("userListCounter", walletService.findUserList(wallet).size());
-        map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
-        map.put("userExpensesCost", expenseService.calculateExpensesCostForUser(wallet, loggedInUser));
-        map.put("loggedInUserBalance", walletUserRepository.findByWalletAndUser(wallet, loggedInUser)
-                .orElseThrow(RuntimeException::new).getBalance());
-
-        List<Map<String, Object>> userList = walletService.findUserList(wallet);
-        map.put("userList", userList);
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(walletService.getOne(wallet), HttpStatus.OK);
     }
 
     @GetMapping("/wallets")
     public ResponseEntity<?> all() {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
-        List<Wallet> wallets = walletService.findWallets(user);
-
-        List<Map<String, Object>> walletsList = new ArrayList<>();
-
-        for (Wallet wallet : wallets) {
-            Map<String, Object> map = new HashMap<>();
-
-            map.put("id", wallet.getId());
-            map.put("name", wallet.getName());
-            map.put("walletCategory", wallet.getWalletCategory());
-            map.put("owner", walletService.findOwner(wallet).getLogin());
-            map.put("userListCounter", walletService.findUserList(wallet).size());
-            map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
-
-            walletsList.add(map);
-        }
-
-        return new ResponseEntity<>(walletsList, HttpStatus.OK);
+        return new ResponseEntity<>(walletService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/wallet/{id}/balance")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> getWalletBalance(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
@@ -103,6 +66,7 @@ public class WalletController {
     }
 
     @GetMapping("/wallet-users/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> findsWalletUsers(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
         List<Map<String, Object>> userList = walletService.findUserList(wallet);
@@ -119,6 +83,7 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Map<String, String> map) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -136,6 +101,7 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}/users/{userLogin}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> addUsers(@PathVariable int id, @PathVariable String userLogin) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 
@@ -146,5 +112,39 @@ public class WalletController {
         walletService.save(updatedWallet);
 
         return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/wallet/{id}/user/{userLogin}")
+    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
+    public ResponseEntity<?> deleteUserFromWallet(@PathVariable int id, @PathVariable String userLogin) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        User user = userService.findByLogin(userLogin).orElseThrow(RuntimeException::new);
+
+        if (walletService.deleteUser(wallet, user))
+            return new ResponseEntity<>("User has been deleted from the wallet!", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Cannot delete user from the wallet!", HttpStatus.CONFLICT);
+    }
+
+    @DeleteMapping("/wallet/{id}/current-logged-in-user")
+    @PreAuthorize("@authenticationService.isWalletMember(#id) ")
+    public ResponseEntity<?> deleteCurrentLoggedInUserFromWallet(@PathVariable int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+
+        if (walletService.deleteUser(wallet, user))
+            return new ResponseEntity<>("User has been deleted from the wallet!", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Cannot delete user from the wallet!", HttpStatus.CONFLICT);
+    }
+
+    @DeleteMapping("/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
+    public ResponseEntity<?> deleteOne(@PathVariable int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+
+        walletService.delete(wallet);
+
+        return new ResponseEntity<>("Wallet has been deleted!", HttpStatus.OK);
     }
 }
