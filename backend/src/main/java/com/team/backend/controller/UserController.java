@@ -56,7 +56,7 @@ public class UserController {
         if (userService.findByEmail(loginRequest.getEmail()).isPresent()) {
             User user = userService.findByEmail(loginRequest.getEmail()).get();
 
-            if (user.getDeleted().equals("Y"))
+            if (user.getDeleted().equals(String.valueOf(User.AccountType.Y)))
                 return new ResponseEntity<>("This account has been deleted!", HttpStatus.CONFLICT);
         }
 

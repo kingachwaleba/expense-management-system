@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
             messageService.delete(message);
         }
 
-        user.setDeleted("Y");
+        user.setDeleted(String.valueOf(User.AccountType.Y));
         saveDeleted(user);
 
         return true;
