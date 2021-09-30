@@ -49,7 +49,7 @@ public class AuthenticationService {
                 .filter(
                         walletUser -> walletUser.getUserStatus().equals(ownerStatus)
                 )
-                .findFirst().orElseThrow(RuntimeException::new);
+                .findFirst().orElseThrow(WalletUserNotFoundException::new);
         User owner = walletOwnerDetail.getUser();
 
         return owner.equals(currentUser);
@@ -125,21 +125,21 @@ public class AuthenticationService {
     }
 
     public boolean isWalletMemberByShoppingList(int id) {
-        com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
         Wallet wallet = shoppingList.getWallet();
 
         return checkIfMember(wallet);
     }
 
     public boolean isWalletMemberByShoppingListDetail(int id) {
-        ListDetail shoppingListDetail = listDetailService.findById(id).orElseThrow(RuntimeException::new);
+        ListDetail shoppingListDetail = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
         Wallet wallet = shoppingListDetail.getList().getWallet();
 
         return checkIfMember(wallet);
     }
 
     public boolean isNotificationOwner(int id) {
-        Message notification = messageService.findById(id).orElseThrow(RuntimeException::new);
+        Message notification = messageService.findById(id).orElseThrow(MessageNotFoundException::new);
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         User receiver = notification.getReceiver();
 

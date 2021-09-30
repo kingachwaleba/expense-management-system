@@ -1,6 +1,7 @@
 package com.team.backend.controller;
 
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.team.backend.exception.ListNotFoundException;
 import com.team.backend.exception.StatusNotFoundException;
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
@@ -39,7 +40,7 @@ public class ListController {
     @GetMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> one(@PathVariable int id) {
-        List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
         java.util.List<String> deletedUserList = walletService.findDeletedUserList(shoppingList.getWallet());
         Map<String, Object> map = new HashMap<>();
         map.put("shoppingList", shoppingList);
@@ -75,7 +76,7 @@ public class ListController {
     @PutMapping("/shopping-list/edit/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody TextNode name) {
-        List updatedShoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        List updatedShoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         updatedShoppingList.setName(name.asText());
 
@@ -87,7 +88,7 @@ public class ListController {
     @PutMapping("/change-list-status/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
-        List updatedList = listService.findById(id).orElseThrow(RuntimeException::new);
+        List updatedList = listService.findById(id).orElseThrow(ListNotFoundException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(StatusNotFoundException::new);
         Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
         Status completedStatus = statusRepository.findByName("zrealizowany").orElseThrow(StatusNotFoundException::new);
@@ -120,7 +121,7 @@ public class ListController {
     @DeleteMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> delete(@PathVariable int id) {
-        List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         listService.delete(shoppingList);
 

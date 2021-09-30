@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.MessageNotFoundException;
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.exception.WalletUserNotFoundException;
@@ -91,7 +92,7 @@ public class MessageController {
     @DeleteMapping("/notifications/{id}")
     @PreAuthorize("@authenticationService.isNotificationOwner(#id)")
     public ResponseEntity<?> deleteNotification(@PathVariable int id) {
-        Message notification = messageService.findById(id).orElseThrow(RuntimeException::new);
+        Message notification = messageService.findById(id).orElseThrow(MessageNotFoundException::new);
         messageService.delete(notification);
 
         return ResponseEntity.ok("Notification has been deleted!");

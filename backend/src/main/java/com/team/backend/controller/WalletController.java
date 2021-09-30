@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.exception.UserStatusNotFoundException;
+import com.team.backend.exception.WalletCategoryNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
@@ -92,7 +93,7 @@ public class WalletController {
         updatedWallet.setDescription(map.get("description"));
 
         WalletCategory walletCategory = walletCategoryRepository
-                .findByName(map.get("walletCategory")).orElseThrow(RuntimeException::new);
+                .findByName(map.get("walletCategory")).orElseThrow(WalletCategoryNotFoundException::new);
 
         updatedWallet.setWalletCategory(walletCategory);
 
