@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.Message;
 import com.team.backend.model.User;
@@ -44,7 +45,7 @@ public class MessageController {
 
     @GetMapping("/debts-notifications")
     public ResponseEntity<?> allDebtsNotifications() {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return new ResponseEntity<>(messageService.findAllByReceiverAndTypeOrderByDate(user, "E"), HttpStatus.OK);
     }
@@ -52,7 +53,7 @@ public class MessageController {
     @PostMapping("/wallet/{id}/message")
     public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         messageService.save(message, wallet, user);
 

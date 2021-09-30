@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
@@ -116,7 +117,7 @@ public class WalletController {
     @PreAuthorize("@authenticationService.isWalletOwner(#id)")
     public ResponseEntity<?> deleteUserFromWallet(@PathVariable int id, @PathVariable String userLogin) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        User user = userService.findByLogin(userLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findByLogin(userLogin).orElseThrow(UserNotFoundException::new);
 
         if (walletService.deleteUser(wallet, user))
             return new ResponseEntity<>("User has been deleted from the wallet!", HttpStatus.OK);
@@ -128,7 +129,7 @@ public class WalletController {
     @PreAuthorize("@authenticationService.isWalletMember(#id) ")
     public ResponseEntity<?> deleteCurrentLoggedInUserFromWallet(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         if (walletService.deleteUser(wallet, user))
             return new ResponseEntity<>("User has been deleted from the wallet!", HttpStatus.OK);

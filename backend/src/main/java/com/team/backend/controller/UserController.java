@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.team.backend.config.JwtProvider;
 import com.team.backend.config.JwtResponse;
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.*;
 import com.team.backend.helpers.LoginForm;
@@ -87,7 +88,7 @@ public class UserController {
         String password = updatePasswordHolder.getPassword();
         String oldPassword = updatePasswordHolder.getOldPassword();
 
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         if (!userService.checkIfValidOldPassword(user, oldPassword))
             throw new RuntimeException();
@@ -99,7 +100,7 @@ public class UserController {
 
     @PutMapping("/account/change-profile-picture")
     public ResponseEntity<?> changeImage(@RequestBody String imageUrl) {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         userService.changeUserImage(user, imageUrl);
 
@@ -108,7 +109,7 @@ public class UserController {
 
     @PutMapping("/delete-account")
     public ResponseEntity<?> deleteAccount(@RequestBody String password) {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         if (!userService.checkIfValidOldPassword(user, password))
             throw new RuntimeException();

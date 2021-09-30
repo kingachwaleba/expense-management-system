@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
@@ -37,7 +38,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         Wallet wallet = walletService.findById(walletId).orElseThrow(RuntimeException::new);
         Expense expense = expenseHolder.getExpense();
         List<String> userList = expenseHolder.getUserList();
-        User owner = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User owner = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         Map<Integer, BigDecimal> balanceMap = new HashMap<>();
 
         LocalDateTime date = LocalDateTime.now();
@@ -56,7 +57,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         walletUser.setBalance(balance);
 
         for (String login : userList) {
-            User member = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+            User member = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
             ExpenseDetail expenseDetail = new ExpenseDetail();
 
@@ -137,7 +138,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
                 BigDecimal finalCost = cost;
                 userList.forEach(login -> {
-                    User member = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+                    User member = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
                     ExpenseDetail expenseDetail = new ExpenseDetail();
 

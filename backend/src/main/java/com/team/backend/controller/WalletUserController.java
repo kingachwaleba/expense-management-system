@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
@@ -36,7 +37,7 @@ public class WalletUserController {
 
     @GetMapping("/notifications/invitations")
     public ResponseEntity<?> all() {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         UserStatus waitingStatus = userStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
         Set<WalletUser> invitations = walletUserRepository.findAllByUserStatusAndUser(waitingStatus, user);
         List<Map<String, Object>> invitationsList = new ArrayList<>();

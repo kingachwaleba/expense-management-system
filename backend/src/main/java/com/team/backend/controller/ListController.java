@@ -1,6 +1,7 @@
 package com.team.backend.controller;
 
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.helpers.ListHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.StatusRepository;
@@ -88,7 +89,7 @@ public class ListController {
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
         Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
         Status completedStatus = statusRepository.findByName("zrealizowany").orElseThrow(RuntimeException::new);
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         updatedList.setStatus(chosenStatus);
 

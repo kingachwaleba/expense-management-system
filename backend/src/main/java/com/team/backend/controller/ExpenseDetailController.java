@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.model.Expense;
 import com.team.backend.model.ExpenseDetail;
 import com.team.backend.model.User;
@@ -36,7 +37,7 @@ public class ExpenseDetailController {
     @PreAuthorize("@authenticationService.isWalletMemberByExpense(#id)")
     public ResponseEntity<?> addUser(@PathVariable int id, @PathVariable String login) {
         Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
-        User user = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+        User user = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
         BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
                 .getExpenseDetailSet().size() + 1), 2, RoundingMode.CEILING);

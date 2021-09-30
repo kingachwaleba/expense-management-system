@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.UserStatusRepository;
@@ -41,7 +42,7 @@ public class AuthenticationService {
 
     public boolean isWalletOwner(int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
         WalletUser walletOwnerDetail = wallet.getWalletUserSet().stream()
                 .filter(
@@ -54,7 +55,7 @@ public class AuthenticationService {
     }
 
     public boolean checkIfMember(Wallet wallet) {
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
         UserStatus memberStatus = userStatusRepository.findByName("członek").orElseThrow(RuntimeException::new);
         List<WalletUser> walletOwnerDetail = wallet.getWalletUserSet().stream()
@@ -77,7 +78,7 @@ public class AuthenticationService {
     public boolean isInvitationOwner(int id) {
         WalletUser walletUser = walletUserRepository.findById(id).orElseThrow(RuntimeException::new);
         User user = walletUser.getUser();
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return user.equals(currentUser);
     }
@@ -92,7 +93,7 @@ public class AuthenticationService {
     public boolean ifExpenseOwner(int id) {
         Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
         User expenseOwner = expense.getUser();
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return currentUser.equals(expenseOwner);
     }
@@ -114,7 +115,7 @@ public class AuthenticationService {
     public boolean isWalletMemberByExpenseDetail(int id) {
         ExpenseDetail expenseDetail = expenseDetailRepository.findById(id).orElseThrow(RuntimeException::new);
         User user = expenseDetail.getUser();
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return user.equals(currentUser);
     }
@@ -135,7 +136,7 @@ public class AuthenticationService {
 
     public boolean isNotificationOwner(int id) {
         Message notification = messageService.findById(id).orElseThrow(RuntimeException::new);
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         User receiver = notification.getReceiver();
 
         return receiver.equals(currentUser);
