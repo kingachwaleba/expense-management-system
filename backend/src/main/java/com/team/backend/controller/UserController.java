@@ -91,7 +91,7 @@ public class UserController {
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         if (!userService.checkIfValidOldPassword(user, oldPassword))
-            throw new RuntimeException();
+            return new ResponseEntity<>("Wrong password has been given!", HttpStatus.CONFLICT);
 
         userService.changeUserPassword(user, password);
 
@@ -112,7 +112,7 @@ public class UserController {
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         if (!userService.checkIfValidOldPassword(user, password))
-            throw new RuntimeException();
+            return new ResponseEntity<>("Wrong password has been given!", HttpStatus.CONFLICT);
 
         if (!userService.ifAccountDeleted(user))
             return new ResponseEntity<>("Cannot delete account!", HttpStatus.CONFLICT);
