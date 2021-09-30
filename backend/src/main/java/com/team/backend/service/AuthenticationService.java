@@ -1,6 +1,7 @@
 package com.team.backend.service;
 
 import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.UserStatusRepository;
@@ -41,7 +42,7 @@ public class AuthenticationService {
     }
 
     public boolean isWalletOwner(int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
         WalletUser walletOwnerDetail = wallet.getWalletUserSet().stream()
@@ -70,7 +71,7 @@ public class AuthenticationService {
     }
 
     public boolean isWalletMember(int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         return checkIfMember(wallet);
     }

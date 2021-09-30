@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.helpers.ListHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.StatusRepository;
@@ -49,7 +50,7 @@ public class ListController {
     @GetMapping("/wallet/{id}/shopping-lists")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> all(@PathVariable int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         java.util.List<List> shoppingLists = listService.findAllByWallet(wallet);
         java.util.List<String> deletedUserList = walletService.findDeletedUserList(wallet);
         Map<String, Object> map = new HashMap<>();
@@ -63,7 +64,7 @@ public class ListController {
     @PostMapping("/wallet/{id}/create-shopping-list")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> createList(@PathVariable int id, @Valid @RequestBody ListHolder listHolder) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         listService.save(listHolder, wallet);
 

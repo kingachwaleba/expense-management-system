@@ -1,6 +1,7 @@
 package com.team.backend.controller;
 
 import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.Message;
 import com.team.backend.model.User;
@@ -38,7 +39,7 @@ public class MessageController {
     @GetMapping("/wallet/{id}/message")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> all(@PathVariable int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         return new ResponseEntity<>(messageService.findAllByWalletAndTypeOrderByDate(wallet, "M"), HttpStatus.OK);
     }
@@ -52,7 +53,7 @@ public class MessageController {
 
     @PostMapping("/wallet/{id}/message")
     public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         messageService.save(message, wallet, user);
@@ -71,7 +72,7 @@ public class MessageController {
     @PostMapping("/send-notification/wallet/{id}")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> sendDebtNotification(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User debtor = walletUserRepository
                 .findByWalletAndUser(wallet, debtsHolder.getDebtor()).orElseThrow(RuntimeException::new).getUser();
         User creditor = walletUserRepository

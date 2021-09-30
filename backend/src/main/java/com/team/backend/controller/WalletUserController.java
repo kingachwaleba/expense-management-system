@@ -1,6 +1,7 @@
 package com.team.backend.controller;
 
 import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
@@ -79,7 +80,7 @@ public class WalletUserController {
     @PutMapping("/pay-debt/wallet/{id}")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> payDebt(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         WalletUser debtorInfo = walletUserRepository
                 .findByWalletAndUser(wallet, debtsHolder.getDebtor()).orElseThrow(RuntimeException::new);

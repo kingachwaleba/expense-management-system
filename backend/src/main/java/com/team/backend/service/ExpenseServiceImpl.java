@@ -1,6 +1,7 @@
 package com.team.backend.service;
 
 import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
@@ -35,7 +36,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void save(ExpenseHolder expenseHolder, int walletId) {
-        Wallet wallet = walletService.findById(walletId).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(walletId).orElseThrow(WalletNotFoundException::new);
         Expense expense = expenseHolder.getExpense();
         List<String> userList = expenseHolder.getUserList();
         User owner = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
@@ -264,7 +265,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Map<String, Object> getAll(int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         List<String> deletedUserList = walletService.findDeletedUserList(wallet);
         Map<String, Object> map = new HashMap<>();
         map.put("allExpenses", findAllByWalletOrderByDate(wallet));
