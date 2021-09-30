@@ -56,10 +56,6 @@ public class Expense {
     @JoinColumn(name = "user_id", referencedColumnName="id", nullable = false)
     private User user;
 
-    @Column(length = 1)
-    @Size(min = 1, max = 1)
-    private String period;
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy="expense", cascade = CascadeType.ALL)
     private Set<ExpenseDetail> expenseDetailSet = new HashSet<>();

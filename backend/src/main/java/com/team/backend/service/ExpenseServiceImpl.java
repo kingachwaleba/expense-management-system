@@ -183,7 +183,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
 
         updatedExpense.setCategory(newExpense.getCategory());
-        updatedExpense.setPeriod(newExpense.getPeriod());
 
         save(updatedExpense);
 
