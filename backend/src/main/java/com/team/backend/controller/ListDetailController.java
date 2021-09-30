@@ -1,5 +1,9 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.ListDetailNotFoundException;
+import com.team.backend.exception.ListNotFoundException;
+import com.team.backend.exception.StatusNotFoundException;
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.model.List;
 import com.team.backend.model.ListDetail;
 import com.team.backend.model.Status;
@@ -33,7 +37,7 @@ public class ListDetailController {
     @PostMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> addOne(@PathVariable int id, @Valid @RequestBody ListDetail listDetail) {
-        List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         listDetailService.save(listDetail, shoppingList);
 
@@ -43,9 +47,9 @@ public class ListDetailController {
     @PutMapping("/change-element-status/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
-        ListDetail updatedElement = listDetailService.findById(id).orElseThrow(RuntimeException::new);
-        Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        ListDetail updatedElement = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
+        Status chosenStatus = statusRepository.findById(statusId).orElseThrow(StatusNotFoundException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         updatedElement.setStatus(chosenStatus);
 
@@ -62,7 +66,7 @@ public class ListDetailController {
     @PutMapping("/edit-list-element/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> editListElement(@PathVariable int id, @RequestBody ListDetail listDetail) {
-        ListDetail updatedElement = listDetailService.findById(id).orElseThrow(RuntimeException::new);
+        ListDetail updatedElement = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
 
         updatedElement.setName(listDetail.getName());
         updatedElement.setQuantity(listDetail.getQuantity());
@@ -76,7 +80,7 @@ public class ListDetailController {
     @DeleteMapping("/delete-list-element/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> deleteOne(@PathVariable int id) {
-        ListDetail listDetail = listDetailService.findById(id).orElseThrow(RuntimeException::new);
+        ListDetail listDetail = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
         List shoppingList = listDetail.getList();
 
         listDetailService.delete(listDetail);

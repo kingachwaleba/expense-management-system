@@ -1,5 +1,7 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserRepository;
 import com.team.backend.repository.WalletUserRepository;
@@ -131,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> findUserForWallet(int id, String infix) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
 
         List<User> userListInfix = findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
@@ -151,7 +153,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> findUser(String infix) {
-        User loggedInUser = findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User loggedInUser = findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         List<User> userList = findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
         List<String> userLoginList = new ArrayList<>();
@@ -165,7 +167,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, String> findUserDetails() {
-        User user = findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         List<Wallet> wallets = walletService.findWallets(user);
 

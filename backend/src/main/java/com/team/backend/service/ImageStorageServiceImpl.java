@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.ImageLoadException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,9 @@ public class ImageStorageServiceImpl implements ImageStorageService {
             Path file = Paths.get(imageName);
             Resource resource = new UrlResource(file.toUri());
 
-            if (resource.exists() || resource.isReadable()) {
+            if (resource.exists() || resource.isReadable())
                 return resource;
-            } else {
-                throw new RuntimeException("Could not read the image!");
-            }
+            else throw new ImageLoadException();
         } catch (MalformedURLException exception) {
             throw new RuntimeException("Error: " + exception.getMessage());
         }

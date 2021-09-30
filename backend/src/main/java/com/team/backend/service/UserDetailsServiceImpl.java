@@ -1,10 +1,10 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.model.User;
 import com.team.backend.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(s).orElseThrow(() ->
-                new UsernameNotFoundException("User " + s + " Not Found")
-        );
+    public UserDetails loadUserByUsername(String s) {
+        User user = userRepository.findByEmail(s).orElseThrow(UserNotFoundException::new);
 
         return UserPrinciple.build(user);
     }

@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.*;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
@@ -34,10 +35,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void save(ExpenseHolder expenseHolder, int walletId) {
-        Wallet wallet = walletService.findById(walletId).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(walletId).orElseThrow(WalletNotFoundException::new);
         Expense expense = expenseHolder.getExpense();
         List<String> userList = expenseHolder.getUserList();
-        User owner = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User owner = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         Map<Integer, BigDecimal> balanceMap = new HashMap<>();
 
         LocalDateTime date = LocalDateTime.now();
@@ -51,12 +52,12 @@ public class ExpenseServiceImpl implements ExpenseService {
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
 
         WalletUser walletUser = walletUserList.stream()
-                .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(RuntimeException::new);
+                .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(WalletUserNotFoundException::new);
         BigDecimal balance = walletUser.getBalance().add(expense.getTotal_cost());
         walletUser.setBalance(balance);
 
         for (String login : userList) {
-            User member = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+            User member = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
             ExpenseDetail expenseDetail = new ExpenseDetail();
 
@@ -64,7 +65,8 @@ public class ExpenseServiceImpl implements ExpenseService {
             expenseDetail.setUser(member);
 
             walletUser = walletUserList.stream()
-                    .filter(temp -> temp.getUser().equals(member)).findAny().orElseThrow(RuntimeException::new);
+                    .filter(temp -> temp.getUser().equals(member)).findAny()
+                    .orElseThrow(WalletUserNotFoundException::new);
             balance = walletUser.getBalance().subtract(cost);
             balanceMap.put(walletUser.getId(), balance);
 
@@ -75,7 +77,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         balanceMap.forEach(
                 (id, newBalance) ->
-                        walletUserRepository.findById(id).orElseThrow(RuntimeException::new).setBalance(newBalance));
+                        walletUserRepository.findById(id).orElseThrow(WalletUserNotFoundException::new)
+                                .setBalance(newBalance)
+        );
     }
 
     @Override
@@ -122,9 +126,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 
             for (String login : tempList) {
                 if (!userList.contains(login)) {
-                    User temp = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+                    User temp = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
                     ExpenseDetail expenseDetail = expenseDetailRepository
-                            .findByUserAndExpense(temp, updatedExpense).orElseThrow(RuntimeException::new);
+                            .findByUserAndExpense(temp, updatedExpense).orElseThrow(ExpenseDetailNotFoundException::new);
                     updatedExpense.getExpenseDetailSet().remove(expenseDetail);
                     expenseDetailRepository.delete(expenseDetail);
                 }
@@ -137,7 +141,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
                 BigDecimal finalCost = cost;
                 userList.forEach(login -> {
-                    User member = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+                    User member = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
                     ExpenseDetail expenseDetail = new ExpenseDetail();
 
@@ -208,7 +212,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
         List<ExpenseDetail> expenseDetailList = new ArrayList<>(expense.getExpenseDetailSet());
         WalletUser ownerDetails = walletUserList.stream()
-                .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(RuntimeException::new);
+                .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(WalletUserNotFoundException::new);
 
         List<WalletUser> tempList = new ArrayList<>();
         for (WalletUser w : walletUserList)
@@ -252,7 +256,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Map<String, Object> getOne(int id) {
-        Expense expense = findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = findById(id).orElseThrow(ExpenseNotFoundException::new);
         List<String> deletedUserList = walletService.findDeletedUserList(expense.getWallet());
         Map<String, Object> map = new HashMap<>();
         map.put("expense", expense);
@@ -263,7 +267,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Map<String, Object> getAll(int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         List<String> deletedUserList = walletService.findDeletedUserList(wallet);
         Map<String, Object> map = new HashMap<>();
         map.put("allExpenses", findAllByWalletOrderByDate(wallet));

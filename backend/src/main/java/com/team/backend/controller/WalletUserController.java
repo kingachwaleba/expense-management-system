@@ -1,5 +1,9 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.UserStatusNotFoundException;
+import com.team.backend.exception.WalletNotFoundException;
+import com.team.backend.exception.WalletUserNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.User;
 import com.team.backend.model.UserStatus;
@@ -36,8 +40,9 @@ public class WalletUserController {
 
     @GetMapping("/notifications/invitations")
     public ResponseEntity<?> all() {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
-        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący")
+                .orElseThrow(UserStatusNotFoundException::new);
         Set<WalletUser> invitations = walletUserRepository.findAllByUserStatusAndUser(waitingStatus, user);
         List<Map<String, Object>> invitationsList = new ArrayList<>();
 
@@ -59,10 +64,11 @@ public class WalletUserController {
     @PutMapping("/notifications/invitations/{id}")
     @PreAuthorize("@authenticationService.isInvitationOwner(#id)")
     public ResponseEntity<?> manageInvitations(@PathVariable int id, @RequestBody boolean flag) {
-        WalletUser updatedWalletUser = walletUserRepository.findById(id).orElseThrow(RuntimeException::new);
+        WalletUser updatedWalletUser = walletUserRepository.findById(id).orElseThrow(WalletUserNotFoundException::new);
 
         if (flag) {
-            UserStatus memberStatus = userStatusRepository.findByName("członek").orElseThrow(RuntimeException::new);
+            UserStatus memberStatus = userStatusRepository.findByName("członek")
+                    .orElseThrow(UserStatusNotFoundException::new);
             LocalDateTime date = LocalDateTime.now();
             updatedWalletUser.setAccepted_at(date);
             updatedWalletUser.setUserStatus(memberStatus);
@@ -78,12 +84,12 @@ public class WalletUserController {
     @PutMapping("/pay-debt/wallet/{id}")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> payDebt(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         WalletUser debtorInfo = walletUserRepository
-                .findByWalletAndUser(wallet, debtsHolder.getDebtor()).orElseThrow(RuntimeException::new);
+                .findByWalletAndUser(wallet, debtsHolder.getDebtor()).orElseThrow(WalletUserNotFoundException::new);
         WalletUser creditorInfo = walletUserRepository
-                .findByWalletAndUser(wallet, debtsHolder.getCreditor()).orElseThrow(RuntimeException::new);
+                .findByWalletAndUser(wallet, debtsHolder.getCreditor()).orElseThrow(WalletUserNotFoundException::new);
 
         BigDecimal debt = debtsHolder.getHowMuch();
         BigDecimal newDebtorBalance = debtorInfo.getBalance().add(debt);
