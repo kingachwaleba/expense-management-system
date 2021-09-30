@@ -1,6 +1,7 @@
 package com.team.backend.controller;
 
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.team.backend.exception.StatusNotFoundException;
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.helpers.ListHolder;
@@ -87,9 +88,9 @@ public class ListController {
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         List updatedList = listService.findById(id).orElseThrow(RuntimeException::new);
-        Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
-        Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
-        Status completedStatus = statusRepository.findByName("zrealizowany").orElseThrow(RuntimeException::new);
+        Status chosenStatus = statusRepository.findById(statusId).orElseThrow(StatusNotFoundException::new);
+        Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
+        Status completedStatus = statusRepository.findByName("zrealizowany").orElseThrow(StatusNotFoundException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         updatedList.setStatus(chosenStatus);

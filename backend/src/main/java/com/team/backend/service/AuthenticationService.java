@@ -1,7 +1,6 @@
 package com.team.backend.service;
 
-import com.team.backend.exception.UserNotFoundException;
-import com.team.backend.exception.WalletNotFoundException;
+import com.team.backend.exception.*;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.UserStatusRepository;
@@ -44,7 +43,8 @@ public class AuthenticationService {
     public boolean isWalletOwner(int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
-        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel")
+                .orElseThrow(UserStatusNotFoundException::new);
         WalletUser walletOwnerDetail = wallet.getWalletUserSet().stream()
                 .filter(
                         walletUser -> walletUser.getUserStatus().equals(ownerStatus)
@@ -57,8 +57,10 @@ public class AuthenticationService {
 
     public boolean checkIfMember(Wallet wallet) {
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
-        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
-        UserStatus memberStatus = userStatusRepository.findByName("członek").orElseThrow(RuntimeException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel")
+                .orElseThrow(UserStatusNotFoundException::new);
+        UserStatus memberStatus = userStatusRepository.findByName("członek")
+                .orElseThrow(UserStatusNotFoundException::new);
         List<WalletUser> walletOwnerDetail = wallet.getWalletUserSet().stream()
                 .filter(
                         walletUser ->
@@ -77,7 +79,7 @@ public class AuthenticationService {
     }
 
     public boolean isInvitationOwner(int id) {
-        WalletUser walletUser = walletUserRepository.findById(id).orElseThrow(RuntimeException::new);
+        WalletUser walletUser = walletUserRepository.findById(id).orElseThrow(WalletUserNotFoundException::new);
         User user = walletUser.getUser();
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
@@ -85,14 +87,14 @@ public class AuthenticationService {
     }
 
     public boolean isWalletMemberByExpense(int id) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Wallet wallet = expense.getWallet();
 
         return checkIfMember(wallet);
     }
 
     public boolean ifExpenseOwner(int id) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         User expenseOwner = expense.getUser();
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
@@ -100,7 +102,7 @@ public class AuthenticationService {
     }
 
     public boolean ifContainsDeletedMembers(int id) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Wallet wallet = expense.getWallet();
         List<String> deletedUsersList = walletService.findDeletedUserList(wallet);
         List<String> deletedUsersListInExpense = new ArrayList<>();
@@ -114,7 +116,8 @@ public class AuthenticationService {
     }
 
     public boolean isWalletMemberByExpenseDetail(int id) {
-        ExpenseDetail expenseDetail = expenseDetailRepository.findById(id).orElseThrow(RuntimeException::new);
+        ExpenseDetail expenseDetail = expenseDetailRepository.findById(id)
+                .orElseThrow(ExpenseDetailNotFoundException::new);
         User user = expenseDetail.getUser();
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 

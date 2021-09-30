@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.ExpenseNotFoundException;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.Expense;
 import com.team.backend.service.ExpenseService;
@@ -45,7 +46,7 @@ public class ExpenseController {
     @PutMapping("/expense/{id}")
     @PreAuthorize("@authenticationService.ifExpenseOwner(#id) && !@authenticationService.ifContainsDeletedMembers(#id)")
     public ResponseEntity<?> edit(@PathVariable int id, @RequestBody ExpenseHolder expenseHolder) {
-        Expense updatedExpense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense updatedExpense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Expense newExpense = expenseHolder.getExpense();
         List<String> userList = expenseHolder.getUserList();
 
@@ -58,7 +59,7 @@ public class ExpenseController {
     @DeleteMapping("/expense/{id}")
     @PreAuthorize("@authenticationService.ifExpenseOwner(#id) && !@authenticationService.ifContainsDeletedMembers(#id)")
     public ResponseEntity<?> delete(@PathVariable int id) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         expenseService.deleteExpense(expense);
 
         return new ResponseEntity<>("The given expense was deleted!", HttpStatus.OK);

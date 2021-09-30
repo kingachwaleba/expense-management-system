@@ -2,6 +2,7 @@ package com.team.backend.controller;
 
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
+import com.team.backend.exception.WalletUserNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.Message;
 import com.team.backend.model.User;
@@ -58,13 +59,13 @@ public class MessageController {
 
         messageService.save(message, wallet, user);
 
-        List<Map<String, Object>> userList = walletService.findUserList(wallet);
-        for (Map<String, Object> mapUser : userList) {
-            User user2 = userService.findByLogin(mapUser.get("login").toString()).orElseThrow(RuntimeException::new);
-
+//        List<Map<String, Object>> userList = walletService.findUserList(wallet);
+//        for (Map<String, Object> mapUser : userList) {
+//            User user2 = userService.findByLogin(mapUser.get("login").toString()).orElseThrow(UserNotFoundException::new);
+//
 //            if (user2.getId() != user.getId())
 //                messageService.saveNotifications(wallet, user2, user);
-        }
+//        }
 
         return ResponseEntity.ok("New message has been sent!");
     }
@@ -74,9 +75,11 @@ public class MessageController {
     public ResponseEntity<?> sendDebtNotification(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User debtor = walletUserRepository
-                .findByWalletAndUser(wallet, debtsHolder.getDebtor()).orElseThrow(RuntimeException::new).getUser();
+                .findByWalletAndUser(wallet, debtsHolder.getDebtor()).orElseThrow(WalletUserNotFoundException::new)
+                .getUser();
         User creditor = walletUserRepository
-                .findByWalletAndUser(wallet, debtsHolder.getCreditor()).orElseThrow(RuntimeException::new).getUser();
+                .findByWalletAndUser(wallet, debtsHolder.getCreditor()).orElseThrow(WalletUserNotFoundException::new)
+                .getUser();
         BigDecimal debt = debtsHolder.getHowMuch();
         String content = String.valueOf(debt);
 

@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.StatusNotFoundException;
 import com.team.backend.helpers.ListHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.ListRepository;
@@ -21,7 +22,7 @@ public class ListServiceImpl implements ListService {
 
     @Override
     public void save(ListHolder listHolder, Wallet wallet) {
-        Status status = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        Status status = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
 
         java.util.List<ListDetail> listDetailList = listHolder.getListDetailList();
         List shoppingList = listHolder.getList();

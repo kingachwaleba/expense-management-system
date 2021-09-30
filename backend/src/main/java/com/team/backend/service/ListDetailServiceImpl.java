@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.StatusNotFoundException;
 import com.team.backend.model.List;
 import com.team.backend.model.ListDetail;
 import com.team.backend.model.Status;
@@ -23,7 +24,7 @@ public class ListDetailServiceImpl implements ListDetailService {
 
     @Override
     public void save(ListDetail listDetail, List shoppingList) {
-        Status status = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        Status status = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
 
         listDetail.setUser(null);
         listDetail.setStatus(status);

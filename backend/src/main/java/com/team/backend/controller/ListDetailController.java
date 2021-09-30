@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.StatusNotFoundException;
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.model.List;
 import com.team.backend.model.ListDetail;
@@ -45,7 +46,7 @@ public class ListDetailController {
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         ListDetail updatedElement = listDetailService.findById(id).orElseThrow(RuntimeException::new);
-        Status chosenStatus = statusRepository.findById(statusId).orElseThrow(RuntimeException::new);
+        Status chosenStatus = statusRepository.findById(statusId).orElseThrow(StatusNotFoundException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         updatedElement.setStatus(chosenStatus);

@@ -1,6 +1,7 @@
 package com.team.backend.controller;
 
 import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.UserStatusNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
@@ -105,7 +106,8 @@ public class WalletController {
     public ResponseEntity<?> addUsers(@PathVariable int id, @PathVariable String userLogin) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
-        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący")
+                .orElseThrow(UserStatusNotFoundException::new);
 
         walletService.saveUser(userLogin, updatedWallet, waitingStatus);
 
