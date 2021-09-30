@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "list")
-public class List {
+public class ShoppingList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
