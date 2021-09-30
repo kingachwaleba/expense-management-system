@@ -81,7 +81,7 @@ public class WalletController {
     }
 
     @PutMapping("/wallet/{id}")
-    @PreAuthorize("@authenticationService.isWalletMember(#id)")
+    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Map<String, String> map) {
         Wallet updatedWallet = walletService.findById(id).orElseThrow(RuntimeException::new);
 

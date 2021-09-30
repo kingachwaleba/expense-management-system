@@ -56,7 +56,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/expense/{id}")
-    @PreAuthorize("@authenticationService.isWalletMemberByExpense(#id)")
+    @PreAuthorize("@authenticationService.ifExpenseOwner(#id) && !@authenticationService.ifContainsDeletedMembers(#id)")
     public ResponseEntity<?> delete(@PathVariable int id) {
         Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
         expenseService.deleteExpense(expense);
