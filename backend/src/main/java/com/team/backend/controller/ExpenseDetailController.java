@@ -2,10 +2,8 @@ package com.team.backend.controller;
 
 import com.team.backend.model.Expense;
 import com.team.backend.model.ExpenseDetail;
-import com.team.backend.model.PaymentStatus;
 import com.team.backend.model.User;
 import com.team.backend.repository.ExpenseDetailRepository;
-import com.team.backend.repository.PaymentStatusRepository;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
