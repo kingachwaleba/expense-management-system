@@ -97,7 +97,6 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> sendInvitationToUser(@Header("Authorization") String accessToken, @Path("id") int id, @Path("userLogin") String userLogin);
 
-
     @PUT("wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body Map<String, String> map);
