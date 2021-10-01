@@ -215,7 +215,9 @@ public class WalletServiceImpl implements WalletService {
                 Map<Integer, BigDecimal> balanceMap = new HashMap<>();
                 walletUserList.forEach(wu -> balanceMap.put(wu.getUser().getId(), wu.getBalance()));
                 List<DebtsHolder> debtsList = new ArrayList<>();
-                simplifyDebts(balanceMap, debtsList);
+
+                if (walletUserList.size() > 1)
+                    simplifyDebts(balanceMap, debtsList);
 
                 for (DebtsHolder debtsHolder : debtsList)
                     if ((debtsHolder.getDebtor().equals(user) || debtsHolder.getCreditor().equals(user))
