@@ -1,5 +1,9 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.StatusNotFoundException;
+import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.exception.UserStatusNotFoundException;
+import com.team.backend.exception.WalletUserNotFoundException;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
@@ -30,7 +34,7 @@ public class WalletServiceImpl implements WalletService {
     private final ExpenseService expenseService;
 
     public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository,
-                             UserService userService, WalletUserRepository walletUserRepository,
+                             @Lazy UserService userService, WalletUserRepository walletUserRepository,
                              ListService listService, StatusRepository statusRepository,
                              ListDetailService listDetailService, MessageService messageService,
                              @Lazy ExpenseService expenseService) {
@@ -47,7 +51,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public void saveUser(String userLogin, Wallet wallet, UserStatus userStatus) {
-        User user = userService.findByLogin(userLogin).orElseThrow(RuntimeException::new);
+        User user = userService.findByLogin(userLogin).orElseThrow(UserNotFoundException::new);
 
         LocalDateTime date = LocalDateTime.now();
 
@@ -73,8 +77,10 @@ public class WalletServiceImpl implements WalletService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserLogin = authentication.getName();
 
-        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
-        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel")
+                .orElseThrow(UserStatusNotFoundException::new);
+        UserStatus waitingStatus = userStatusRepository.findByName("oczekujący")
+                .orElseThrow(UserStatusNotFoundException::new);
 
         // Save the wallet's owner
         saveUser(currentUserLogin, wallet, ownerStatus);
@@ -104,27 +110,25 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional
-    public boolean deleteUser(Wallet wallet, User user) {
-        WalletUser userDetail = walletUserRepository.findByWalletAndUser(wallet, user)
-                .orElseThrow(RuntimeException::new);
-
-        if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+    public boolean delete(WalletUser walletUser, Wallet wallet, User user) {
+        if (walletUser.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
                 && !user.equals(findOwner(wallet))) {
-            leaveWallet(userDetail, wallet, user);
+            leaveWallet(walletUser, wallet, user);
 
             return true;
-        } else if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+        } else if (walletUser.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
                 && user.equals(findOwner(wallet)) && findWalletUserList(wallet).size() == 1) {
             delete(wallet);
             return true;
-        } else if (userDetail.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
+        } else if (walletUser.getBalance().compareTo(BigDecimal.valueOf(0.00)) == 0
                 && user.equals(findOwner(wallet)) && findWalletUserList(wallet).size() > 1) {
-            leaveWallet(userDetail, wallet, user);
+            leaveWallet(walletUser, wallet, user);
 
             List<WalletUser> walletUserList = findWalletUserList(wallet);
 
             walletUserList.sort(Comparator.comparing(WalletUser::getAccepted_at));
-            UserStatus ownerUserStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
+            UserStatus ownerUserStatus = userStatusRepository.findByName("właściciel")
+                    .orElseThrow(UserStatusNotFoundException::new);
             walletUserList.get(0).setUserStatus(ownerUserStatus);
 
             return true;
@@ -133,13 +137,23 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
+    public boolean deleteUser(Wallet wallet, User user) {
+        WalletUser userDetail = walletUserRepository.findByWalletAndUser(wallet, user)
+                .orElseThrow(WalletUserNotFoundException::new);
+
+        return delete(userDetail, wallet, user);
+    }
+
+    @Override
     public void leaveWallet(WalletUser walletUser, Wallet wallet, User user) {
-        UserStatus deletedUserStatus = userStatusRepository.findByName("usunięty").orElseThrow(RuntimeException::new);
+        UserStatus deletedUserStatus = userStatusRepository.findByName("usunięty")
+                .orElseThrow(UserStatusNotFoundException::new);
         walletUser.setUserStatus(deletedUserStatus);
         walletUserRepository.save(walletUser);
 
-        Status reservedStatus = statusRepository.findByName("zarezerwowany").orElseThrow(RuntimeException::new);
-        Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(RuntimeException::new);
+        Status reservedStatus = statusRepository.findByName("zarezerwowany").orElseThrow(StatusNotFoundException::new);
+        Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
         List<com.team.backend.model.List> shoppingList = listService.
                 findAllByUserAndWalletAndStatus(user, wallet, reservedStatus);
         shoppingList.forEach(list -> {
@@ -166,8 +180,10 @@ public class WalletServiceImpl implements WalletService {
     public List<Wallet> findWallets(User user) {
         List<Wallet> walletList = new ArrayList<>();
 
-        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
-        UserStatus memberStatus = userStatusRepository.findByName("członek").orElseThrow(RuntimeException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel")
+                .orElseThrow(UserStatusNotFoundException::new);
+        UserStatus memberStatus = userStatusRepository.findByName("członek")
+                .orElseThrow(UserStatusNotFoundException::new);
 
         Set<WalletUser> walletsOwner = walletUserRepository.findAllByUserStatusAndUser(ownerStatus, user);
         Set<WalletUser> walletsMember = walletUserRepository.findAllByUserStatusAndUser(memberStatus, user);
@@ -182,7 +198,7 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public List<Map<String, Object>> findUserList(Wallet wallet) {
         List<Map<String, Object>> userList = new ArrayList<>();
-        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         for (WalletUser walletUser : wallet.getWalletUserSet())
             if (walletUser.getUserStatus().getName().equals("właściciel")
@@ -285,8 +301,8 @@ public class WalletServiceImpl implements WalletService {
         balanceMap.replace(minKey, balanceMap.get(minKey).add(min).setScale(2, RoundingMode.HALF_UP));
         balanceMap.replace(maxKey, balanceMap.get(maxKey).subtract(min).setScale(2, RoundingMode.HALF_UP));
 
-        User debtor = userService.findById(minKey).orElseThrow(RuntimeException::new);
-        User creditor = userService.findById(maxKey).orElseThrow(RuntimeException::new);
+        User debtor = userService.findById(minKey).orElseThrow(UserNotFoundException::new);
+        User creditor = userService.findById(maxKey).orElseThrow(UserNotFoundException::new);
 
         DebtsHolder debtsHolder = new DebtsHolder(debtor, creditor, min);
         debtsList.add(debtsHolder);
@@ -298,7 +314,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public Map<String, Object> getOne(Wallet wallet) {
-        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User loggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -311,7 +327,7 @@ public class WalletServiceImpl implements WalletService {
         map.put("walletExpensesCost", expenseService.calculateExpensesCost(wallet));
         map.put("userExpensesCost", expenseService.calculateExpensesCostForUser(wallet, loggedInUser));
         map.put("loggedInUserBalance", walletUserRepository.findByWalletAndUser(wallet, loggedInUser)
-                .orElseThrow(RuntimeException::new).getBalance());
+                .orElseThrow(WalletUserNotFoundException::new).getBalance());
 
         List<Map<String, Object>> userList = findUserList(wallet);
         map.put("userList", userList);
@@ -321,7 +337,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public List<Map<String, Object>> getAll() {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         List<Wallet> wallets = findWallets(user);
 
         List<Map<String, Object>> walletsList = new ArrayList<>();

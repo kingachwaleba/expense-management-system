@@ -19,6 +19,7 @@ public interface MessageService {
     List<Message> findAllByWalletAndTypeOrderByDate(Wallet wallet, String type);
     List<Message> findAllByReceiverAndTypeOrderByDate(User user, String type);
     List<Message> findAllByWallet(Wallet wallet);
+    List<Message> findAllByReceiver(User user);
 
     Optional<Message> findById(Integer id);
 }

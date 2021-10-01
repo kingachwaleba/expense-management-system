@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.*;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.UserStatusRepository;
@@ -40,23 +41,26 @@ public class AuthenticationService {
     }
 
     public boolean isWalletOwner(int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
-        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel")
+                .orElseThrow(UserStatusNotFoundException::new);
         WalletUser walletOwnerDetail = wallet.getWalletUserSet().stream()
                 .filter(
                         walletUser -> walletUser.getUserStatus().equals(ownerStatus)
                 )
-                .findFirst().orElseThrow(RuntimeException::new);
+                .findFirst().orElseThrow(WalletUserNotFoundException::new);
         User owner = walletOwnerDetail.getUser();
 
         return owner.equals(currentUser);
     }
 
     public boolean checkIfMember(Wallet wallet) {
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
-        UserStatus ownerStatus = userStatusRepository.findByName("właściciel").orElseThrow(RuntimeException::new);
-        UserStatus memberStatus = userStatusRepository.findByName("członek").orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        UserStatus ownerStatus = userStatusRepository.findByName("właściciel")
+                .orElseThrow(UserStatusNotFoundException::new);
+        UserStatus memberStatus = userStatusRepository.findByName("członek")
+                .orElseThrow(UserStatusNotFoundException::new);
         List<WalletUser> walletOwnerDetail = wallet.getWalletUserSet().stream()
                 .filter(
                         walletUser ->
@@ -69,36 +73,36 @@ public class AuthenticationService {
     }
 
     public boolean isWalletMember(int id) {
-        Wallet wallet = walletService.findById(id).orElseThrow(RuntimeException::new);
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         return checkIfMember(wallet);
     }
 
     public boolean isInvitationOwner(int id) {
-        WalletUser walletUser = walletUserRepository.findById(id).orElseThrow(RuntimeException::new);
+        WalletUser walletUser = walletUserRepository.findById(id).orElseThrow(WalletUserNotFoundException::new);
         User user = walletUser.getUser();
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return user.equals(currentUser);
     }
 
     public boolean isWalletMemberByExpense(int id) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Wallet wallet = expense.getWallet();
 
         return checkIfMember(wallet);
     }
 
     public boolean ifExpenseOwner(int id) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         User expenseOwner = expense.getUser();
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return currentUser.equals(expenseOwner);
     }
 
     public boolean ifContainsDeletedMembers(int id) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Wallet wallet = expense.getWallet();
         List<String> deletedUsersList = walletService.findDeletedUserList(wallet);
         List<String> deletedUsersListInExpense = new ArrayList<>();
@@ -112,30 +116,31 @@ public class AuthenticationService {
     }
 
     public boolean isWalletMemberByExpenseDetail(int id) {
-        ExpenseDetail expenseDetail = expenseDetailRepository.findById(id).orElseThrow(RuntimeException::new);
+        ExpenseDetail expenseDetail = expenseDetailRepository.findById(id)
+                .orElseThrow(ExpenseDetailNotFoundException::new);
         User user = expenseDetail.getUser();
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return user.equals(currentUser);
     }
 
     public boolean isWalletMemberByShoppingList(int id) {
-        com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(RuntimeException::new);
+        com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
         Wallet wallet = shoppingList.getWallet();
 
         return checkIfMember(wallet);
     }
 
     public boolean isWalletMemberByShoppingListDetail(int id) {
-        ListDetail shoppingListDetail = listDetailService.findById(id).orElseThrow(RuntimeException::new);
+        ListDetail shoppingListDetail = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
         Wallet wallet = shoppingListDetail.getList().getWallet();
 
         return checkIfMember(wallet);
     }
 
     public boolean isNotificationOwner(int id) {
-        Message notification = messageService.findById(id).orElseThrow(RuntimeException::new);
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(RuntimeException::new);
+        Message notification = messageService.findById(id).orElseThrow(MessageNotFoundException::new);
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         User receiver = notification.getReceiver();
 
         return receiver.equals(currentUser);

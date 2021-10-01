@@ -1,11 +1,12 @@
 package com.team.backend.controller;
 
+import com.team.backend.exception.ExpenseDetailNotFoundException;
+import com.team.backend.exception.ExpenseNotFoundException;
+import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.model.Expense;
 import com.team.backend.model.ExpenseDetail;
-import com.team.backend.model.PaymentStatus;
 import com.team.backend.model.User;
 import com.team.backend.repository.ExpenseDetailRepository;
-import com.team.backend.repository.PaymentStatusRepository;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -37,8 +38,8 @@ public class ExpenseDetailController {
     @PutMapping("/expense/{id}/add-user/{login}")
     @PreAuthorize("@authenticationService.isWalletMemberByExpense(#id)")
     public ResponseEntity<?> addUser(@PathVariable int id, @PathVariable String login) {
-        Expense expense = expenseService.findById(id).orElseThrow(RuntimeException::new);
-        User user = userService.findByLogin(login).orElseThrow(RuntimeException::new);
+        Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
+        User user = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
         BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
                 .getExpenseDetailSet().size() + 1), 2, RoundingMode.CEILING);
@@ -63,7 +64,7 @@ public class ExpenseDetailController {
     @DeleteMapping("/expense/{id}/delete-user")
     @PreAuthorize("@authenticationService.isWalletMemberByExpenseDetail(#id)")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
-        ExpenseDetail deletedUser = expenseDetailRepository.findById(id).orElseThrow(RuntimeException::new);
+        ExpenseDetail deletedUser = expenseDetailRepository.findById(id).orElseThrow(ExpenseDetailNotFoundException::new);
         Expense expense = deletedUser.getExpense();
 
         expenseDetailRepository.delete(deletedUser);

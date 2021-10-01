@@ -71,6 +71,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<Message> findAllByReceiver(User user) {
+        return messageRepository.findAllByReceiver(user);
+    }
+
+    @Override
     public Optional<Message> findById(Integer id) {
         return messageRepository.findById(id);
     }
