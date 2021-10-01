@@ -18,12 +18,14 @@ public class EditMemberAdapter extends RecyclerView.Adapter<EditMemberAdapter.Vi
     private final LayoutInflater mInflater;
     private final String mAccessToken;
     private final int mWalletId;
+    private final Boolean mOwner;
 
-    public EditMemberAdapter(Context context, List<Member> members, String accessToken, int walletId) {
+    public EditMemberAdapter(Context context, List<Member> members, String accessToken, int walletId, Boolean owner) {
         mMembers = members;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
         mWalletId = walletId;
+        mOwner = owner;
     }
 
     @Override
@@ -36,10 +38,14 @@ public class EditMemberAdapter extends RecyclerView.Adapter<EditMemberAdapter.Vi
     public void onBindViewHolder(EditMemberAdapter.ViewHolder holder, int position) {
         Member member = mMembers.get(position);
 
+        if(!mOwner) holder.deleteMemberBtn.setVisibility(View.GONE);
+
         holder.memberNameTv.setText(member.getLogin());
         holder.deleteMemberBtn.setOnClickListener(v -> {
             WalletService walletService = new WalletService(holder.itemView.getContext());
             walletService.deleteMember(mAccessToken, mWalletId,member.getLogin());
+           // mMembers.remove(member);
+            notifyDataSetChanged();
         });
     }
 

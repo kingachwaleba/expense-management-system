@@ -172,4 +172,12 @@ public interface ApiInterface  {
     @DELETE("wallet/{id}/user/{userLogin}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteMember(@Header("Authorization") String accessToken, @Path("id") int id, @Path("userLogin") String userLogin);
+
+    @DELETE("wallet/{id}/current-logged-in-user")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteCurrentMember(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @DELETE("wallet/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteWallet(@Header("Authorization") String accessToken, @Path("id") int id);
 }

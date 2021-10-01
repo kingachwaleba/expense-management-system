@@ -10,6 +10,8 @@ import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.service.adapter.WalletAdapter;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -165,8 +167,55 @@ public class WalletService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if(response.code()==409){
+                    Toast.makeText(context,"Nie możesz usunać użytkownika bo ma nieuregulowany bilans.",Toast.LENGTH_LONG).show();
+                }
+                if(response.body()!=null)
+                try {
+                    Toast.makeText(context, response.body().string(),Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void deleteCurrentMember(String accessToken, int id){
+        Call<ResponseBody> call = apiInterface.deleteCurrentMember("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if(response.code()==409){
+                    Toast.makeText(context,"Nie możesz opuścić portfela. Ureguluj bilans!",Toast.LENGTH_LONG).show();
+                }
+                if(response.body()!=null)
+                    try {
+                        Toast.makeText(context, response.body().string(),Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void deleteWallet(String accessToken, int id){
+        Call<ResponseBody> call = apiInterface.deleteWallet("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
