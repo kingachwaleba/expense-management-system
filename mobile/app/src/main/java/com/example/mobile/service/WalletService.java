@@ -170,12 +170,6 @@ public class WalletService {
                 if(response.code()==409){
                     Toast.makeText(context,"Nie możesz usunać użytkownika bo ma nieuregulowany bilans.",Toast.LENGTH_LONG).show();
                 }
-                if(response.body()!=null)
-                try {
-                    Toast.makeText(context, response.body().string(),Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override
@@ -194,12 +188,6 @@ public class WalletService {
                 if(response.code()==409){
                     Toast.makeText(context,"Nie możesz opuścić portfela. Ureguluj bilans!",Toast.LENGTH_LONG).show();
                 }
-                if(response.body()!=null)
-                    try {
-                        Toast.makeText(context, response.body().string(),Toast.LENGTH_LONG).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
             }
 
             @Override
