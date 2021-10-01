@@ -3,6 +3,7 @@ package com.example.mobile.model;
 import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 
 public class Expense {
     @SerializedName("id")
@@ -25,8 +26,10 @@ public class Expense {
     User user;
     @SerializedName("expenseDetailSet")
     HashSet<ExpenseDetail> expenseDetailsSet;
+    @SerializedName("deletedUserList")
+    List<String> deletedUserList;
 
-    public Expense(int id, String name, String date, String receipt_image, Double total_cost, String period, Category category, WalletCreate wallet, User user, HashSet<ExpenseDetail> expenseDetailsSet) {
+    public Expense(int id, String name, String date, String receipt_image, Double total_cost, String period, Category category, WalletCreate wallet, User user, HashSet<ExpenseDetail> expenseDetailsSet, List<String> deletedUserList) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -37,6 +40,7 @@ public class Expense {
         this.wallet = wallet;
         this.user = user;
         this.expenseDetailsSet = expenseDetailsSet;
+        this.deletedUserList = deletedUserList;
     }
 
     public Expense(String name, String receipt_image, Double total_cost, String period, Category category) {
@@ -134,5 +138,13 @@ public class Expense {
 
     public void setExpenseDetailsSet(HashSet<ExpenseDetail> expenseDetailsSet) {
         this.expenseDetailsSet = expenseDetailsSet;
+    }
+
+    public List<String> getDeletedUserList() {
+        return deletedUserList;
+    }
+
+    public void setDeletedUserList(List<String> deletedUserList) {
+        this.deletedUserList = deletedUserList;
     }
 }
