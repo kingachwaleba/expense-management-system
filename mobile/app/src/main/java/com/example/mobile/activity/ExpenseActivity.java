@@ -25,13 +25,12 @@ public class ExpenseActivity extends BaseActivity {
     ExpenseService expenseService;
     User expenseOwner;
 
-    TextView nameExpenseTv, makeWhoTv, categoryTv, periodTv, dateTv, costTv;
+    TextView nameExpenseTv, makeWhoTv, categoryTv, dateTv, costTv;
     Button editExpenseBtn, deleteExpenseBtn;
     RecyclerView forWhoRv;
     MemberAdapter memberAdapter;
     List<Member> seletedUsers, walletUsers;
     String nameExpense, costExpense, categoryExpense;
-    //String periodExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,6 @@ public class ExpenseActivity extends BaseActivity {
         nameExpenseTv = findViewById(R.id.name_tv);
         makeWhoTv = findViewById(R.id.owner_expense_tv);
         categoryTv = findViewById(R.id.category_expanse_tv);
-        periodTv = findViewById(R.id.period_expanse_tv);
         dateTv = findViewById(R.id.date_expense_tv);
         costTv = findViewById(R.id.cost_expense_tv);
         editExpenseBtn = findViewById(R.id.edit_expense_btn);
@@ -67,9 +65,7 @@ public class ExpenseActivity extends BaseActivity {
             costExpense = String.valueOf(expense.getTotal_cost());
             categoryExpense = expense.getCategory().getName();
             expenseOwner = expense.getUser();
-           // periodExpense = expense.getPeriod();
             String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getUser().getLogin();
-           // String period = getResources().getString(R.string.period_label) + " " +  expense.getPeriod();
             String cost = getResources().getString(R.string.cost_label) + " " +  expense.getTotal_cost();
             String category = getResources().getString(R.string.category_label) + " " +  expense.getCategory().getName();
             String date = getResources().getString(R.string.date_label) + " " +  expense.getDate();
