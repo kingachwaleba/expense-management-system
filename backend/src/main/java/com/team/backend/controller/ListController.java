@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,7 +41,7 @@ public class ListController {
     @GetMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> one(@PathVariable int id) {
-        List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
+        ShoppingList shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
         java.util.List<String> deletedUserList = walletService.findDeletedUserList(shoppingList.getWallet());
         Map<String, Object> map = new HashMap<>();
         map.put("shoppingList", shoppingList);
@@ -53,13 +54,8 @@ public class ListController {
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
-        java.util.List<List> shoppingLists = listService.findAllByWallet(wallet);
-        java.util.List<String> deletedUserList = walletService.findDeletedUserList(wallet);
-        Map<String, Object> map = new HashMap<>();
-        map.put("allShoppingLists", shoppingLists);
-        map.put("deletedUserList", deletedUserList);
 
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(listService.findAllByWallet(wallet), HttpStatus.OK);
     }
 
     @Transactional
@@ -76,7 +72,7 @@ public class ListController {
     @PutMapping("/shopping-list/edit/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody TextNode name) {
-        List updatedShoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
+        ShoppingList updatedShoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         updatedShoppingList.setName(name.asText());
 
@@ -88,7 +84,7 @@ public class ListController {
     @PutMapping("/change-list-status/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
-        List updatedList = listService.findById(id).orElseThrow(ListNotFoundException::new);
+        ShoppingList updatedList = listService.findById(id).orElseThrow(ListNotFoundException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(StatusNotFoundException::new);
         Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
         Status completedStatus = statusRepository.findByName("zrealizowany").orElseThrow(StatusNotFoundException::new);
@@ -121,7 +117,7 @@ public class ListController {
     @DeleteMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> delete(@PathVariable int id) {
-        List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
+        ShoppingList shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         listService.delete(shoppingList);
 

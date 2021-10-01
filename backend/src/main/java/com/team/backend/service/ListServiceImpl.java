@@ -7,6 +7,7 @@ import com.team.backend.repository.ListRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class ListServiceImpl implements ListService {
         Status status = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
 
         java.util.List<ListDetail> listDetailList = listHolder.getListDetailList();
-        List shoppingList = listHolder.getList();
+        ShoppingList shoppingList = listHolder.getList();
         shoppingList.setUser(null);
         shoppingList.setWallet(wallet);
         shoppingList.setStatus(status);
@@ -40,12 +41,12 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public void save(List list) {
+    public void save(ShoppingList list) {
         listRepository.save(list);
     }
 
     @Override
-    public void delete(List list) {
+    public void delete(ShoppingList list) {
         listRepository.delete(list);
     }
 
@@ -55,17 +56,17 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public Optional<List> findById(int id) {
+    public Optional<ShoppingList> findById(int id) {
         return listRepository.findById(id);
     }
 
     @Override
-    public java.util.List<List> findAllByWallet(Wallet wallet) {
+    public List<ShoppingList> findAllByWallet(Wallet wallet) {
         return listRepository.findAllByWallet(wallet);
     }
 
     @Override
-    public java.util.List<List> findAllByUserAndWalletAndStatus(User user, Wallet wallet, Status status) {
+    public List<ShoppingList> findAllByUserAndWalletAndStatus(User user, Wallet wallet, Status status) {
         return listRepository.findAllByUserAndWalletAndStatus(user, wallet, status);
     }
 }

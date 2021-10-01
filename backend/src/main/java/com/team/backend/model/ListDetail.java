@@ -32,7 +32,7 @@ public class ListDetail {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "list_id", referencedColumnName="id", nullable = false)
-    private List list;
+    private ShoppingList list;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "unit_id", referencedColumnName="id", nullable = false)

@@ -1,14 +1,15 @@
 package com.team.backend.service;
 
 import com.team.backend.exception.StatusNotFoundException;
-import com.team.backend.model.List;
 import com.team.backend.model.ListDetail;
+import com.team.backend.model.ShoppingList;
 import com.team.backend.model.Status;
 import com.team.backend.model.User;
 import com.team.backend.repository.ListDetailRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +24,7 @@ public class ListDetailServiceImpl implements ListDetailService {
     }
 
     @Override
-    public void save(ListDetail listDetail, List shoppingList) {
+    public void save(ListDetail listDetail, ShoppingList shoppingList) {
         Status status = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
 
         listDetail.setUser(null);
@@ -50,7 +51,7 @@ public class ListDetailServiceImpl implements ListDetailService {
     }
 
     @Override
-    public java.util.List<ListDetail> findAllByUserAndListAndStatus(User user, List list, Status status) {
+    public List<ListDetail> findAllByUserAndListAndStatus(User user, ShoppingList list, Status status) {
         return listDetailRepository.findAllByUserAndListAndStatus(user, list, status);
     }
 }
