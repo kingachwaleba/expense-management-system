@@ -8,10 +8,17 @@ public class ExpenseHolder {
     Expense expense;
     @SerializedName("userList")
     List<String> userList;
+    @SerializedName("deletedUserList")
+    List<String> deletedUserList;
 
     public ExpenseHolder(Expense expense, List<String> userList) {
         this.expense = expense;
         this.userList = userList;
+    }
+
+    public ExpenseHolder(List<String> deletedUserList, Expense expense) {
+        this.expense = expense;
+        this.deletedUserList = deletedUserList;
     }
 
     public Expense getExpense() {
@@ -28,5 +35,13 @@ public class ExpenseHolder {
 
     public void setUserList(List<String> userList) {
         this.userList = userList;
+    }
+
+    public List<String> getDeletedUserList() {
+        return deletedUserList;
+    }
+
+    public void setDeletedUserList(List<String> deletedUserList) {
+        this.deletedUserList = deletedUserList;
     }
 }

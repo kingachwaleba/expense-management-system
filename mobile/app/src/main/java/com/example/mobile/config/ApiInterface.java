@@ -7,6 +7,7 @@ import com.example.mobile.model.ExpenseHolder;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
+import com.example.mobile.model.ListShopHolder;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Member;
 import com.example.mobile.model.Message;
@@ -106,10 +107,6 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<List<ListShop>> getWalletLists(@Header("Authorization") String accessToken, @Path("id") int id);
 
-    @GET("shopping-list/{id}")
-    @Headers("Content-Type: application/json")
-    Call<ListShop> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
-
     @POST("shopping-list/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> addListItem(@Header("Authorization") String accessToken, @Path("id") int id, @Body Product product);
@@ -138,6 +135,14 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> createExpense(@Header("Authorization") String accessToken, @Path("id") int id, @Body ExpenseHolder expenseHolder);
 
+    @GET("shopping-list/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ListShopHolder> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @GET("expense/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ExpenseHolder> getExpenseById(@Header("Authorization") String accessToken, @Path("id") int id);
+
     @DELETE("expense/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteExpense(@Header("Authorization") String accessToken, @Path("id") int id);
@@ -145,10 +150,6 @@ public interface ApiInterface  {
     @GET("wallet/{id}/expenses")
     @Headers("Content-Type: application/json")
     Call<List<Expense>> getAllExpense(@Header("Authorization") String accessToken, @Path("id") int id);
-
-    @GET("expense/{id}")
-    @Headers("Content-Type: application/json")
-    Call<Expense> getExpenseById(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @PUT("expense/{id}")
     @Headers("Content-Type: application/json")

@@ -122,8 +122,8 @@ public class OneListActivity extends BaseActivity {
     protected void initView(){
 
         listService.getListById(listShop -> {
-            nameListTv.setText(listShop.getName());
-            ListItemAdapter listItemAdapter= new ListItemAdapter(OneListActivity.this, listShop.getListDetailSet(), accessToken, login, (nameProduct, quantityProduct, unit, id) -> {
+            nameListTv.setText(listShop.getListShop().getName());
+            ListItemAdapter listItemAdapter= new ListItemAdapter(OneListActivity.this, listShop.getListShop().getListDetailSet(), accessToken, login, (nameProduct, quantityProduct, unit, id) -> {
                 nameItemEt.setText(nameProduct);
                 quantityItemEt.setText(quantityProduct);
                 unitRg.check(unit.getId());
@@ -132,9 +132,9 @@ public class OneListActivity extends BaseActivity {
             });
             listItemRv.setAdapter(listItemAdapter);
 
-            if(listShop.getUser()!=null){
+            if(listShop.getListShop().getUser()!=null){
                 personListCb.setChecked(true);
-                personListCb.setEnabled(listShop.getUser().getLogin().equals(login));
+                personListCb.setEnabled(listShop.getListShop().getUser().getLogin().equals(login));
                 whoTakeListBtn.setVisibility(View.VISIBLE);
             } else {
                 personListCb.setEnabled(true);
@@ -142,22 +142,22 @@ public class OneListActivity extends BaseActivity {
                 whoTakeListBtn.setVisibility(View.INVISIBLE);
             }
 
-            if(listShop.getStatus().getId()==1){
+            if(listShop.getListShop().getStatus().getId()==1){
                 listCb.setChecked(true);
                 personListCb.setEnabled(false);
             } else {
                 listCb.setChecked(false);
             }
 
-            whoTakeListBtn.setOnClickListener(v -> Toast.makeText(this, "To kupi " + listShop.getUser().getLogin(), Toast.LENGTH_SHORT).show());
+            whoTakeListBtn.setOnClickListener(v -> Toast.makeText(this, "To kupi " + listShop.getListShop().getUser().getLogin(), Toast.LENGTH_SHORT).show());
 
             personListCb.setOnClickListener(v -> {
-                if(listShop.getUser()==null){
-                    listShop.setUser(new User(login));
+                if(listShop.getListShop().getUser()==null){
+                    listShop.getListShop().setUser(new User(login));
                     whoTakeListBtn.setVisibility(View.VISIBLE);
                     listService.changeListStatus(accessToken, listId, 2);
-                } else if(listShop.getUser().getLogin().equals(login)){
-                    listShop.setUser(null);
+                } else if(listShop.getListShop().getUser().getLogin().equals(login)){
+                    listShop.getListShop().setUser(null);
                     whoTakeListBtn.setVisibility(View.INVISIBLE);
                     listService.changeListStatus(accessToken, listId, 3);
                 }
@@ -165,25 +165,25 @@ public class OneListActivity extends BaseActivity {
             });
 
             listCb.setOnClickListener(v -> {
-                if(listShop.getStatus().getId() == 3) {
-                    listShop.setUser(new User(login));
-                    listShop.setStatus(new Status(1, "zrealizowany"));
+                if(listShop.getListShop().getStatus().getId() == 3) {
+                    listShop.getListShop().setUser(new User(login));
+                    listShop.getListShop().setStatus(new Status(1, "zrealizowany"));
                     personListCb.setChecked(true);
                     personListCb.setEnabled(false);
                     whoTakeListBtn.setVisibility(View.VISIBLE);
                     listService.changeListStatus(accessToken, listId, 1);
                 }
-                else if(listShop.getStatus().getId() == 2){
-                    listShop.setUser(new User(login));
-                    listShop.setStatus(new Status(1, "zrealizowany"));
+                else if(listShop.getListShop().getStatus().getId() == 2){
+                    listShop.getListShop().setUser(new User(login));
+                    listShop.getListShop().setStatus(new Status(1, "zrealizowany"));
                     listService.changeListStatus(accessToken, listId, 1);
 
                 } else {
-                    listShop.setUser(null);
+                    listShop.getListShop().setUser(null);
                     personListCb.setChecked(false);
                     personListCb.setEnabled(true);
                     whoTakeListBtn.setVisibility(View.INVISIBLE);
-                    listShop.setStatus(new Status(3, "oczekujący"));
+                    listShop.getListShop().setStatus(new Status(3, "oczekujący"));
                     listService.changeListStatus(accessToken, listId, 3);
                 }
                 listItemAdapter.notifyDataSetChanged();

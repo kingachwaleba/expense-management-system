@@ -59,21 +59,21 @@ public class ExpenseActivity extends BaseActivity {
 
 
         expenseService.getExpenseById(expense -> {
-            nameExpense = expense.getName();
-            costExpense = String.valueOf(expense.getTotal_cost());
-            categoryExpense = expense.getCategory().getName();
-            expenseOwner = expense.getUser();
-            String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getUser().getLogin();
-            String cost = getResources().getString(R.string.cost_label) + " " +  expense.getTotal_cost();
-            String category = getResources().getString(R.string.category_label) + " " +  expense.getCategory().getName();
-            String date = getResources().getString(R.string.date_label) + " " +  expense.getDate();
-            nameExpenseTv.setText(expense.getName());
+            nameExpense = expense.getExpense().getName();
+            costExpense = String.valueOf(expense.getExpense().getTotal_cost());
+            categoryExpense = expense.getExpense().getCategory().getName();
+            expenseOwner = expense.getExpense().getUser();
+            String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getExpense().getUser().getLogin();
+            String cost = getResources().getString(R.string.cost_label) + " " +  expense.getExpense().getTotal_cost();
+            String category = getResources().getString(R.string.category_label) + " " +  expense.getExpense().getCategory().getName();
+            String date = getResources().getString(R.string.date_label) + " " +  expense.getExpense().getDate();
+            nameExpenseTv.setText(expense.getExpense().getName());
             makeWhoTv.setText(expenseOwner);
             costTv.setText(cost);
             categoryTv.setText(category);
             dateTv.setText(date);
             seletedUsers.clear();
-            for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
+            for(ExpenseDetail item : expense.getExpense().getExpenseDetailsSet()) {
                 item.getMember().setBalance(item.getCost());
                 seletedUsers.add(item.getMember());
             }

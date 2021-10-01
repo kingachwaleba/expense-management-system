@@ -91,7 +91,6 @@ public class CreateListActivity extends BaseActivity {
             if(nameProductEt.getText().toString().length()==0) nameProductEt.setError("Wprowadź nazwe produktu!");
                 else if(quantityProductEt.getText().toString().length()==0) quantityProductEt.setError("Wprowadź ilość produku!");
                     else {
-                        Log.d("ddd", unit.getId() + " " + unit.getName());
                         productList.add(new Product(nameProductEt.getText().toString(), Double.parseDouble(quantityProductEt.getText().toString()), unit));
                         productCreateListAdapter.notifyDataSetChanged();
                         nameProductEt.setText("");

@@ -1,20 +1,16 @@
 package com.example.mobile.service.adapter;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.activity.OneListActivity;
-import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.model.ListShop;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> {

@@ -2,6 +2,7 @@ package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -112,12 +113,7 @@ public class WalletActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        addExpenseBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(WalletActivity.this, CreateExpenseActivity.class);
-            intent.putExtra("accessToken", accessToken);
-            intent.putExtra("walletId", id);
-            startActivity(intent);
-        });
+
     }
 
     @Override
@@ -234,6 +230,14 @@ public class WalletActivity extends BaseActivity {
                 showExpensesControl = false;
             }
         }, accessToken, id));
+
+        addExpenseBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, CreateExpenseActivity.class);
+            intent.putExtra("accessToken", accessToken);
+            intent.putExtra("walletId", id);
+            intent.putParcelableArrayListExtra("members", (ArrayList<? extends Parcelable>) walletCreate.getUserList());
+            startActivity(intent);
+        });
 
         editMembersBtn.setOnClickListener(v -> {
             Intent intent = new Intent(WalletActivity.this, EditMembersActivity.class);
