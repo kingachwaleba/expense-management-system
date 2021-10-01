@@ -10,10 +10,23 @@ public class Member implements Parcelable {
     Double balance;
     @SerializedName("login")
     String login;
+    @SerializedName("image")
+    String image;
     @SerializedName("userId")
     int userId;
     @SerializedName("debt")
     DebtsHolder debt;
+
+    public Member(String login, String image) {
+        this.login = login;
+        this.image = image;
+    }
+
+    public Member(String login, String image, int userId) {
+        this.login = login;
+        this.image = image;
+        this.userId = userId;
+    }
 
     public Member(Double balance, String login, int userId, DebtsHolder debt) {
         this.balance = balance;
@@ -74,6 +87,14 @@ public class Member implements Parcelable {
 
     public void setDebt(DebtsHolder debt) {
         this.debt = debt;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

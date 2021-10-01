@@ -6,12 +6,11 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
+import com.example.mobile.model.Member;
 import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.service.adapter.WalletAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -41,7 +40,7 @@ public class WalletService {
     }
 
     public interface OnMemberSearchCallback{
-        void onMembersList(List<String> members);
+        void onMembersList(List<Member> members);
     }
 
     public void getUserWallets(String accessToken) {
@@ -77,8 +76,6 @@ public class WalletService {
             }
             @Override
             public void onFailure(@NotNull Call<WalletCreate> call, @NotNull Throwable t) {
-                Log.d("Wallet", t.toString());
-                Log.d("Wallet", call.toString());
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }
@@ -101,15 +98,15 @@ public class WalletService {
     }
 
     public void getMembersByInfix(WalletService.OnMemberSearchCallback callback, String accessToken, String infix){
-        Call<List<String>> call = apiInterface.getMembersByInfix("Bearer " + accessToken, infix);
-        call.enqueue(new Callback<List<String>>() {
+        Call<List<Member>> call = apiInterface.getMembersByInfix("Bearer " + accessToken, infix);
+        call.enqueue(new Callback<List<Member>>() {
             @Override
-            public void onResponse(@NotNull Call<List<String>> call, @NotNull Response<List<String>> response) {
+            public void onResponse(@NotNull Call<List<Member>> call, @NotNull Response<List<Member>> response) {
                 callback.onMembersList(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<List<String>> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<List<Member>> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }
@@ -117,15 +114,15 @@ public class WalletService {
     }
 
     public void getMembersByInfixInWallet(WalletService.OnMemberSearchCallback callback, String accessToken, int walletId, String infix){
-        Call<List<String>> call = apiInterface.getMembersByInfixInWallet("Bearer " + accessToken, walletId, infix);
-        call.enqueue(new Callback<List<String>>() {
+        Call<List<Member>> call = apiInterface.getMembersByInfixInWallet("Bearer " + accessToken, walletId, infix);
+        call.enqueue(new Callback<List<Member>>() {
             @Override
-            public void onResponse(@NotNull Call<List<String>> call, @NotNull Response<List<String>> response) {
+            public void onResponse(@NotNull Call<List<Member>> call, @NotNull Response<List<Member>> response) {
                 callback.onMembersList(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<List<String>> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<List<Member>> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }

@@ -8,6 +8,7 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Member;
 import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
@@ -87,11 +88,11 @@ public interface ApiInterface  {
 
     @GET("find-users/{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<String>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
+    Call<List<Member>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
 
     @GET("wallet/{id}/{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<String>> getMembersByInfixInWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Path("infix") String infix);
+    Call<List<Member>> getMembersByInfixInWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Path("infix") String infix);
 
     @PUT("wallet/{id}/users/{userLogin}")
     @Headers("Content-Type: application/json")

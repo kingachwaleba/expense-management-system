@@ -9,8 +9,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
+import com.example.mobile.model.Member;
 import com.example.mobile.service.WalletService;
-import com.example.mobile.service.adapter.SearchUserAdapter;
+import com.example.mobile.service.adapter.UserListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,14 +43,13 @@ public class AddMemberActivity extends BaseActivity {
 
         browseMembersRv = findViewById(R.id.browse_members_add_rv);
         browseMembersRv.setLayoutManager(new LinearLayoutManager(this));
-        List<String> membersInit = new ArrayList<>();
-        SearchUserAdapter searchUserAdapterInit = new SearchUserAdapter(this, membersInit);
-        browseMembersRv.setAdapter(searchUserAdapterInit);
+        List<Member> membersInit = new ArrayList<>();
+        UserListAdapter userListAdapterInit = new UserListAdapter(this, membersInit, "USER_BROWSER");
+        browseMembersRv.setAdapter(userListAdapterInit);
 
         infixEt.addTextChangedListener(new TextWatcher(){
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -59,26 +59,25 @@ public class AddMemberActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 if(infixEt.getText().toString().length()>0){
                     walletService.getMembersByInfixInWallet(members -> {
-                            SearchUserAdapter searchUserAdapter = new SearchUserAdapter(AddMemberActivity.this, members);
-                            browseMembersRv.setAdapter(searchUserAdapter);
-                            searchUserAdapter.notifyDataSetChanged();
+                            UserListAdapter userListAdapter = new UserListAdapter(AddMemberActivity.this, members, "USER_BROWSER");
+                            browseMembersRv.setAdapter(userListAdapter);
+                            userListAdapter.notifyDataSetChanged();
                     }, accessToken, walletId, infixEt.getText().toString());
                 }
 
                 if(infixEt.getText().toString().length()==0){
-                    searchUserAdapterInit.clear();
-                    browseMembersRv.setAdapter(searchUserAdapterInit);
-                    searchUserAdapterInit.notifyDataSetChanged();
+                    userListAdapterInit.clear();
+                    browseMembersRv.setAdapter(userListAdapterInit);
+                    userListAdapterInit.notifyDataSetChanged();
                 }
-
             }
         });
 
         sendInvitationsBtn.setOnClickListener(v -> {
-            for(int i = 0; i < searchUserAdapterInit.getSelectedUser().size(); i++){
-                walletService.sendInvitationToUser(accessToken, walletId, searchUserAdapterInit.getSelectedUser().get(i));
+            for(int i = 0; i < userListAdapterInit.getSelectedUser().size(); i++){
+                walletService.sendInvitationToUser(accessToken, walletId, userListAdapterInit.getSelectedUser().get(i));
             }
-            searchUserAdapterInit.clearSelected();
+            userListAdapterInit.clearSelected();
             finish();
         });
     }

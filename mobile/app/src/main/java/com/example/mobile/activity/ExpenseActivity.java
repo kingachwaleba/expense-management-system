@@ -9,12 +9,11 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
-import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.ExpenseDetail;
 import com.example.mobile.model.Member;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ExpenseService;
-import com.example.mobile.service.adapter.MemberAdapter;
+import com.example.mobile.service.adapter.UserListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class ExpenseActivity extends BaseActivity {
     TextView nameExpenseTv, makeWhoTv, categoryTv, dateTv, costTv;
     Button editExpenseBtn, deleteExpenseBtn;
     RecyclerView forWhoRv;
-    MemberAdapter memberAdapter;
+    UserListAdapter userListAdapter;
     List<Member> seletedUsers, walletUsers;
     String nameExpense, costExpense, categoryExpense;
 
@@ -44,7 +43,6 @@ public class ExpenseActivity extends BaseActivity {
         Log.d("aaa",  " " + walletId);
 
         expenseService = new ExpenseService(this);
-
         nameExpenseTv = findViewById(R.id.name_tv);
         makeWhoTv = findViewById(R.id.owner_expense_tv);
         categoryTv = findViewById(R.id.category_expanse_tv);
@@ -55,9 +53,9 @@ public class ExpenseActivity extends BaseActivity {
         forWhoRv = findViewById(R.id.for_who_rv);
 
         seletedUsers = new ArrayList<>();
-        memberAdapter = new MemberAdapter(this, seletedUsers, session.getUserDetails().get(SessionManager.KEY_LOGIN));
+        userListAdapter = new UserListAdapter(this, seletedUsers, "USER_EXPENSE");
         forWhoRv.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
-        forWhoRv.setAdapter(memberAdapter);
+        forWhoRv.setAdapter(userListAdapter);
 
 
         expenseService.getExpenseById(expense -> {
@@ -80,7 +78,7 @@ public class ExpenseActivity extends BaseActivity {
                 seletedUsers.add(item.getMember());
             }
 
-            memberAdapter.notifyDataSetChanged();
+            userListAdapter.notifyDataSetChanged();
 
         }, accessToken, expenseId);
 

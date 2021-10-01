@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.WalletCreate;
-import com.example.mobile.service.adapter.EditMemberAdapter;
+import com.example.mobile.service.adapter.UserListAdapter;
 
 public class EditMembersActivity extends BaseActivity {
 
     Button goToSendInvitationBtn;
     RecyclerView membersRv;
     TextView walletNameTv;
-    EditMemberAdapter editMemberAdapter;
+    UserListAdapter userListAdapter;
     String accessToken;
     Boolean owner;
     WalletCreate walletCreate;
@@ -41,9 +41,9 @@ public class EditMembersActivity extends BaseActivity {
 
         owner = walletCreate.getOwner().equals(session.getUserDetails().get(SessionManager.KEY_LOGIN));
 
-        editMemberAdapter = new EditMemberAdapter(this, walletCreate.getUserList(), accessToken, walletCreate.getId(), owner);
+        userListAdapter = new UserListAdapter(this, walletCreate.getUserList(), accessToken, walletCreate.getId(), owner, "USER_EDIT");
         membersRv.setLayoutManager(new LinearLayoutManager(EditMembersActivity.this));
-        membersRv.setAdapter(editMemberAdapter);
+        membersRv.setAdapter(userListAdapter);
 
         goToSendInvitationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(EditMembersActivity.this, AddMemberActivity.class);
