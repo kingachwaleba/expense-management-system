@@ -30,7 +30,7 @@ public class CreateWalletActivity extends BaseActivity{
 
     RadioGroup categoryRg;
     EditText nameEt, descriptionEt, infixEt;
-    Button createBtn;
+    Button createBtn, cancelBtn;
     RecyclerView browseMembersRv;
     List<Category> categories;
 
@@ -49,6 +49,7 @@ public class CreateWalletActivity extends BaseActivity{
         descriptionEt = findViewById(R.id.description_et);
         infixEt = findViewById(R.id.infix_et);
         createBtn = findViewById(R.id.create_wallet_btn);
+        cancelBtn = findViewById(R.id.cancel_btn);
         browseMembersRv = findViewById(R.id.browse_members_rv);
         categoryRg = findViewById(R.id.category_RG);
 
@@ -118,6 +119,11 @@ public class CreateWalletActivity extends BaseActivity{
                     finish();
                 }
             } else nameEt.setError("Podaj nazwe portfela!");
+        });
+
+        cancelBtn.setOnClickListener(v -> {
+            searchUserAdapterInit.clearSelected();
+            finish();
         });
     }
 
