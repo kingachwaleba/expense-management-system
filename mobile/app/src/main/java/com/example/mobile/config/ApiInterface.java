@@ -101,7 +101,6 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body Map<String, String> map);
 
-
     @GET("wallet/{id}/shopping-lists")
     @Headers("Content-Type: application/json")
     Call<List<ListShop>> getWalletLists(@Header("Authorization") String accessToken, @Path("id") int id);
@@ -169,4 +168,8 @@ public interface ApiInterface  {
     @GET("debts-notifications")
     @Headers("Content-Type: application/json")
     Call<List<Message>> getDebtNotification(@Header("Authorization") String accessToken);
+
+    @DELETE("wallet/{id}/user/{userLogin}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteMember(@Header("Authorization") String accessToken, @Path("id") int id, @Path("userLogin") String userLogin);
 }

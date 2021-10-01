@@ -15,7 +15,7 @@
     </TextView>
 
     <Button
-        android:id="@+id/add_user_btn"
+        android:id="@+id/delete_user_btn"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginHorizontal="20dp"

@@ -159,4 +159,19 @@ public class WalletService {
             }
         });
     }
+
+    public void deleteMember(String accessToken, int id, String userLogin){
+        Call<ResponseBody> call = apiInterface.deleteMember("Bearer " + accessToken, id, userLogin);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
 }
