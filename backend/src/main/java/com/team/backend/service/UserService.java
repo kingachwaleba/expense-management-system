@@ -27,7 +27,7 @@ public interface UserService {
 
     BigDecimal calculateUserBalance(User user);
 
-    List<String> findUserForWallet(int id, String infix);
-    List<String> findUser(String infix);
+    List<Map<String, Object>> findUserForWallet(int id, String infix);
+    List<Map<String, Object>> findUser(String infix);
     Map<String, String> findUserDetails();
 }
