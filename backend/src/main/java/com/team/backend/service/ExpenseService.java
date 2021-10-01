@@ -29,5 +29,5 @@ public interface ExpenseService {
     BigDecimal calculateExpensesCostForUser(Wallet wallet, User user);
 
     Map<String, Object> getOne(int id);
-    Map<String, Object> getAll(int id);
+    List<Expense> getAll(int id);
 }

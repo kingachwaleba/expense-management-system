@@ -54,13 +54,8 @@ public class ListController {
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> all(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
-        List<ShoppingList> shoppingLists = listService.findAllByWallet(wallet);
-        List<String> deletedUserList = walletService.findDeletedUserList(wallet);
-        Map<String, Object> map = new HashMap<>();
-        map.put("allShoppingLists", shoppingLists);
-        map.put("deletedUserList", deletedUserList);
 
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(listService.findAllByWallet(wallet), HttpStatus.OK);
     }
 
     @Transactional
