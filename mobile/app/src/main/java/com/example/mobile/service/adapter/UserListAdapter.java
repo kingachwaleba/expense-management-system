@@ -87,6 +87,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 });
                 break;
             case "USER_EXPENSE":
+                holder.userBtn.setVisibility(View.GONE);
+                holder.itemView.setBackgroundResource(R.drawable.bg_round_box_light);
                 String text = member.getLogin() + " " + member.getBalance() + "zł";
                 holder.memberNameTv.setText(text);
                 break;
