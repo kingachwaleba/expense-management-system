@@ -68,8 +68,10 @@ public class UserController {
 
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String image = userService.findByLogin(userDetails.getUsername()).orElseThrow(UserNotFoundException::new)
+                .getImage();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), image, userDetails.getAuthorities()));
     }
 
     @PostMapping("/register")

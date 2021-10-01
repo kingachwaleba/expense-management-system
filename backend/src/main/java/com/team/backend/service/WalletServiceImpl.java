@@ -154,14 +154,14 @@ public class WalletServiceImpl implements WalletService {
 
         Status reservedStatus = statusRepository.findByName("zarezerwowany").orElseThrow(StatusNotFoundException::new);
         Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
-        List<com.team.backend.model.List> shoppingList = listService.
+        List<ShoppingList> shoppingList = listService.
                 findAllByUserAndWalletAndStatus(user, wallet, reservedStatus);
         shoppingList.forEach(list -> {
             list.setStatus(pendingStatus);
             list.setUser(null);
             listService.save(list);
         });
-        List<com.team.backend.model.List> walletShoppingList = listService.findAllByWallet(wallet);
+        List<ShoppingList> walletShoppingList = listService.findAllByWallet(wallet);
         walletShoppingList.forEach(list -> listDetailService
                 .findAllByUserAndListAndStatus(user, list, reservedStatus)
                 .forEach(listDetail -> {
@@ -266,6 +266,7 @@ public class WalletServiceImpl implements WalletService {
 
                 userMap.put("userId", walletUser.getUser().getId());
                 userMap.put("login", walletUser.getUser().getLogin());
+                userMap.put("image", walletUser.getUser().getImage());
 
                 userList.add(userMap);
             }

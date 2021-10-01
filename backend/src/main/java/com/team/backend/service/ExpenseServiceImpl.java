@@ -183,7 +183,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
 
         updatedExpense.setCategory(newExpense.getCategory());
-        updatedExpense.setPeriod(newExpense.getPeriod());
 
         save(updatedExpense);
 
@@ -266,13 +265,9 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Map<String, Object> getAll(int id) {
+    public List<Expense> getAll(int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
-        List<String> deletedUserList = walletService.findDeletedUserList(wallet);
-        Map<String, Object> map = new HashMap<>();
-        map.put("allExpenses", findAllByWalletOrderByDate(wallet));
-        map.put("deletedUserList", deletedUserList);
 
-        return map;
+        return findAllByWalletOrderByDate(wallet);
     }
 }

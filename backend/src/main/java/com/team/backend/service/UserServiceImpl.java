@@ -132,34 +132,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> findUserForWallet(int id, String infix) {
+    public List<Map<String, Object>> findUserForWallet(int id, String infix) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         List<Map<String, Object>> userList = walletService.findAllUsers(wallet);
 
         List<User> userListInfix = findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
-        List<String> userLoginList = new ArrayList<>();
+        List<Map<String, Object>> userLoginList = new ArrayList<>();
         for (User user : userListInfix) {
             Map<String, Object> userMap = new HashMap<>();
 
             userMap.put("userId", user.getId());
             userMap.put("login", user.getLogin());
+            userMap.put("image", user.getImage());
 
             if (!userList.contains(userMap))
-                userLoginList.add(user.getLogin());
+                userLoginList.add(userMap);
         }
 
         return userLoginList;
     }
 
     @Override
-    public List<String> findUser(String infix) {
+    public List<Map<String, Object>> findUser(String infix) {
         User loggedInUser = findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         List<User> userList = findByDeletedAndLoginContaining(String.valueOf(User.AccountType.N), infix);
-        List<String> userLoginList = new ArrayList<>();
+        List<Map<String, Object>> userLoginList = new ArrayList<>();
         for (User user : userList) {
-            if (user.getId() != loggedInUser.getId())
-                userLoginList.add(user.getLogin());
+            if (user.getId() != loggedInUser.getId()) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("login", user.getLogin());
+                map.put("image", user.getImage());
+                userLoginList.add(map);
+            }
         }
 
         return userLoginList;

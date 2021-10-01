@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface ListDetailRepository  extends JpaRepository<ListDetail, Integer> {
 
     Optional<ListDetail> findById(int id);
-    java.util.List<ListDetail> findAllByUserAndListAndStatus(User user, List list, Status status);
+    java.util.List<ListDetail> findAllByUserAndListAndStatus(User user, ShoppingList list, Status status);
 }

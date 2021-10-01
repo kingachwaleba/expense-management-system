@@ -125,7 +125,7 @@ public class AuthenticationService {
     }
 
     public boolean isWalletMemberByShoppingList(int id) {
-        com.team.backend.model.List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
+        ShoppingList shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
         Wallet wallet = shoppingList.getWallet();
 
         return checkIfMember(wallet);

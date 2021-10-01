@@ -4,8 +4,8 @@ import com.team.backend.exception.ListDetailNotFoundException;
 import com.team.backend.exception.ListNotFoundException;
 import com.team.backend.exception.StatusNotFoundException;
 import com.team.backend.exception.UserNotFoundException;
-import com.team.backend.model.List;
 import com.team.backend.model.ListDetail;
+import com.team.backend.model.ShoppingList;
 import com.team.backend.model.Status;
 import com.team.backend.model.User;
 import com.team.backend.repository.StatusRepository;
@@ -37,7 +37,7 @@ public class ListDetailController {
     @PostMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> addOne(@PathVariable int id, @Valid @RequestBody ListDetail listDetail) {
-        List shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
+        ShoppingList shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         listDetailService.save(listDetail, shoppingList);
 
@@ -81,7 +81,7 @@ public class ListDetailController {
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
     public ResponseEntity<?> deleteOne(@PathVariable int id) {
         ListDetail listDetail = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
-        List shoppingList = listDetail.getList();
+        ShoppingList shoppingList = listDetail.getList();
 
         listDetailService.delete(listDetail);
 
