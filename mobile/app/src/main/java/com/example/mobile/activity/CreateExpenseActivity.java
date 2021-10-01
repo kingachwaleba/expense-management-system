@@ -20,17 +20,15 @@ import java.util.List;
 public class CreateExpenseActivity extends BaseActivity {
 
     EditText expenseNameEt, expenseCostEt;
-    RadioGroup perdiodRg, categoryRg;
+    RadioGroup categoryRg;
     Button createExpenseBtn, cancelBtn;
     int walletId;
     String accessToken;
     List<Member> members;
     LinearLayout membersCb;
     List<Category> categoriesExpense;
-    List<String> periods;
-    String selectedPeriod;
     Category selectedCategory;
-    List<String> selectedMebers;
+    List<String> selectedMembers;
     ExpenseService expenseService;
 
     @Override
@@ -47,7 +45,6 @@ public class CreateExpenseActivity extends BaseActivity {
         expenseNameEt = findViewById(R.id.name_expense_et);
         expenseCostEt = findViewById(R.id.cost_et);
         categoryRg = findViewById(R.id.category_expense_RG);
-        perdiodRg = findViewById(R.id.period_RG);
         createExpenseBtn = findViewById(R.id.create_expense_btn);
         cancelBtn = findViewById(R.id.cancel_expense_btn);
         membersCb = findViewById(R.id.members_cb);
@@ -55,10 +52,9 @@ public class CreateExpenseActivity extends BaseActivity {
         cancelBtn.setOnClickListener(v -> finish());
 
         categoriesExpense = MainActivity.getCategoriesExpense();
-        periods = MainActivity.getPeriods();
-        selectedMebers = new ArrayList<>();
+        selectedMembers = new ArrayList<>();
 
-        for(int i = 0; i < categoriesExpense.size(); i++){
+        for (int i = 0; i < categoriesExpense.size(); i++) {
             RadioButton rdbtn = new RadioButton(CreateExpenseActivity.this);
             rdbtn.setId(categoriesExpense.get(i).getId());
             rdbtn.setText(categoriesExpense.get(i).getName());
@@ -66,38 +62,19 @@ public class CreateExpenseActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             categoryRg.addView(rdbtn);
-            if(i == 0) {
+            if (i == 0) {
                 rdbtn.setChecked(true);
                 selectedCategory = new Category(rdbtn.getId(), categoriesExpense.get(i).getName());
             }
         }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb=findViewById(checkedId);
+            RadioButton rb = findViewById(checkedId);
             String radioText = rb.getText().toString();
             selectedCategory = new Category(checkedId, radioText);
         });
 
-        for(int i = 0; i < periods.size(); i++){
-            RadioButton rdbtn = new RadioButton(CreateExpenseActivity.this);
-            rdbtn.setId(i);
-            rdbtn.setText(periods.get(i));
-            rdbtn.setTextAppearance(R.style.simple_label);
-            rdbtn.setTextSize(18);
-            rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
-            perdiodRg.addView(rdbtn);
-            if(i == 0) {
-                rdbtn.setChecked(true);
-                selectedPeriod = periods.get(i);
-            }
-        }
-
-        perdiodRg.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb=findViewById(checkedId);
-            selectedPeriod = rb.getText().toString();
-        });
-
-        for(int i = 0; i < members.size(); i++){
+        for (int i = 0; i < members.size(); i++) {
             CheckBox cb = new CheckBox(CreateExpenseActivity.this);
             cb.setId(members.get(i).getUserId());
             cb.setText(members.get(i).getLogin());
@@ -107,23 +84,24 @@ public class CreateExpenseActivity extends BaseActivity {
             membersCb.addView(cb);
 
             cb.setOnClickListener(v -> {
-                if(cb.isChecked()) selectedMebers.add(cb.getText().toString());
-                   else selectedMebers.remove(cb.getText().toString());
+                if (cb.isChecked()) selectedMembers.add(cb.getText().toString());
+                else selectedMembers.remove(cb.getText().toString());
             });
         }
 
         createExpenseBtn.setOnClickListener(v -> {
-            if(expenseNameEt.getText().toString().length()==0) expenseNameEt.setError("Wpisz nazwe wydatku!");
-                else if(expenseCostEt.getText().toString().length()==0) expenseCostEt.setError("Wpisz kwote wydatku!");
-                else if(selectedMebers.size()==0) Toast.makeText(CreateExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
-                else {
-                Expense expense = new Expense(expenseNameEt.getText().toString(), null, Double.parseDouble(expenseCostEt.getText().toString()), null, selectedCategory);
-                ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMebers);
+            if (expenseNameEt.getText().toString().length() == 0)
+                expenseNameEt.setError("Wpisz nazwe wydatku!");
+            else if (expenseCostEt.getText().toString().length() == 0)
+                expenseCostEt.setError("Wpisz kwote wydatku!");
+            else if (selectedMembers.size() == 0)
+                Toast.makeText(CreateExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
+            else {
+                Expense expense = new Expense(expenseNameEt.getText().toString(), null, Double.parseDouble(expenseCostEt.getText().toString()), selectedCategory);
+                ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMembers);
                 expenseService.createExpense(accessToken, walletId, expenseHolder);
                 finish();
             }
         });
-
-
     }
 }

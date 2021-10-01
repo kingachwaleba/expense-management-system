@@ -310,5 +310,16 @@
                 android:textAppearance="@style/simple_button"
                 android:textColor="@color/light_gray"
                 app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/leave_wallet_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_danger"
+                android:text="@string/leave_wallet"
+                android:textAppearance="@style/simple_button"
+                android:textColor="@color/light_gray"
+                app:backgroundTint="@null" />
     </LinearLayout>
 </ScrollView>

@@ -17,14 +17,17 @@ public class ListShop {
     User user;
     @SerializedName("listDetailSet")
     List<Product> listDetailSet;
+    @SerializedName("deletedUserList")
+    List<String> deletedUserList;
 
-    public ListShop(int id, String name, WalletCreate walletCreate, Status status, User user, List<Product> listDetailSet) {
+    public ListShop(int id, String name, WalletCreate walletCreate, Status status, User user, List<Product> listDetailSet, List<String> deletedUserList) {
         this.id = id;
         this.name = name;
         this.walletCreate = walletCreate;
         this.status = status;
         this.user = user;
         this.listDetailSet = listDetailSet;
+        this.deletedUserList = deletedUserList;
     }
 
     public ListShop(String name, List<Product> listDetailSet) {
@@ -82,5 +85,13 @@ public class ListShop {
 
     public void setListDetailSet(List<Product> listDetailSet) {
         this.listDetailSet = listDetailSet;
+    }
+
+    public List<String> getDeletedUserList() {
+        return deletedUserList;
+    }
+
+    public void setDeletedUserList(List<String> deletedUserList) {
+        this.deletedUserList = deletedUserList;
     }
 }

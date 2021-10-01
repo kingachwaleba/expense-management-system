@@ -64,18 +64,6 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/v_line_white" />
 
-            <EditText
-                android:id="@+id/infix_add_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:background="@drawable/et_simple"
-                android:hint="@string/find_user_hint"
-                android:layout_marginBottom="20dp"
-                android:textColor="@color/light_gray"
-                android:drawableEnd="@drawable/ic_search"
-                android:importantForAutofill="no" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/browse_members_add_rv"
                 android:layout_width="match_parent"

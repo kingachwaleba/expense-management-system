@@ -1,7 +1,6 @@
 package com.example.mobile.model;
 
 import com.google.gson.annotations.SerializedName;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 
 public class Expense {
@@ -15,8 +14,6 @@ public class Expense {
     String receipt_image;
     @SerializedName("total_cost")
     Double total_cost;
-    @SerializedName("period")
-    String period;
     @SerializedName("category")
     Category category;
     @SerializedName("wallet")
@@ -26,32 +23,30 @@ public class Expense {
     @SerializedName("expenseDetailSet")
     HashSet<ExpenseDetail> expenseDetailsSet;
 
-    public Expense(int id, String name, String date, String receipt_image, Double total_cost, String period, Category category, WalletCreate wallet, User user, HashSet<ExpenseDetail> expenseDetailsSet) {
+
+    public Expense(int id, String name, String date, String receipt_image, Double total_cost, Category category, WalletCreate wallet, User user, HashSet<ExpenseDetail> expenseDetailsSet) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.receipt_image = receipt_image;
         this.total_cost = total_cost;
-        this.period = period;
         this.category = category;
         this.wallet = wallet;
         this.user = user;
         this.expenseDetailsSet = expenseDetailsSet;
     }
 
-    public Expense(String name, String receipt_image, Double total_cost, String period, Category category) {
+    public Expense(String name, String receipt_image, Double total_cost, Category category) {
         this.name = name;
         this.receipt_image = receipt_image;
         this.total_cost = total_cost;
-        this.period = period;
         this.category = category;
     }
 
-    public Expense(String name, String receipt_image, Double total_cost, String period, Category category, User user) {
+    public Expense(String name, String receipt_image, Double total_cost, Category category, User user) {
         this.name = name;
         this.receipt_image = receipt_image;
         this.total_cost = total_cost;
-        this.period = period;
         this.category = category;
         this.user = user;
     }
@@ -78,14 +73,6 @@ public class Expense {
 
     public void setTotal_cost(Double total_cost) {
         this.total_cost = total_cost;
-    }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
     }
 
     public Category getCategory() {

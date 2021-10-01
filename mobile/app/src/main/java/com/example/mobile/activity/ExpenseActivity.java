@@ -9,12 +9,11 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
-import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.ExpenseDetail;
 import com.example.mobile.model.Member;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ExpenseService;
-import com.example.mobile.service.adapter.MemberAdapter;
+import com.example.mobile.service.adapter.UserListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +24,12 @@ public class ExpenseActivity extends BaseActivity {
     ExpenseService expenseService;
     User expenseOwner;
 
-    TextView nameExpenseTv, makeWhoTv, categoryTv, periodTv, dateTv, costTv;
+    TextView nameExpenseTv, makeWhoTv, categoryTv, dateTv, costTv;
     Button editExpenseBtn, deleteExpenseBtn;
     RecyclerView forWhoRv;
-    MemberAdapter memberAdapter;
+    UserListAdapter userListAdapter;
     List<Member> seletedUsers, walletUsers;
     String nameExpense, costExpense, categoryExpense;
-    //String periodExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +43,9 @@ public class ExpenseActivity extends BaseActivity {
         Log.d("aaa",  " " + walletId);
 
         expenseService = new ExpenseService(this);
-
         nameExpenseTv = findViewById(R.id.name_tv);
         makeWhoTv = findViewById(R.id.owner_expense_tv);
         categoryTv = findViewById(R.id.category_expanse_tv);
-        periodTv = findViewById(R.id.period_expanse_tv);
         dateTv = findViewById(R.id.date_expense_tv);
         costTv = findViewById(R.id.cost_expense_tv);
         editExpenseBtn = findViewById(R.id.edit_expense_btn);
@@ -57,34 +53,32 @@ public class ExpenseActivity extends BaseActivity {
         forWhoRv = findViewById(R.id.for_who_rv);
 
         seletedUsers = new ArrayList<>();
-        memberAdapter = new MemberAdapter(this, seletedUsers, session.getUserDetails().get(SessionManager.KEY_LOGIN));
+        userListAdapter = new UserListAdapter(this, seletedUsers, "USER_EXPENSE");
         forWhoRv.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
-        forWhoRv.setAdapter(memberAdapter);
+        forWhoRv.setAdapter(userListAdapter);
 
 
         expenseService.getExpenseById(expense -> {
-            nameExpense = expense.getName();
-            costExpense = String.valueOf(expense.getTotal_cost());
-            categoryExpense = expense.getCategory().getName();
-            expenseOwner = expense.getUser();
-           // periodExpense = expense.getPeriod();
-            String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getUser().getLogin();
-           // String period = getResources().getString(R.string.period_label) + " " +  expense.getPeriod();
-            String cost = getResources().getString(R.string.cost_label) + " " +  expense.getTotal_cost();
-            String category = getResources().getString(R.string.category_label) + " " +  expense.getCategory().getName();
-            String date = getResources().getString(R.string.date_label) + " " +  expense.getDate();
-            nameExpenseTv.setText(expense.getName());
+            nameExpense = expense.getExpense().getName();
+            costExpense = String.valueOf(expense.getExpense().getTotal_cost());
+            categoryExpense = expense.getExpense().getCategory().getName();
+            expenseOwner = expense.getExpense().getUser();
+            String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getExpense().getUser().getLogin();
+            String cost = getResources().getString(R.string.cost_label) + " " +  expense.getExpense().getTotal_cost();
+            String category = getResources().getString(R.string.category_label) + " " +  expense.getExpense().getCategory().getName();
+            String date = getResources().getString(R.string.date_label) + " " +  expense.getExpense().getDate();
+            nameExpenseTv.setText(expense.getExpense().getName());
             makeWhoTv.setText(expenseOwner);
             costTv.setText(cost);
             categoryTv.setText(category);
             dateTv.setText(date);
             seletedUsers.clear();
-            for(ExpenseDetail item : expense.getExpenseDetailsSet()) {
+            for(ExpenseDetail item : expense.getExpense().getExpenseDetailsSet()) {
                 item.getMember().setBalance(item.getCost());
                 seletedUsers.add(item.getMember());
             }
 
-            memberAdapter.notifyDataSetChanged();
+            userListAdapter.notifyDataSetChanged();
 
         }, accessToken, expenseId);
 

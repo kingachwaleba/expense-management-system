@@ -9,7 +9,7 @@ import com.example.mobile.service.ListService;
 public class EditListActivity extends BaseActivity {
 
     EditText newNameListEt;
-    Button saveChangeBtn;
+    Button saveChangeBtn, cancelBtn;
     String oldName, accessToken;
     int listId;
     ListService listService;
@@ -21,6 +21,7 @@ public class EditListActivity extends BaseActivity {
 
         newNameListEt = findViewById(R.id.new_name_list_et);
         saveChangeBtn = findViewById(R.id.update_list_btn);
+        cancelBtn = findViewById(R.id.cancel_list_btn);
         oldName = getIntent().getStringExtra("oldListName");
         accessToken = getIntent().getStringExtra("accessToken");
         listId = getIntent().getIntExtra("listId", 0);
@@ -33,5 +34,7 @@ public class EditListActivity extends BaseActivity {
                 finish();
             } else newNameListEt.setError("Podaj nazwe listy zakupw!");
         });
+
+        cancelBtn.setOnClickListener(v -> finish());
     }
 }

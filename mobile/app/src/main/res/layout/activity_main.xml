@@ -43,6 +43,7 @@
             android:textAppearance="@style/simple_button"
             android:textColor="@color/light_gray"
             app:backgroundTint="@null" />
+
     </LinearLayout>
 </ScrollView>
 

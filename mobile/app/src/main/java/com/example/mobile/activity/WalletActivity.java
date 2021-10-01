@@ -2,6 +2,7 @@ package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.Member;
+import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.ExpenseService;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.WalletService;
@@ -32,7 +34,7 @@ public class WalletActivity extends BaseActivity {
     Boolean showMembersControl, showListsControl, showExpensesControl;
     String accessToken;
     TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
-    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn;
+    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn;
     String walletName, walletDescription, walletCategory;
     ListsAdapter listAdapter;
     ExpensesAdapter expensesAdapter;
@@ -43,9 +45,10 @@ public class WalletActivity extends BaseActivity {
     MemberAdapter memberAdapter;
     ExpenseService expenseService;
     ImageButton showMembersBtn, showListsBtn, showExpensesBtn;
-
     LinearLayout membersListL;
     TextView editMembersBtn;
+
+    WalletCreate walletCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class WalletActivity extends BaseActivity {
         goToChatBtn = findViewById(R.id.open_chat_btn);
         addExpenseBtn = findViewById(R.id.add_expense_btn);
         showExpensesBtn = findViewById(R.id.show_expenses_btn);
+        deleteWalletBtn = findViewById(R.id.delete_wallet_btn);
+        leaveWalletBtn = findViewById(R.id.leave_wallet_btn);
 
         walletExpensesTv = findViewById(R.id.wallet_expenses_tv);
         userExpensesTv = findViewById(R.id.your_expanses_tv);
@@ -108,13 +113,7 @@ public class WalletActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        addExpenseBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(WalletActivity.this, CreateExpenseActivity.class);
-            intent.putExtra("accessToken", accessToken);
-            intent.putExtra("walletId", id);
-            intent.putParcelableArrayListExtra("members", (ArrayList<Member>)members);
-            startActivity(intent);
-        });
+
     }
 
     @Override
@@ -122,6 +121,7 @@ public class WalletActivity extends BaseActivity {
         super.onStart();
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
+            walletCreate = walletModel;
             walletName = walletModel.getName();
             walletCategory = walletModel.getCategory().getName();
             walletDescription = walletModel.getDescription();
@@ -146,6 +146,8 @@ public class WalletActivity extends BaseActivity {
                 descriptionText = getResources().getString(R.string.description_label) + " " + walletDescription;
                 descriptionTv.setText(descriptionText);
             }
+
+            if(!walletCreate.getOwner().equals(session.getUserDetails().get(SessionManager.KEY_LOGIN))) deleteWalletBtn.setVisibility(View.GONE);
 
 
             ownerTv.setText(ownerText);
@@ -174,6 +176,7 @@ public class WalletActivity extends BaseActivity {
             intent.putExtra("name",walletNameTv.getText().toString());
             intent.putExtra("walletId",id);
             intent.putExtra("accessToken", accessToken);
+            intent.putParcelableArrayListExtra("members", (ArrayList<Member>)members);
             startActivity(intent);
         });
 
@@ -228,6 +231,29 @@ public class WalletActivity extends BaseActivity {
             }
         }, accessToken, id));
 
+        addExpenseBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, CreateExpenseActivity.class);
+            intent.putExtra("accessToken", accessToken);
+            intent.putExtra("walletId", id);
+            intent.putParcelableArrayListExtra("members", (ArrayList<? extends Parcelable>) walletCreate.getUserList());
+            startActivity(intent);
+        });
 
+        editMembersBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, EditMembersActivity.class);
+            intent.putExtra("accessToken", accessToken);
+            intent.putExtra("wallet", walletCreate);
+            startActivity(intent);
+        });
+
+        deleteWalletBtn.setOnClickListener(v -> {
+            walletService.deleteWallet(accessToken, walletCreate.getId());
+            finish();
+        });
+
+        leaveWalletBtn.setOnClickListener(v -> {
+            walletService.deleteCurrentMember(accessToken, walletCreate.getId());
+            finish();
+        });
     }
 }

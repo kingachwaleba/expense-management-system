@@ -12,10 +12,11 @@ import android.widget.RadioGroup;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Category;
+import com.example.mobile.model.Member;
 import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.service.WalletService;
-import com.example.mobile.service.adapter.SearchUserAdapter;
+import com.example.mobile.service.adapter.UserListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class CreateWalletActivity extends BaseActivity{
 
     RadioGroup categoryRg;
     EditText nameEt, descriptionEt, infixEt;
-    Button createBtn;
+    Button createBtn, cancelBtn;
     RecyclerView browseMembersRv;
     List<Category> categories;
 
@@ -49,13 +50,14 @@ public class CreateWalletActivity extends BaseActivity{
         descriptionEt = findViewById(R.id.description_et);
         infixEt = findViewById(R.id.infix_et);
         createBtn = findViewById(R.id.create_wallet_btn);
+        cancelBtn = findViewById(R.id.cancel_btn);
         browseMembersRv = findViewById(R.id.browse_members_rv);
         categoryRg = findViewById(R.id.category_RG);
 
         browseMembersRv.setLayoutManager(new LinearLayoutManager(this));
-        List<String> membersInit = new ArrayList<>();
-        SearchUserAdapter searchUserAdapterInit = new SearchUserAdapter(this, membersInit);
-        browseMembersRv.setAdapter(searchUserAdapterInit);
+        List<Member> membersInit = new ArrayList<>();
+        UserListAdapter userListAdapterInit = new UserListAdapter(this, membersInit, "USER_BROWSER");
+        browseMembersRv.setAdapter(userListAdapterInit);
 
         infixEt.addTextChangedListener(new TextWatcher(){
             @Override
@@ -70,16 +72,16 @@ public class CreateWalletActivity extends BaseActivity{
             public void afterTextChanged(Editable s) {
                 if(infixEt.getText().toString().length()>0){
                     walletService.getMembersByInfix(members -> {
-                        SearchUserAdapter searchUserAdapter = new SearchUserAdapter(CreateWalletActivity.this, members);
-                        browseMembersRv.setAdapter(searchUserAdapter);
-                        searchUserAdapter.notifyDataSetChanged();
+                        UserListAdapter userListAdapter = new UserListAdapter(CreateWalletActivity.this, members, "USER_BROWSER");
+                        browseMembersRv.setAdapter(userListAdapter);
+                        userListAdapter.notifyDataSetChanged();
                     }, accessToken, infixEt.getText().toString());
                 }
 
                 if(infixEt.getText().toString().length()==0){
-                    searchUserAdapterInit.clear();
-                    browseMembersRv.setAdapter(searchUserAdapterInit);
-                    searchUserAdapterInit.notifyDataSetChanged();
+                    userListAdapterInit.clear();
+                    browseMembersRv.setAdapter(userListAdapterInit);
+                    userListAdapterInit.notifyDataSetChanged();
                 }
 
             }
@@ -109,15 +111,20 @@ public class CreateWalletActivity extends BaseActivity{
         createBtn.setOnClickListener(v -> {
             String nameS = nameEt.getText().toString();
             if(validateName(nameS)){
-                if(searchUserAdapterInit.getSelectedUser().size()>0){
+                if(userListAdapterInit.getSelectedUser().size()>0){
                     String descriptionS = descriptionEt.getText().toString();
                     walletCreate = new WalletCreate(nameS, descriptionS, category);
-                    WalletHolder walletHolder = new WalletHolder(walletCreate, searchUserAdapterInit.getSelectedUser());
+                    WalletHolder walletHolder = new WalletHolder(walletCreate, userListAdapterInit.getSelectedUser());
                     walletService.createWallet(accessToken, walletHolder);
-                    searchUserAdapterInit.clearSelected();
+                    userListAdapterInit.clearSelected();
                     finish();
                 }
             } else nameEt.setError("Podaj nazwe portfela!");
+        });
+
+        cancelBtn.setOnClickListener(v -> {
+            userListAdapterInit.clearSelected();
+            finish();
         });
     }
 

@@ -28,7 +28,7 @@ public class ExpenseService {
     }
 
     public interface OnExpenseByIdCallback{
-        void onExpense(Expense expense);
+        void onExpense(ExpenseHolder expense);
     }
 
     public void getAllExpenses(ExpenseService.OnExpensesCallback callback, String accessToken, int id){
@@ -48,15 +48,15 @@ public class ExpenseService {
     }
 
     public void getExpenseById(ExpenseService.OnExpenseByIdCallback callback, String accessToken, int id){
-        Call<Expense> call = apiInterface.getExpenseById("Bearer " + accessToken, id);
-        call.enqueue(new Callback<Expense>() {
+        Call<ExpenseHolder> call = apiInterface.getExpenseById("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ExpenseHolder>() {
             @Override
-            public void onResponse(@NotNull Call<Expense> call, @NotNull Response<Expense> response) {
+            public void onResponse(@NotNull Call<ExpenseHolder> call, @NotNull Response<ExpenseHolder> response) {
                 callback.onExpense(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<Expense> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ExpenseHolder> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }

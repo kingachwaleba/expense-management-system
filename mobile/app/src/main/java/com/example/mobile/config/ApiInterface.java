@@ -7,7 +7,9 @@ import com.example.mobile.model.ExpenseHolder;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
+import com.example.mobile.model.ListShopHolder;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.Member;
 import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
@@ -85,31 +87,25 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<List<Unit>> getUnits();
 
-    @GET("{infix}")
+    @GET("find-users/{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<String>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
+    Call<List<Member>> getMembersByInfix(@Header("Authorization") String accessToken, @Path("infix") String infix);
 
     @GET("wallet/{id}/{infix}")
     @Headers("Content-Type: application/json")
-    Call<List<String>> getMembersByInfixInWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Path("infix") String infix);
+    Call<List<Member>> getMembersByInfixInWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Path("infix") String infix);
 
     @PUT("wallet/{id}/users/{userLogin}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> sendInvitationToUser(@Header("Authorization") String accessToken, @Path("id") int id, @Path("userLogin") String userLogin);
 
-
     @PUT("wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body Map<String, String> map);
 
-
     @GET("wallet/{id}/shopping-lists")
     @Headers("Content-Type: application/json")
     Call<List<ListShop>> getWalletLists(@Header("Authorization") String accessToken, @Path("id") int id);
-
-    @GET("shopping-list/{id}")
-    @Headers("Content-Type: application/json")
-    Call<ListShop> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @POST("shopping-list/{id}")
     @Headers("Content-Type: application/json")
@@ -139,6 +135,14 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> createExpense(@Header("Authorization") String accessToken, @Path("id") int id, @Body ExpenseHolder expenseHolder);
 
+    @GET("shopping-list/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ListShopHolder> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @GET("expense/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ExpenseHolder> getExpenseById(@Header("Authorization") String accessToken, @Path("id") int id);
+
     @DELETE("expense/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteExpense(@Header("Authorization") String accessToken, @Path("id") int id);
@@ -146,10 +150,6 @@ public interface ApiInterface  {
     @GET("wallet/{id}/expenses")
     @Headers("Content-Type: application/json")
     Call<List<Expense>> getAllExpense(@Header("Authorization") String accessToken, @Path("id") int id);
-
-    @GET("expense/{id}")
-    @Headers("Content-Type: application/json")
-    Call<Expense> getExpenseById(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @PUT("expense/{id}")
     @Headers("Content-Type: application/json")
@@ -170,4 +170,16 @@ public interface ApiInterface  {
     @GET("debts-notifications")
     @Headers("Content-Type: application/json")
     Call<List<Message>> getDebtNotification(@Header("Authorization") String accessToken);
+
+    @DELETE("wallet/{id}/user/{userLogin}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteMember(@Header("Authorization") String accessToken, @Path("id") int id, @Path("userLogin") String userLogin);
+
+    @DELETE("wallet/{id}/current-logged-in-user")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteCurrentMember(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @DELETE("wallet/{id}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteWallet(@Header("Authorization") String accessToken, @Path("id") int id);
 }

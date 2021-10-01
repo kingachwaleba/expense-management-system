@@ -26,17 +26,14 @@ public class EditExpenseActivity extends BaseActivity {
     int expenseId;
     ExpenseService expenseService;
     String nameExpense, costExpense, category;
-    //String period
     List<Member> selectedUser, allMembers;
     List<String> selectedUsersLogin;
     List<Category> categoriesExpense;
-    List<String> periods;
-    RadioGroup categoryRg, periodsRg;
+    RadioGroup categoryRg;
     LinearLayout membersCb;
     Button editExpenseBtn, cancelEditBtn;
     EditText nameExpenseEt, costExpenseEt;
     Category selectedCategory;
-    String selectedPeriod;
     User expenseOwner;
 
     @Override
@@ -49,7 +46,6 @@ public class EditExpenseActivity extends BaseActivity {
         nameExpense = getIntent().getStringExtra("nameExpense");
         costExpense = getIntent().getStringExtra("costExpense");
         category = getIntent().getStringExtra("categoryExpense");
-       // periodExpense = getIntent().getStringExtra("periodExpanse");
         selectedUser = getIntent().getParcelableArrayListExtra("selectedUsers");
         allMembers = getIntent().getParcelableArrayListExtra("walletUsers");
         expenseOwner = getIntent().getParcelableExtra("expenseOwner");
@@ -57,7 +53,6 @@ public class EditExpenseActivity extends BaseActivity {
         nameExpenseEt = findViewById(R.id.name_expense_et);
         costExpenseEt = findViewById(R.id.cost_expense_et);
         categoryRg = findViewById(R.id.category_RG);
-        periodsRg = findViewById(R.id.period_RG);
         membersCb = findViewById(R.id.members_expense_l);
 
         editExpenseBtn = findViewById(R.id.edit_expense_btn);
@@ -69,7 +64,6 @@ public class EditExpenseActivity extends BaseActivity {
         costExpenseEt.setText(costExpense);
 
         categoriesExpense = MainActivity.getCategoriesExpense();
-        periods = MainActivity.getPeriods();
         selectedUsersLogin = new ArrayList<>();
 
         for (int i = 0; i < selectedUser.size(); i++)
@@ -83,30 +77,16 @@ public class EditExpenseActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             categoryRg.addView(rdbtn);
-            if(categoriesExpense.get(i).getName().equals(category)) rdbtn.setChecked(true);
+            if(categoriesExpense.get(i).getName().equals(category)) {
+                rdbtn.setChecked(true);
+                selectedCategory = new Category(categoriesExpense.get(i).getId(), categoriesExpense.get(i).getName());
+            }
         }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton rb=findViewById(checkedId);
             String radioText = rb.getText().toString();
             selectedCategory = new Category(checkedId, radioText);
-        });
-
-        for(int i = 0; i < periods.size(); i++){
-            RadioButton rdbtn = new RadioButton(EditExpenseActivity.this);
-            rdbtn.setId(i);
-            rdbtn.setText(periods.get(i));
-            rdbtn.setTextAppearance(R.style.simple_label);
-            rdbtn.setTextSize(18);
-            rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
-            periodsRg.addView(rdbtn);
-            if(i == 0) rdbtn.setChecked(true);
-            //if(periods.get(i).equals(period)) rdbtn.setChecked(true);
-        }
-
-        periodsRg.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb=findViewById(checkedId);
-            selectedPeriod = rb.getText().toString();
         });
 
         for(int i = 0; i < allMembers.size(); i++){
@@ -131,7 +111,7 @@ public class EditExpenseActivity extends BaseActivity {
             else if(costExpenseEt.getText().toString().length()==0) costExpenseEt.setError("Wpisz kwote wydatku!");
             else if(selectedUsersLogin.size()==0) Toast.makeText(EditExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
             else {
-                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, Double.parseDouble(costExpenseEt.getText().toString()), null, selectedCategory, expenseOwner);
+                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
                 ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
                 expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
                 finish();

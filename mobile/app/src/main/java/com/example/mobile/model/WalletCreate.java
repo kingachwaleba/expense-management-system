@@ -1,9 +1,11 @@
 package com.example.mobile.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class WalletCreate {
+public class WalletCreate implements Parcelable {
     @SerializedName("id")
     private int id;
     @SerializedName("name")
@@ -77,6 +79,43 @@ public class WalletCreate {
         this.userExpensesCost = userExpensesCost;
         this.loggedInUserBalance = loggedInUserBalance;
     }
+
+    protected WalletCreate(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        category = in.readParcelable(Category.class.getClassLoader());
+        owner = in.readString();
+        userListCounter = in.readInt();
+        userList = in.createTypedArrayList(Member.CREATOR);
+        if (in.readByte() == 0) {
+            walletExpensesCost = null;
+        } else {
+            walletExpensesCost = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            userExpensesCost = null;
+        } else {
+            userExpensesCost = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            loggedInUserBalance = null;
+        } else {
+            loggedInUserBalance = in.readDouble();
+        }
+    }
+
+    public static final Creator<WalletCreate> CREATOR = new Creator<WalletCreate>() {
+        @Override
+        public WalletCreate createFromParcel(Parcel in) {
+            return new WalletCreate(in);
+        }
+
+        @Override
+        public WalletCreate[] newArray(int size) {
+            return new WalletCreate[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -156,6 +195,40 @@ public class WalletCreate {
 
     public void setLoggedInUserBalance(Double loggedInUserBalance) {
         this.loggedInUserBalance = loggedInUserBalance;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeParcelable(category, flags);
+        dest.writeString(owner);
+        dest.writeInt(userListCounter);
+        dest.writeTypedList(userList);
+        if (walletExpensesCost == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(walletExpensesCost);
+        }
+        if (userExpensesCost == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(userExpensesCost);
+        }
+        if (loggedInUserBalance == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(loggedInUserBalance);
+        }
     }
 }
 

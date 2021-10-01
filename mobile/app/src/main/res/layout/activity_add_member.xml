@@ -23,7 +23,7 @@
                 android:id="@+id/edit_members_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_profile_label"
+                android:text="@string/add_members_label"
                 android:textAppearance="@style/simple_label"
                 android:textSize="40sp"
                 android:layout_alignParentStart="true" />
