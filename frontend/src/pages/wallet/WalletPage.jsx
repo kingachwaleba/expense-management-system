@@ -4,16 +4,36 @@ import DisplayWalletDataComponent from '../../components/DisplayWalletDataCompon
 import DisplayWalletUsersDataComponent from '../../components/DisplayWalletUsersDataComponent';
 import DisplayWalletExpensesSumComponent from '../../components/DisplayWalletExpensesSumComponent';
 import DisplayWalletListsSumComponent from '../../components/DisplayWalletListsSumComponent';
-class WalletPage extends Component {
-    constructor(props) {
-        super(props);
+import { useLocation } from 'react-router-dom';
+import { BrowserRouter, Route } from "react-router-dom";
+import UserService from '../../services/user.service';
+import WalletDetailService from '../../services/WalletDetailService';
+
+
+function WalletPage () {
+
+
+    let location  = useLocation();
+    console.log(location);
+    var walletID = location.state.walletID;
+    var userToken;
+    console.log(walletID);
     
-      }
+    const user = UserService.getCurrentUser();
+        if (user) {
+            userToken = user.token
+         }
+        console.log("userToken komponentu to: " + userToken);
+   
+
+
+    const wallet = WalletDetailService.getWalletDetail(walletID,userToken);
+     console.log(wallet);    
 
 
    
     
-    render() {
+    
         return (
             <div className="container">
                 <Header title = "Portfel"/>
@@ -151,6 +171,6 @@ class WalletPage extends Component {
             </div>
         );
     }
-}
+
 
 export default WalletPage;
