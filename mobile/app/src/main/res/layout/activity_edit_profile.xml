@@ -64,11 +64,22 @@
             tools:ignore="RtlSymmetry" />
 
         <Button
+            android:id="@+id/save_changes_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_simple"
+            android:layout_marginHorizontal="40dp"
+            android:text="@string/save_changes"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
+
+        <Button
             android:id="@+id/change_password_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_simple"
-            android:layout_marginVertical="20dp"
+            android:layout_marginTop="50dp"
             android:layout_marginHorizontal="40dp"
             android:text="@string/change_password"
             android:textAppearance="@style/simple_button"
@@ -83,18 +94,6 @@
             android:background="@drawable/btn_simple"
             android:layout_marginVertical="20dp"
             android:text="@string/delete_account"
-            android:textAppearance="@style/simple_button"
-            android:textColor="@color/light_gray"
-            app:backgroundTint="@null" />
-
-        <Button
-            android:id="@+id/save_changes_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_simple"
-            android:layout_marginVertical="20dp"
-            android:layout_marginHorizontal="40dp"
-            android:text="@string/save_changes"
             android:textAppearance="@style/simple_button"
             android:textColor="@color/light_gray"
             app:backgroundTint="@null" />
