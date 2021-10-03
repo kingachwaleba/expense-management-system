@@ -64,7 +64,7 @@
             tools:ignore="RtlSymmetry" />
 
         <Button
-            android:id="@+id/save_changes_btn"
+            android:id="@+id/save_change_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_simple"
