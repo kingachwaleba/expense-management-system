@@ -1,7 +1,6 @@
 package com.team.backend.controller;
 
 import com.team.backend.exception.*;
-import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserStatusRepository;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.*;
 
 @RestController
@@ -56,13 +54,8 @@ public class WalletController {
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> getWalletBalance(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
-        List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
-        Map<Integer, BigDecimal> balanceMap = new HashMap<>();
-        walletUserList.forEach(walletUser -> balanceMap.put(walletUser.getUser().getId(), walletUser.getBalance()));
-        List<DebtsHolder> debtsList = new ArrayList<>();
-        walletService.simplifyDebts(balanceMap, debtsList);
 
-        return new ResponseEntity<>(debtsList, HttpStatus.OK);
+        return new ResponseEntity<>(walletService.findDebts(wallet), HttpStatus.OK);
     }
 
     @GetMapping("/wallet-users/{id}")

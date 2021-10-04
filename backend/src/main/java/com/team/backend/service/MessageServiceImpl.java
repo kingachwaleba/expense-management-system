@@ -1,9 +1,12 @@
 package com.team.backend.service;
 
+import com.team.backend.exception.WalletNotFoundException;
+import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.Message;
 import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
 import com.team.backend.repository.MessageRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,9 +16,16 @@ import java.util.*;
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
+    private final WalletService walletService;
 
-    public MessageServiceImpl(MessageRepository messageRepository) {
+    public MessageServiceImpl(MessageRepository messageRepository, @Lazy WalletService walletService) {
         this.messageRepository = messageRepository;
+        this.walletService = walletService;
+    }
+
+    @Override
+    public void save(Message message) {
+        messageRepository.save(message);
     }
 
     @Override
@@ -78,5 +88,25 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Optional<Message> findById(Integer id) {
         return messageRepository.findById(id);
+    }
+
+    @Override
+    public void sendNotification(int id) {
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
+        List<Message> messageList = findAllByWalletAndTypeOrderByDate(wallet, String.valueOf(Message.MessageType.S));
+        messageList.forEach(this::delete);
+
+        for (DebtsHolder debtsHolder : walletService.findDebts(wallet)) {
+            Message message = new Message(
+                    debtsHolder.getDebtor(),
+                    wallet,
+                    LocalDateTime.now(),
+                    String.valueOf(debtsHolder.getHowMuch()),
+                    String.valueOf(Message.MessageType.S),
+                    null
+            );
+
+            save(message);
+        }
     }
 }

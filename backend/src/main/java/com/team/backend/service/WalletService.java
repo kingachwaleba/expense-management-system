@@ -33,6 +33,7 @@ public interface WalletService {
     User findOwner(Wallet wallet);
 
     void simplifyDebts(Map<Integer, BigDecimal> balanceMap, List<DebtsHolder> debtsList);
+    List<DebtsHolder> findDebts(Wallet wallet);
 
     Map<String, Object> getOne(Wallet wallet);
     List<Map<String, Object>> getAll();

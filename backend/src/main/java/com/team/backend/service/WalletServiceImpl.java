@@ -211,15 +211,7 @@ public class WalletServiceImpl implements WalletService {
                 userMap.put("balance", walletUser.getBalance());
                 userMap.put("debt", null);
 
-                List<WalletUser> walletUserList = findWalletUserList(wallet);
-                Map<Integer, BigDecimal> balanceMap = new HashMap<>();
-                walletUserList.forEach(wu -> balanceMap.put(wu.getUser().getId(), wu.getBalance()));
-                List<DebtsHolder> debtsList = new ArrayList<>();
-
-                if (walletUserList.size() > 1)
-                    simplifyDebts(balanceMap, debtsList);
-
-                for (DebtsHolder debtsHolder : debtsList)
+                for (DebtsHolder debtsHolder : findDebts(wallet))
                     if ((debtsHolder.getDebtor().equals(user) || debtsHolder.getCreditor().equals(user))
                             && (debtsHolder.getDebtor().equals(loggedInUser) || debtsHolder.getCreditor().equals(loggedInUser)))
                         userMap.replace("debt", debtsHolder);
@@ -313,6 +305,19 @@ public class WalletServiceImpl implements WalletService {
         if (balanceMap.get(minKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0
                 || balanceMap.get(maxKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0)
             simplifyDebts(balanceMap, debtsList);
+    }
+
+    @Override
+    public List<DebtsHolder> findDebts(Wallet wallet) {
+        List<WalletUser> walletUserList = findWalletUserList(wallet);
+        Map<Integer, BigDecimal> balanceMap = new HashMap<>();
+        walletUserList.forEach(walletUser -> balanceMap.put(walletUser.getUser().getId(), walletUser.getBalance()));
+        List<DebtsHolder> debtsList = new ArrayList<>();
+
+        if (walletUserList.size() > 1)
+            simplifyDebts(balanceMap, debtsList);
+
+        return debtsList;
     }
 
     @Override

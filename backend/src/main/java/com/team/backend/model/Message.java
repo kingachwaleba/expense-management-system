@@ -1,6 +1,5 @@
 package com.team.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,8 +43,17 @@ public class Message {
     @JoinColumn(name = "sender", referencedColumnName="id")
     private User sender;
 
+    public Message(User receiver, Wallet wallet, LocalDateTime date, String content, String type, User sender) {
+        this.receiver = receiver;
+        this.wallet = wallet;
+        this.date = date;
+        this.content = content;
+        this.type = type;
+        this.sender = sender;
+    }
+
     public enum MessageType {
-        S,
-        E
+        S, // notification about debts sends by system
+        E // notification about debts sends by user
     }
 }
