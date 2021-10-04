@@ -3,7 +3,9 @@ package com.team.backend.controller;
 import com.team.backend.exception.ExpenseNotFoundException;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.Expense;
+import com.team.backend.model.Wallet;
 import com.team.backend.service.ExpenseService;
+import com.team.backend.service.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,9 +19,11 @@ import java.util.List;
 public class ExpenseController {
 
     private final ExpenseService expenseService;
+    private final MessageService messageService;
 
-    public ExpenseController(ExpenseService expenseService) {
+    public ExpenseController(ExpenseService expenseService, MessageService messageService) {
         this.expenseService = expenseService;
+        this.messageService = messageService;
     }
 
     @GetMapping("/expense/{id}")
@@ -39,6 +43,7 @@ public class ExpenseController {
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> add(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder) {
         expenseService.save(expenseHolder, id);
+        messageService.sendNotification(id);
 
         return new ResponseEntity<>(expenseHolder.getExpense(), HttpStatus.OK);
     }
@@ -52,6 +57,7 @@ public class ExpenseController {
 
         expenseService.editUserList(updatedExpense, newExpense, userList);
         expenseService.edit(updatedExpense, newExpense);
+        messageService.sendNotification(updatedExpense.getWallet().getId());
 
         return new ResponseEntity<>(updatedExpense, HttpStatus.OK);
     }
@@ -60,7 +66,9 @@ public class ExpenseController {
     @PreAuthorize("@authenticationService.ifExpenseOwner(#id) && !@authenticationService.ifContainsDeletedMembers(#id)")
     public ResponseEntity<?> delete(@PathVariable int id) {
         Expense expense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
+        int walletId = expense.getWallet().getId();
         expenseService.deleteExpense(expense);
+        messageService.sendNotification(walletId);
 
         return new ResponseEntity<>("The given expense was deleted!", HttpStatus.OK);
     }
