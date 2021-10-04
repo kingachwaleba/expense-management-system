@@ -98,31 +98,32 @@ public class EditProfileActivity extends BaseActivity {
         //creating a file
         File file = new File(getRealPathFromURI(fileUri));
 
+        int startType = file.getPath().lastIndexOf('.');
+        String type = file.getPath().substring(startType+1);
+
         //creating request body for file
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
         String directory = "users";
-       // RequestBody descBody = RequestBody.create(MediaType.parse("text/plain"), directory);
+        RequestBody descBody = RequestBody.create(MediaType.parse("text/plain"), directory);
+
 
         ApiInterface apiInterface = new ApiClient().getService();
 
-        System.out.println(session.getUserDetails().get(SessionManager.KEY_TOKEN));
-
         //creating a call and calling the upload image method
-        Call<ResponseBody> call = apiInterface.upload(session.getUserDetails().get(SessionManager.KEY_TOKEN), body, directory);
+        Call<String> call = apiInterface.upload(session.getUserDetails().get(SessionManager.KEY_TOKEN), body, descBody);
 
         //finally performing the call
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                System.out.println(response.code());
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.body()!=null)
+                    session.setKeyImagePathServer(response.body());
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                System.out.println(call.toString());
-                System.out.println(t.toString());
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Coś poszło nie tak" , Toast.LENGTH_LONG).show();
             }
         });

@@ -190,5 +190,9 @@ public interface ApiInterface  {
 
     @Multipart
     @POST("upload")
-    Call<ResponseBody> upload(@Header("Authorization") String accessToken, @Part MultipartBody.Part image, @Part("directory") String directory);
+    Call<String> upload(@Header("Authorization") String accessToken, @Part MultipartBody.Part image, @Part("directory") RequestBody directory);
+
+    @GET("files")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> download(@Header("Authorization") String accessToken, String directory);
 }

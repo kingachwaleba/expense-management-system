@@ -2,13 +2,18 @@ package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
+import com.example.mobile.config.ApiClient;
+import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.Message;
@@ -16,8 +21,19 @@ import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
 import com.example.mobile.service.adapter.WarningAdapter;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -109,5 +125,59 @@ public class ProfileActivity extends BaseActivity {
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
         });
+
+        if(!session.getUserDetails().get(SessionManager.KEY_TOKEN).equals("imageServer")){
+            ApiInterface apiInterface = new ApiClient().getService();
+
+            //creating a call and calling the upload image method
+            Call<ResponseBody> call = apiInterface.download(accessToken, session.getUserDetails().get(SessionManager.KEY_IMAGE_PATH_SERVER));
+
+            //finally performing the call
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        downloadImage(response.body());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Coś poszło nie tak" , Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
+    }
+
+    private void downloadImage(ResponseBody body) throws IOException {
+
+        int count;
+        byte data[] = new byte[1024 * 4];
+        long fileSize = body.contentLength();
+        InputStream inputStream = new BufferedInputStream(body.byteStream(), 1024 * 8);
+        File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "journaldev-image-downloaded.jpg");
+        OutputStream outputStream = new FileOutputStream(outputFile);
+        long total = 0;
+        boolean downloadComplete = false;
+        //int totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
+
+        while ((count = inputStream.read(data)) != -1) {
+
+            total += count;
+            int progress = (int) ((double) (total * 100) / (double) fileSize);
+
+
+          //  updateNotification(progress);
+            outputStream.write(data, 0, count);
+            downloadComplete = true;
+        }
+       // onDownloadComplete(downloadComplete);
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
+
     }
 }
