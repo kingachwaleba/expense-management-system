@@ -18,13 +18,12 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile multipartFile,
-                                         @RequestParam("directory") String directory) {
+    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile multipartFile) {
         if (!imageStorageService.ifProperType(multipartFile))
             return new ResponseEntity<>("It is not a proper type!", HttpStatus.EXPECTATION_FAILED);
 
         try {
-            String newImageName = imageStorageService.save(multipartFile, directory);
+            String newImageName = imageStorageService.save(multipartFile, "expenses");
 
             return new ResponseEntity<>(newImageName, HttpStatus.OK);
         } catch (Exception e) {
