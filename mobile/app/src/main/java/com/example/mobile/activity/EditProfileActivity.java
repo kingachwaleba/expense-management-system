@@ -74,7 +74,7 @@ public class EditProfileActivity extends BaseActivity {
             //the image URI
             Uri selectedImage = data.getData();
 
-            uploadFile(selectedImage, "users");
+            uploadFile(selectedImage);
         }
     }
 
@@ -89,7 +89,7 @@ public class EditProfileActivity extends BaseActivity {
         return result;
     }
 
-    private void uploadFile(Uri fileUri, String desc) {
+    private void uploadFile(Uri fileUri) {
 
         //creating a file
         File file = new File(getRealPathFromURI(fileUri));
