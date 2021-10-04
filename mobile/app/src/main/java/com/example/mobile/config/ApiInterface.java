@@ -189,7 +189,7 @@ public interface ApiInterface  {
     Call<ResponseBody> deleteWallet(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @Multipart
-    @POST("upload")
+    @PUT("account/change-profile-picture")
     Call<String> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
 
     @GET("files")

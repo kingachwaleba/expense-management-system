@@ -121,5 +121,4 @@ public class EditProfileActivity extends BaseActivity {
             }
         });
     }
-
 }
