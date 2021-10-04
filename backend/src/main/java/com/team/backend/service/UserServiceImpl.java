@@ -47,6 +47,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveAgain(User user, User user2) {
+        user.setPassword(bCryptPasswordEncoder.encode(user2.getPassword()));
+        user.setLogin(user2.getLogin());
+        user.setDeleted(String.valueOf(User.AccountType.N));
+        user.setImage(null);
+        userRepository.save(user);
+    }
+
+    @Override
     public boolean ifAccountDeleted(User user) {
         List<WalletUser> walletUserList = walletUserRepository.findAllByUser(user);
         for (WalletUser walletUser : walletUserList) {
@@ -92,8 +101,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public Boolean existsByEmailAndDeleted(String email, String deleted) {
+        return userRepository.existsByEmailAndDeleted(email, deleted);
     }
 
     @Override

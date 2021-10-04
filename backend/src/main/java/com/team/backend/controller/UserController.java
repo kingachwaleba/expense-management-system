@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,13 +29,16 @@ public class UserController {
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
     private final ImageStorageService imageStorageService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserController(UserService userService, JwtProvider jwtProvider,
-                          AuthenticationManager authenticationManager, ImageStorageService imageStorageService) {
+                          AuthenticationManager authenticationManager, ImageStorageService imageStorageService,
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
         this.imageStorageService = imageStorageService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping("/find-users/{infix}")
@@ -80,11 +84,18 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createAccount(@Valid @RequestBody User user) {
-        if (userService.existsByLogin(user.getLogin()) || userService.existsByEmail(user.getEmail())) {
+        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
+                || userService.existsByLogin(user.getLogin())) {
             return new ResponseEntity<>("Given user has an account!", HttpStatus.BAD_REQUEST);
         }
 
-        userService.save(user);
+        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("Y"))))
+            userService.saveAgain(
+                    userService.findByEmail(user.getEmail()).orElseThrow(UserNotFoundException::new),
+                    user
+            );
+        else
+            userService.save(user);
 
         return ResponseEntity.ok("User has been created");
     }
