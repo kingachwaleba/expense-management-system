@@ -6,6 +6,7 @@ import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.*;
 import com.team.backend.helpers.LoginForm;
+import com.team.backend.service.ImageStorageService;
 import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -25,12 +27,14 @@ public class UserController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
+    private final ImageStorageService imageStorageService;
 
     public UserController(UserService userService, JwtProvider jwtProvider,
-                          AuthenticationManager authenticationManager) {
+                          AuthenticationManager authenticationManager, ImageStorageService imageStorageService) {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
+        this.imageStorageService = imageStorageService;
     }
 
     @GetMapping("/find-users/{infix}")
@@ -101,12 +105,22 @@ public class UserController {
     }
 
     @PutMapping("/account/change-profile-picture")
-    public ResponseEntity<?> changeImage(@RequestBody String imageUrl) {
-        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+    public ResponseEntity<?> changeImage(@RequestParam("image") MultipartFile multipartFile) {
+        if (!imageStorageService.ifProperType(multipartFile))
+            return new ResponseEntity<>("It is not a proper type!", HttpStatus.EXPECTATION_FAILED);
 
-        userService.changeUserImage(user, imageUrl);
+        try {
+            String newImageName = imageStorageService.save(multipartFile, "users");
+            User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
-        return new ResponseEntity<>("User image has been changed!", HttpStatus.OK);
+            userService.changeUserImage(user, newImageName);
+
+            return new ResponseEntity<>("User image has been changed!", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return new ResponseEntity<>("Error!", HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
     @PutMapping("/delete-account")
