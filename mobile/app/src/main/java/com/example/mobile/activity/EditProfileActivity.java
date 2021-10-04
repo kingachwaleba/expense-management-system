@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.provider.Settings;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.loader.content.CursorLoader;
 
@@ -26,9 +24,7 @@ import java.io.File;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,14 +101,11 @@ public class EditProfileActivity extends BaseActivity {
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        String directory = "users";
-        RequestBody descBody = RequestBody.create(MediaType.parse("text/plain"), directory);
-
 
         ApiInterface apiInterface = new ApiClient().getService();
 
         //creating a call and calling the upload image method
-        Call<String> call = apiInterface.upload(session.getUserDetails().get(SessionManager.KEY_TOKEN), body, descBody);
+        Call<String> call = apiInterface.uploadProfileImage(session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
 
         //finally performing the call
         call.enqueue(new Callback<String>() {
