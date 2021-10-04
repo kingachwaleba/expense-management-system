@@ -65,9 +65,9 @@ const user = UserService.getCurrentUser();
                                  
                                  
                               
-                                <a href="/wallet" className="card-link center-content btn btn-primary" id="mainbuttonstyle">Przejdz do portfela</a>
+                               
                                  
-                                 <Link 
+                                 <Link className="card-link center-content btn btn-primary"  id="mainbuttonstyle"
                                         to={{
                                         pathname: '/wallet', 
                                         state:{
@@ -75,7 +75,7 @@ const user = UserService.getCurrentUser();
                                         }
                                             
 
-                                        }}>Link do wallet
+                                        }}>Przejdź do portfela
                                        
                                             
                                 </Link>
