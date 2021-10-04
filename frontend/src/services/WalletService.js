@@ -1,5 +1,6 @@
 import axios from 'axios';
 const CREATE_WALLET_API_BASE_URL = "/create-wallet"
+const WALLET_DETAIL_API_BASE_URL = "/wallet/"
 class WalletService {
 /*
     create_wallet = async (wallet_holder) => {
@@ -10,6 +11,10 @@ class WalletService {
         return axios.post(CREATE_WALLET_API_BASE_URL, wallet_holder, {headers: {"Authorization" : `Bearer ${tokenStr}`}});
         //return axios.get(FIND_USERS_TO_WALLET_API_BASE_URL + infix, {headers: {"Authorization" : `Bearer ${tokenStr}`}});
     };
+
+    getWalletDetail(id,tokenStr){
+        return axios.get(WALLET_DETAIL_API_BASE_URL+id, {headers: {"Authorization" : `Bearer ${tokenStr}`}});
+    }
   
 }
 

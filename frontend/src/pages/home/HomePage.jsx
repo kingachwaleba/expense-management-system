@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../../components/Header';
 import UserService from "../../services/user.service";
 import WalletSumComponent from '../../components/WalletSumComponent';
+import UsersWalletsService from '../../services/UsersWalletsService';
 class HomePage extends React.Component {
 
     constructor(props, context) {
@@ -9,6 +10,7 @@ class HomePage extends React.Component {
         
         this.state = {
             username: undefined,
+            userToken: undefined,
             s1: "Witaj ",
             s2: "!"
         }
@@ -22,11 +24,14 @@ class HomePage extends React.Component {
             this.setState({
                 
                 username: user.login,
+                userToken: user.token,
                 
             });
 
             console.log(user.login);
         }
+        
+        
         console.log(user);
         console.log("Token to: " + user.token);
         console.log("Type to: " + user.type);
@@ -36,15 +41,12 @@ class HomePage extends React.Component {
         return (
           <div className="container">
               <Header title={this.state.s1.concat(this.state.username, this.state.s2)}/>
-              <div className="grid-container center-content">
+              <div className="center-content">
                     
                         <WalletSumComponent />
                      
                  
-                        <WalletSumComponent />   
-                   
-                   
-                        <WalletSumComponent />   
+                         
                   
                 </div>
             

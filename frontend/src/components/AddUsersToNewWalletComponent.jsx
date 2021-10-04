@@ -90,18 +90,18 @@ class AddUsersToNewWalletComponent extends Component {
                          this.state.users.map(
                              user =>
                              
-                             <div key = {user} className = "center-content grid-container-3">
+                             <div key = {user.login} className = "center-content grid-container-3">
                                {
-                                  this.setHelperClassname(user)
+                                  this.setHelperClassname(user.login)
                                }
 
                                  <div>
                                      #ProfPic
                                  </div>
                                 <div>
-                                <label className = "form-label" htmlFor={user}>
+                                <label className = "form-label" htmlFor={user.login}>
 
-                                        {user}
+                                        {user.login}
                                     
                                         
                                     </label>
@@ -109,7 +109,7 @@ class AddUsersToNewWalletComponent extends Component {
 
                                 <div>
                                     <input type="button"
-                                        id={user} 
+                                        id={user.login} 
                                       
                                         className = { this.state.classNameHelper}
                                         name ="user" 
@@ -120,16 +120,16 @@ class AddUsersToNewWalletComponent extends Component {
                                             this.props.createUsersList(e);
                                            
 
-                                            if ( !document.getElementById(user).classList.contains('add-user-to-list') ){
+                                            if ( !document.getElementById(user.login).classList.contains('add-user-to-list') ){
                                                 
-                                                document.getElementById(user).classList.add('add-user-to-list');
-                                                document.getElementById(user).classList.remove('delete-user-from-list');
+                                                document.getElementById(user.login).classList.add('add-user-to-list');
+                                                document.getElementById(user.login).classList.remove('delete-user-from-list');
                                             }
                                             else {
                                                 
                                                 
-                                                document.getElementById(user).classList.remove('add-user-to-list');
-                                                document.getElementById(user).classList.add('delete-user-from-list');
+                                                document.getElementById(user.login).classList.remove('add-user-to-list');
+                                                document.getElementById(user.login).classList.add('delete-user-from-list');
                                             }
                                             
                                         }}
