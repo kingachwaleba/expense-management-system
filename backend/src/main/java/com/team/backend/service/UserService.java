@@ -11,13 +11,14 @@ public interface UserService {
 
     void save(User user);
     void saveDeleted(User user);
+    void saveAgain(User user, User user2);
     boolean ifAccountDeleted(User user);
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
     Optional<User> findById(int id);
     List<User> findByDeletedAndLoginContaining(String deleted, String infix);
     Boolean existsByLogin(String login);
-    Boolean existsByEmail(String email);
+    Boolean existsByEmailAndDeleted(String email, String deleted);
 
     Boolean checkIfValidOldPassword(User user, String oldPassword);
     void changeUserPassword(User user, String password);

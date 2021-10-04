@@ -29,7 +29,7 @@ public class User {
     private String login;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(unique = true, nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     @Size(min = 5, max = 100)
     @NotBlank(message = "Email is mandatory!")
     @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
