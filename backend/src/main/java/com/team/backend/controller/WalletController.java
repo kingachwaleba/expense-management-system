@@ -1,14 +1,12 @@
 package com.team.backend.controller;
 
-import com.team.backend.exception.UserNotFoundException;
-import com.team.backend.exception.UserStatusNotFoundException;
-import com.team.backend.exception.WalletCategoryNotFoundException;
-import com.team.backend.exception.WalletNotFoundException;
+import com.team.backend.exception.*;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletCategoryRepository;
+import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -19,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class WalletController {
@@ -31,14 +26,17 @@ public class WalletController {
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
     private final WalletCategoryRepository walletCategoryRepository;
+    private final WalletUserRepository walletUserRepository;
 
     public WalletController(WalletService walletService, UserService userService,
                             UserStatusRepository userStatusRepository,
-                            WalletCategoryRepository walletCategoryRepository) {
+                            WalletCategoryRepository walletCategoryRepository,
+                            WalletUserRepository walletUserRepository) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
         this.walletCategoryRepository = walletCategoryRepository;
+        this.walletUserRepository = walletUserRepository;
     }
 
     @GetMapping("/wallet/{id}")
@@ -110,7 +108,15 @@ public class WalletController {
         UserStatus waitingStatus = userStatusRepository.findByName("oczekujący")
                 .orElseThrow(UserStatusNotFoundException::new);
 
-        walletService.saveUser(userLogin, updatedWallet, waitingStatus);
+        User user = userService.findByLogin(userLogin).orElseThrow(UserNotFoundException::new);
+        Optional<WalletUser> optionalWalletUser = walletUserRepository.findByWalletAndUser(updatedWallet, user);
+
+        if (optionalWalletUser.isEmpty())
+            walletService.saveUser(userLogin, updatedWallet, waitingStatus);
+        else {
+            WalletUser walletUser = optionalWalletUser.get();
+            walletUser.setUserStatus(waitingStatus);
+        }
 
         walletService.save(updatedWallet);
 
