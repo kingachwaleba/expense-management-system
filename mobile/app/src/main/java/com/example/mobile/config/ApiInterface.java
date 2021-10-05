@@ -20,9 +20,7 @@ import com.example.mobile.model.WalletHolder;
 import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
-
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;

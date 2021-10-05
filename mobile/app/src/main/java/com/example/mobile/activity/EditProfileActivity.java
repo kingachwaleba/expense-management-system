@@ -19,6 +19,7 @@ import com.example.mobile.R;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
+import com.example.mobile.service.AccountService;
 
 import java.io.File;
 
@@ -32,7 +33,8 @@ import retrofit2.Response;
 public class EditProfileActivity extends BaseActivity {
 
     Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteAccountBtn;
-    SessionManager session;
+    AccountService accountService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class EditProfileActivity extends BaseActivity {
         deleteAccountBtn = findViewById(R.id.delete_account_btn);
 
         session = new SessionManager(this);
+        accountService = new AccountService(this);
 
         chooseImageBtn.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -74,51 +77,7 @@ public class EditProfileActivity extends BaseActivity {
             //the image URI
             Uri selectedImage = data.getData();
 
-            uploadFile(selectedImage);
+            accountService.uploadProfileImage(selectedImage);
         }
-    }
-
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(column_index);
-        cursor.close();
-        return result;
-    }
-
-    private void uploadFile(Uri fileUri) {
-
-        //creating a file
-        File file = new File(getRealPathFromURI(fileUri));
-
-        int startType = file.getPath().lastIndexOf('.');
-        String type = file.getPath().substring(startType+1);
-
-        //creating request body for file
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-
-        ApiInterface apiInterface = new ApiClient().getService();
-
-        //creating a call and calling the upload image method
-        Call<String> call = apiInterface.uploadProfileImage(session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
-
-        //finally performing the call
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if(response.body()!=null)
-                    session.setKeyImagePathServer(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Coś poszło nie tak" , Toast.LENGTH_LONG).show();
-            }
-        });
     }
 }

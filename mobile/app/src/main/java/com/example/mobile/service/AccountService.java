@@ -2,15 +2,28 @@ package com.example.mobile.service;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.widget.Toast;
+
+import androidx.loader.content.CursorLoader;
+
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
+import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.Message;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,10 +32,12 @@ import retrofit2.Response;
 public class AccountService {
     Context context;
     ApiInterface apiInterface;
+    SessionManager session;
 
     public AccountService(Context context) {
         this.context = context;
         this.apiInterface = new ApiClient().getService();
+        this.session = new SessionManager(context);
     }
 
     public interface OnAccountCallback{
@@ -134,6 +149,51 @@ public class AccountService {
                 call.cancel();
             }
         });
+    }
+
+    public void uploadProfileImage(Uri fileUri) {
+
+        //creating a file
+        File file = new File(getRealPathFromURI(fileUri));
+
+        int startType = file.getPath().lastIndexOf('.');
+        String type = file.getPath().substring(startType+1);
+
+        //creating request body for file
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+
+        ApiInterface apiInterface = new ApiClient().getService();
+
+        //creating a call and calling the upload image method
+        Call<String> call = apiInterface.uploadProfileImage(session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
+
+        //finally performing the call
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.body()!=null)
+                    session.setKeyImagePathServer(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader loader = new CursorLoader(context, contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        assert cursor != null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
 
 }
