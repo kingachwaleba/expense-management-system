@@ -1,5 +1,7 @@
 package com.example.mobile.config;
 
+import androidx.annotation.RawRes;
+
 import com.example.mobile.model.Category;
 import com.example.mobile.model.DebtsHolder;
 import com.example.mobile.model.Expense;
@@ -21,10 +23,12 @@ import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -191,5 +195,5 @@ public interface ApiInterface  {
     Call<String> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
 
     @GET("files")
-    Call<ResponseBody> download(@Header("Authorization") String accessToken, String imageName);
+    Call<ResponseBody> download(@Header("Authorization") String accessToken, @Part RequestBody imageName);
 }
