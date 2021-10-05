@@ -47,6 +47,9 @@ public class EditMembersActivity extends BaseActivity {
 
         goToSendInvitationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(EditMembersActivity.this, AddMemberActivity.class);
+            intent.putExtra("accessToken", accessToken);
+            intent.putExtra("name", walletCreate.getName());
+            intent.putExtra("walletId", walletCreate.getId());
             startActivity(intent);
             finish();
         });

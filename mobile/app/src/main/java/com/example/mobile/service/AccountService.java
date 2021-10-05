@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
-
 import androidx.loader.content.CursorLoader;
-
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
@@ -18,15 +15,8 @@ import com.example.mobile.model.Message;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -159,6 +149,9 @@ public class AccountService {
 
     public void uploadProfileImage(Uri fileUri) {
 
+
+
+
         //creating a file
         File file = new File(getRealPathFromURI(fileUri));
 
@@ -188,29 +181,7 @@ public class AccountService {
         });
     }
 
-    public void download(String path) {
-        RequestBody requestFile = RequestBody.create(MediaType.parse("text/plain"), path);
-        Call<ResponseBody> call = apiInterface.download("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), requestFile);
 
-        //finally performing the call
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                   /* try {
-                        downloadImage(response.body());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(context, "Coś poszło nie tak" , Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-    }
 
     private String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -222,34 +193,5 @@ public class AccountService {
         String result = cursor.getString(column_index);
         cursor.close();
         return result;
-    }
-
-
-
-    private void downloadImage(ResponseBody body) throws IOException {
-        int count;
-        byte data[] = new byte[1024 * 4];
-        long fileSize = body.contentLength();
-        InputStream inputStream = new BufferedInputStream(body.byteStream(), 1024 * 8);
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "journaldev-image-downloaded.jpg");
-        OutputStream outputStream = new FileOutputStream(outputFile);
-        long total = 0;
-        boolean downloadComplete = false;
-        //int totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
-
-        while ((count = inputStream.read(data)) != -1) {
-
-            total += count;
-            int progress = (int) ((double) (total * 100) / (double) fileSize);
-
-
-            //  updateNotification(progress);
-            outputStream.write(data, 0, count);
-            downloadComplete = true;
-        }
-        // onDownloadComplete(downloadComplete);
-        outputStream.flush();
-        outputStream.close();
-        inputStream.close();
     }
 }

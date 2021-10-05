@@ -51,9 +51,9 @@ public class CreateWalletActivity extends BaseActivity{
         infixEt = findViewById(R.id.infix_et);
         createBtn = findViewById(R.id.create_wallet_btn);
         cancelBtn = findViewById(R.id.cancel_btn);
-        browseMembersRv = findViewById(R.id.browse_members_rv);
         categoryRg = findViewById(R.id.category_RG);
 
+        browseMembersRv = findViewById(R.id.browse_members_rv);
         browseMembersRv.setLayoutManager(new LinearLayoutManager(this));
         List<Member> membersInit = new ArrayList<>();
         UserListAdapter userListAdapterInit = new UserListAdapter(this, membersInit, "USER_BROWSER");
@@ -72,9 +72,10 @@ public class CreateWalletActivity extends BaseActivity{
             public void afterTextChanged(Editable s) {
                 if(infixEt.getText().toString().length()>0){
                     walletService.getMembersByInfix(members -> {
+                        if(members.size() > 0){
                         UserListAdapter userListAdapter = new UserListAdapter(CreateWalletActivity.this, members, "USER_BROWSER");
                         browseMembersRv.setAdapter(userListAdapter);
-                        userListAdapter.notifyDataSetChanged();
+                        userListAdapter.notifyDataSetChanged();}
                     }, accessToken, infixEt.getText().toString());
                 }
 

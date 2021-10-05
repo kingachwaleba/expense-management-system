@@ -3,24 +3,26 @@ package com.example.mobile.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import androidx.core.content.ContextCompat;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.service.AccountService;
+import java.io.IOException;
 
 public class EditProfileActivity extends BaseActivity {
 
     Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteAccountBtn;
     AccountService accountService;
     Uri selectedImage;
-
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class EditProfileActivity extends BaseActivity {
         saveChangeBtn = findViewById(R.id.save_change_btn);
         changePasswordBtn = findViewById(R.id.change_password_btn);
         deleteAccountBtn = findViewById(R.id.delete_account_btn);
+        imageView = findViewById(R.id.profile_image_iv);
 
         session = new SessionManager(this);
         accountService = new AccountService(this);
@@ -45,17 +48,13 @@ public class EditProfileActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        saveChangeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(selectedImage!=null)
-                    accountService.uploadProfileImage(selectedImage);
-            }
+        saveChangeBtn.setOnClickListener(v -> {
+            if(selectedImage!=null)
+                accountService.uploadProfileImage(selectedImage);
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                     Uri.parse("package:" + getPackageName()));
             finish();
@@ -70,6 +69,13 @@ public class EditProfileActivity extends BaseActivity {
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             //the image URI
             selectedImage = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
+                imageView.setImageBitmap(bitmap);
+                imageView.setVisibility(View.VISIBLE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

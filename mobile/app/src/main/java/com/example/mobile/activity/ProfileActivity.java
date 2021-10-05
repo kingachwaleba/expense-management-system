@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
+import com.example.mobile.config.ImageLoader;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.Message;
@@ -16,8 +17,12 @@ import com.example.mobile.model.User;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
 import com.example.mobile.service.adapter.WarningAdapter;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -72,11 +77,28 @@ public class ProfileActivity extends BaseActivity {
             String loginText = getResources().getString(R.string.login_label) + " " + account.getLogin();
             String emailText = getResources().getString(R.string.email_label) + " " + account.getEmail();
             String numberOfWalletText = getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber();
+            String balanceText = getResources().getString(R.string.saldo_label) + " " + account.getUserBalance();
             session.setKeyImagePathServer(account.getImage());
+            if(account.getImage()!=null){
+                OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                        .authenticator((route, response) -> response.request().newBuilder()
+                                .header("Authorization", "Bearer " + accessToken)
+                                .build()).build();
+
+                HttpUrl.Builder urlBuilder
+                        = HttpUrl.parse("http://192.168.0.31:8080/files").newBuilder();
+                urlBuilder.addQueryParameter("imageName", account.getImage());
+
+                Picasso picasso = new Picasso.Builder(ProfileActivity.this)
+                        .downloader(new OkHttp3Downloader(okHttpClient))
+                        .build();
+                picasso.load(String.valueOf(urlBuilder)).rotate(-90).into(profileImage);
+            }
+
             loginTv.setText(loginText);
             emailTv.setText(emailText);
             numberOfWalletTv.setText(numberOfWalletText);
-            //balanceTv.setText(getResources().getString(R.string.login_string) + " " + account.getLogin());
+            balanceTv.setText(balanceText);
         }, accessToken);
 
         goToStatuteTv.setOnClickListener(v -> {
@@ -112,9 +134,5 @@ public class ProfileActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        String path = session.getUserDetails().get(SessionManager.KEY_IMAGE_PATH_SERVER);
-        accountService.download(path);
     }
-
-
 }

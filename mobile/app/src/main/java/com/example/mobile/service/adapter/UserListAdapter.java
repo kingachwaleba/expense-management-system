@@ -5,14 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.WalletService;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
@@ -52,6 +57,22 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     public void onBindViewHolder(UserListAdapter.ViewHolder holder, int position) {
         Member member = mMembers.get(position);
         holder.memberNameTv.setText(member.getLogin());
+
+        if(member.getImage()!=null){
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .authenticator((route, response) -> response.request().newBuilder()
+                            .header("Authorization", "Bearer " + mAccessToken)
+                            .build()).build();
+
+            HttpUrl.Builder urlBuilder
+                    = HttpUrl.parse("http://192.168.0.31:8080/files").newBuilder();
+            urlBuilder.addQueryParameter("imageName", member.getImage());
+
+            Picasso picasso = new Picasso.Builder(holder.itemView.getContext())
+                    .downloader(new OkHttp3Downloader(okHttpClient))
+                    .build();
+            picasso.load(String.valueOf(urlBuilder)).rotate(-90).into(holder.profileImageIv);
+        }
 
         switch (mTAG) {
             case "USER_BROWSER":
@@ -102,6 +123,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public ImageView profileImageIv;
         public TextView memberNameTv;
         public Button userBtn;
         public boolean isChecked;
@@ -111,6 +133,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             isChecked = false;
             memberNameTv = itemView.findViewById(R.id.member_name_tv);
             userBtn = itemView.findViewById(R.id.user_btn);
+            profileImageIv = itemView.findViewById(R.id.profile_image_iv);
         }
     }
 

@@ -118,5 +118,6 @@
     <string name="your_balance_label">Twój bilans:</string>
     <string name="delete_notification">Usuń przypomnienie</string>
     <string name="leave_wallet">Opuść portfel</string>
+    <string name="save_photo">Zmień zdjęcie</string>
 
 </resources>
