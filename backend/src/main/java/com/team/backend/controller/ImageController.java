@@ -34,7 +34,7 @@ public class ImageController {
     }
 
     @GetMapping("/files")
-    public ResponseEntity<?> getFile(@RequestBody String imageName) {
+    public ResponseEntity<?> getFile(@RequestParam("imageName") String imageName) {
         Resource file = imageStorageService.load(imageName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
