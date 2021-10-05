@@ -162,19 +162,17 @@ public class AccountService {
         //creating request body for file
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
+        System.out.println(type);
 
         ApiInterface apiInterface = new ApiClient().getService();
 
         //creating a call and calling the upload image method
-        Call<String> call = apiInterface.uploadProfileImage(session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
-
+        Call<String> call = apiInterface.uploadProfileImage("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
+        System.out.println(session.getUserDetails().get(SessionManager.KEY_TOKEN));
         //finally performing the call
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if(response.body()!=null)
-                    session.setKeyImagePathServer(response.body());
             }
 
             @Override

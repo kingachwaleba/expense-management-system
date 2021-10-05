@@ -191,6 +191,5 @@ public interface ApiInterface  {
     Call<String> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
 
     @GET("files")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> download(@Header("Authorization") String accessToken, String directory);
+    Call<ResponseBody> download(@Header("Authorization") String accessToken, String imageName);
 }

@@ -1,5 +1,6 @@
 package com.example.mobile.activity;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +18,7 @@ import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.Message;
+import com.example.mobile.model.User;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
 import com.example.mobile.service.adapter.WarningAdapter;
@@ -46,7 +48,7 @@ public class ProfileActivity extends BaseActivity {
     String accessToken;
     AccountService accountService;
     TextView loginTv, emailTv, numberOfWalletTv, balanceTv, goToStatuteTv;
-
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,9 +86,11 @@ public class ProfileActivity extends BaseActivity {
         editProfileBtn = findViewById(R.id.edit_profile_btn);
 
         accountService.getAccount(account -> {
+            user = account;
             String loginText = getResources().getString(R.string.login_label) + " " + account.getLogin();
             String emailText = getResources().getString(R.string.email_label) + " " + account.getEmail();
             String numberOfWalletText = getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber();
+            session.setKeyImagePathServer(account.getImage());
             loginTv.setText(loginText);
             emailTv.setText(emailText);
             numberOfWalletTv.setText(numberOfWalletText);
@@ -125,22 +129,20 @@ public class ProfileActivity extends BaseActivity {
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
         });
-
-        if(!session.getUserDetails().get(SessionManager.KEY_TOKEN).equals("imageServer")){
             ApiInterface apiInterface = new ApiClient().getService();
-
+            String path = session.getUserDetails().get(SessionManager.KEY_IMAGE_PATH_SERVER);
             //creating a call and calling the upload image method
-            Call<ResponseBody> call = apiInterface.download(accessToken, session.getUserDetails().get(SessionManager.KEY_IMAGE_PATH_SERVER));
+            Call<ResponseBody> call = apiInterface.download("Bearer " + accessToken, path);
 
             //finally performing the call
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    try {
+                   /* try {
                         downloadImage(response.body());
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 }
 
                 @Override
@@ -149,7 +151,7 @@ public class ProfileActivity extends BaseActivity {
                 }
             });
 
-        }
+
     }
 
     private void downloadImage(ResponseBody body) throws IOException {
