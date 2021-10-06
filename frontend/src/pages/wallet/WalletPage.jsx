@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import Header from '../../components/Header';
 import DisplayWalletDataComponent from '../../components/DisplayWalletDataComponent';
 import DisplayWalletUsersDataComponent from '../../components/DisplayWalletUsersDataComponent';
 import DisplayWalletExpensesSumComponent from '../../components/DisplayWalletExpensesSumComponent';
 import DisplayWalletListsSumComponent from '../../components/DisplayWalletListsSumComponent';
 import { useLocation } from 'react-router-dom';
-import { BrowserRouter, Route } from "react-router-dom";
 import UserService from '../../services/user.service';
 import WalletDetailService from '../../services/WalletDetailService';
-
+import { useState } from 'react';
 
 function WalletPage () {
 
@@ -17,19 +16,38 @@ function WalletPage () {
     console.log(location);
     var walletID = location.state.walletID;
     var userToken;
-    console.log(walletID);
-    
+        console.log("Wallet id: " + walletID);
+   
+
+
     const user = UserService.getCurrentUser();
         if (user) {
             userToken = user.token
          }
         console.log("userToken komponentu to: " + userToken);
+         
+    const [walletData, getWalletData] = useState([]);
+    
+    useEffect(()=>{
+                WalletDetailService.getWalletDetail(walletID,userToken).then((response)=>{
+                    const allData = response.data
+                    getWalletData(allData)
+                    console.log("Response data: " + response.data)
+                    console.log(response.data)
+                 
+                })
+        
+    },[])
+   
    
 
 
-    const wallet = WalletDetailService.getWalletDetail(walletID,userToken);
-     console.log(wallet);    
 
+    //UsersWalletsService.getUserWallets(user.token).then((response)=>{
+       // this.setState({wallets: response.data})
+      
+
+        
 
    
     
@@ -37,8 +55,23 @@ function WalletPage () {
         return (
             <div className="container">
                 <Header title = "Portfel"/>
+
+            
                 <div className="container box-content">
-                        <DisplayWalletDataComponent />
+                    <>
+                         
+                             
+                    <h2 className="text-label center-content">  {walletData.name}</h2> 
+                    <div className="separator-line" ></div>
+                     <h3>Opis: {walletData.description}</h3>  
+                     <div className="separator-line" ></div>   
+                     <h3>Kategoria: ~~~Tutaj coś z kategorią się bugguje~~</h3>  
+                     <h3>Właściciel: {walletData.owner}</h3>  
+                     <h3>Liczba członków: {walletData.userListCounter}</h3>       
+                     <h3>Wydatki: {walletData.walletExpensesCost} zł</h3>        
+                    </>
+
+
                     <div className="box-subcontent center-content">
                         <a href="/chat" className="card-link  href-text ">Otwórz czat</a>
                     </div>
@@ -167,6 +200,9 @@ function WalletPage () {
                             <a href="/delete-wallet" className="card-link center-content btn btn-primary width-100" id="mainbuttonstyle" >Usuń portfel</a>
                 </div>
                 </div>
+
+
+           
                 
             </div>
         );
