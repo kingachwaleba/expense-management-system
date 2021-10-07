@@ -63,15 +63,36 @@
             app:backgroundTint="@null"
             tools:ignore="RtlSymmetry" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image_iv"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:elevation="5dp"
-            android:padding="20dp"
-            android:scaleType="centerCrop"
+        <LinearLayout
+            android:id="@+id/image_preview_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone"
-            />
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/rotate_left_btn"
+                android:layout_height="50dp"
+                android:layout_width="50dp"
+                android:background="@drawable/btn_rotate_left"
+                />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image_iv"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:elevation="5dp"
+                android:padding="20dp"
+                android:scaleType="centerCrop"
+                />
+
+            <Button
+                android:id="@+id/rotate_right_btn"
+                android:layout_height="50dp"
+                android:layout_width="50dp"
+                android:background="@drawable/btn_rotate_right"
+                />
+        </LinearLayout>
 
         <Button
             android:id="@+id/save_change_btn"

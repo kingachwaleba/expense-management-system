@@ -4,13 +4,17 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import androidx.core.content.ContextCompat;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
@@ -19,10 +23,12 @@ import java.io.IOException;
 
 public class EditProfileActivity extends BaseActivity {
 
-    Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteAccountBtn;
+    Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteAccountBtn, rotateLeftBtn, rotateRightBtn;
     AccountService accountService;
     Uri selectedImage;
     ImageView imageView;
+    LinearLayout imagePreviewL;
+    volatile Bitmap imageBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,9 @@ public class EditProfileActivity extends BaseActivity {
         changePasswordBtn = findViewById(R.id.change_password_btn);
         deleteAccountBtn = findViewById(R.id.delete_account_btn);
         imageView = findViewById(R.id.profile_image_iv);
+        imagePreviewL = findViewById(R.id.image_preview_l);
+        rotateLeftBtn = findViewById(R.id.rotate_left_btn);
+        rotateRightBtn = findViewById(R.id.rotate_right_btn);
 
         session = new SessionManager(this);
         accountService = new AccountService(this);
@@ -49,8 +58,29 @@ public class EditProfileActivity extends BaseActivity {
         });
 
         saveChangeBtn.setOnClickListener(v -> {
-            if(selectedImage!=null)
-                accountService.uploadProfileImage(selectedImage);
+            if (selectedImage != null){
+                try{
+                    int max = 200;
+                    int factor;
+                    int newHeigh, newWidth;
+                    BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    if(bitmap.getHeight() > bitmap.getWidth()){
+                        factor = bitmap.getHeight() / 200;
+                        newHeigh = 200;
+                        newWidth = bitmap.getWidth()/factor;
+                    } else {
+                        factor = bitmap.getWidth() / 200;
+                        newWidth = 200;
+                        newHeigh = bitmap.getHeight()/factor;
+                    }
+
+                    accountService.uploadProfileImage(Bitmap.createScaledBitmap(bitmap,newWidth, newHeigh, true), selectedImage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+               // a
         });
 
         if (ContextCompat.checkSelfPermission(this,
@@ -61,21 +91,42 @@ public class EditProfileActivity extends BaseActivity {
             startActivity(intent);
             return;
         }
+
+        rotateRightBtn.setOnClickListener(v -> {
+            new Thread(() -> {
+                setProfileImagePreview(imageBitmap,90);
+            }).start();
+            imageView.setImageBitmap(imageBitmap);
+        });
+
+        rotateLeftBtn.setOnClickListener(v -> {
+            new Thread(() -> {
+                setProfileImagePreview(imageBitmap,-90);
+            }).start();
+            imageView.setImageBitmap(imageBitmap);
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-            //the image URI
             selectedImage = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
-                imageView.setImageBitmap(bitmap);
-                imageView.setVisibility(View.VISIBLE);
+                imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            imageView.setImageBitmap(imageBitmap);
+            imagePreviewL.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setProfileImagePreview(Bitmap bitmap, int degree){
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        imageBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+       // return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 }

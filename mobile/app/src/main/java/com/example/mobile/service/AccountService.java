@@ -3,10 +3,11 @@ package com.example.mobile.service;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
-import androidx.loader.content.CursorLoader;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
@@ -15,7 +16,9 @@ import com.example.mobile.model.Message;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
 import org.jetbrains.annotations.NotNull;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -147,47 +150,69 @@ public class AccountService {
         });
     }
 
-    public void uploadProfileImage(Uri fileUri) {
+    public void uploadProfileImage(Bitmap bitmap, Uri fileUri) {
+
         //creating a file
         File file = new File(getRealPathFromURI(fileUri));
+
+        File file2 = bitmapToFile(context, bitmap, file.getName());
 
         int startType = file.getPath().lastIndexOf('.');
         String type = file.getPath().substring(startType+1);
 
         //creating request body for file
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file2);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        System.out.println(type);
 
         ApiInterface apiInterface = new ApiClient().getService();
 
         //creating a call and calling the upload image method
-        Call<String> call = apiInterface.uploadProfileImage("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
-        System.out.println(session.getUserDetails().get(SessionManager.KEY_TOKEN));
+        Call<ResponseBody> call = apiInterface.uploadProfileImage("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
         //finally performing the call
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
-
     private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(context, contentUri, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        assert cursor != null;
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(contentUri, filePathColumn, null, null, null);
         cursor.moveToFirst();
-        String result = cursor.getString(column_index);
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String filePath = cursor.getString(columnIndex);
         cursor.close();
-        return result;
+        return filePath;
     }
+
+    public static File bitmapToFile(Context context,Bitmap bitmap, String fileNameToSave) { // File name like "image.png"
+        //create a file to write bitmap data
+        File file = null;
+        try {
+            file = new File(Environment.getExternalStorageDirectory() + File.separator + fileNameToSave);
+            file.createNewFile();
+
+//Convert bitmap to byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0 , bos); // YOU can also save it in JPEG
+            byte[] bitmapdata = bos.toByteArray();
+
+//write the bytes in file
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            return file;
+        }catch (Exception e){
+            e.printStackTrace();
+            return file; // it will return null
+        }
+    }
+
 }

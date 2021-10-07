@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
-import com.example.mobile.config.ImageLoader;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.Message;
@@ -19,8 +18,10 @@ import com.example.mobile.service.adapter.InvitationAdapter;
 import com.example.mobile.service.adapter.WarningAdapter;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
@@ -92,7 +93,7 @@ public class ProfileActivity extends BaseActivity {
                 Picasso picasso = new Picasso.Builder(ProfileActivity.this)
                         .downloader(new OkHttp3Downloader(okHttpClient))
                         .build();
-                picasso.load(String.valueOf(urlBuilder)).rotate(-90).into(profileImage);
+                picasso.load(String.valueOf(urlBuilder)).into(profileImage);
             }
 
             loginTv.setText(loginText);

@@ -71,7 +71,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             Picasso picasso = new Picasso.Builder(holder.itemView.getContext())
                     .downloader(new OkHttp3Downloader(okHttpClient))
                     .build();
-            picasso.load(String.valueOf(urlBuilder)).rotate(-90).into(holder.profileImageIv);
+            picasso.load(String.valueOf(urlBuilder)).into(holder.profileImageIv);
         }
 
         switch (mTAG) {
