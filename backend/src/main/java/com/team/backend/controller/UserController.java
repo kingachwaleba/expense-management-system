@@ -7,6 +7,7 @@ import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.*;
 import com.team.backend.helpers.LoginForm;
 import com.team.backend.service.ImageStorageService;
+import com.team.backend.service.JavaMailService;
 import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -29,16 +30,16 @@ public class UserController {
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
     private final ImageStorageService imageStorageService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JavaMailService javaMailService;
 
     public UserController(UserService userService, JwtProvider jwtProvider,
                           AuthenticationManager authenticationManager, ImageStorageService imageStorageService,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+                          JavaMailService javaMailService) {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
         this.imageStorageService = imageStorageService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.javaMailService = javaMailService;
     }
 
     @GetMapping("/find-users/{infix}")
@@ -98,6 +99,36 @@ public class UserController {
             userService.save(user);
 
         return ResponseEntity.ok("User has been created");
+    }
+
+    @PostMapping("/account/forgot-password")
+    public ResponseEntity<?> forgotPassword(HttpServletRequest request, @RequestParam("email") String email) {
+        User user = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        if (user.getDeleted().equals(String.valueOf(User.AccountType.Y)))
+            return new ResponseEntity<>("This account is deleted!", HttpStatus.CONFLICT);
+
+        userService.setTokenAndExpiryDate(user);
+
+        String appUrl = request.getScheme() + "://" + request.getServerName();
+        javaMailService.sendMessage(user, appUrl);
+
+        return new ResponseEntity<>("The forgot password token was created and email was sent!", HttpStatus.OK);
+    }
+
+    @PostMapping("/account/reset-password")
+    public ResponseEntity<?> setNewPassword(@RequestParam("token") String token,
+                                            @RequestParam("password") String password,
+                                            @RequestParam("confirmPassword") String confirmPassword) {
+        if (!userService.checkIfValidConfirmPassword(password, confirmPassword))
+            return new ResponseEntity<>("Password confirm has failed!", HttpStatus.CONFLICT);
+
+        if (!userService.checkIfValidExpiryDate(token))
+            return new ResponseEntity<>("Token has expired!", HttpStatus.CONFLICT);
+
+        userService.resetPassword(token, password);
+
+        return new ResponseEntity<>("Password was changed!", HttpStatus.OK);
     }
 
     @PutMapping("/account/change-password")

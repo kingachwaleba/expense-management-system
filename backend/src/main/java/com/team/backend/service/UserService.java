@@ -15,12 +15,15 @@ public interface UserService {
     boolean ifAccountDeleted(User user);
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
+    Optional<User> findByToken(String token);
     Optional<User> findById(int id);
     List<User> findByDeletedAndLoginContaining(String deleted, String infix);
     Boolean existsByLogin(String login);
     Boolean existsByEmailAndDeleted(String email, String deleted);
 
     Boolean checkIfValidOldPassword(User user, String oldPassword);
+    Boolean checkIfValidConfirmPassword(String password, String confirmPassword);
+    Boolean checkIfValidExpiryDate(String token);
     void changeUserPassword(User user, String password);
     void changeUserImage(User user, String imageUrl);
 
@@ -31,4 +34,8 @@ public interface UserService {
     List<Map<String, Object>> findUserForWallet(int id, String infix);
     List<Map<String, Object>> findUser(String infix);
     Map<String, String> findUserDetails();
+
+    void resetPassword(String token, String password);
+    void setTokenAndExpiryDate(User user);
+
 }
