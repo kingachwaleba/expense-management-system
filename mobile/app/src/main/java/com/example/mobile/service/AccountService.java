@@ -148,10 +148,6 @@ public class AccountService {
     }
 
     public void uploadProfileImage(Uri fileUri) {
-
-
-
-
         //creating a file
         File file = new File(getRealPathFromURI(fileUri));
 
