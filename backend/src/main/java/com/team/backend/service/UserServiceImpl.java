@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
@@ -86,6 +87,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findByToken(String token) {
+        return userRepository.findByToken(token);
+    }
+
+    @Override
     public Optional<User> findById(int id) {
         return userRepository.findById(id);
     }
@@ -108,6 +114,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean checkIfValidOldPassword(User user, String oldPassword) {
         return bCryptPasswordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    @Override
+    public Boolean checkIfValidConfirmPassword(String password, String confirmPassword) {
+        return password.equals(confirmPassword);
+    }
+
+    @Override
+    public Boolean checkIfValidExpiryDate(String token) {
+        User user = findByToken(token).orElseThrow(UserNotFoundException::new);
+        LocalDateTime now = LocalDateTime.now();
+
+        return user.getExpiryDate().isAfter(now);
     }
 
     @Override
@@ -194,5 +213,27 @@ public class UserServiceImpl implements UserService {
         userDetailsMap.put("userBalance", String.valueOf(calculateUserBalance(user)));
 
         return userDetailsMap;
+    }
+
+    @Override
+    public void resetPassword(String token, String password) {
+        User user = findByToken(token).orElseThrow(UserNotFoundException::new);
+
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+
+        user.setToken(null);
+        user.setExpiryDate(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void setTokenAndExpiryDate(User user) {
+        String forgotPasswordToken = UUID.randomUUID().toString();
+        user.setToken(forgotPasswordToken);
+
+        LocalDateTime date = LocalDateTime.now().plusMinutes(5);
+        user.setExpiryDate(date);
+
+        userRepository.save(user);
     }
 }

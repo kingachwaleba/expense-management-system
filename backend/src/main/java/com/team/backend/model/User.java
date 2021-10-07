@@ -1,5 +1,6 @@
 package com.team.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -50,6 +52,15 @@ public class User {
 
     @Transient
     private String roles = "ROLE_USER";
+
+    @JsonIgnore
+    @Size(max = 255)
+    @Column(name = "token")
+    private String token;
+
+    @JsonIgnore
+    @Column(name = "expiry_date", columnDefinition = "DATETIME")
+    private LocalDateTime expiryDate;
 
     public enum AccountType {
         Y, // yes - deleted account
