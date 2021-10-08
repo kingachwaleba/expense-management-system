@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setDeleted(String.valueOf(User.AccountType.N));
         user.setImage(null);
+        user.setToken(null);
+        user.setExpiryDate(null);
         userRepository.save(user);
     }
 
