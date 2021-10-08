@@ -8,7 +8,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
@@ -28,7 +27,7 @@ public class EditProfileActivity extends BaseActivity {
     Uri selectedImage;
     ImageView imageView;
     LinearLayout imagePreviewL;
-    volatile Bitmap imageBitmap;
+    Bitmap imageBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +65,12 @@ public class EditProfileActivity extends BaseActivity {
                     BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
                     if(bitmap.getHeight() > bitmap.getWidth()){
-                        factor = bitmap.getHeight() / 200;
-                        newHeigh = 200;
+                        factor = bitmap.getHeight() / max;
+                        newHeigh = max;
                         newWidth = bitmap.getWidth()/factor;
                     } else {
-                        factor = bitmap.getWidth() / 200;
-                        newWidth = 200;
+                        factor = bitmap.getWidth() / max;
+                        newWidth = max;
                         newHeigh = bitmap.getHeight()/factor;
                     }
 
@@ -93,16 +92,12 @@ public class EditProfileActivity extends BaseActivity {
         }
 
         rotateRightBtn.setOnClickListener(v -> {
-            new Thread(() -> {
-                setProfileImagePreview(imageBitmap,90);
-            }).start();
+            new Thread(() -> setProfileImagePreview(90)).start();
             imageView.setImageBitmap(imageBitmap);
         });
 
         rotateLeftBtn.setOnClickListener(v -> {
-            new Thread(() -> {
-                setProfileImagePreview(imageBitmap,-90);
-            }).start();
+            new Thread(() -> setProfileImagePreview(-90)).start();
             imageView.setImageBitmap(imageBitmap);
         });
     }
@@ -123,7 +118,9 @@ public class EditProfileActivity extends BaseActivity {
         }
     }
 
-    public void setProfileImagePreview(Bitmap bitmap, int degree){
+    public void setProfileImagePreview(int degree){
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         imageBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
