@@ -75,7 +75,8 @@ public class EditProfileActivity extends BaseActivity {
                         newHeigh = bitmap.getHeight()/factor;
                     }
 
-                    accountService.uploadProfileImage(Bitmap.createScaledBitmap(bitmap,newWidth, newHeigh, true), selectedImage);
+                    accountService.uploadProfileImage(Bitmap.createScaledBitmap(bitmap,newWidth, newHeigh, true));
+                    imagePreviewL.setVisibility(View.GONE);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

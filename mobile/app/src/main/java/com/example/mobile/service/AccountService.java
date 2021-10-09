@@ -3,7 +3,6 @@ package com.example.mobile.service;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.widget.Toast;
 import com.example.mobile.ImageHelper;
 import com.example.mobile.config.ApiClient;
@@ -146,21 +145,16 @@ public class AccountService {
         });
     }
 
-    public void uploadProfileImage(Bitmap bitmap, Uri fileUri) {
-
-        File f = new File(fileUri.getPath());
-        System.out.println(f.getName());
+    public void uploadProfileImage(Bitmap bitmap) {
 
         //creating a file
-        File file = new File(ImageHelper.getRealPathFromURI(context, fileUri));
-
-        File file2 = ImageHelper.bitmapToFile(context, bitmap, file.getName());
+        File file = ImageHelper.bitmapToFile(context, bitmap, session.getUserDetails().get(SessionManager.KEY_LOGIN)+".png");
 
         int startType = file.getPath().lastIndexOf('.');
         String type = file.getPath().substring(startType+1);
 
         //creating request body for file
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file2);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
         ApiInterface apiInterface = new ApiClient().getService();

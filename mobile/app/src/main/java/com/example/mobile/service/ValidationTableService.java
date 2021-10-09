@@ -1,12 +1,10 @@
 package com.example.mobile.service;
 
 import android.content.Context;
-import android.widget.Toast;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.Unit;
-
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import retrofit2.Call;
@@ -40,7 +38,6 @@ public class ValidationTableService  {
             }
             @Override
             public void onFailure(@NotNull Call<List<Category>> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
@@ -55,7 +52,6 @@ public class ValidationTableService  {
             }
             @Override
             public void onFailure(@NotNull Call<List<Category>> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
@@ -70,7 +66,6 @@ public class ValidationTableService  {
             }
             @Override
             public void onFailure(@NotNull Call<List<Unit>> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
