@@ -60,9 +60,10 @@ public class UserService {
                 if(response.body()!=null){
                     String login =response.body().get("login").toString();
                     String token =response.body().get("token").toString();
+                    String image =response.body().get("image").toString();
                     login = login.substring(1, login.length() - 1);
                     token = token.substring(1, token.length() - 1);
-                    session.createLoginSession(login, token);
+                    session.createLoginSession(login, token, image);
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                     ((LoginActivity)context).finish();

@@ -22,6 +22,17 @@ public class User implements Parcelable {
     String deleted;
     @SerializedName("roles")
     String roles;
+    @SerializedName("userBalance")
+    Double userBalance;
+
+    public User(int id, String login, String email, String image, int walletsNumber, Double userBalance) {
+        this.id = id;
+        this.login = login;
+        this.email = email;
+        this.image = image;
+        this.walletsNumber = walletsNumber;
+        this.userBalance = userBalance;
+    }
 
     public User(int id, String login, String email, String password) {
         this.id = id;
@@ -158,6 +169,14 @@ public class User implements Parcelable {
         this.roles = roles;
     }
 
+    public Double getUserBalance() {
+        return userBalance;
+    }
+
+    public void setUserBalance(Double userBalance) {
+        this.userBalance = userBalance;
+    }
+
     public int getWalletsNumber() {
         return walletsNumber;
     }
@@ -178,5 +197,6 @@ public class User implements Parcelable {
         dest.writeString(image);
         dest.writeString(deleted);
         dest.writeString(roles);
+        dest.writeString(String.valueOf(userBalance));
     }
 }

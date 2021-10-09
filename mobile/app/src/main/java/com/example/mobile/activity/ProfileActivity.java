@@ -8,14 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.Message;
+import com.example.mobile.model.User;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
 import com.example.mobile.service.adapter.WarningAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ProfileActivity extends BaseActivity {
     String accessToken;
     AccountService accountService;
     TextView loginTv, emailTv, numberOfWalletTv, balanceTv, goToStatuteTv;
-
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +69,20 @@ public class ProfileActivity extends BaseActivity {
         editProfileBtn = findViewById(R.id.edit_profile_btn);
 
         accountService.getAccount(account -> {
+            user = account;
             String loginText = getResources().getString(R.string.login_label) + " " + account.getLogin();
             String emailText = getResources().getString(R.string.email_label) + " " + account.getEmail();
             String numberOfWalletText = getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber();
+            String balanceText = getResources().getString(R.string.saldo_label) + " " + account.getUserBalance();
+            session.setKeyImagePathServer(account.getImage());
+            if(account.getImage()!=null){
+                ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(profileImage), getApplicationContext(), accessToken, account.getImage());
+            }
+
             loginTv.setText(loginText);
             emailTv.setText(emailText);
             numberOfWalletTv.setText(numberOfWalletText);
-            //balanceTv.setText(getResources().getString(R.string.login_string) + " " + account.getLogin());
+            balanceTv.setText(balanceText);
         }, accessToken);
 
         goToStatuteTv.setOnClickListener(v -> {
@@ -109,5 +117,6 @@ public class ProfileActivity extends BaseActivity {
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
         });
+
     }
 }

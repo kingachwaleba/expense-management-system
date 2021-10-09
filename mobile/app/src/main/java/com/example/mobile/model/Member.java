@@ -42,6 +42,7 @@ public class Member implements Parcelable {
             balance = in.readDouble();
         }
         login = in.readString();
+        image = in.readString();
         userId = in.readInt();
     }
 
@@ -111,7 +112,9 @@ public class Member implements Parcelable {
             dest.writeDouble(balance);
         }
         dest.writeString(login);
+        dest.writeString(image);
         dest.writeInt(userId);
+
     }
 
 }

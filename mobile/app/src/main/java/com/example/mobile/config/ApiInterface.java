@@ -20,6 +20,7 @@ import com.example.mobile.model.WalletHolder;
 import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -27,8 +28,10 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiInterface  {
@@ -182,4 +185,9 @@ public interface ApiInterface  {
     @DELETE("wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteWallet(@Header("Authorization") String accessToken, @Path("id") int id);
+
+    @Multipart
+    @PUT("account/change-profile-picture")
+    Call<ResponseBody> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
+
 }

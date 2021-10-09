@@ -59,9 +59,10 @@ public class AddMemberActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 if(infixEt.getText().toString().length()>0){
                     walletService.getMembersByInfixInWallet(members -> {
+                        if(members.size() > 0){
                             UserListAdapter userListAdapter = new UserListAdapter(AddMemberActivity.this, members, "USER_BROWSER");
                             browseMembersRv.setAdapter(userListAdapter);
-                            userListAdapter.notifyDataSetChanged();
+                            userListAdapter.notifyDataSetChanged();}
                     }, accessToken, walletId, infixEt.getText().toString());
                 }
 

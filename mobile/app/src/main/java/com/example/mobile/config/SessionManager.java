@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import com.example.mobile.activity.LoginActivity;
 import java.util.HashMap;
 
+import retrofit2.Response;
+
 public class SessionManager {
     // Shared Preferences
     SharedPreferences pref;
@@ -31,6 +33,12 @@ public class SessionManager {
     // User token
     public static final String KEY_TOKEN = "token";
 
+    //User image path in server
+    public static String KEY_IMAGE_PATH_SERVER = "imageServer";
+
+    //User image path in server
+    public static final String KEY_IMAGE_PATH_PHONE = "imagePhone";
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -38,7 +46,7 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLoginSession(String login, String token){
+    public void createLoginSession(String login, String token, String imageServerPath){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -46,6 +54,8 @@ public class SessionManager {
         editor.putString(KEY_LOGIN, login);
 
         editor.putString(KEY_TOKEN, token);
+
+        editor.putString(KEY_IMAGE_PATH_SERVER, imageServerPath);
 
         // commit changes
         editor.commit();
@@ -56,6 +66,8 @@ public class SessionManager {
         // user name
         user.put(KEY_LOGIN, pref.getString(KEY_LOGIN, null));
         user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
+        user.put(KEY_IMAGE_PATH_SERVER, pref.getString(KEY_IMAGE_PATH_SERVER, null));
+        user.put(KEY_IMAGE_PATH_PHONE, pref.getString(KEY_IMAGE_PATH_PHONE, null));
         // return user
         return user;
     }
@@ -96,5 +108,9 @@ public class SessionManager {
     // Get Login State
     public boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
+    }
+
+    public void setKeyImagePathServer(String path){
+       KEY_IMAGE_PATH_SERVER = path;
     }
 }

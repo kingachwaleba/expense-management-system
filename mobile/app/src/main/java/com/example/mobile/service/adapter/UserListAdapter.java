@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.WalletService;
@@ -52,6 +54,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     public void onBindViewHolder(UserListAdapter.ViewHolder holder, int position) {
         Member member = mMembers.get(position);
         holder.memberNameTv.setText(member.getLogin());
+
+        if(member.getImage()!=null){
+            ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(holder.profileImageIv), holder.itemView.getContext(), mAccessToken, member.getImage());
+        }
 
         switch (mTAG) {
             case "USER_BROWSER":
@@ -102,6 +108,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public ImageView profileImageIv;
         public TextView memberNameTv;
         public Button userBtn;
         public boolean isChecked;
@@ -111,6 +118,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             isChecked = false;
             memberNameTv = itemView.findViewById(R.id.member_name_tv);
             userBtn = itemView.findViewById(R.id.user_btn);
+            profileImageIv = itemView.findViewById(R.id.profile_image_iv);
         }
     }
 
