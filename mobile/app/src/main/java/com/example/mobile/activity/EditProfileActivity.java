@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -109,7 +110,8 @@ public class EditProfileActivity extends BaseActivity {
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
+                //imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
+                imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -124,6 +126,5 @@ public class EditProfileActivity extends BaseActivity {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         imageBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-       // return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 }

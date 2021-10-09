@@ -2,12 +2,10 @@ package com.example.mobile.service;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.widget.Toast;
+import com.example.mobile.ImageHelper;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
@@ -16,9 +14,7 @@ import com.example.mobile.model.Message;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
 import org.jetbrains.annotations.NotNull;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -152,10 +148,13 @@ public class AccountService {
 
     public void uploadProfileImage(Bitmap bitmap, Uri fileUri) {
 
-        //creating a file
-        File file = new File(getRealPathFromURI(fileUri));
+        File f = new File(fileUri.getPath());
+        System.out.println(f.getName());
 
-        File file2 = bitmapToFile(context, bitmap, file.getName());
+        //creating a file
+        File file = new File(ImageHelper.getRealPathFromURI(context, fileUri));
+
+        File file2 = ImageHelper.bitmapToFile(context, bitmap, file.getName());
 
         int startType = file.getPath().lastIndexOf('.');
         String type = file.getPath().substring(startType+1);
@@ -180,39 +179,4 @@ public class AccountService {
             }
         });
     }
-
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(contentUri, filePathColumn, null, null, null);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String filePath = cursor.getString(columnIndex);
-        cursor.close();
-        return filePath;
-    }
-
-    public static File bitmapToFile(Context context,Bitmap bitmap, String fileNameToSave) { // File name like "image.png"
-        //create a file to write bitmap data
-        File file = null;
-        try {
-            file = new File(Environment.getExternalStorageDirectory() + File.separator + fileNameToSave);
-            file.createNewFile();
-
-//Convert bitmap to byte array
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0 , bos); // YOU can also save it in JPEG
-            byte[] bitmapdata = bos.toByteArray();
-
-//write the bytes in file
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();
-            return file;
-        }catch (Exception e){
-            e.printStackTrace();
-            return file; // it will return null
-        }
-    }
-
 }
