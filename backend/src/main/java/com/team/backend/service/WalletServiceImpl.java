@@ -19,6 +19,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -32,12 +33,13 @@ public class WalletServiceImpl implements WalletService {
     private final ListDetailService listDetailService;
     private final MessageService messageService;
     private final ExpenseService expenseService;
+    private final CategoryRepository categoryRepository;
 
     public WalletServiceImpl(UserStatusRepository userStatusRepository, WalletRepository walletRepository,
                              @Lazy UserService userService, WalletUserRepository walletUserRepository,
                              ListService listService, StatusRepository statusRepository,
                              ListDetailService listDetailService, MessageService messageService,
-                             @Lazy ExpenseService expenseService) {
+                             @Lazy ExpenseService expenseService, CategoryRepository categoryRepository) {
         this.userStatusRepository = userStatusRepository;
         this.walletRepository = walletRepository;
         this.userService = userService;
@@ -47,6 +49,7 @@ public class WalletServiceImpl implements WalletService {
         this.listDetailService = listDetailService;
         this.messageService = messageService;
         this.expenseService = expenseService;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -365,5 +368,56 @@ public class WalletServiceImpl implements WalletService {
         }
 
         return walletsList;
+    }
+
+    @Override
+    public Map<String, Object> returnStats(Wallet wallet, LocalDateTime from, LocalDateTime to) {
+        List<Expense> expenseList = expenseService.findAllByWalletAndDateBetween(wallet, from, to);
+        Map<String, Object> statsMap = new HashMap<>();
+
+        if (expenseList.size() == 0)
+            return statsMap;
+
+        List<ExpenseDetail> expenseDetailList = new ArrayList<>();
+        expenseList.forEach(expense -> expenseDetailList.addAll(expense.getExpenseDetailSet()));
+
+        Map<User, BigDecimal> mapByUser = expenseDetailList.stream()
+                .collect(Collectors.groupingBy(
+                        ExpenseDetail::getUser,
+                        Collectors.reducing(
+                                BigDecimal.ZERO,
+                                ExpenseDetail::getCost,
+                                BigDecimal::add)));
+
+        BigDecimal maxExpensesValue = Collections.max(mapByUser.values());
+
+        List<String> maxUsersList = mapByUser.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(maxExpensesValue))
+                .map(entry -> entry.getKey().getLogin())
+                .collect(Collectors.toList());
+
+        statsMap.put("maxUsersList", maxUsersList);
+        statsMap.put("maxExpensesValue", maxExpensesValue);
+
+        BigDecimal expensesCost = BigDecimal.valueOf(0.0);
+        for (Expense expense : expenseList) {
+            expensesCost = expensesCost.add(expense.getTotal_cost());
+        }
+
+        statsMap.put("totalCost", expensesCost);
+
+        Map<Category, List<Expense>> mapByCategory =
+                expenseList.stream().collect(Collectors.groupingBy(Expense::getCategory));
+
+        for (Category category : categoryRepository.findAll()) {
+            List<Expense> expenses = mapByCategory.getOrDefault(category, Collections.emptyList());
+            expensesCost = BigDecimal.valueOf(0.0);
+            for (Expense expense : expenses) {
+                expensesCost = expensesCost.add(expense.getTotal_cost());
+            }
+            statsMap.put(category.getName(), expensesCost);
+        }
+
+        return statsMap;
     }
 }

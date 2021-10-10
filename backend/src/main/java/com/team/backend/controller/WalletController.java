@@ -3,9 +3,11 @@ package com.team.backend.controller;
 import com.team.backend.exception.*;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
+import com.team.backend.repository.CategoryRepository;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletCategoryRepository;
 import com.team.backend.repository.WalletUserRepository;
+import com.team.backend.service.ExpenseService;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.zip.DataFormatException;
 
 @RestController
 public class WalletController {
@@ -65,6 +70,29 @@ public class WalletController {
         List<Map<String, Object>> userList = walletService.findUserList(wallet);
 
         return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
+
+    @GetMapping("/wallet/{id}/stats")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
+    public ResponseEntity<?> getStats(@PathVariable int id, @RequestParam("dateFrom") String dateFrom,
+                                      @RequestParam("dateTo") String dateTo) {
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
+
+        LocalDateTime from;
+        LocalDateTime to;
+
+        try {
+            from = LocalDateTime.parse(dateFrom);
+            to = LocalDateTime.parse(dateTo);
+        } catch (DateTimeException dateTimeException) {
+            return new ResponseEntity<>(dateTimeException.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        if (to.isBefore(from) || from.isAfter(LocalDateTime.now())
+                || to.isAfter(LocalDateTime.now().withHour(23).withMinute(59).withSecond(59)))
+            return new ResponseEntity<>("Wrong dates!", HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(walletService.returnStats(wallet, from, to), HttpStatus.OK);
     }
 
     @Transactional
