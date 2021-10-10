@@ -46,12 +46,22 @@ public class MessageController {
         return new ResponseEntity<>(messageService.findAllByWalletAndTypeOrderByDate(wallet, "M"), HttpStatus.OK);
     }
 
-    @GetMapping("/debts-notifications")
-    public ResponseEntity<?> allDebtsNotifications() {
+    @GetMapping("/debts-notifications-user")
+    public ResponseEntity<?> debtsNotificationsByUser() {
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
-        return new ResponseEntity<>(messageService.findAllByReceiverAndTypeOrderByDate(user, "E"), HttpStatus.OK);
+        return new ResponseEntity<>(messageService
+                .findAllByReceiverAndTypeOrderByDate(user, String.valueOf(Message.MessageType.E)), HttpStatus.OK);
     }
+
+    @GetMapping("/debts-notifications-system")
+    public ResponseEntity<?> debtsNotificationsBySystem() {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        return new ResponseEntity<>(messageService
+                .findAllByReceiverAndTypeOrderByDate(user, String.valueOf(Message.MessageType.S)), HttpStatus.OK);
+    }
+
 
     @PostMapping("/wallet/{id}/message")
     public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {

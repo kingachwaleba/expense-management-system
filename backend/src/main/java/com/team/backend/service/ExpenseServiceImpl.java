@@ -113,6 +113,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public List<Expense> findAllByWalletAndDateBetween(Wallet wallet, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return expenseRepository.findAllByWalletAndDateBetween(wallet, dateFrom, dateTo);
+    }
+
+    @Override
     public void editUserList(Expense updatedExpense, Expense newExpense, List<String> userList) {
         Wallet wallet = updatedExpense.getWallet();
         List<String> tempList = new ArrayList<>();

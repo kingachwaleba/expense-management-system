@@ -6,6 +6,7 @@ import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public interface ExpenseService {
     Optional<Expense> findById(int id);
     List<Expense> findAllByWalletOrderByDate(Wallet wallet);
     List<Expense> findAllByWalletAndUser(Wallet wallet, User user);
+    List<Expense> findAllByWalletAndDateBetween(Wallet wallet, LocalDateTime dateFrom, LocalDateTime dateTo);
 
     void editUserList(Expense updatedExpense, Expense newExpense, List<String> userList);
     void edit(Expense updatedExpense, Expense newExpense);

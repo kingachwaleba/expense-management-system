@@ -8,6 +8,7 @@ import com.team.backend.model.Wallet;
 import com.team.backend.model.WalletUser;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,4 +38,6 @@ public interface WalletService {
 
     Map<String, Object> getOne(Wallet wallet);
     List<Map<String, Object>> getAll();
+
+    Map<String, Object> returnStats(Wallet wallet, LocalDateTime from, LocalDateTime to);
 }
