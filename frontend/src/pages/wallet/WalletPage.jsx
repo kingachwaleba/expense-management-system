@@ -7,7 +7,8 @@ import { useLocation } from 'react-router-dom';
 import UserService from '../../services/user.service';
 import WalletDetailService from '../../services/WalletDetailService';
 import { useState } from 'react';
-
+import { Button } from 'reactstrap';
+import DeleteWalletService from '../../services/DeleteWalletService';
 function WalletPage () {
 
 
@@ -15,15 +16,20 @@ function WalletPage () {
     console.log(location);
     var walletID = location.state.walletID;
     var userToken;
+    var userName;
         console.log("Wallet id: " + walletID);
    
 
 
     const user = UserService.getCurrentUser();
         if (user) {
-            userToken = user.token
+           userToken = user.token
+           userName = user.name
          }
         console.log("userToken komponentu to: " + userToken);
+
+
+
          
     const [walletData, getWalletData] = useState([]);
     const [walletCategoryData, getWalletCategoryData] = useState([]);
@@ -47,7 +53,16 @@ function WalletPage () {
         
     },[])
    
-   
+   function checkOwner(userName, ownerName){
+
+        if(userName == ownerName){
+            document.getElementById('showing-content-expenses').style.display = 'block';
+
+        }
+        else{
+            document.getElementById('showing-content-expenses').style.display = 'none';
+        }
+   }
 
 
 
@@ -209,13 +224,20 @@ function WalletPage () {
 
 
                     <div className="center-content">
-                            <a href="/wallet-stats" className="card-link center-content btn btn-primary width-100" id="mainbuttonstyle">Statystyki</a>
+                            <a href="/wallet-stats" className="card-link center-content btn btn-primary width-100 main-button-style" >Statystyki</a>
                             <br></br>
                             <br></br>
-                            <a href="/edit-wallet" className="card-link center-content btn btn-primary width-100" id="mainbuttonstyle" >Edytuj portfel</a>
+                            <a href="/edit-wallet" className="card-link center-content btn btn-primary width-100 main-button-style" >Edytuj portfel</a>
                             <br></br>
                             <br></br>
-                            <a href="/delete-wallet" className="card-link center-content btn btn-primary width-100" id="mainbuttonstyle" >Usuń portfel</a>
+                            <Button className="card-link main-button-style center-content btn btn-primary width-100 " 
+                            onClick={ 
+                            }>
+                                        
+                                        Usuń portfel
+                                       
+                                            
+                            </Button>
                 </div>
                 </div>
 
