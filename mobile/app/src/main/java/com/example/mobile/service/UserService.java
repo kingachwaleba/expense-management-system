@@ -83,7 +83,6 @@ public class UserService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                System.out.println(response.code());
                 Toast.makeText(context,"Sprawdź skrzynkę pocztową!",Toast.LENGTH_LONG).show();
             }
             @Override
@@ -93,5 +92,4 @@ public class UserService {
             }
         });
     }
-
 }
