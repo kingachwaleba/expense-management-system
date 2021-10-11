@@ -76,6 +76,12 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/v_line_white" />
 
+            <ImageView
+                android:id="@+id/receipt_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
           <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

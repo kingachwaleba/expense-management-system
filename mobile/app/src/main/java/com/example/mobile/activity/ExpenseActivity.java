@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.model.ExpenseDetail;
 import com.example.mobile.model.Member;
@@ -26,6 +30,7 @@ public class ExpenseActivity extends BaseActivity {
 
     TextView nameExpenseTv, makeWhoTv, categoryTv, dateTv, costTv;
     Button editExpenseBtn, deleteExpenseBtn;
+    ImageView receiptIv;
     RecyclerView forWhoRv;
     UserListAdapter userListAdapter;
     List<Member> seletedUsers, walletUsers;
@@ -51,6 +56,7 @@ public class ExpenseActivity extends BaseActivity {
         editExpenseBtn = findViewById(R.id.edit_expense_btn);
         deleteExpenseBtn = findViewById(R.id.delete_expense_btn);
         forWhoRv = findViewById(R.id.for_who_rv);
+        receiptIv = findViewById(R.id.receipt_iv);
 
         seletedUsers = new ArrayList<>();
         userListAdapter = new UserListAdapter(this, seletedUsers, "USER_EXPENSE");
@@ -76,6 +82,15 @@ public class ExpenseActivity extends BaseActivity {
             for(ExpenseDetail item : expense.getExpense().getExpenseDetailsSet()) {
                 item.getMember().setBalance(item.getCost());
                 seletedUsers.add(item.getMember());
+            }
+
+            if(expense.getExpense().getReceipt_image()!=null){
+                ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(receiptIv), getApplicationContext(), accessToken, expense.getExpense().getReceipt_image());
+            }
+
+            if(expense.getDeletedUserList()!=null){
+                editExpenseBtn.setVisibility(View.GONE);
+                deleteExpenseBtn.setVisibility(View.GONE);
             }
 
             userListAdapter.notifyDataSetChanged();
