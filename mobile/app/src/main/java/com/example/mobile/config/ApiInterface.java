@@ -175,9 +175,13 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteNotification(@Header("Authorization") String accessToken, @Path("id") int id);
 
-    @GET("debts-notifications")
+    @GET("debts-notifications-user")
     @Headers("Content-Type: application/json")
-    Call<List<Message>> getDebtNotification(@Header("Authorization") String accessToken);
+    Call<List<Message>> getDebtNotificationUser(@Header("Authorization") String accessToken);
+
+    @GET("debts-notifications-system")
+    @Headers("Content-Type: application/json")
+    Call<List<Message>> getDebtNotificationSystem(@Header("Authorization") String accessToken);
 
     @DELETE("wallet/{id}/user/{userLogin}")
     @Headers("Content-Type: application/json")

@@ -26,7 +26,7 @@ public class ProfileActivity extends BaseActivity {
     Button editProfileBtn;
     ImageButton openNotificationBtn;
     Boolean ifOpenNotification;
-    RecyclerView notificationInvitationRv, notificationWarningRv;
+    RecyclerView notificationInvitationRv, notificationWarningRv, notificationWarningRv2;
     SessionManager session;
     String accessToken;
     AccountService accountService;
@@ -43,18 +43,22 @@ public class ProfileActivity extends BaseActivity {
 
         notificationInvitationRv = findViewById(R.id.notification_invitation_rv);
         notificationWarningRv = findViewById(R.id.notification_warning_rv);
+        notificationWarningRv2 = findViewById(R.id.notification_warning_rv2);
 
         notificationInvitationRv.setLayoutManager(new LinearLayoutManager(this));
         notificationWarningRv.setLayoutManager(new LinearLayoutManager(this));
+        notificationWarningRv2.setLayoutManager(new LinearLayoutManager(this));
 
         List<Invitation> invitationsInit = new ArrayList<>();
         List<Message> warningsInit = new ArrayList<>();
 
         InvitationAdapter invitationAdapterInit = new InvitationAdapter(this, invitationsInit, accessToken);
         WarningAdapter warningAdapterInit = new WarningAdapter(this, warningsInit, accessToken);
+        WarningAdapter warningAdapterInit2 = new WarningAdapter(this, warningsInit, accessToken);
 
         notificationInvitationRv.setAdapter(invitationAdapterInit);
         notificationWarningRv.setAdapter(warningAdapterInit);
+        notificationWarningRv.setAdapter(warningAdapterInit2);
 
         ifOpenNotification = false;
         openNotificationBtn = findViewById(R.id.open_notification_btn);
@@ -99,9 +103,15 @@ public class ProfileActivity extends BaseActivity {
                     notificationInvitationRv.setAdapter(invitationAdapter);
                     invitationAdapter.notifyDataSetChanged();
                 }, accessToken);
-                accountService.getDebtNotification(messages -> {
+                accountService.getDebtNotificationUser(messages -> {
                     WarningAdapter warningAdapter = new WarningAdapter(ProfileActivity.this, messages, accessToken);
                     notificationWarningRv.setAdapter(warningAdapter);
+                    warningAdapter.notifyDataSetChanged();
+                }, accessToken);
+
+                accountService.getDebtNotificationSystem(messages -> {
+                    WarningAdapter warningAdapter = new WarningAdapter(ProfileActivity.this, messages, accessToken);
+                    notificationWarningRv2.setAdapter(warningAdapter);
                     warningAdapter.notifyDataSetChanged();
                 }, accessToken);
 

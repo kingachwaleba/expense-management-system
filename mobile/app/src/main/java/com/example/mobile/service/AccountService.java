@@ -146,8 +146,24 @@ public class AccountService {
         });
     }
 
-    public void getDebtNotification(OnNotificationCallback callback, String accessToken){
-        Call<List<Message>> call = apiInterface.getDebtNotification("Bearer " + accessToken);
+    public void getDebtNotificationUser(OnNotificationCallback callback, String accessToken){
+        Call<List<Message>> call = apiInterface.getDebtNotificationUser("Bearer " + accessToken);
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<Message>> call, @NotNull Response<List<Message>> response) {
+                callback.onAllNotifications(response.body());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<Message>> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void getDebtNotificationSystem(OnNotificationCallback callback, String accessToken){
+        Call<List<Message>> call = apiInterface.getDebtNotificationSystem("Bearer " + accessToken);
         call.enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(@NotNull Call<List<Message>> call, @NotNull Response<List<Message>> response) {

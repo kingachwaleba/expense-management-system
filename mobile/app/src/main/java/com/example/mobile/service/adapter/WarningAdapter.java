@@ -38,13 +38,27 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
     @Override
     public void onBindViewHolder(WarningAdapter.ViewHolder holder, int position) {
         Message warningItem = mWarnings.get(position);
-        String ownerS = mInflater.getContext().getResources().getString(R.string.owner_label) + " " + warningItem.getSender().getLogin();
         String debtS = mInflater.getContext().getResources().getString(R.string.debt) + " " + warningItem.getContent();
-        holder.ownerNameTv.setText(ownerS);
+
+       /* if(warningItem.getType().equals("S")){
+            holder.ownerNameTv.setVisibility(View.INVISIBLE);
+            holder.contentTv.setText(mInflater.getContext().getResources().getString(R.string.new_debt_notification));
+        } else {
+            String ownerS = mInflater.getContext().getResources().getString(R.string.owner_label) + " " + warningItem.getSender().getLogin();
+            holder.ownerNameTv.setText(ownerS);
+        }*/
+
+        if(warningItem.getSender()==null){
+            holder.ownerNameTv.setVisibility(View.INVISIBLE);
+            holder.contentTv.setText(mInflater.getContext().getResources().getString(R.string.new_debt_notification));
+        } else {
+            String ownerS = mInflater.getContext().getResources().getString(R.string.owner_label) + " " + warningItem.getSender().getLogin();
+            holder.ownerNameTv.setText(ownerS);
+        }
         holder.debtTv.setText(debtS);
 
         holder.acceptBtn.setOnClickListener(v -> {
-            Intent intent = new Intent((ProfileActivity)holder.itemView.getContext(), WalletActivity.class);
+            Intent intent = new Intent(holder.itemView.getContext(), WalletActivity.class);
             intent.putExtra("id", String.valueOf(warningItem.getWallet().getId()));
             holder.itemView.getContext().startActivity(intent);
             ((ProfileActivity)(holder.itemView.getContext())).finish();
@@ -64,7 +78,7 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView ownerNameTv, debtTv;
+        public TextView ownerNameTv, debtTv, contentTv;
         public Button acceptBtn, denyBtn;
 
         public ViewHolder(View itemView) {
@@ -73,6 +87,7 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
             debtTv = itemView.findViewById(R.id.debt_tv);
             acceptBtn = itemView.findViewById(R.id.accept_btn);
             denyBtn = itemView.findViewById(R.id.delete_notification_btn);
+            contentTv = itemView.findViewById(R.id.warning_info_tv);
         }
     }
 
