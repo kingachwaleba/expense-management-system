@@ -43,6 +43,10 @@ public class WalletService {
         void onMembersList(List<Member> members);
     }
 
+    public interface OnStatsCallback{
+        void onStats(ResponseBody response);
+    }
+
     public void getUserWallets(String accessToken) {
         Call<List<WalletCreate>> call = apiInterface.getUserWallets("Bearer " + accessToken);
         call.enqueue(new Callback<List<WalletCreate>>() {
@@ -200,6 +204,22 @@ public class WalletService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void getStats(String accessToken, int id, String dateFrom, String dateTo, OnStatsCallback callback){
+        Call<ResponseBody> call = apiInterface.getStats("Bearer " + accessToken, id, dateFrom, dateTo);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                System.out.println(response.code());
+                callback.onStats(response.body());
             }
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {

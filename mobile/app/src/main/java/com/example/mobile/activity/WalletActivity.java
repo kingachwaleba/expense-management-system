@@ -34,7 +34,7 @@ public class WalletActivity extends BaseActivity {
     Boolean showMembersControl, showListsControl, showExpensesControl;
     String accessToken;
     TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
-    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn;
+    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn, statisticsBtn;
     String walletName, walletDescription, walletCategory;
     ListsAdapter listAdapter;
     ExpensesAdapter expensesAdapter;
@@ -83,6 +83,7 @@ public class WalletActivity extends BaseActivity {
         walletExpensesTv = findViewById(R.id.wallet_expenses_tv);
         userExpensesTv = findViewById(R.id.your_expanses_tv);
         userBalanceTv = findViewById(R.id.your_balance_tv);
+        statisticsBtn = findViewById(R.id.statistics_btn);
 
         membersListL = findViewById(R.id.members_list_l);
         editMembersBtn = findViewById(R.id.edit_members_btn);
@@ -113,6 +114,13 @@ public class WalletActivity extends BaseActivity {
             startActivity(intent);
         });
 
+        statisticsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, StatisticsActivity.class);
+            intent.putExtra("accessToken", accessToken);
+            intent.putExtra("walletName", walletName);
+            intent.putExtra("walletId", id);
+            startActivity(intent);
+        });
 
     }
 
