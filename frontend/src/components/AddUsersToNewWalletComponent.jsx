@@ -75,7 +75,7 @@ class AddUsersToNewWalletComponent extends Component {
                                 className="form-control"
                                 name="searchForUser"
                                 placeholder="Znajdź użytkownika..."
-                                required
+                                
                                 onChange={(e) => {
                                     
                                     

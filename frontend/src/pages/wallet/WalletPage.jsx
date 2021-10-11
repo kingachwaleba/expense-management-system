@@ -9,6 +9,7 @@ import WalletDetailService from '../../services/WalletDetailService';
 import { useState } from 'react';
 import { Button } from 'reactstrap';
 import DeleteWalletService from '../../services/DeleteWalletService';
+import { Link } from 'react-router-dom';
 function WalletPage () {
 
 
@@ -227,12 +228,29 @@ function WalletPage () {
                             <a href="/wallet-stats" className="card-link center-content btn btn-primary width-100 main-button-style" >Statystyki</a>
                             <br></br>
                             <br></br>
-                            <a href="/edit-wallet" className="card-link center-content btn btn-primary width-100 main-button-style" >Edytuj portfel</a>
+                            
+                            <Link className="card-link center-content btn btn-primary width-100 main-button-style"  id="mainbuttonstyle"
+                                        to={{
+                                        pathname: '/edit-wallet', 
+                                        state:{
+                                            walletID: walletID
+                                        }
+                                            
+
+                                        }}>Edytuj portfel
+                                       
+                                            
+                                </Link>
                             <br></br>
                             <br></br>
-                            <Button className="card-link main-button-style center-content btn btn-primary width-100 " 
-                            onClick={ 
-                            }>
+                            <Button className="card-link main-button-style center-content btn btn-primary width-100 "  
+                                onClick={e =>{ 
+                                        
+                                        DeleteWalletService.deleteWallet(walletID,userToken);
+                                        window.location.href='/home'
+
+                                }}>
+                          
                                         
                                         Usuń portfel
                                        
