@@ -203,4 +203,7 @@ public interface ApiInterface  {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteAccount(@Header("Authorization") String accessToken, @Body String password);
 
+    @GET("wallet/{id}/stats")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> getStats(@Header("Authorization") String accessToken, @Path("id") int id, @Query("dateFrom") String dateFrom, @Query("dateTo") String dateTo);
 }

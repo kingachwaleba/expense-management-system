@@ -106,7 +106,7 @@
     <string name="cost_expense_label">"Koszt: "</string>
     <string name="delete_expense">Usuń wydatek</string>
     <string name="back">Wróć</string>
-    <string name="biggest_expense_label">Największy wydatek:</string>
+    <string name="biggest_expense_label">Najwięcej wydali:</string>
     <string name="all_expenses_label">Łącznie wydano:</string>
     <string name="change_password_label">Zmień hasło:</string>
     <string name="cost_hint">Wpisz koszt...</string>
@@ -120,5 +120,11 @@
     <string name="leave_wallet">Opuść portfel</string>
     <string name="save_photo">Zmień zdjęcie</string>
     <string name="new_debt_notification">Masz nowy dług!</string>
+    <string name="day">Dzień</string>
+    <string name="month">Miesiąc</string>
+    <string name="year">Rok</string>
+    <string name="from_label">Od:</string>
+    <string name="to_label">Do:</string>
+    <string name="show_statistics">Pokaż statystyki</string>
 
 </resources>
