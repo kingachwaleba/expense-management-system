@@ -1,13 +1,13 @@
 package com.team.backend.controller;
 
 import com.team.backend.exception.*;
+import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
-import com.team.backend.repository.CategoryRepository;
 import com.team.backend.repository.UserStatusRepository;
 import com.team.backend.repository.WalletCategoryRepository;
 import com.team.backend.repository.WalletUserRepository;
-import com.team.backend.service.ExpenseService;
+import com.team.backend.service.MessageService;
 import com.team.backend.service.UserService;
 import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
@@ -17,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.zip.DataFormatException;
 
 @RestController
 public class WalletController {
@@ -30,16 +30,18 @@ public class WalletController {
     private final UserStatusRepository userStatusRepository;
     private final WalletCategoryRepository walletCategoryRepository;
     private final WalletUserRepository walletUserRepository;
+    private final MessageService messageService;
 
     public WalletController(WalletService walletService, UserService userService,
                             UserStatusRepository userStatusRepository,
                             WalletCategoryRepository walletCategoryRepository,
-                            WalletUserRepository walletUserRepository) {
+                            WalletUserRepository walletUserRepository, MessageService messageService) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
         this.walletCategoryRepository = walletCategoryRepository;
         this.walletUserRepository = walletUserRepository;
+        this.messageService = messageService;
     }
 
     @GetMapping("/wallet/{id}")
@@ -142,6 +144,35 @@ public class WalletController {
         walletService.save(updatedWallet);
 
         return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
+    }
+    
+    @PutMapping("/pay-debt/wallet/{id}")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
+    public ResponseEntity<?> payDebt(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
+        Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
+
+        WalletUser debtorInfo = walletUserRepository
+                .findByWalletAndUser(wallet, debtsHolder.getDebtor()).orElseThrow(WalletUserNotFoundException::new);
+        WalletUser creditorInfo = walletUserRepository
+                .findByWalletAndUser(wallet, debtsHolder.getCreditor()).orElseThrow(WalletUserNotFoundException::new);
+
+        BigDecimal debt = debtsHolder.getHowMuch();
+        BigDecimal newDebtorBalance = debtorInfo.getBalance().add(debt);
+        BigDecimal newCreditorBalance = creditorInfo.getBalance().subtract(debt);
+
+        if (newDebtorBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
+            newDebtorBalance = BigDecimal.valueOf(0.00);
+        if (newCreditorBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
+            newCreditorBalance = BigDecimal.valueOf(0.00);
+
+        debtorInfo.setBalance(newDebtorBalance);
+        creditorInfo.setBalance(newCreditorBalance);
+
+        walletUserRepository.save(debtorInfo);
+        walletUserRepository.save(creditorInfo);
+        messageService.sendNotification(wallet.getId());
+
+        return new ResponseEntity<>("The debt has been paid!", HttpStatus.OK);
     }
 
     @DeleteMapping("/wallet/{id}/user/{userLogin}")
