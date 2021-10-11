@@ -199,4 +199,8 @@ public interface ApiInterface  {
     @POST("upload")
     Call<ResponseBody> uploadReceiptImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
 
+    @PUT("delete-account")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteAccount(@Header("Authorization") String accessToken, @Body String password);
+
 }

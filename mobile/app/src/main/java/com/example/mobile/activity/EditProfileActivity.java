@@ -47,6 +47,14 @@ public class EditProfileActivity extends BaseActivity {
         session = new SessionManager(this);
         accountService = new AccountService(this);
 
+        deleteAccountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditProfileActivity.this, DeleteProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         chooseImageBtn.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, 100);
