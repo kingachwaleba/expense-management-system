@@ -1,14 +1,25 @@
 package com.example.mobile.activity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
+import androidx.core.content.ContextCompat;
+import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.model.Category;
 import com.example.mobile.model.Expense;
@@ -16,7 +27,7 @@ import com.example.mobile.model.ExpenseHolder;
 import com.example.mobile.model.Member;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ExpenseService;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,16 +36,20 @@ public class EditExpenseActivity extends BaseActivity {
     String accessToken;
     int expenseId;
     ExpenseService expenseService;
-    String nameExpense, costExpense, category;
+    String nameExpense, costExpense, category, receiptPath;
     List<Member> selectedUser, allMembers;
     List<String> selectedUsersLogin;
     List<Category> categoriesExpense;
     RadioGroup categoryRg;
     LinearLayout membersCb;
-    Button editExpenseBtn, cancelEditBtn;
+    Button editExpenseBtn, cancelEditBtn, chooseImageBtn, deletePhotoBtn;
+    ImageView receiptIv;
     EditText nameExpenseEt, costExpenseEt;
     Category selectedCategory;
     User expenseOwner;
+    Uri selectedImage;
+    Bitmap imageBitmap;
+    String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +61,21 @@ public class EditExpenseActivity extends BaseActivity {
         nameExpense = getIntent().getStringExtra("nameExpense");
         costExpense = getIntent().getStringExtra("costExpense");
         category = getIntent().getStringExtra("categoryExpense");
+        receiptPath = getIntent().getStringExtra("receipt");
         selectedUser = getIntent().getParcelableArrayListExtra("selectedUsers");
         allMembers = getIntent().getParcelableArrayListExtra("walletUsers");
-        expenseOwner = getIntent().getParcelableExtra("expenseOwner");
+
 
         nameExpenseEt = findViewById(R.id.name_expense_et);
         costExpenseEt = findViewById(R.id.cost_expense_et);
         categoryRg = findViewById(R.id.category_RG);
         membersCb = findViewById(R.id.members_expense_l);
+        receiptIv = findViewById(R.id.receipt_iv);
+        chooseImageBtn = findViewById(R.id.choose_image_btn);
 
         editExpenseBtn = findViewById(R.id.edit_expense_btn);
         cancelEditBtn = findViewById(R.id.cancel_edit_expense_btn);
+        deletePhotoBtn = findViewById(R.id.delete_photo_btn);
 
         expenseService = new ExpenseService(this);
 
@@ -65,6 +84,13 @@ public class EditExpenseActivity extends BaseActivity {
 
         categoriesExpense = MainActivity.getCategoriesExpense();
         selectedUsersLogin = new ArrayList<>();
+
+       if(receiptPath!=null) {
+           ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(receiptIv), getApplicationContext(), accessToken, receiptPath);
+           receiptIv.setVisibility(View.VISIBLE);
+           imagePath = receiptPath;
+           deletePhotoBtn.setVisibility(View.VISIBLE);
+       }
 
         for (int i = 0; i < selectedUser.size(); i++)
             selectedUsersLogin.add(selectedUser.get(i).getLogin());
@@ -106,16 +132,56 @@ public class EditExpenseActivity extends BaseActivity {
 
         cancelEditBtn.setOnClickListener(v -> finish());
 
+        deletePhotoBtn.setOnClickListener(v -> {
+            imageBitmap = null;
+            imagePath = null;
+            receiptIv.setVisibility(View.GONE);
+            deletePhotoBtn.setVisibility(View.GONE);
+        });
+
+        chooseImageBtn.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + getPackageName()));
+                finish();
+                startActivity(intent);
+                return;
+            }
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, 100);
+        });
+
         editExpenseBtn.setOnClickListener(v -> {
             if(nameExpenseEt.getText().toString().length()==0) nameExpenseEt.setError("Wpisz nazwe wydatku!");
             else if(costExpenseEt.getText().toString().length()==0) costExpenseEt.setError("Wpisz kwote wydatku!");
             else if(selectedUsersLogin.size()==0) Toast.makeText(EditExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
+            else if(imageBitmap!=null){
+                expenseService.uploadReceiptImage(imageBitmap, accessToken, nameExpenseEt.getText().toString(), path -> imagePath = path);
+                imageBitmap = null;}
             else {
-                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
+                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), imagePath, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
                 ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
                 expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
                 finish();
             }
         });
+    }
+
+   @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+            selectedImage = data.getData();
+            try {
+                imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            receiptIv.setImageBitmap(imageBitmap);
+            receiptIv.setVisibility(View.VISIBLE);
+            deletePhotoBtn.setVisibility(View.VISIBLE);
+        }
     }
 }

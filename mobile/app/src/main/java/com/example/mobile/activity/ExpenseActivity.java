@@ -1,6 +1,9 @@
 package com.example.mobile.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -34,7 +37,8 @@ public class ExpenseActivity extends BaseActivity {
     RecyclerView forWhoRv;
     UserListAdapter userListAdapter;
     List<Member> seletedUsers, walletUsers;
-    String nameExpense, costExpense, categoryExpense;
+    String nameExpense, costExpense, categoryExpense, receiptPath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class ExpenseActivity extends BaseActivity {
             costExpense = String.valueOf(expense.getExpense().getTotal_cost());
             categoryExpense = expense.getExpense().getCategory().getName();
             expenseOwner = expense.getExpense().getUser();
+            receiptPath = expense.getExpense().getReceipt_image();
             String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getExpense().getUser().getLogin();
             String cost = getResources().getString(R.string.cost_label) + " " +  expense.getExpense().getTotal_cost();
             String category = getResources().getString(R.string.category_label) + " " +  expense.getExpense().getCategory().getName();
@@ -88,7 +93,7 @@ public class ExpenseActivity extends BaseActivity {
                 ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(receiptIv), getApplicationContext(), accessToken, expense.getExpense().getReceipt_image());
             }
 
-            if(expense.getDeletedUserList()!=null){
+            if(expense.getDeletedUserList()==null){
                 editExpenseBtn.setVisibility(View.GONE);
                 deleteExpenseBtn.setVisibility(View.GONE);
             }
@@ -104,8 +109,7 @@ public class ExpenseActivity extends BaseActivity {
             intent.putExtra("nameExpense", nameExpense);
             intent.putExtra("costExpense", costExpense);
             intent.putExtra("categoryExpense", categoryExpense);
-            intent.putExtra("expenseOwner", expenseOwner);
-            //intent.putExtra("periodExpanse", expense1.getPeriod());
+            intent.putExtra("receipt", receiptPath);
             intent.putParcelableArrayListExtra("selectedUsers", (ArrayList<? extends Parcelable>) seletedUsers);
             intent.putParcelableArrayListExtra("walletUsers", (ArrayList<? extends Parcelable>) walletUsers);
             startActivity(intent);
