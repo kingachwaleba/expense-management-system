@@ -40,21 +40,14 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
         Message warningItem = mWarnings.get(position);
         String debtS = mInflater.getContext().getResources().getString(R.string.debt) + " " + warningItem.getContent();
 
-       /* if(warningItem.getType().equals("S")){
-            holder.ownerNameTv.setVisibility(View.INVISIBLE);
-            holder.contentTv.setText(mInflater.getContext().getResources().getString(R.string.new_debt_notification));
-        } else {
-            String ownerS = mInflater.getContext().getResources().getString(R.string.owner_label) + " " + warningItem.getSender().getLogin();
-            holder.ownerNameTv.setText(ownerS);
-        }*/
-
-        if(warningItem.getSender()==null){
+        if(warningItem.getType().equals("S")){
             holder.ownerNameTv.setVisibility(View.INVISIBLE);
             holder.contentTv.setText(mInflater.getContext().getResources().getString(R.string.new_debt_notification));
         } else {
             String ownerS = mInflater.getContext().getResources().getString(R.string.owner_label) + " " + warningItem.getSender().getLogin();
             holder.ownerNameTv.setText(ownerS);
         }
+
         holder.debtTv.setText(debtS);
 
         holder.acceptBtn.setOnClickListener(v -> {

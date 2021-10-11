@@ -161,12 +161,6 @@
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_notification_warning"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notification_warning_rv2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/item_notification_warning"/>
-
             <TextView
                 android:id="@+id/go_to_statue_tv"
                 android:layout_width="wrap_content"
