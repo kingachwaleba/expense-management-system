@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.team.backend.config.JwtProvider;
 import com.team.backend.config.JwtResponse;
 import com.team.backend.exception.UserNotFoundException;
@@ -166,10 +167,10 @@ public class UserController {
     }
 
     @PutMapping("/delete-account")
-    public ResponseEntity<?> deleteAccount(@RequestBody String password) {
+    public ResponseEntity<?> deleteAccount(@RequestBody TextNode password) {
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
-        if (!userService.checkIfValidOldPassword(user, password))
+        if (!userService.checkIfValidOldPassword(user, password.asText()))
             return new ResponseEntity<>("Wrong password has been given!", HttpStatus.CONFLICT);
 
         if (!userService.ifAccountDeleted(user))
