@@ -110,6 +110,9 @@ public class ProfileActivity extends BaseActivity {
                 invitationAdapterInit.clear();
                 notificationInvitationRv.setAdapter(invitationAdapterInit);
                 invitationAdapterInit.notifyDataSetChanged();
+                warningAdapterInit.clear();
+                notificationWarningRv.setAdapter(warningAdapterInit);
+                warningAdapterInit.notifyDataSetChanged();
             }
         });
 

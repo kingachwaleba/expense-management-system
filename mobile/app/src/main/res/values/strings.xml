@@ -119,5 +119,6 @@
     <string name="delete_notification">Usuń przypomnienie</string>
     <string name="leave_wallet">Opuść portfel</string>
     <string name="save_photo">Zmień zdjęcie</string>
+    <string name="new_debt_notification">Masz nowy dług!</string>
 
 </resources>
