@@ -2,12 +2,14 @@ package com.example.mobile.service;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
 import androidx.loader.content.CursorLoader;
 
+import com.example.mobile.ImageHelper;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.SessionManager;
@@ -17,6 +19,7 @@ import com.example.mobile.model.ExpenseHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -42,6 +45,9 @@ public class ExpenseService {
 
     public interface OnExpenseByIdCallback{
         void onExpense(ExpenseHolder expense);
+    }
+    public interface OnReceiptCallback{
+        void onReceipt(String path);
     }
 
     public void getAllExpenses(ExpenseService.OnExpensesCallback callback, String accessToken, int id){
@@ -151,46 +157,35 @@ public class ExpenseService {
         });
     }
 
-   /* public void uploadReceiptImage(Uri fileUri) {
+    public void uploadReceiptImage(Bitmap bitmap, String accessToken, String name, OnReceiptCallback callback) {
 
         //creating a file
-        File file = new File(getRealPathFromURI(fileUri));
-
-        int startType = file.getPath().lastIndexOf('.');
-        String type = file.getPath().substring(startType+1);
+        File file = ImageHelper.bitmapToFile(context, bitmap,name.replaceAll("\\s","") + ".png");
 
         //creating request body for file
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/"+type), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-        System.out.println(type);
 
         ApiInterface apiInterface = new ApiClient().getService();
 
         //creating a call and calling the upload image method
-        Call<String> call = apiInterface.uploadProfileImage("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
-        System.out.println(session.getUserDetails().get(SessionManager.KEY_TOKEN));
+        Call<ResponseBody> call = apiInterface.uploadReceiptImage("Bearer " + accessToken, body);
         //finally performing the call
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    callback.onReceipt(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println(t.toString());
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
             }
         });
     }
-
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(context, contentUri, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        assert cursor != null;
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(column_index);
-        cursor.close();
-        return result;
-    }*/
 }

@@ -98,6 +98,32 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zdjęcie paragonu:"
+            android:textAppearance="@style/simple_label_bold"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/choose_image_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/et_edittext"
+            android:drawableStart="@drawable/ic_image"
+            android:paddingStart="20dp"
+            android:text="@string/browse"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/gray"/>
+        <ImageView
+            android:id="@+id/receipt_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:visibility="gone"
+            />
+
         <Button
             android:id="@+id/create_expense_btn"
             android:layout_width="match_parent"

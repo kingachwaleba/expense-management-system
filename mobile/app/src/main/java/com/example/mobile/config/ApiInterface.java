@@ -190,4 +190,8 @@ public interface ApiInterface  {
     @PUT("account/change-profile-picture")
     Call<ResponseBody> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
 
+    @Multipart
+    @POST("upload")
+    Call<ResponseBody> uploadReceiptImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
+
 }

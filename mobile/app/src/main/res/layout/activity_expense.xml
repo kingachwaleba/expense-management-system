@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bg_background"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -8,8 +9,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="40dp"
-            android:layout_margin="20dp"
+            android:padding="20dp"
             android:orientation="vertical"
             android:gravity="center"
             android:background="@drawable/bg_round_box_dark">
@@ -72,14 +72,21 @@
                 android:id="@+id/vector_3"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/v_line_white" />
+
+            <ImageView
+                android:id="@+id/receipt_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                />
 
           <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:padding="30dp"
+              android:padding="10dp"
               android:layout_marginBottom="20dp"
               android:background="@drawable/bg_round_box_light">
 
@@ -87,7 +94,7 @@
                   android:id="@+id/for_who_rv"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  tools:listitem="@layout/item_member" />
+                  tools:listitem="@layout/item_user_search" />
 
           </LinearLayout>
 
