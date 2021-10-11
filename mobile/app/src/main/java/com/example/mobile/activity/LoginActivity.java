@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class LoginActivity extends AppCompatActivity {
 
     EditText emailEt, passwordEt;
-    TextView signUpTv;
+    TextView signUpTv, forgotPasswordTv;
     Button logInBtn;
 
     @Override
@@ -32,6 +32,12 @@ public class LoginActivity extends AppCompatActivity {
         logInBtn = findViewById(R.id.log_in_btn);
         emailEt = findViewById(R.id.email_reg_et);
         passwordEt = findViewById(R.id.password_reg_et);
+        forgotPasswordTv = findViewById(R.id.password_forget_label);
+
+        forgotPasswordTv.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PasswordRestoreActivity.class);
+            startActivity(intent);
+        });
 
         signUpTv.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);

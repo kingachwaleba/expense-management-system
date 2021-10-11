@@ -60,12 +60,12 @@ public class EditProfileActivity extends BaseActivity {
         saveChangeBtn.setOnClickListener(v -> {
             if (selectedImage != null){
                 try{
-                    int max = 200;
+                    int max = 400;
                     int factor;
                     int newHeigh, newWidth;
                     BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
-                    if(bitmap.getHeight() > bitmap.getWidth()){
+                    if(bitmap.getHeight() > bitmap.getWidth() && (bitmap.getWidth() > 400 && bitmap.getWidth() > 400)){
                         factor = bitmap.getHeight() / max;
                         newHeigh = max;
                         newWidth = bitmap.getWidth()/factor;
