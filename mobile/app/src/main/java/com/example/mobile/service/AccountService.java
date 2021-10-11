@@ -112,6 +112,23 @@ public class AccountService {
         });
     }
 
+    public void deleteAccount(String password){
+        Call<ResponseBody> call = apiInterface.deleteAccount("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), password);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if(response.code()==200)
+                    session.logoutUser();
+                else Toast.makeText(context,"Nieprawidłowe dane",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
 
     public void deleteNotification(String accessToken, int id){
         Call<ResponseBody> call = apiInterface.deleteNotification("Bearer " + accessToken, id);

@@ -77,4 +77,19 @@ public class UserService {
             }
         });
     }
+
+    public void restorePassword(String email) {
+        Call<ResponseBody> call = apiInterface.restorePassword(email);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                Toast.makeText(context,"Sprawdź skrzynkę pocztową!",Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context,"Nie udało się",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
 }

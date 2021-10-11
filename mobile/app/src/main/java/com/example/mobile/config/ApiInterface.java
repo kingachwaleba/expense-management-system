@@ -33,6 +33,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface  {
     @POST("login")
@@ -41,6 +42,10 @@ public interface ApiInterface  {
     @POST("register")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> register(@Body User user);
+
+    @POST("account/forgot-password")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> restorePassword(@Query("email") String email);
 
     @PUT("account/change-password")
     @Headers("Content-Type: application/json")
@@ -193,5 +198,9 @@ public interface ApiInterface  {
     @Multipart
     @POST("upload")
     Call<ResponseBody> uploadReceiptImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
+
+    @PUT("delete-account")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> deleteAccount(@Header("Authorization") String accessToken, @Body String password);
 
 }
