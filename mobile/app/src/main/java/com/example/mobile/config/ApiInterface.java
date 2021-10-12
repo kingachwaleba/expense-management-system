@@ -205,5 +205,5 @@ public interface ApiInterface  {
 
     @GET("wallet/{id}/stats")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> getStats(@Header("Authorization") String accessToken, @Path("id") int id, @Query("dateFrom") String dateFrom, @Query("dateTo") String dateTo);
+    Call<Map<String, Object>> getStats(@Header("Authorization") String accessToken, @Path("id") int id, @Query("dateFrom") String dateFrom, @Query("dateTo") String dateTo);
 }
