@@ -242,10 +242,16 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/v_line_white" />
 
+                <LinearLayout
+                    android:id="@+id/stats_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
 
+                    <!-- Dodać tutaj tabele kategoria: koszt PLN-->
 
-                <!-- Dodać tutaj tabele kategoria: koszt PLN-->
-
+                </LinearLayout>
             </LinearLayout>
 
             <Button

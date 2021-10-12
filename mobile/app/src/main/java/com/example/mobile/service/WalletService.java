@@ -44,7 +44,7 @@ public class WalletService {
     }
 
     public interface OnStatsCallback{
-        void onStats(ResponseBody response);
+        void onStats(Map<String, Object> response);
     }
 
     public void getUserWallets(String accessToken) {
@@ -214,15 +214,17 @@ public class WalletService {
     }
 
     public void getStats(String accessToken, int id, String dateFrom, String dateTo, OnStatsCallback callback){
-        Call<ResponseBody> call = apiInterface.getStats("Bearer " + accessToken, id, dateFrom, dateTo);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<Map<String, Object>> call = apiInterface.getStats("Bearer " + accessToken, id, dateFrom, dateTo);
+        call.enqueue(new Callback<Map<String, Object>>() {
             @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                System.out.println(response.code());
-                callback.onStats(response.body());
+            public void onResponse(@NotNull Call<Map<String, Object>> call, @NotNull Response<Map<String, Object>> response) {
+                if(response.code()==200)
+                  callback.onStats(response.body());
+                else if(response.code()==400) Toast.makeText(context,"Nieporpawne daty",Toast.LENGTH_LONG).show();
+                else Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
             }
             @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<Map<String, Object>> call, @NotNull Throwable t) {
                 Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
                 call.cancel();
             }
