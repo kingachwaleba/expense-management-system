@@ -34,5 +34,5 @@ public interface ExpenseService {
     Map<String, Object> getOne(int id);
     List<Expense> getAll(int id);
 
-    List<String> getErrorList(BindingResult bindingResult, Expense expense);
+    List<String> getErrorList(BindingResult bindingResult);
 }

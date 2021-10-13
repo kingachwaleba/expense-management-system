@@ -43,9 +43,8 @@ public class ExpenseController {
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> add(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder,
                                  BindingResult bindingResult) {
-        if (expenseService.getErrorList(bindingResult, expenseHolder.getExpense()).size() != 0)
-            return new ResponseEntity<>(expenseService.getErrorList(bindingResult, expenseHolder.getExpense()),
-                    HttpStatus.BAD_REQUEST);
+        if (expenseService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(expenseService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
 
         expenseService.save(expenseHolder, id);
         messageService.sendNotification(id);
@@ -57,9 +56,8 @@ public class ExpenseController {
     @PreAuthorize("@authenticationService.ifExpenseOwner(#id) && !@authenticationService.ifContainsDeletedMembers(#id)")
     public ResponseEntity<?> edit(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder,
                                   BindingResult bindingResult) {
-        if (expenseService.getErrorList(bindingResult, expenseHolder.getExpense()).size() != 0)
-            return new ResponseEntity<>(expenseService.getErrorList(bindingResult, expenseHolder.getExpense()),
-                    HttpStatus.BAD_REQUEST);
+        if (expenseService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(expenseService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
 
         Expense updatedExpense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Expense newExpense = expenseHolder.getExpense();

@@ -279,7 +279,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<String> getErrorList(BindingResult bindingResult, Expense expense) {
+    public List<String> getErrorList(BindingResult bindingResult) {
         List<String> messages = new ArrayList<>();
 
         if (bindingResult.hasErrors())
