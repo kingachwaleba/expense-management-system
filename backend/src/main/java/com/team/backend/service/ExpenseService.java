@@ -4,6 +4,7 @@ import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.Expense;
 import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,4 +33,6 @@ public interface ExpenseService {
 
     Map<String, Object> getOne(int id);
     List<Expense> getAll(int id);
+
+    List<String> getErrorList(BindingResult bindingResult, Expense expense);
 }
