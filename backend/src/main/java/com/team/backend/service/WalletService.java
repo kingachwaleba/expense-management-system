@@ -2,10 +2,8 @@ package com.team.backend.service;
 
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
-import com.team.backend.model.User;
-import com.team.backend.model.UserStatus;
-import com.team.backend.model.Wallet;
-import com.team.backend.model.WalletUser;
+import com.team.backend.model.*;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -40,4 +38,7 @@ public interface WalletService {
     List<Map<String, Object>> getAll();
 
     Map<String, Object> returnStats(Wallet wallet, LocalDateTime from, LocalDateTime to);
+
+    List<String> getErrorList(BindingResult bindingResult);
+
 }

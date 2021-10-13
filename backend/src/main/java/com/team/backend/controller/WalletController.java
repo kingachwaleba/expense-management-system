@@ -5,7 +5,6 @@ import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserStatusRepository;
-import com.team.backend.repository.WalletCategoryRepository;
 import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.MessageService;
 import com.team.backend.service.UserService;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,18 +28,15 @@ public class WalletController {
     private final WalletService walletService;
     private final UserService userService;
     private final UserStatusRepository userStatusRepository;
-    private final WalletCategoryRepository walletCategoryRepository;
     private final WalletUserRepository walletUserRepository;
     private final MessageService messageService;
 
     public WalletController(WalletService walletService, UserService userService,
-                            UserStatusRepository userStatusRepository,
-                            WalletCategoryRepository walletCategoryRepository,
-                            WalletUserRepository walletUserRepository, MessageService messageService) {
+                            UserStatusRepository userStatusRepository, WalletUserRepository walletUserRepository,
+                            MessageService messageService) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
-        this.walletCategoryRepository = walletCategoryRepository;
         this.walletUserRepository = walletUserRepository;
         this.messageService = messageService;
     }
@@ -99,7 +96,10 @@ public class WalletController {
 
     @Transactional
     @PostMapping("/create-wallet")
-    public ResponseEntity<?> createWallet(@Valid @RequestBody WalletHolder walletHolder) {
+    public ResponseEntity<?> createWallet(@Valid @RequestBody WalletHolder walletHolder, BindingResult bindingResult) {
+        if (walletService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(walletService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         walletService.save(walletHolder);
 
         return new ResponseEntity<>(walletHolder.getWallet(), HttpStatus.OK);
@@ -107,16 +107,16 @@ public class WalletController {
 
     @PutMapping("/wallet/{id}")
     @PreAuthorize("@authenticationService.isWalletOwner(#id)")
-    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Map<String, String> map) {
+    public ResponseEntity<?> editOne(@PathVariable int id, @Valid @RequestBody Wallet newWallet,
+                                     BindingResult bindingResult) {
+        if (walletService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(walletService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         Wallet updatedWallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
-        updatedWallet.setName(map.get("name"));
-        updatedWallet.setDescription(map.get("description"));
-
-        WalletCategory walletCategory = walletCategoryRepository
-                .findByName(map.get("walletCategory")).orElseThrow(WalletCategoryNotFoundException::new);
-
-        updatedWallet.setWalletCategory(walletCategory);
+        updatedWallet.setName(newWallet.getName());
+        updatedWallet.setDescription(newWallet.getDescription());
+        updatedWallet.setWalletCategory(newWallet.getWalletCategory());
 
         walletService.save(updatedWallet);
 

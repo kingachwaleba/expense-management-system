@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Getter
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class WalletHolder {
 
+    @Valid
     private Wallet wallet;
     private List<String> userList;
 }

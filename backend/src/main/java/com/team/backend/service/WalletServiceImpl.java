@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -419,5 +420,15 @@ public class WalletServiceImpl implements WalletService {
         }
 
         return statsMap;
+    }
+
+    @Override
+    public List<String> getErrorList(BindingResult bindingResult) {
+        List<String> messages = new ArrayList<>();
+
+        if (bindingResult.hasErrors())
+            bindingResult.getFieldErrors().forEach(fieldError -> messages.add(fieldError.getDefaultMessage()));
+
+        return messages;
     }
 }
