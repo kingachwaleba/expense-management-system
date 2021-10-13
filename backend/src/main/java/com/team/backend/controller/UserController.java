@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,12 +64,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest, BindingResult bindingResult) {
+        if (userService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(userService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         if (userService.findByEmail(loginRequest.getEmail()).isPresent()) {
             User user = userService.findByEmail(loginRequest.getEmail()).get();
 
             if (user.getDeleted().equals(String.valueOf(User.AccountType.Y)))
-                return new ResponseEntity<>("This account has been deleted!", HttpStatus.CONFLICT);
+                return new ResponseEntity<>("Konto zostało usunięte!", HttpStatus.BAD_REQUEST);
         }
 
         Authentication authentication = authenticationManager.authenticate(
@@ -85,29 +89,34 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> createAccount(@Valid @RequestBody User user) {
-        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
-                || userService.existsByLogin(user.getLogin())) {
-            return new ResponseEntity<>("Given user has an account!", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> createAccount(@Valid @RequestBody User user, BindingResult bindingResult) {
+        if (userService.validation(bindingResult, user.getPassword()).size() != 0)
+            return new ResponseEntity<>(userService.validation(bindingResult, user.getPassword()),
+                    HttpStatus.BAD_REQUEST);
 
-        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("Y"))))
-            userService.saveAgain(
-                    userService.findByEmail(user.getEmail()).orElseThrow(UserNotFoundException::new),
-                    user
-            );
-        else
-            userService.save(user);
+        if (!userService.checkIfValidConfirmPassword(user.getPassword(), user.getConfirmPassword()))
+            return new ResponseEntity<>("Podane hasła różnią się od siebie!", HttpStatus.BAD_REQUEST);
+
+        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
+                || userService.existsByLogin(user.getLogin()))
+            return new ResponseEntity<>("Podany user ma już konto!", HttpStatus.CONFLICT);
+
+        userService.saveAccount(user);
 
         return ResponseEntity.ok("User has been created");
     }
 
     @PostMapping("/account/forgot-password")
     public ResponseEntity<?> forgotPassword(HttpServletRequest request, @RequestParam("email") String email) {
+        if (!email.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$") || email.length() < 5
+                || email.length() > 45)
+            return new ResponseEntity<>("Adres email powinien mieć następujący format - example@gmail.com, " +
+                    "oraz powinien zawierać od 5 do 100 znaków!", HttpStatus.CONFLICT);
+
         User user = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         if (user.getDeleted().equals(String.valueOf(User.AccountType.Y)))
-            return new ResponseEntity<>("This account is deleted!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("To konto jest usunięte!", HttpStatus.BAD_REQUEST);
 
         userService.setTokenAndExpiryDate(user);
 
@@ -121,11 +130,14 @@ public class UserController {
     public ResponseEntity<?> setNewPassword(@RequestParam("token") String token,
                                             @RequestParam("password") String password,
                                             @RequestParam("confirmPassword") String confirmPassword) {
-        if (!userService.checkIfValidConfirmPassword(password, confirmPassword))
-            return new ResponseEntity<>("Password confirm has failed!", HttpStatus.CONFLICT);
-
         if (!userService.checkIfValidExpiryDate(token))
-            return new ResponseEntity<>("Token has expired!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Token wygasł!", HttpStatus.BAD_REQUEST);
+
+        if (userService.passwordValidation(password).size() != 0)
+            return new ResponseEntity<>(userService.passwordValidation(password), HttpStatus.BAD_REQUEST);
+
+        if (!userService.checkIfValidConfirmPassword(password, confirmPassword))
+            return new ResponseEntity<>("Podane hasła różnią się od siebie!", HttpStatus.BAD_REQUEST);
 
         userService.resetPassword(token, password);
 
@@ -133,14 +145,23 @@ public class UserController {
     }
 
     @PutMapping("/account/change-password")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody UpdatePasswordHolder updatePasswordHolder) {
+    public ResponseEntity<?> changePassword(@Valid @RequestBody UpdatePasswordHolder updatePasswordHolder,
+                                            BindingResult bindingResult) {
+
         String password = updatePasswordHolder.getPassword();
+        String confirmPassword = updatePasswordHolder.getConfirmPassword();
         String oldPassword = updatePasswordHolder.getOldPassword();
+
+        if (userService.validation(bindingResult, password).size() != 0)
+            return new ResponseEntity<>(userService.validation(bindingResult, password), HttpStatus.BAD_REQUEST);
 
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
+        if (!userService.checkIfValidConfirmPassword(password, confirmPassword))
+            return new ResponseEntity<>("Podane hasła różnią się od siebie!", HttpStatus.BAD_REQUEST);
+
         if (!userService.checkIfValidOldPassword(user, oldPassword))
-            return new ResponseEntity<>("Wrong password has been given!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Stare hasło jest błędne!", HttpStatus.BAD_REQUEST);
 
         userService.changeUserPassword(user, password);
 
@@ -171,10 +192,10 @@ public class UserController {
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         if (!userService.checkIfValidOldPassword(user, password.asText()))
-            return new ResponseEntity<>("Wrong password has been given!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Podane hasło jest błędne!", HttpStatus.BAD_REQUEST);
 
         if (!userService.ifAccountDeleted(user))
-            return new ResponseEntity<>("Cannot delete account!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Nie możesz usunąć konta!", HttpStatus.CONFLICT);
         else
             return new ResponseEntity<>("Account has been deleted!", HttpStatus.OK);
     }

@@ -15,6 +15,7 @@ import com.team.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,7 +37,10 @@ public class ListDetailController {
 
     @PostMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
-    public ResponseEntity<?> addOne(@PathVariable int id, @Valid @RequestBody ListDetail listDetail) {
+    public ResponseEntity<?> addOne(@PathVariable int id, @Valid @RequestBody ListDetail listDetail,
+                                    BindingResult bindingResult) {
+        if (listDetailService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(listDetailService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
         ShoppingList shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         listDetailService.save(listDetail, shoppingList);
@@ -65,7 +69,11 @@ public class ListDetailController {
 
     @PutMapping("/edit-list-element/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingListDetail(#id)")
-    public ResponseEntity<?> editListElement(@PathVariable int id, @RequestBody ListDetail listDetail) {
+    public ResponseEntity<?> editListElement(@PathVariable int id, @Valid @RequestBody ListDetail listDetail,
+                                             BindingResult bindingResult) {
+        if (listDetailService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(listDetailService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         ListDetail updatedElement = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
 
         updatedElement.setName(listDetail.getName());

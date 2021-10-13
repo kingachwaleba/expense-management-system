@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,7 +62,11 @@ public class ListController {
     @Transactional
     @PostMapping("/wallet/{id}/create-shopping-list")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
-    public ResponseEntity<?> createList(@PathVariable int id, @Valid @RequestBody ListHolder listHolder) {
+    public ResponseEntity<?> createList(@PathVariable int id, @Valid @RequestBody ListHolder listHolder,
+                                        BindingResult bindingResult) {
+        if (listService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(listService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         listService.save(listHolder, wallet);
@@ -72,6 +77,12 @@ public class ListController {
     @PutMapping("/shopping-list/edit/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody TextNode name) {
+        if (name.asText().isBlank())
+            return new ResponseEntity<>("Nazwa listy zakupów jest obowiązkowa!", HttpStatus.BAD_REQUEST);
+        if (name.asText().length() > 45)
+            return new ResponseEntity<>("Wielkość nazwy listy zakupów musi mieć od 1 do 45 znaków!",
+                    HttpStatus.BAD_REQUEST);
+
         ShoppingList updatedShoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         updatedShoppingList.setName(name.asText());

@@ -1,6 +1,7 @@
 package com.team.backend.service;
 
 import com.team.backend.model.User;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +13,7 @@ public interface UserService {
     void save(User user);
     void saveDeleted(User user);
     void saveAgain(User user, User user2);
+    void saveAccount(User user);
     boolean ifAccountDeleted(User user);
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);
@@ -24,6 +26,9 @@ public interface UserService {
     Boolean checkIfValidOldPassword(User user, String oldPassword);
     Boolean checkIfValidConfirmPassword(String password, String confirmPassword);
     Boolean checkIfValidExpiryDate(String token);
+    List<String> getErrorList(BindingResult bindingResult);
+    List<String> passwordValidation(String password);
+    List<String> validation(BindingResult bindingResult, String password);
     void changeUserPassword(User user, String password);
     void changeUserImage(User user, String imageUrl);
 

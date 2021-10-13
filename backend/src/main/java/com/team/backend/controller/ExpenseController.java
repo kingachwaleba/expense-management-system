@@ -3,13 +3,13 @@ package com.team.backend.controller;
 import com.team.backend.exception.ExpenseNotFoundException;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.Expense;
-import com.team.backend.model.Wallet;
 import com.team.backend.service.ExpenseService;
 import com.team.backend.service.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,7 +41,11 @@ public class ExpenseController {
     @Transactional
     @PostMapping("/wallet/{id}/add-expense")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
-    public ResponseEntity<?> add(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder) {
+    public ResponseEntity<?> add(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder,
+                                 BindingResult bindingResult) {
+        if (expenseService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(expenseService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         expenseService.save(expenseHolder, id);
         messageService.sendNotification(id);
 
@@ -50,7 +54,11 @@ public class ExpenseController {
 
     @PutMapping("/expense/{id}")
     @PreAuthorize("@authenticationService.ifExpenseOwner(#id) && !@authenticationService.ifContainsDeletedMembers(#id)")
-    public ResponseEntity<?> edit(@PathVariable int id, @RequestBody ExpenseHolder expenseHolder) {
+    public ResponseEntity<?> edit(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder,
+                                  BindingResult bindingResult) {
+        if (expenseService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(expenseService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         Expense updatedExpense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Expense newExpense = expenseHolder.getExpense();
         List<String> userList = expenseHolder.getUserList();

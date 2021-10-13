@@ -7,12 +7,14 @@ import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.ExpenseRepository;
 import com.team.backend.repository.WalletUserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -274,5 +276,15 @@ public class ExpenseServiceImpl implements ExpenseService {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         return findAllByWalletOrderByDate(wallet);
+    }
+
+    @Override
+    public List<String> getErrorList(BindingResult bindingResult) {
+        List<String> messages = new ArrayList<>();
+
+        if (bindingResult.hasErrors())
+            bindingResult.getFieldErrors().forEach(fieldError -> messages.add(fieldError.getDefaultMessage()));
+
+        return messages;
     }
 }

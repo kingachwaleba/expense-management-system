@@ -6,7 +6,9 @@ import com.team.backend.model.*;
 import com.team.backend.repository.ListRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,5 +70,15 @@ public class ListServiceImpl implements ListService {
     @Override
     public List<ShoppingList> findAllByUserAndWalletAndStatus(User user, Wallet wallet, Status status) {
         return listRepository.findAllByUserAndWalletAndStatus(user, wallet, status);
+    }
+
+    @Override
+    public List<String> getErrorList(BindingResult bindingResult) {
+        List<String> messages = new ArrayList<>();
+
+        if (bindingResult.hasErrors())
+            bindingResult.getFieldErrors().forEach(fieldError -> messages.add(fieldError.getDefaultMessage()));
+
+        return messages;
     }
 }
