@@ -5,7 +5,6 @@ import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserRepository;
 import com.team.backend.repository.WalletUserRepository;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -152,14 +151,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> validation(BindingResult bindingResult, String password) {
-        List<String> messages = getErrorList(bindingResult);
+    public List<String> passwordValidation(String password) {
+        List<String> messages = new ArrayList<>();
 
         if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"))
             messages.add("Niepoprawny format hasła - musi zawierać małą i dużą literę oraz cyfrę!");
 
         if (password.length() < 5 || password.length() > 50)
             messages.add("Hasło powinno zawierać od 8 do 50 znaków!");
+
+        return messages;
+    }
+
+    @Override
+    public List<String> validation(BindingResult bindingResult, String password) {
+        List<String> messages = getErrorList(bindingResult);
+        messages.addAll(passwordValidation(password));
 
         return messages;
     }

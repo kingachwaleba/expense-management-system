@@ -27,6 +27,7 @@ public interface UserService {
     Boolean checkIfValidConfirmPassword(String password, String confirmPassword);
     Boolean checkIfValidExpiryDate(String token);
     List<String> getErrorList(BindingResult bindingResult);
+    List<String> passwordValidation(String password);
     List<String> validation(BindingResult bindingResult, String password);
     void changeUserPassword(User user, String password);
     void changeUserImage(User user, String imageUrl);

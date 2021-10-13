@@ -13,8 +13,10 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UpdatePasswordHolder {
 
-    @NotBlank(message = "Password is mandatory!")
+    @NotBlank(message = "Hasło jest obowiązkowe!")
     private String password;
-    @NotBlank(message = "Old password is mandatory!")
+    @NotBlank(message = "Potwierdzenie hasła jest obowiązkowe!")
+    private String confirmPassword;
+    @NotBlank(message = "Stare hasło jest obowiązkowe!")
     private String oldPassword;
 }
