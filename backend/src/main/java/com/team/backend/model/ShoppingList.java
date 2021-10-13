@@ -21,8 +21,8 @@ public class ShoppingList {
     private int id;
 
     @Column(nullable = false, length = 45)
-    @Size(min = 1, max = 45)
-    @NotBlank(message = "List name is mandatory!")
+    @Size(min = 1, max = 45, message = "Wielkość nazwy listy zakupów musi mieć od 1 do 45 znaków!")
+    @NotBlank(message = "Nazwa listy zakupów jest obowiązkowa!")
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)

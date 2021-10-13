@@ -5,6 +5,7 @@ import com.team.backend.model.ShoppingList;
 import com.team.backend.model.Status;
 import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +20,6 @@ public interface ListService {
     Optional<ShoppingList> findById(int id);
     List<ShoppingList> findAllByWallet(Wallet wallet);
     List<ShoppingList> findAllByUserAndWalletAndStatus(User user, Wallet wallet, Status status);
+
+    List<String> getErrorList(BindingResult bindingResult);
 }

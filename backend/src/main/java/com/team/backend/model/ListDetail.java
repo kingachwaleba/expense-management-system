@@ -20,13 +20,13 @@ public class ListDetail {
     private int id;
 
     @Column(nullable = false, length = 100)
-    @Size(min = 1, max = 100)
-    @NotBlank(message = "Name of product is mandatory!")
+    @Size(min = 1, max = 100, message = "Wielkość nazwy produktu musi mieć od 1 do 100 znaków!")
+    @NotBlank(message = "Nazwa produktu jest obowiązkowa!")
     private String name;
 
     @Column(nullable = false, length = 45)
-    @Size(min = 1, max = 45)
-    @NotBlank(message = "Quantity is mandatory!")
+    @Size(min = 1, max = 45, message = "Wielkość nazwy ilości produktu musi mieć od 1 do 100 znaków!")
+    @NotBlank(message = "Ilość protuktu jest obowiązkowa!")
     private String quantity;
 
     @JsonIgnore

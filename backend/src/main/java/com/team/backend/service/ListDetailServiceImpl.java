@@ -8,7 +8,9 @@ import com.team.backend.model.User;
 import com.team.backend.repository.ListDetailRepository;
 import com.team.backend.repository.StatusRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +55,15 @@ public class ListDetailServiceImpl implements ListDetailService {
     @Override
     public List<ListDetail> findAllByUserAndListAndStatus(User user, ShoppingList list, Status status) {
         return listDetailRepository.findAllByUserAndListAndStatus(user, list, status);
+    }
+
+    @Override
+    public List<String> getErrorList(BindingResult bindingResult) {
+        List<String> messages = new ArrayList<>();
+
+        if (bindingResult.hasErrors())
+            bindingResult.getFieldErrors().forEach(fieldError -> messages.add(fieldError.getDefaultMessage()));
+
+        return messages;
     }
 }
