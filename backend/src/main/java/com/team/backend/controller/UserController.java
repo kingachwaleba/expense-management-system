@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -64,12 +65,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest, BindingResult bindingResult) {
+        if (userService.getErrorList(bindingResult).size() != 0)
+            return new ResponseEntity<>(userService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+
         if (userService.findByEmail(loginRequest.getEmail()).isPresent()) {
             User user = userService.findByEmail(loginRequest.getEmail()).get();
 
             if (user.getDeleted().equals(String.valueOf(User.AccountType.Y)))
-                return new ResponseEntity<>("This account has been deleted!", HttpStatus.CONFLICT);
+                return new ResponseEntity<>("Konto zostało usunięte!", HttpStatus.BAD_REQUEST);
         }
 
         Authentication authentication = authenticationManager.authenticate(

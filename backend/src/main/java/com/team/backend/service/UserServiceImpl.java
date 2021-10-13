@@ -142,11 +142,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> validation(BindingResult bindingResult, String password) {
+    public List<String> getErrorList(BindingResult bindingResult) {
         List<String> messages = new ArrayList<>();
 
         if (bindingResult.hasErrors())
-            bindingResult.getFieldErrors().forEach(DefaultMessageSourceResolvable::getDefaultMessage);
+            bindingResult.getFieldErrors().forEach(fieldError -> messages.add(fieldError.getDefaultMessage()));
+
+        return messages;
+    }
+
+    @Override
+    public List<String> validation(BindingResult bindingResult, String password) {
+        List<String> messages = getErrorList(bindingResult);
 
         if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"))
             messages.add("Niepoprawny format hasła - musi zawierać małą i dużą literę oraz cyfrę!");

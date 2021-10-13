@@ -9,9 +9,9 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class LoginForm {
 
-    @NotBlank
+    @NotBlank(message = "Login jest obowiązkowy!")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Hasło jest obowiązkowe!")
     private String password;
 }
