@@ -94,6 +94,9 @@ public class UserController {
             return new ResponseEntity<>(userService.validation(bindingResult, user.getPassword()),
                     HttpStatus.BAD_REQUEST);
 
+        if (!userService.checkIfValidConfirmPassword(user.getPassword(), user.getConfirmPassword()))
+            return new ResponseEntity<>("Podane hasła różnią się od siebie!", HttpStatus.BAD_REQUEST);
+
         if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
                 || userService.existsByLogin(user.getLogin()))
             return new ResponseEntity<>("Podany user ma już konto!", HttpStatus.CONFLICT);
