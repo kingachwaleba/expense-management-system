@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,19 +86,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> createAccount(@Valid @RequestBody User user) {
-        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
-                || userService.existsByLogin(user.getLogin())) {
-            return new ResponseEntity<>("Given user has an account!", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> createAccount(@Valid @RequestBody User user, BindingResult bindingResult) {
+        if (userService.validation(bindingResult, user.getPassword()).size() != 0)
+            return new ResponseEntity<>(userService.validation(bindingResult, user.getPassword()),
+                    HttpStatus.BAD_REQUEST);
 
-        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("Y"))))
-            userService.saveAgain(
-                    userService.findByEmail(user.getEmail()).orElseThrow(UserNotFoundException::new),
-                    user
-            );
-        else
-            userService.save(user);
+        if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
+                || userService.existsByLogin(user.getLogin()))
+            return new ResponseEntity<>("Podany user ma już konto!", HttpStatus.CONFLICT);
+
+        userService.saveAccount(user);
 
         return ResponseEntity.ok("User has been created");
     }

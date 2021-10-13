@@ -5,10 +5,12 @@ import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.model.*;
 import com.team.backend.repository.UserRepository;
 import com.team.backend.repository.WalletUserRepository;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -56,6 +58,14 @@ public class UserServiceImpl implements UserService {
         user.setDeleted(String.valueOf(User.AccountType.N));
         user.setImage(null);
         userRepository.save(user);
+    }
+
+    @Override
+    public void saveAccount(User user) {
+        if (existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("Y"))))
+           saveAgain(findByEmail(user.getEmail()).orElseThrow(UserNotFoundException::new), user);
+        else
+            save(user);
     }
 
     @Override
@@ -129,6 +139,22 @@ public class UserServiceImpl implements UserService {
         LocalDateTime now = LocalDateTime.now();
 
         return user.getExpiryDate().isAfter(now);
+    }
+
+    @Override
+    public List<String> validation(BindingResult bindingResult, String password) {
+        List<String> messages = new ArrayList<>();
+
+        if (bindingResult.hasErrors())
+            bindingResult.getFieldErrors().forEach(DefaultMessageSourceResolvable::getDefaultMessage);
+
+        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"))
+            messages.add("Niepoprawny format hasła - musi zawierać małą i dużą literę oraz cyfrę!");
+
+        if (password.length() < 5 || password.length() > 50)
+            messages.add("Hasło powinno zawierać od 8 do 50 znaków!");
+
+        return messages;
     }
 
     @Override
