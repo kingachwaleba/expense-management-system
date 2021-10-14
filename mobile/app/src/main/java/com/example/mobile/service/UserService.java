@@ -42,7 +42,9 @@ public class UserService {
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                     ((RegistrationActivity)context).finish();
-                } else Toast.makeText(context,"Nie udało się zarejestrować użytkownika",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context,"Nie udało się zarejestrować użytkownika",Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
@@ -58,17 +60,18 @@ public class UserService {
             @Override
             public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
                 if(response.body()!=null){
-                    String login =response.body().get("login").toString();
-                    String token =response.body().get("token").toString();
-                    String image =response.body().get("image").toString();
-                    login = login.substring(1, login.length() - 1);
-                    token = token.substring(1, token.length() - 1);
-                    session.createLoginSession(login, token, image);
-                    Intent i = new Intent(context, MainActivity.class);
-                    context.startActivity(i);
-                    ((LoginActivity)context).finish();
-                }
-                else Toast.makeText(context,"Nie poprawne dane logowania",Toast.LENGTH_LONG).show();
+                    if(response.code()==200){
+                        String login =response.body().get("login").toString();
+                        String token =response.body().get("token").toString();
+                        String image =response.body().get("image").toString();
+                        login = login.substring(1, login.length() - 1);
+                        token = token.substring(1, token.length() - 1);
+                        session.createLoginSession(login, token, image);
+                        Intent i = new Intent(context, MainActivity.class);
+                        context.startActivity(i);
+                        ((LoginActivity)context).finish();
+                    }
+                } else Toast.makeText(context,"Nie poprawne dane logowania",Toast.LENGTH_LONG).show();
             }
             @Override
             public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
