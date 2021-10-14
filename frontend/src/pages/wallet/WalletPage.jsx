@@ -51,6 +51,11 @@ function WalletPage () {
                     const usersData = response.data.userList
                     getWalletUsersData(usersData)
                 })
+                .catch(error=>{
+                    console.error('Error during getting wallet detail:' + {error})
+                    window.location.href='/error-page'
+                
+                });
         
     },[])
    

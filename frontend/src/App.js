@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import {Route, Switch} from 'react-router-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {LoginPage} from "./pages/login/LoginPage";
+import LoginPagev2 from "./pages/login/LoginPagev2";
 import {RegisterPage} from "./pages/register/RegisterPage";
 import {HomePage} from "./pages/home/HomePage";
 import {StartPage} from "./pages/start/StartPage";
@@ -20,8 +20,9 @@ import ExpenseDetailPage from './pages/expense-detail/ExpenseDetailPage';
 import CreateListPage from './pages/Create-list/CreateListPage';
 import ListDetailPage from './pages/list-detail/ListDetailPage';
 import StatisticsPage from './pages/wallet-stats/StatisticsPage';
-import EditWalletPage
- from './pages/edit-wallet/EditWalletPage';
+import EditWalletPage from './pages/edit-wallet/EditWalletPage';
+import ErrorPage from './pages/error/ErrorPage';
+
 import WalletPage from './pages/wallet/WalletPage';
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
@@ -136,10 +137,11 @@ class App extends React.Component {
                 <div className="container">
                     <Switch>
                         <Route exact path="/" component={StartPage}/>
-                        <Route exact path="/login" component={LoginPage}/>
+                       
+                        <Route exact path="/login" component={LoginPagev2}/>
                         <Route exact path="/register" component={RegisterPage}/>
                         <Route exact path="/statutes" component={StatutesPage}/>
-
+                        <Route exact path="/error-page" component={ErrorPage}/>
 
                         <AuthGuard path="/create-wallet" component={CreateWalletPage}/>
                         <AuthGuard path="/edit-profile" component={EditProfilePage}/>
