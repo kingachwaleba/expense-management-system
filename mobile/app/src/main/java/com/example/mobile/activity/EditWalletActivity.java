@@ -7,10 +7,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.example.mobile.R;
 import com.example.mobile.model.Category;
+import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.WalletService;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EditWalletActivity extends BaseActivity {
 
@@ -71,11 +70,8 @@ public class EditWalletActivity extends BaseActivity {
             String nameS = nameEt.getText().toString();
             if(validateName(nameS)){
                 String descriptionS = descriptionEt.getText().toString();
-                Map<String, String> map = new HashMap<>();
-                map.put("name", nameS);
-                map.put("description", descriptionS);
-                map.put("walletCategory", category.getName());
-                walletService.updateWallet(accessToken, walletId, map);
+                WalletCreate wallet = new WalletCreate(walletId, nameS, category,descriptionS);
+                walletService.updateWallet(accessToken, walletId, wallet);
                 finish();
             } else nameEt.setError("Podaj nazwę portfela");
         });

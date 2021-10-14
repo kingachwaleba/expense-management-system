@@ -148,8 +148,8 @@ public class WalletService {
         });
     }
 
-    public void updateWallet(String accessToken, int id, Map<String, String> map){
-        Call<ResponseBody> call = apiInterface.editWallet("Bearer " + accessToken, id, map);
+    public void updateWallet(String accessToken, int id, WalletCreate wallet){
+        Call<ResponseBody> call = apiInterface.editWallet("Bearer " + accessToken, id, wallet);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {

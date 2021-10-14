@@ -109,7 +109,7 @@ public interface ApiInterface  {
 
     @PUT("wallet/{id}")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body Map<String, String> map);
+    Call<ResponseBody> editWallet(@Header("Authorization") String accessToken, @Path("id") int id, @Body WalletCreate wallet);
 
     @GET("wallet/{id}/shopping-lists")
     @Headers("Content-Type: application/json")
