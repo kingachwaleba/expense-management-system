@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class StatisticsActivity extends BaseActivity {
@@ -65,7 +66,7 @@ public class StatisticsActivity extends BaseActivity {
 
         ArrayList<String> monthList = new ArrayList<>();
         for(int i = 1; i <= 12; i++)
-            monthList.add(String.format("%02d", i));
+            monthList.add(String.format(Locale.getDefault(),"%02d", i));
         ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, R.layout.spinner_text, monthList);
         monthAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
         month1.setAdapter(monthAdapter);
@@ -73,7 +74,7 @@ public class StatisticsActivity extends BaseActivity {
 
         ArrayList<String> dayList = new ArrayList<>();
         for(int i = 1; i <= 31; i++)
-            dayList.add(String.format("%02d", i));
+            dayList.add(String.format(Locale.getDefault(),"%02d", i));
         ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, R.layout.spinner_text, dayList);
         dayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
         day1.setAdapter(dayAdapter);
@@ -97,11 +98,11 @@ public class StatisticsActivity extends BaseActivity {
                     for (Map.Entry<String,Object> entry : response.entrySet()){
                         switch (entry.getKey()) {
                             case "totalCost":
-                                allExpensesTv.setText(response.get("totalCost").toString());
+                                allExpensesTv.setText(String.valueOf(response.get("totalCost")));
                                 break;
                             case "maxUsersList":
                                 List<String> lm = (List<String>) response.get("maxUsersList");
-                                if (lm.size() > 0) {
+                                if (lm!=null) {
                                     String s = "";
                                     for (int i = 0; i < lm.size(); i++)
                                         s = lm.get(i) + " ";
@@ -128,7 +129,7 @@ public class StatisticsActivity extends BaseActivity {
                         ll.addView(t);
                     }
                 });
-            } else Toast.makeText(this, "Podaj pełne daty", Toast.LENGTH_LONG).show();
+            } else Toast.makeText(this, "Podaj poprawne daty", Toast.LENGTH_LONG).show();
         });
 
         backBtn.setOnClickListener(v -> finish());
