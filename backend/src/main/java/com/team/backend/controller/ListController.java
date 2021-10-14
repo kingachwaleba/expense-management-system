@@ -19,9 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class ListController {
@@ -42,13 +39,8 @@ public class ListController {
     @GetMapping("/shopping-list/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> one(@PathVariable int id) {
-        ShoppingList shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
-        java.util.List<String> deletedUserList = walletService.findDeletedUserList(shoppingList.getWallet());
-        Map<String, Object> map = new HashMap<>();
-        map.put("shoppingList", shoppingList);
-        map.put("deletedUserList", deletedUserList);
 
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(listService.findById(id).orElseThrow(ListNotFoundException::new), HttpStatus.OK);
     }
 
     @GetMapping("/wallet/{id}/shopping-lists")
