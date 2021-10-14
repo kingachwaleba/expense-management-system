@@ -14,6 +14,8 @@ public class User implements Parcelable {
     private String email;
     @SerializedName("password")
     private String password;
+    @SerializedName("confirmPassword")
+    private String confirmPassword;
     @SerializedName("image")
     private String image;
     @SerializedName("walletsNumber")
@@ -68,10 +70,11 @@ public class User implements Parcelable {
         this.walletsNumber = walletsNumber;
     }
 
-    public User(String login, String email, String password) {
+    public User(String login, String email, String password, String confirmPassword) {
         this.login = login;
         this.email = email;
         this.password = password;
+        this.confirmPassword = confirmPassword;
     }
 
     public User(int id, String login) {

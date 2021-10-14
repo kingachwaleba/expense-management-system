@@ -40,7 +40,7 @@ public class ChangePasswordActivity extends BaseActivity {
 
     public UpdatePasswordHolder validateDataPassword() {
         if (validateOldPassword(oldPasswordEt) && validateNewPassword(newPasswordEt) && validateConfirmNewPassword(newPasswordEt, newPasswordConfirmEt))
-            return new UpdatePasswordHolder(newPasswordEt.getText().toString(), oldPasswordEt.getText().toString());
+            return new UpdatePasswordHolder(newPasswordEt.getText().toString(), oldPasswordEt.getText().toString(), newPasswordConfirmEt.getText().toString());
         else return null;
     }
 

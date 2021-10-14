@@ -53,7 +53,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public User validateUser() {
         if (validateLogin(loginEt) && validateEmail(emailEt) && validatePassword(passwordEt) && validateConfirmPassword(passwordEt, passwordConfirmEt) && validateReg())
-            return new User(loginEt.getText().toString(), emailEt.getText().toString(), passwordEt.getText().toString());
+            return new User(loginEt.getText().toString(), emailEt.getText().toString(), passwordEt.getText().toString(), passwordConfirmEt.getText().toString());
         else return null;
     }
 
