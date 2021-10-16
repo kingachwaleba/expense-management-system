@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 
 @RestController
 public class UserController {
@@ -84,12 +85,13 @@ public class UserController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtProvider.generateJwtToken(authentication);
+        String jwtToken = jwtProvider.generateJwtToken(authentication);
+        Date expiryDate = jwtProvider.getExpiryDateFromJwtToken(jwtToken);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String image = userService.findByLogin(userDetails.getUsername()).orElseThrow(UserNotFoundException::new)
                 .getImage();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), image, userDetails.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(jwtToken, expiryDate, userDetails.getUsername(), image));
     }
 
     @PostMapping("/register")
