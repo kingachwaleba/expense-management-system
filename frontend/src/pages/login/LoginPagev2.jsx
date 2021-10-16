@@ -14,22 +14,27 @@ export default function LoginPagev2 () {
         return email.length > 0 && password.length > 0;
     }
  
-    function doLogin (event) {
+    async function doLogin (event) {
         event.preventDefault();
 
         UserService
             .login(email, password)
-            .then(
-                () => {
+            .then((response)=>{
+                console.log("From response")
                     event.target.reset();
                     history.push('/profile');
                     window.location.reload();
-                },
-                error => {
-                    console.log("Login failed, error: " + error.toString());
-                    setErrorMassage(error.message);
-                }
-            )
+            })
+            .catch((error)=>{
+                console.log(error.response.data)
+                console.log("From LoginPage fail, error: " + error.toString());
+                setErrorMassage(error.response.data);
+
+            })
+     
+            
+           
+          
     };
 
 

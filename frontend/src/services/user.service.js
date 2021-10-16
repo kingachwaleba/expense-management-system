@@ -12,7 +12,7 @@ class UserService {
                 return response.data;
             })
             .catch(err => {
-                console.log(err);
+                console.log("From user service error: " + err.message);
                 throw err;
             });
     };
