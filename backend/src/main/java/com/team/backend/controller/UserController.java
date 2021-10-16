@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -73,15 +74,18 @@ public class UserController {
         if (userService.getErrorList(bindingResult).size() != 0)
             return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
-        if (userService.findByEmail(loginRequest.getEmail()).isPresent()) {
-            User user = userService.findByEmail(loginRequest.getEmail()).get();
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+        Optional<User> optionalUser = userService.findByEmail(email);
 
-            if (user.getDeleted().equals(String.valueOf(User.AccountType.Y)))
-                return new ResponseEntity<>(errorMessage.get("login.error"), HttpStatus.BAD_REQUEST);
-        }
+        if (optionalUser.isPresent()
+                && (optionalUser.get().getDeleted().equals(String.valueOf(User.AccountType.Y))
+                || !userService.checkIfValidOldPassword(optionalUser.get(), loginRequest.getPassword())))
+
+            return new ResponseEntity<>(errorMessage.get("login.error"), HttpStatus.BAD_REQUEST);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(email, password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -103,7 +107,7 @@ public class UserController {
         if (userService.validation(bindingResult, user.getPassword()).size() != 0)
             return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
-        if (!userService.checkIfValidConfirmPassword(user.getPassword(),confirmPassword))
+        if (!userService.checkIfValidConfirmPassword(user.getPassword(), confirmPassword))
             return new ResponseEntity<>(errorMessage.get("register.confirmPassword"), HttpStatus.BAD_REQUEST);
 
         if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
