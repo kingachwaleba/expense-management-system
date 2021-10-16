@@ -130,7 +130,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
             memberBalanceToYouTv.setVisibility(View.GONE);
             reminderBtn.setVisibility(View.GONE);
             handshakeBtn.setVisibility(View.GONE);
-            showDebthBtn.setVisibility(View.GONE);
+            showDebthBtn.setVisibility(View.INVISIBLE);
         }
     }
 }
