@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.config.ErrorMessage;
 import com.team.backend.exception.*;
 import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.helpers.WalletHolder;
@@ -30,15 +31,17 @@ public class WalletController {
     private final UserStatusRepository userStatusRepository;
     private final WalletUserRepository walletUserRepository;
     private final MessageService messageService;
+    private final ErrorMessage errorMessage;
 
     public WalletController(WalletService walletService, UserService userService,
                             UserStatusRepository userStatusRepository, WalletUserRepository walletUserRepository,
-                            MessageService messageService) {
+                            MessageService messageService, ErrorMessage errorMessage) {
         this.walletService = walletService;
         this.userService = userService;
         this.userStatusRepository = userStatusRepository;
         this.walletUserRepository = walletUserRepository;
         this.messageService = messageService;
+        this.errorMessage = errorMessage;
     }
 
     @GetMapping("/wallet/{id}")
@@ -98,7 +101,7 @@ public class WalletController {
     @PostMapping("/create-wallet")
     public ResponseEntity<?> createWallet(@Valid @RequestBody WalletHolder walletHolder, BindingResult bindingResult) {
         if (walletService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(walletService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         walletService.save(walletHolder);
 
@@ -110,7 +113,7 @@ public class WalletController {
     public ResponseEntity<?> editOne(@PathVariable int id, @Valid @RequestBody Wallet newWallet,
                                      BindingResult bindingResult) {
         if (walletService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(walletService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         Wallet updatedWallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 

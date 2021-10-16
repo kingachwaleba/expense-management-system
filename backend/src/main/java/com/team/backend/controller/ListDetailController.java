@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.config.ErrorMessage;
 import com.team.backend.exception.ListDetailNotFoundException;
 import com.team.backend.exception.ListNotFoundException;
 import com.team.backend.exception.StatusNotFoundException;
@@ -27,12 +28,15 @@ public class ListDetailController {
     private final ListDetailService listDetailService;
     private final StatusRepository statusRepository;
     private final UserService userService;
+    private final ErrorMessage errorMessage;
 
-    public ListDetailController(ListService listService, ListDetailService listDetailService, StatusRepository statusRepository, UserService userService) {
+    public ListDetailController(ListService listService, ListDetailService listDetailService,
+                                StatusRepository statusRepository, UserService userService, ErrorMessage errorMessage) {
         this.listService = listService;
         this.listDetailService = listDetailService;
         this.statusRepository = statusRepository;
         this.userService = userService;
+        this.errorMessage = errorMessage;
     }
 
     @PostMapping("/shopping-list/{id}")
@@ -40,7 +44,8 @@ public class ListDetailController {
     public ResponseEntity<?> addOne(@PathVariable int id, @Valid @RequestBody ListDetail listDetail,
                                     BindingResult bindingResult) {
         if (listDetailService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(listDetailService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
+
         ShoppingList shoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
 
         listDetailService.save(listDetail, shoppingList);
@@ -72,7 +77,7 @@ public class ListDetailController {
     public ResponseEntity<?> editListElement(@PathVariable int id, @Valid @RequestBody ListDetail listDetail,
                                              BindingResult bindingResult) {
         if (listDetailService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(listDetailService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         ListDetail updatedElement = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
 

@@ -60,7 +60,7 @@ public class ListController {
     public ResponseEntity<?> createList(@PathVariable int id, @Valid @RequestBody ListHolder listHolder,
                                         BindingResult bindingResult) {
         if (listService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(listService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 

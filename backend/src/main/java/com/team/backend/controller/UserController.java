@@ -71,7 +71,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest, BindingResult bindingResult) {
         if (userService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(userService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         if (userService.findByEmail(loginRequest.getEmail()).isPresent()) {
             User user = userService.findByEmail(loginRequest.getEmail()).get();
@@ -101,8 +101,7 @@ public class UserController {
         String confirmPassword = registrationForm.getConfirmPassword();
 
         if (userService.validation(bindingResult, user.getPassword()).size() != 0)
-            return new ResponseEntity<>(userService.validation(bindingResult, user.getPassword()),
-                    HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         if (!userService.checkIfValidConfirmPassword(user.getPassword(),confirmPassword))
             return new ResponseEntity<>(errorMessage.get("register.confirmPassword"), HttpStatus.BAD_REQUEST);
@@ -161,7 +160,7 @@ public class UserController {
         String oldPassword = updatePasswordHolder.getOldPassword();
 
         if (userService.validation(bindingResult, password).size() != 0)
-            return new ResponseEntity<>(userService.validation(bindingResult, password), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
