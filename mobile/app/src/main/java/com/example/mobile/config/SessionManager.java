@@ -129,7 +129,6 @@ public class SessionManager {
             dateTimeException.printStackTrace();
             return false;
         }
-        System.out.println(expiry);
         Duration duration = Duration.between(now, expiry);
         if(duration.getSeconds() > 43200) return true;
             else return false;
