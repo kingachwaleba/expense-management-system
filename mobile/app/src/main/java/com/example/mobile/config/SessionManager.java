@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import com.example.mobile.activity.LoginActivity;
-import java.util.HashMap;
 
-import retrofit2.Response;
+import java.time.DateTimeException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 public class SessionManager {
     // Shared Preferences
@@ -31,13 +34,12 @@ public class SessionManager {
     public static final String KEY_LOGIN = "login";
 
     // User token
-    public static final String KEY_TOKEN = "token";
+    public static String KEY_TOKEN = "token";
 
     //User image path in server
     public static String KEY_IMAGE_PATH_SERVER = "imageServer";
 
-    //User image path in server
-    public static final String KEY_IMAGE_PATH_PHONE = "imagePhone";
+    public static String KEY_EXPIRY_DATE="expiry_date";
 
     // Constructor
     public SessionManager(Context context){
@@ -46,7 +48,7 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLoginSession(String login, String token, String imageServerPath){
+    public void createLoginSession(String login, String token, String expiryDate, String imageServerPath){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -54,6 +56,8 @@ public class SessionManager {
         editor.putString(KEY_LOGIN, login);
 
         editor.putString(KEY_TOKEN, token);
+
+        editor.putString(KEY_EXPIRY_DATE, expiryDate);
 
         editor.putString(KEY_IMAGE_PATH_SERVER, imageServerPath);
 
@@ -63,12 +67,9 @@ public class SessionManager {
 
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<>();
-        // user name
         user.put(KEY_LOGIN, pref.getString(KEY_LOGIN, null));
         user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
         user.put(KEY_IMAGE_PATH_SERVER, pref.getString(KEY_IMAGE_PATH_SERVER, null));
-        user.put(KEY_IMAGE_PATH_PHONE, pref.getString(KEY_IMAGE_PATH_PHONE, null));
-        // return user
         return user;
     }
 
@@ -85,6 +86,8 @@ public class SessionManager {
 
             // Staring Login Activity
             _context.startActivity(i);
+        } else if(!checkdate()){
+            logoutUser();
         }
     }
 
@@ -111,6 +114,23 @@ public class SessionManager {
     }
 
     public void setKeyImagePathServer(String path){
-       KEY_IMAGE_PATH_SERVER = path;
+        editor.putString(KEY_IMAGE_PATH_SERVER, path);
+        // commit changes
+        editor.commit();
+    }
+
+    private boolean checkdate(){
+        LocalDateTime expiry;
+        LocalDateTime now;
+        try {
+            expiry = LocalDateTime.parse(pref.getString(KEY_EXPIRY_DATE, "").substring(1, pref.getString(KEY_EXPIRY_DATE, "").length() - 10));
+            now = LocalDateTime.now();
+        } catch (DateTimeException dateTimeException) {
+            dateTimeException.printStackTrace();
+            return false;
+        }
+        Duration duration = Duration.between(now, expiry);
+        if(duration.getSeconds() > 43200) return true;
+            else return false;
     }
 }

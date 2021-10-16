@@ -9,6 +9,7 @@ import com.example.mobile.activity.MainActivity;
 import com.example.mobile.activity.RegistrationActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
+import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.User;
@@ -33,49 +34,59 @@ public class UserService {
         this.apiInterface = new ApiClient().getService();
     }
 
-    public void register(User user) {
-        Call<ResponseBody> call = apiInterface.register(user);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                if(response.code()==200){
-                    Intent i = new Intent(context, MainActivity.class);
-                    context.startActivity(i);
-                    ((RegistrationActivity)context).finish();
-                } else {
-                    Toast.makeText(context,"Nie udało się zarejestrować użytkownika",Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Nie udało się zarejestrować użytkownika",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
     public void login(LoginForm loginForm) {
         Call<JsonObject> call = apiInterface.login(loginForm);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
-                if(response.body()!=null){
-                    if(response.code()==200){
-                        String login =response.body().get("login").toString();
-                        String token =response.body().get("token").toString();
-                        String image =response.body().get("image").toString();
-                        login = login.substring(1, login.length() - 1);
-                        token = token.substring(1, token.length() - 1);
-                        session.createLoginSession(login, token, image);
-                        Intent i = new Intent(context, MainActivity.class);
-                        context.startActivity(i);
-                        ((LoginActivity)context).finish();
-                    }
-                } else Toast.makeText(context,"Nie poprawne dane logowania",Toast.LENGTH_LONG).show();
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.code() == 200) {
+                            String login = response.body().get("login").toString();
+                            String token = response.body().get("token").toString();
+                            String expiryDate = response.body().get("expiryDate").toString();
+                            String image = response.body().get("image").toString();
+                            login = login.substring(1, login.length() - 1);
+                            token = token.substring(1, token.length() - 1);
+                            session.createLoginSession(login, token, expiryDate, image);
+                            Intent i = new Intent(context, MainActivity.class);
+                            context.startActivity(i);
+                            ((LoginActivity) context).finish();
+                        }
+                    } else
+                        Toast.makeText(context, "Nie poprawne dane logowania", Toast.LENGTH_LONG).show();
+                } else {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
             }
+
             @Override
             public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Logowanie nie powiodło się",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Logowanie nie powiodło się", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void register(User user) {
+        Call<ResponseBody> call = apiInterface.register(user);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Intent i = new Intent(context, MainActivity.class);
+                    context.startActivity(i);
+                    ((RegistrationActivity) context).finish();
+                } else {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Nie udało się zarejestrować użytkownika", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
@@ -86,11 +97,17 @@ public class UserService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                Toast.makeText(context,"Sprawdź skrzynkę pocztową!",Toast.LENGTH_LONG).show();
+                if (response.isSuccessful())
+                    Toast.makeText(context, "Sprawdź skrzynkę pocztową!", Toast.LENGTH_LONG).show();
+                else {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
             }
+
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Nie udało się",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Nie udało się", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });

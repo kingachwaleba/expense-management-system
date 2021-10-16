@@ -76,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public boolean validatePassword(EditText s) {
-        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(s.getText().toString()).matches())
+        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,50}$").matcher(s.getText().toString()).matches())
             return true;
         else {
             s.setError("Niepoprawna forma hasła. Hasło ma składać się z min. 8 znaków w tym 1 cyfra, 1 duża litera, 1 mała litera");

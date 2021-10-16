@@ -2,14 +2,18 @@ package com.example.mobile.service;
 
 import android.content.Context;
 import android.widget.Toast;
+
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
+import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
-import com.example.mobile.model.ListShopHolder;
 import com.example.mobile.model.Product;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,30 +30,15 @@ public class ListService {
         this.apiInterface = new ApiClient().getService();
     }
 
-    public interface OnListCallback{
+    public interface OnListCallback {
         void onAllList(List<ListShop> lists);
     }
 
-    public interface OnOneListCallback{
-        void onOneList(ListShopHolder listShop);
+    public interface OnOneListCallback {
+        void onOneList(ListShop listShop);
     }
 
-    public void createList(String accessToken, int id, ListCreate list){
-        Call<ResponseBody> call = apiInterface.createList("Bearer " + accessToken, id, list);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void getAllLists(ListService.OnListCallback callback, String accessToken, int id){
+    public void getAllLists(ListService.OnListCallback callback, String accessToken, int id) {
         Call<List<ListShop>> call = apiInterface.getWalletLists("Bearer " + accessToken, id);
         call.enqueue(new Callback<List<ListShop>>() {
             @Override
@@ -59,74 +48,67 @@ public class ListService {
 
             @Override
             public void onFailure(@NotNull Call<List<ListShop>> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
     }
 
-    public void getListById(ListService.OnOneListCallback callback, String accessToken, int id){
-        Call<ListShopHolder> call = apiInterface.getListById("Bearer " + accessToken, id);
-        call.enqueue(new Callback<ListShopHolder>() {
+    public void getListById(ListService.OnOneListCallback callback, String accessToken, int id) {
+        Call<ListShop> call = apiInterface.getListById("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ListShop>() {
             @Override
-            public void onResponse(@NotNull Call<ListShopHolder> call, @NotNull Response<ListShopHolder> response) {
+            public void onResponse(@NotNull Call<ListShop> call, @NotNull Response<ListShop> response) {
                 callback.onOneList(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<ListShopHolder> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+            public void onFailure(@NotNull Call<ListShop> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
     }
 
-    public void addListItem(String accessToken, int id, Product product){
-        Call<ResponseBody> call = apiInterface.addListItem("Bearer " + accessToken, id, product);
+    public void createList(String accessToken, int id, ListCreate list) {
+        Call<ResponseBody> call = apiInterface.createList("Bearer " + accessToken, id, list);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
     }
 
-    public void editListItem(String accessToken, int id, Product product){
-        Call<ResponseBody> call = apiInterface.editListItem("Bearer " + accessToken, id, product);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void editListName(String accessToken, int id, String name){
+    public void editListName(String accessToken, int id, String name) {
         Call<ResponseBody> call = apiInterface.editListName("Bearer " + accessToken, id, name);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
     }
 
-    public void changeListStatus(String accessToken, int id, int statusId){
+    public void changeListStatus(String accessToken, int id, int statusId) {
         Call<ResponseBody> call = apiInterface.changeListStatus("Bearer " + accessToken, id, statusId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -135,43 +117,13 @@ public class ListService {
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
     }
 
-    public void changeListElementStatus(String accessToken, int id, int statusId){
-        Call<ResponseBody> call = apiInterface.changeListElementStatus("Bearer " + accessToken, id, statusId);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void deleteListElement(String accessToken, int id){
-        Call<ResponseBody> call = apiInterface.deleteListElement("Bearer " + accessToken, id);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void deleteList(String accessToken, int id){
+    public void deleteList(String accessToken, int id) {
         Call<ResponseBody> call = apiInterface.deleteList("Bearer " + accessToken, id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -180,10 +132,77 @@ public class ListService {
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
     }
 
+    public void addListItem(String accessToken, int id, Product product) {
+        Call<ResponseBody> call = apiInterface.addListItem("Bearer " + accessToken, id, product);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void editListItem(String accessToken, int id, Product product) {
+        Call<ResponseBody> call = apiInterface.editListItem("Bearer " + accessToken, id, product);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void changeListElementStatus(String accessToken, int id, int statusId) {
+        Call<ResponseBody> call = apiInterface.changeListElementStatus("Bearer " + accessToken, id, statusId);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void deleteListElement(String accessToken, int id) {
+        Call<ResponseBody> call = apiInterface.deleteListElement("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
 }

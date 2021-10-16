@@ -1,21 +1,17 @@
 package com.example.mobile.service;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.widget.Toast;
-
-import androidx.loader.content.CursorLoader;
 
 import com.example.mobile.ImageHelper;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
-import com.example.mobile.config.SessionManager;
+import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.model.DebtsHolder;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.ExpenseHolder;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -39,18 +35,19 @@ public class ExpenseService {
         this.apiInterface = new ApiClient().getService();
     }
 
-    public interface OnExpensesCallback{
+    public interface OnExpensesCallback {
         void onAllExpenses(List<Expense> expenses);
     }
 
-    public interface OnExpenseByIdCallback{
+    public interface OnExpenseByIdCallback {
         void onExpense(ExpenseHolder expense);
     }
-    public interface OnReceiptCallback{
+
+    public interface OnReceiptCallback {
         void onReceipt(String path);
     }
 
-    public void getAllExpenses(ExpenseService.OnExpensesCallback callback, String accessToken, int id){
+    public void getAllExpenses(ExpenseService.OnExpensesCallback callback, String accessToken, int id) {
         Call<List<Expense>> call = apiInterface.getAllExpense("Bearer " + accessToken, id);
         call.enqueue(new Callback<List<Expense>>() {
             @Override
@@ -60,13 +57,13 @@ public class ExpenseService {
 
             @Override
             public void onFailure(@NotNull Call<List<Expense>> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
     }
 
-    public void getExpenseById(ExpenseService.OnExpenseByIdCallback callback, String accessToken, int id){
+    public void getExpenseById(ExpenseService.OnExpenseByIdCallback callback, String accessToken, int id) {
         Call<ExpenseHolder> call = apiInterface.getExpenseById("Bearer " + accessToken, id);
         call.enqueue(new Callback<ExpenseHolder>() {
             @Override
@@ -76,7 +73,7 @@ public class ExpenseService {
 
             @Override
             public void onFailure(@NotNull Call<ExpenseHolder> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
@@ -87,71 +84,15 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
+                if (!response.isSuccessful()){
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
             }
+
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void deleteExpense(String accessToken, int id) {
-        Call<ResponseBody> call = apiInterface.deleteExpense("Bearer " + accessToken, id);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
-            }
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void payDebt(String accessToken, int id, DebtsHolder debtsHolder) {
-        Call<ResponseBody> call = apiInterface.payDebt("Bearer " + accessToken, id, debtsHolder);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
-            }
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void sendDebtNotification(String accessToken, int id, DebtsHolder debtsHolder) {
-        Call<ResponseBody> call = apiInterface.sendDebtNotification("Bearer " + accessToken, id, debtsHolder);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
-            }
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
-                call.cancel();
-            }
-        });
-    }
-
-    public void editExpenseById(String accessToken, int id, ExpenseHolder expense) {
-        Call<ResponseBody> call = apiInterface.editExpenseById("Bearer " + accessToken, id, expense);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
-            }
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }
         });
@@ -160,7 +101,7 @@ public class ExpenseService {
     public void uploadReceiptImage(Bitmap bitmap, String accessToken, String name, OnReceiptCallback callback) {
 
         //creating a file
-        File file = ImageHelper.bitmapToFile(context, bitmap,name.replaceAll("\\s","") + ".png");
+        File file = ImageHelper.bitmapToFile(context, bitmap, name.replaceAll("\\s", "") + ".png");
 
         //creating request body for file
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
@@ -173,18 +114,91 @@ public class ExpenseService {
         //finally performing the call
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    callback.onReceipt(response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null)
+                        try {
+                            callback.onReceipt(response.body().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                } else {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 System.out.println(t.toString());
-                Toast.makeText(context,"Coś poszło nie tak",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void editExpenseById(String accessToken, int id, ExpenseHolder expense) {
+        Call<ResponseBody> call = apiInterface.editExpenseById("Bearer " + accessToken, id, expense);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()){
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void deleteExpense(String accessToken, int id) {
+        Call<ResponseBody> call = apiInterface.deleteExpense("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void payDebt(String accessToken, int id, DebtsHolder debtsHolder) {
+        Call<ResponseBody> call = apiInterface.payDebt("Bearer " + accessToken, id, debtsHolder);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void sendDebtNotification(String accessToken, int id, DebtsHolder debtsHolder) {
+        Call<ResponseBody> call = apiInterface.sendDebtNotification("Bearer " + accessToken, id, debtsHolder);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
             }
         });
     }

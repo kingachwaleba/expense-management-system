@@ -12,71 +12,80 @@
         android:layout_height="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="40dp"
         android:background="@drawable/v_line_white" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/member_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:textAppearance="@style/simple_label"
-            android:textSize="22sp"
-            android:layout_marginHorizontal="10dp">
-        </TextView>
+            android:textSize="22sp"/>
 
         <TextView
             android:id="@+id/member_balance_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
             android:textAppearance="@style/simple_label_bold"
+            android:layout_alignParentStart="false"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/red"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/show_debth_btn"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:visibility="gone" />
-    </LinearLayout>
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginHorizontal="10dp">
 
         <TextView
             android:id="@+id/member_balance_to_you_tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:textAppearance="@style/simple_label_bold"
-            android:textSize="18sp"
             android:visibility="gone"
-            android:layout_marginHorizontal="10dp">
-        </TextView>
+            android:textSize="18sp"
+           />
 
         <Button
             android:id="@+id/reminder_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="false"
+            android:layout_centerVertical="true"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/ic_bell"
-            android:visibility="gone"/>
+            android:layout_toStartOf="@+id/handshake_btn"
+            android:visibility="gone"
+            android:background="@drawable/ic_bell" />
 
         <Button
             android:id="@+id/handshake_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
             android:background="@drawable/ic_handshake"
-            android:visibility="gone"/>
-    </LinearLayout>
+          />
+    </RelativeLayout>
 </LinearLayout>
