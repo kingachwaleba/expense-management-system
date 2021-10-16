@@ -46,11 +46,6 @@ public class User {
     @NotBlank(message = "Hasło jest obowiązkowe!")
     private String password;
 
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank(message = "Potwierdzenie hasła jest obowiązkowe!")
-    private String confirmPassword;
-
     @Column(length = 1)
     private String deleted;
 

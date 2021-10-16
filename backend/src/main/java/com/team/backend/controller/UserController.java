@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.team.backend.config.JwtProvider;
 import com.team.backend.config.JwtResponse;
 import com.team.backend.exception.UserNotFoundException;
+import com.team.backend.helpers.RegistrationForm;
 import com.team.backend.helpers.UpdatePasswordHolder;
 import com.team.backend.model.*;
 import com.team.backend.helpers.LoginForm;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 
 @RestController
 public class UserController {
@@ -89,12 +91,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createAccount(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<?> createAccount(@Valid @RequestBody RegistrationForm registrationForm,
+                                           BindingResult bindingResult) {
+        User user = registrationForm.getUser();
+        String confirmPassword = registrationForm.getConfirmPassword();
+
         if (userService.validation(bindingResult, user.getPassword()).size() != 0)
             return new ResponseEntity<>(userService.validation(bindingResult, user.getPassword()),
                     HttpStatus.BAD_REQUEST);
 
-        if (!userService.checkIfValidConfirmPassword(user.getPassword(), user.getConfirmPassword()))
+        if (!userService.checkIfValidConfirmPassword(user.getPassword(),confirmPassword))
             return new ResponseEntity<>("Podane hasła różnią się od siebie!", HttpStatus.BAD_REQUEST);
 
         if (userService.existsByEmailAndDeleted(user.getEmail(), String.valueOf(User.AccountType.valueOf("N")))
@@ -147,7 +153,6 @@ public class UserController {
     @PutMapping("/account/change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody UpdatePasswordHolder updatePasswordHolder,
                                             BindingResult bindingResult) {
-
         String password = updatePasswordHolder.getPassword();
         String confirmPassword = updatePasswordHolder.getConfirmPassword();
         String oldPassword = updatePasswordHolder.getOldPassword();
