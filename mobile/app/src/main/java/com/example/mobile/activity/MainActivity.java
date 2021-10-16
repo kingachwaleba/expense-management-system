@@ -22,7 +22,6 @@ public class MainActivity extends BaseActivity {
 
     static List<Category> categoriesWallet,  categoriesExpense;
     static List<Unit> productUnits;
-    static List<String> periods;
     SessionManager session;
     RecyclerView walletRv;
     TextView helloTv;
@@ -50,15 +49,6 @@ public class MainActivity extends BaseActivity {
         validationTableService.getExpenseCategories(categories -> categoriesExpense = categories);
 
         validationTableService.getUnits(units -> productUnits = units);
-
-        periods = new ArrayList<>();
-
-        periods.add("brak");
-        periods.add("dzienne");
-        periods.add("tygodniowe");
-        periods.add("miesięczne");
-        periods.add("kwartalne");
-        periods.add("roczne");
 
         addNewWalletBtn.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, CreateWalletActivity.class);
@@ -95,7 +85,4 @@ public class MainActivity extends BaseActivity {
         return productUnits;
     }
 
-    public static List<String> getPeriods() {
-        return periods;
-    }
 }
