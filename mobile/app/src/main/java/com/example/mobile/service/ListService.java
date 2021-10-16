@@ -8,7 +8,6 @@ import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
-import com.example.mobile.model.ListShopHolder;
 import com.example.mobile.model.Product;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +35,7 @@ public class ListService {
     }
 
     public interface OnOneListCallback {
-        void onOneList(ListShopHolder listShop);
+        void onOneList(ListShop listShop);
     }
 
     public void getAllLists(ListService.OnListCallback callback, String accessToken, int id) {
@@ -56,15 +55,15 @@ public class ListService {
     }
 
     public void getListById(ListService.OnOneListCallback callback, String accessToken, int id) {
-        Call<ListShopHolder> call = apiInterface.getListById("Bearer " + accessToken, id);
-        call.enqueue(new Callback<ListShopHolder>() {
+        Call<ListShop> call = apiInterface.getListById("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ListShop>() {
             @Override
-            public void onResponse(@NotNull Call<ListShopHolder> call, @NotNull Response<ListShopHolder> response) {
+            public void onResponse(@NotNull Call<ListShop> call, @NotNull Response<ListShop> response) {
                 callback.onOneList(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<ListShopHolder> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ListShop> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
                 call.cancel();
             }

@@ -7,7 +7,6 @@ import com.example.mobile.model.ExpenseHolder;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
-import com.example.mobile.model.ListShopHolder;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Member;
 import com.example.mobile.model.Message;
@@ -149,7 +148,7 @@ public interface ApiInterface  {
 
     @GET("shopping-list/{id}")
     @Headers("Content-Type: application/json")
-    Call<ListShopHolder> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
+    Call<ListShop> getListById(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @POST("wallet/{id}/create-shopping-list")
     @Headers("Content-Type: application/json")
