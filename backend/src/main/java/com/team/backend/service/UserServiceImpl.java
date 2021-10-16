@@ -1,5 +1,6 @@
 package com.team.backend.service;
 
+import com.team.backend.config.ErrorMessage;
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
 import com.team.backend.model.*;
@@ -24,15 +25,17 @@ public class UserServiceImpl implements UserService {
     private final WalletUserRepository walletUserRepository;
     private final WalletService walletService;
     private final MessageService messageService;
+    private final ErrorMessage errorMessage;
 
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
                            WalletUserRepository walletUserRepository, WalletService walletService,
-                           MessageService messageService) {
+                           MessageService messageService, ErrorMessage errorMessage) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.walletUserRepository = walletUserRepository;
         this.walletService = walletService;
         this.messageService = messageService;
+        this.errorMessage = errorMessage;
     }
 
     @Override
@@ -155,10 +158,10 @@ public class UserServiceImpl implements UserService {
         List<String> messages = new ArrayList<>();
 
         if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"))
-            messages.add("Niepoprawny format hasła - musi zawierać małą i dużą literę oraz cyfrę!");
+            messages.add(errorMessage.get("user.password.regexp"));
 
         if (password.length() < 5 || password.length() > 50)
-            messages.add("Hasło powinno zawierać od 8 do 50 znaków!");
+            messages.add(errorMessage.get("user.password.size"));
 
         return messages;
     }

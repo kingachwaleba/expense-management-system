@@ -26,8 +26,8 @@ public class Expense {
     private int id;
 
     @Column(nullable = false, length = 45)
-    @Size(min = 1, max = 45, message = "Wielkość nazwy wydatku musi mieć od 1 do 45 znaków!")
-    @NotBlank(message = "Nazwa wydatku jest obowiązkowa!")
+    @Size(min = 1, max = 45, message = "{expense.name.size}")
+    @NotBlank(message = "{expense.name.notBlank}")
     private String name;
 
     @Column(columnDefinition = "DATETIME", nullable = false)
@@ -38,9 +38,9 @@ public class Expense {
     private String receipt_image;
 
     @Column(precision = 10, scale = 2, nullable = false)
-    @NotNull(message = "Całkowity koszt wydatku jest obowiązkowy!")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Całkowity koszt wydatku musi być większy od 0!")
-    @Digits(integer = 8, fraction = 2, message = "Całkowty koszt wydatku nie może być większy od 99999999,99!")
+    @NotNull(message = "{expense.totalCost.notNull}")
+    @DecimalMin(value = "0.0", inclusive = false, message = "{expense.totalCost.decimalMin}")
+    @Digits(integer = 8, fraction = 2, message = "{expense.totalCost.digits}")
     private BigDecimal total_cost;
 
     @ManyToOne(fetch = FetchType.EAGER)

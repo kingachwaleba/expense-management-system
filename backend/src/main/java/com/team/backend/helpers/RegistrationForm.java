@@ -13,6 +13,7 @@ public class RegistrationForm {
 
     @Valid
     private User user;
-    @NotBlank(message = "Potwierdzenie hasła jest obowiązkowe!")
+
+    @NotBlank(message = "{user.confirmPassword.notBlank}")
     private String confirmPassword;
 }
