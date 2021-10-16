@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean validatePassword(EditText s) {
-        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(s.getText().toString()).matches())
+        if (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,50}$").matcher(s.getText().toString()).matches())
             return true;
         else {
             s.setError("Niepoprawne hasło");
