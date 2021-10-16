@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.config.ErrorMessage;
 import com.team.backend.service.ImageStorageService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -12,15 +13,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageController {
 
     private final ImageStorageService imageStorageService;
+    private final ErrorMessage errorMessage;
 
-    public ImageController(ImageStorageService imageStorageService) {
+    public ImageController(ImageStorageService imageStorageService, ErrorMessage errorMessage) {
         this.imageStorageService = imageStorageService;
+        this.errorMessage = errorMessage;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile multipartFile) {
         if (!imageStorageService.ifProperType(multipartFile))
-            return new ResponseEntity<>("It is not a proper type!", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(errorMessage.get("image.type"), HttpStatus.EXPECTATION_FAILED);
 
         try {
             String newImageName = imageStorageService.save(multipartFile, "expenses");

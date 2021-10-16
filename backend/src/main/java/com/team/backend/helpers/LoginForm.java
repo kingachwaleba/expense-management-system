@@ -11,11 +11,12 @@ import javax.validation.constraints.Size;
 @Setter
 public class LoginForm {
 
-    @Size(min = 5, max = 100, message = "Adres email powinien zawierać od 5 do 100 znaków!")
-    @NotBlank(message = "Adres email jest obowiązkowy!")
+    @Size(min = 5, max = 100, message = "{user.email.size}")
+    @NotBlank(message = "{user.email.notBlank}")
     @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
-            message = "Adres email powinien mieć następujący format - example@gmail.com!")
+            message = "{user.email.regexp}")
     private String email;
-    @NotBlank(message = "Hasło jest obowiązkowe!")
+
+    @NotBlank(message = "{user.password.notBlank}")
     private String password;
 }

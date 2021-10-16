@@ -25,8 +25,8 @@ public class Wallet {
     private int id;
 
     @Column(nullable = false, length = 45)
-    @Size(min = 1, max = 45, message = "Wielkość nazwy wydatku musi mieć od 1 do 45 znaków!")
-    @NotBlank(message = "Nazwa portfela jest obowiązkowa!")
+    @Size(min = 1, max = 45, message = "{wallet.name.size}")
+    @NotBlank(message = "{wallet.name.notBlank}")
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -34,7 +34,7 @@ public class Wallet {
     private WalletCategory walletCategory;
 
     @Column(length = 1000)
-    @Size(max = 1000, message = "Wielkość nazwy wydatku musi mieć do 1000 znaków!")
+    @Size(max = 1000, message = "{wallet.description.size}")
     private String description;
 
     @JsonIgnore

@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.config.ErrorMessage;
 import com.team.backend.exception.ExpenseNotFoundException;
 import com.team.backend.helpers.ExpenseHolder;
 import com.team.backend.model.Expense;
@@ -20,10 +21,12 @@ public class ExpenseController {
 
     private final ExpenseService expenseService;
     private final MessageService messageService;
+    private final ErrorMessage errorMessage;
 
-    public ExpenseController(ExpenseService expenseService, MessageService messageService) {
+    public ExpenseController(ExpenseService expenseService, MessageService messageService, ErrorMessage errorMessage) {
         this.expenseService = expenseService;
         this.messageService = messageService;
+        this.errorMessage = errorMessage;
     }
 
     @GetMapping("/expense/{id}")
@@ -44,7 +47,7 @@ public class ExpenseController {
     public ResponseEntity<?> add(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder,
                                  BindingResult bindingResult) {
         if (expenseService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(expenseService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         expenseService.save(expenseHolder, id);
         messageService.sendNotification(id);
@@ -57,7 +60,7 @@ public class ExpenseController {
     public ResponseEntity<?> edit(@PathVariable int id, @Valid @RequestBody ExpenseHolder expenseHolder,
                                   BindingResult bindingResult) {
         if (expenseService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(expenseService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         Expense updatedExpense = expenseService.findById(id).orElseThrow(ExpenseNotFoundException::new);
         Expense newExpense = expenseHolder.getExpense();

@@ -2,24 +2,23 @@ package com.team.backend.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Collection;
+import java.util.Date;
 
 @Getter
 @Setter
 public class JwtResponse {
 
     private String token;
+    private Date expiryDate;
     private String type = "Bearer";
     private String login;
     private String image;
-    private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtResponse(String accessToken, String login, String image, Collection<? extends GrantedAuthority> authorities) {
+    public JwtResponse(String accessToken, Date expiryDate, String login, String image) {
         this.token = accessToken;
+        this.expiryDate = expiryDate;
         this.login = login;
         this.image = image;
-        this.authorities = authorities;
     }
 }

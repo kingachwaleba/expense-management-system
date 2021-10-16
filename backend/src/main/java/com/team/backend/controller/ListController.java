@@ -1,6 +1,7 @@
 package com.team.backend.controller;
 
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.team.backend.config.ErrorMessage;
 import com.team.backend.exception.ListNotFoundException;
 import com.team.backend.exception.StatusNotFoundException;
 import com.team.backend.exception.UserNotFoundException;
@@ -27,13 +28,15 @@ public class ListController {
     private final ListService listService;
     private final StatusRepository statusRepository;
     private final UserService userService;
+    private final ErrorMessage errorMessage;
 
     public ListController(WalletService walletService, ListService listService, StatusRepository statusRepository,
-                          UserService userService) {
+                          UserService userService, ErrorMessage errorMessage) {
         this.walletService = walletService;
         this.listService = listService;
         this.statusRepository = statusRepository;
         this.userService = userService;
+        this.errorMessage = errorMessage;
     }
 
     @GetMapping("/shopping-list/{id}")
@@ -57,7 +60,7 @@ public class ListController {
     public ResponseEntity<?> createList(@PathVariable int id, @Valid @RequestBody ListHolder listHolder,
                                         BindingResult bindingResult) {
         if (listService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(listService.getErrorList(bindingResult), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
 
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
@@ -70,9 +73,9 @@ public class ListController {
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody TextNode name) {
         if (name.asText().isBlank())
-            return new ResponseEntity<>("Nazwa listy zakupów jest obowiązkowa!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("shoppingList.name.notBlank"), HttpStatus.BAD_REQUEST);
         if (name.asText().length() > 45)
-            return new ResponseEntity<>("Wielkość nazwy listy zakupów musi mieć od 1 do 45 znaków!",
+            return new ResponseEntity<>(errorMessage.get("shoppingList.name.size"),
                     HttpStatus.BAD_REQUEST);
 
         ShoppingList updatedShoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);

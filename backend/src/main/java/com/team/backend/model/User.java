@@ -23,18 +23,18 @@ public class User {
     private int id;
 
     @Column(unique = true, nullable = false, length = 45)
-    @Size(min = 5, max = 45, message = "Login powien zawierać od 5 do 45 znaków!")
-    @NotBlank(message = "Login jest obowiązkowy!")
+    @Size(min = 5, max = 45, message = "{user.login.size}")
+    @NotBlank(message = "{user.login.notBlank}")
     @Pattern(regexp = "^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\\d.-]{4,45}$",
-            message = "Niepoprawny format loginu - może zawierać litery, cyfry i znak -, powinien zaczynać się literą!")
+            message = "{user.login.regexp}")
     private String login;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 100)
-    @Size(min = 5, max = 100, message = "Adres email powinien zawierać od 5 do 100 znaków!")
-    @NotBlank(message = "Adres email jest obowiązkowy!")
+    @Size(min = 5, max = 100, message = "{user.email.size}")
+    @NotBlank(message = "{user.email.notBlank}")
     @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
-            message = "Adres email powinien mieć następujący format - example@gmail.com!")
+            message = "{user.email.regexp}")
     private String email;
 
     @Column
@@ -43,13 +43,8 @@ public class User {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
-    @NotBlank(message = "Hasło jest obowiązkowe!")
+    @NotBlank(message = "{user.password.notBlank}")
     private String password;
-
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank(message = "Potwierdzenie hasła jest obowiązkowe!")
-    private String confirmPassword;
 
     @Column(length = 1)
     private String deleted;
