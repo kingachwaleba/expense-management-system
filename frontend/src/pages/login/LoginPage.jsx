@@ -1,6 +1,6 @@
 import React from 'react';
 import UserService from '../../services/user.service';
-import {User} from '../../models/user';
+//import {User} from '../../models/user';
 import Header from '../../components/Header';
 class LoginPage extends React.Component {
 

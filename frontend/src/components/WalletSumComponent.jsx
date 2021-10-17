@@ -10,7 +10,7 @@ class WalletSumComponent extends Component {
         this.state={
             wallets: [],
             username: undefined,
-            
+           
 
         }
     }

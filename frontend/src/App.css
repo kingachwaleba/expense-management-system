@@ -75,6 +75,38 @@
 }
 
 
+.main-button-style{
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 17px !important;
+  position: static;
+  left: calc(50% - 174px/2 - 116px);
+  top: calc(50% - 65px/2);
+  margin-top: 6px;
+  background: linear-gradient(284.77deg, #F8B500 32.81%, #F80000 189.19%);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 24px !important;
+  border-color: transparent !important;
+  
+}
+
+.main-button-style:hover{
+  background: linear-gradient(284.77deg, #F8B100 32.81%, #F8B500 189.19%);
+ }
+
+.grid-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+.grid-container-3{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+
+
 #vector-image{
   background-image: url(headervector.svg);
   background-size: contain;
@@ -94,11 +126,13 @@
   overflow: hidden;
 }
 
-input[type='text'], input[type='password']{
+input[type='text'], input[type='password'], input[type='email']{
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
   border-radius: 24px;
   border-color: transparent;
 }
+
+
 
 .form-container{
   position: relative;

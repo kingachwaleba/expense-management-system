@@ -9,12 +9,15 @@ import Header from '../../components/Header';
 import WalletCategoryComponent from '../../components/WalletCategoryComponent';
 import AddUsersToNewWalletComponent from '../../components/AddUsersToNewWalletComponent';
 import UserService from '../../services/user.service';
+import { useHistory } from 'react-router';
+import { withRouter } from 'react-router';
 class CreateWalletPage extends React.Component {
 
     constructor(props, context) {
         super(props, context);
         this.readWalletCategory = this.readWalletCategory.bind(this);
         this.createUsersList = this.createUsersList.bind(this);
+       
 
      };
 
@@ -31,7 +34,8 @@ class CreateWalletPage extends React.Component {
             usertoken: undefined,
         };
 
-       
+      
+
      componentDidMount() {
         const currentUser = UserService.getCurrentUser();
         if (currentUser) {
@@ -201,8 +205,10 @@ class CreateWalletPage extends React.Component {
 
                                         this.setState({submitted: true});
                                          this.walletHolderHelper(e);   
-
+                                         window.location.href='/home'
                                     }}
+
+                            
                             
                             >
                             Utwórz
