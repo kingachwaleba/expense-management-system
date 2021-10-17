@@ -6,7 +6,7 @@ class UserService {
         return axios.post("/login", {email, password})
             .then(response => {
                 if (response.data.token) {
-                    localStorage.setItem("user", JSON.stringify(response.data));
+                    sessionStorage.setItem("user", JSON.stringify(response.data));
                 }
 
                 return response.data;
@@ -18,7 +18,7 @@ class UserService {
     };
 
     logOut() {
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
     }
 
     register = async (user) => {
@@ -26,7 +26,7 @@ class UserService {
     };
 
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));
+        return JSON.parse(sessionStorage.getItem('user'));
     }
 }
 

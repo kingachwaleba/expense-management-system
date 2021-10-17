@@ -4,7 +4,8 @@ import UserService from '../../services/user.service';
 import { useHistory } from 'react-router';
 import { useState } from 'react';
 import { User } from '../../models/user';
-
+import {  RegisterUserHolder } from '../../models/helpers/registerUserHolder';
+import Header from '../../components/Header';
 
 
 function RegisterPagev2 (){
@@ -14,9 +15,8 @@ function RegisterPagev2 (){
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState([]);
     const [errorMessageString, setErrorMessageString] = useState([]);
-    const [isArray, setIsArray] = useState(false);
+    
 
 
     useEffect(() => {
@@ -37,10 +37,11 @@ function RegisterPagev2 (){
             return;
         }
         
-        const user = new User('',login,email,password,confirmPassword)
-        if(password == confirmPassword){
+        const user = new User('',login,email,password)
+        const registerUserHolder = new RegisterUserHolder(user, confirmPassword)
+        if((password == confirmPassword) && (document.getElementById("confirmStatute").checked)){
             UserService
-                .register(user)
+                .register(registerUserHolder)
                 .then((response) => {
 
                         event.target.reset();
@@ -50,21 +51,17 @@ function RegisterPagev2 (){
                 .catch((error)=>{
                     console.log(error.response.data)
                     console.log("From RegisterPage fail, error: " + error.toString());
-                    if(Array.isArray(error.response.data)){
-                        setErrorMessage(error.response.data);
-                        setIsArray(true);
-                    }
-                    else{
-                        setErrorMessageString(error.response.data)
-                        setIsArray(false);
-                    }
-                    
+                    setErrorMessageString(error.response.data)
                 })
         } 
-        else{
-            setIsArray(false);
+        else if(password != confirmPassword){
+            
             setErrorMessageString("Hasła nie są identyczne.")
         }
+        else if(!document.getElementById("confirmStatute").checked){
+            setErrorMessageString("Musisz zaakceptować regulamin.")
+        }
+       
                
     }
 
@@ -72,6 +69,7 @@ function RegisterPagev2 (){
 
         return (
             <div>
+                 <Header title='Zarejestruj się' />
                 <div className = "form-container">
 
                     <form
@@ -79,7 +77,7 @@ function RegisterPagev2 (){
                             method="post"
                             onSubmit={doRegister}>
                             <div className={'form-group'}>
-                                <label className="form-label"  htmlFor="login">Login: </label>
+                                <label className="form-label"  htmlFor="login">Login* </label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -95,7 +93,7 @@ function RegisterPagev2 (){
                             </div>
 
                             <div className={'form-group'}>
-                                <label className="form-label" htmlFor="email">Email: </label>
+                                <label className="form-label" htmlFor="email">Email* </label>
                                 <input
                                     type="email"
                                     className="form-control"
@@ -109,7 +107,7 @@ function RegisterPagev2 (){
                             </div>
 
                             <div className={'form-group'}>
-                                <label className="form-label" htmlFor="Password">Hasło: </label>
+                                <label className="form-label" htmlFor="Password">Hasło* </label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -125,7 +123,7 @@ function RegisterPagev2 (){
                                 
                             </div>
                             <div className={'form-group'}>
-                                <label className="form-label" htmlFor="ConfirmPassword">Powtórz hasło: </label>
+                                <label className="form-label" htmlFor="ConfirmPassword">Powtórz hasło* </label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -139,30 +137,22 @@ function RegisterPagev2 (){
                                 />
                                 
                             </div>
+                            <p>* - pola wymagane.</p>
+                            <div>
+                                <input type="checkbox" id="confirmStatute" name="confirmStatute"/>
+                                        
+                                <label for="confirmStatute">  Przeczytałem/am i akceptuję warunki regulaminu</label>
+                            </div>
+
 
                            <div>
-                               {
-
-                                   isArray ? (
-                                        errorMessage.map(
-                                            message => 
-                                            <div key={message}>
-                                                {message}
-                                            </div>
-                                        )
-                                   ) : (
-                                        errorMessageString  
-                                   )
-                                   
-                                }
+                               <br />
+                               {errorMessageString}
+                               <br />
                            </div>
                             
                             <br></br>
-                            <button className="btn btn-primary btn-block form-button main-button-style"
-                            
-                                //onClick={() => this.setState({submitted: true})}
-                                
-                            >
+                            <button className="btn btn-primary btn-block form-button main-button-style">
                                 Zarejestruj
                             </button>
                             
