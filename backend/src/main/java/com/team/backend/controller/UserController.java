@@ -81,7 +81,7 @@ public class UserController {
         if (optionalUser.isPresent()
                 && (optionalUser.get().getDeleted().equals(String.valueOf(User.AccountType.Y))
                 || !userService.checkIfValidOldPassword(optionalUser.get(), loginRequest.getPassword())))
-            return new ResponseEntity<>(errorMessage.get("login.error"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("login.error"), HttpStatus.UNAUTHORIZED);
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password));
