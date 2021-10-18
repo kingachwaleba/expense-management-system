@@ -78,8 +78,7 @@ public class UserController {
         String password = loginRequest.getPassword();
         Optional<User> optionalUser = userService.findByEmail(email);
 
-        if (optionalUser.isPresent()
-                && (optionalUser.get().getDeleted().equals(String.valueOf(User.AccountType.Y))
+        if (optionalUser.isEmpty() || (optionalUser.get().getDeleted().equals(String.valueOf(User.AccountType.Y))
                 || !userService.checkIfValidOldPassword(optionalUser.get(), loginRequest.getPassword())))
             return new ResponseEntity<>(errorMessage.get("login.error"), HttpStatus.UNAUTHORIZED);
 
