@@ -16,25 +16,16 @@ export default function LoginPagev2 () {
  
     async function doLogin (event) {
         event.preventDefault();
-
         UserService
             .login(email, password)
             .then((response)=>{
-                console.log("From response")
-                    event.target.reset();
-                    history.push('/profile');
-                    window.location.reload();
+                event.target.reset();
+                history.push('/home');
+                window.location.reload();
             })
             .catch((error)=>{
-                console.log(error.response.data)
-                console.log("From LoginPage fail, error: " + error.toString());
                 setErrorMassage(error.response.data);
-
             })
-     
-            
-           
-          
     };
 
 

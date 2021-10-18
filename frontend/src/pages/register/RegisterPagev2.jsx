@@ -32,38 +32,30 @@ function RegisterPagev2 (){
 
       function doRegister (event) {
         event.preventDefault();
-        
-        if (!login || !password || !email || !confirmPassword) {
+        if (!login || !password || !email || !confirmPassword){
             return;
         }
-        
         const user = new User('',login,email,password)
         const registerUserHolder = new RegisterUserHolder(user, confirmPassword)
         if((password == confirmPassword) && (document.getElementById("confirmStatute").checked)){
             UserService
                 .register(registerUserHolder)
                 .then((response) => {
-
-                        event.target.reset();
-                        history.push('/login');
-                        window.location.reload();
+                    event.target.reset();
+                    history.push('/login');
+                    window.location.reload();
                 })
                 .catch((error)=>{
-                    console.log(error.response.data)
-                    console.log("From RegisterPage fail, error: " + error.toString());
                     setErrorMessageString(error.response.data)
                 })
         } 
         else if(password != confirmPassword){
-            
             setErrorMessageString("Hasła nie są identyczne.")
         }
         else if(!document.getElementById("confirmStatute").checked){
             setErrorMessageString("Musisz zaakceptować regulamin.")
-        }
-       
-               
-    }
+        }         
+     }
 
    
 
@@ -82,14 +74,12 @@ function RegisterPagev2 (){
                                     type="text"
                                     className="form-control"
                                     name="login"
-                                    placeholder=""
                                     required
                                     value={login}
                                     pattern = "^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{4,45}$"
-                                    title = "Niepoprawny format loginu - może zawierać litery, cyfry i znak -, powinien zaczynać się literą."
+                                    title = "Login może zawierać litery, cyfry i znak -, powinien zaczynać się literą."
                                     onChange={(e)=>setLogin(e.target.value)}
-                                />
-                                
+                                />     
                             </div>
 
                             <div className={'form-group'}>
