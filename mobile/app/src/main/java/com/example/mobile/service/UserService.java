@@ -12,6 +12,7 @@ import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
+import com.example.mobile.model.RegistrationForm;
 import com.example.mobile.model.User;
 import com.google.gson.JsonObject;
 
@@ -38,29 +39,23 @@ public class UserService {
         Call<JsonObject> call = apiInterface.login(loginForm);
         call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response){
                 if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.code() == 200) {
-                            String login = response.body().get("login").toString();
-                            String token = response.body().get("token").toString();
-                            String expiryDate = response.body().get("expiryDate").toString();
-                            String image = response.body().get("image").toString();
-                            login = login.substring(1, login.length() - 1);
-                            token = token.substring(1, token.length() - 1);
-                            session.createLoginSession(login, token, expiryDate, image);
-                            Intent i = new Intent(context, MainActivity.class);
-                            context.startActivity(i);
-                            ((LoginActivity) context).finish();
-                        }
-                    } else
-                        Toast.makeText(context, "Nie poprawne dane logowania", Toast.LENGTH_LONG).show();
+                    if (response.body() != null && response.code() == 200) {
+                        String login = response.body().get("login").getAsString();
+                        String token = response.body().get("token").getAsString();
+                        String expiryDate = response.body().get("expiryDate").getAsString();
+                        String image = response.body().get("image").getAsString();
+                        session.createLoginSession(login, token, expiryDate, image);
+                        Intent i = new Intent(context, MainActivity.class);
+                        context.startActivity(i);
+                        ((LoginActivity) context).finish();
+                    } else Toast.makeText(context, "Nie poprawne dane logowania", Toast.LENGTH_LONG).show();
                 } else {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Logowanie nie powiodło się", Toast.LENGTH_LONG).show();
@@ -69,11 +64,11 @@ public class UserService {
         });
     }
 
-    public void register(User user) {
-        Call<ResponseBody> call = apiInterface.register(user);
-        call.enqueue(new Callback<ResponseBody>() {
+    public void register(RegistrationForm registrationForm) {
+        Call<ResponseBody> call = apiInterface.register(registrationForm);
+        call.enqueue(new Callback<ResponseBody>(){
             @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response){
                 if (response.isSuccessful()) {
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
@@ -83,7 +78,6 @@ public class UserService {
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Nie udało się zarejestrować użytkownika", Toast.LENGTH_LONG).show();
@@ -91,6 +85,7 @@ public class UserService {
             }
         });
     }
+
 
     public void restorePassword(String email) {
         Call<ResponseBody> call = apiInterface.restorePassword(email);

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.mobile.R;
+import com.example.mobile.model.RegistrationForm;
 import com.example.mobile.model.User;
 import com.example.mobile.service.UserService;
 import java.util.Objects;
@@ -42,7 +43,7 @@ public class RegistrationActivity extends AppCompatActivity {
         signUpBtn.setOnClickListener(v -> {
             UserService userService = new UserService(RegistrationActivity.this);
             if (validateUser() != null)
-                userService.register(validateUser());
+                userService.register(new RegistrationForm(validateUser(), passwordConfirmEt.getText().toString()));
         });
 
         statueTv.setOnClickListener(v -> {
@@ -53,7 +54,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public User validateUser() {
         if (validateLogin(loginEt) && validateEmail(emailEt) && validatePassword(passwordEt) && validateConfirmPassword(passwordEt, passwordConfirmEt) && validateReg())
-            return new User(loginEt.getText().toString(), emailEt.getText().toString(), passwordEt.getText().toString(), passwordConfirmEt.getText().toString());
+            return new User(loginEt.getText().toString(), emailEt.getText().toString(), passwordEt.getText().toString());
         else return null;
     }
 

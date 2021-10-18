@@ -11,6 +11,7 @@ import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.Member;
 import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
+import com.example.mobile.model.RegistrationForm;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
@@ -36,18 +37,15 @@ import retrofit2.http.Query;
 
 public interface ApiInterface  {
 
-    //User
     @POST("login")
     Call<JsonObject> login(@Body LoginForm loginForm);
-
     @POST("register")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> register(@Body User user);
+    Call<ResponseBody> register(@Body RegistrationForm registrationForm);
 
     @POST("account/forgot-password")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> restorePassword(@Query("email") String email);
-
+    //User
     //Account
     @GET("account")
     @Headers("Content-Type: application/json")

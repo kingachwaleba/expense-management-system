@@ -74,17 +74,10 @@ public class SessionManager {
     }
 
     public void checkLogin() {
-        // Check login status
         if (!this.isLoggedIn()) {
-            // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
-            // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            // Add new Flag to start new Activity
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            // Staring Login Activity
             _context.startActivity(i);
         } else if(!checkdate()){
             logoutUser();
@@ -123,7 +116,7 @@ public class SessionManager {
         LocalDateTime expiry;
         LocalDateTime now;
         try {
-            expiry = LocalDateTime.parse(pref.getString(KEY_EXPIRY_DATE, "").substring(1, pref.getString(KEY_EXPIRY_DATE, "").length() - 10));
+            expiry = LocalDateTime.parse(pref.getString(KEY_EXPIRY_DATE, "").substring(0, pref.getString(KEY_EXPIRY_DATE, "").length() - 9));
             now = LocalDateTime.now();
         } catch (DateTimeException dateTimeException) {
             dateTimeException.printStackTrace();
