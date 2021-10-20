@@ -126,5 +126,6 @@
     <string name="from_label">Od:</string>
     <string name="to_label">Do:</string>
     <string name="show_statistics">Pokaż statystyki</string>
+    <string name="receipt_photo">Zdjęcie paragonu:</string>
 
 </resources>
