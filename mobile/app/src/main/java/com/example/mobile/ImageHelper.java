@@ -28,7 +28,7 @@ public class ImageHelper {
                         .build()).build();
 
         HttpUrl.Builder urlBuilder
-                = HttpUrl.parse("http://192.168.43.39:8080/files").newBuilder();
+                = HttpUrl.parse("http://192.168.0.31:8080/files").newBuilder();
         urlBuilder.addQueryParameter("imageName", path);
 
         Picasso picasso = new Picasso.Builder(context)

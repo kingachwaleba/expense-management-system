@@ -1,5 +1,6 @@
 package com.example.mobile.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -254,14 +255,24 @@ public class WalletActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        deleteWalletBtn.setOnClickListener(v -> {
-            walletService.deleteWallet(accessToken, walletCreate.getId());
-            finish();
-        });
+        deleteWalletBtn.setOnClickListener(v -> new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("Usuwanie portfela")
+                .setMessage("Czy na pewno chcesz usunać portfel?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                    walletService.deleteWallet(accessToken, walletCreate.getId());
+                    finish();
+                })
+                .setNegativeButton(android.R.string.no, null).show());
 
-        leaveWalletBtn.setOnClickListener(v -> {
-            walletService.deleteCurrentMember(accessToken, walletCreate.getId());
-            finish();
-        });
+        leaveWalletBtn.setOnClickListener(v -> new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("Opuszczanie portfela")
+                .setMessage("Czy na pewno chcesz opuścić ten portfel?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                    walletService.deleteCurrentMember(accessToken, walletCreate.getId());
+                    finish();
+                }).setNegativeButton(android.R.string.no, null).show());
     }
 }
+

@@ -101,7 +101,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zdjęcie paragonu:"
+            android:text="@string/receipt_photo"
             android:textAppearance="@style/simple_label_bold"
             android:textSize="24sp" />
 
@@ -109,29 +109,32 @@
             android:id="@+id/choose_image_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/et_edittext"
             android:drawableStart="@drawable/ic_image"
             android:paddingStart="20dp"
             android:text="@string/browse"
             android:textAppearance="@style/simple_button"
             android:textColor="@color/gray"/>
+
+        <Button
+            android:id="@+id/delete_photo_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="right"
+            android:background="@drawable/btn_delete_2"
+            android:textAppearance="@style/simple_button"
+            android:visibility="gone"
+            />
+
         <ImageView
             android:id="@+id/receipt_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:visibility="gone"
-            />
-
-        <Button
-            android:id="@+id/delete_photo_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_delete_2"
-            android:layout_marginBottom="20dp"
-            android:textAppearance="@style/simple_button"
-            android:visibility="gone"/>
+            android:adjustViewBounds="true"
+            android:layout_marginVertical="5dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/edit_expense_btn"
