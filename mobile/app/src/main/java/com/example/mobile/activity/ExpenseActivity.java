@@ -1,9 +1,6 @@
 package com.example.mobile.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -13,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.model.ExpenseDetail;
@@ -82,7 +78,7 @@ public class ExpenseActivity extends BaseActivity {
             makeWhoTv.setText(expenseOwner);
             costTv.setText(cost);
             categoryTv.setText(category);
-            dateTv.setText(date);
+            dateTv.setText(date.replace("T", " "));
             seletedUsers.clear();
             for(ExpenseDetail item : expense.getExpense().getExpenseDetailsSet()) {
                 item.getMember().setBalance(item.getCost());

@@ -1,5 +1,6 @@
 package com.example.mobile.service.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,11 +87,16 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 if (!mOwner) holder.userBtn.setVisibility(View.GONE);
 
                 holder.memberNameTv.setText(member.getLogin());
-                holder.userBtn.setOnClickListener(v -> {
-                    WalletService walletService = new WalletService(holder.itemView.getContext());
-                    walletService.deleteMember(mAccessToken, mWalletId, member.getLogin());
-                    notifyDataSetChanged();
-                });
+                holder.userBtn.setOnClickListener(v -> new AlertDialog.Builder(holder.itemView.getContext(), android.R.style.Theme_Material_Dialog_Alert)
+                        .setTitle("Edytowanie członków portfela")
+                        .setMessage("Czy użytkownik " + member.getLogin() + " ma opuścić portfel?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                            WalletService walletService = new WalletService(holder.itemView.getContext());
+                            walletService.deleteMember(mAccessToken, mWalletId, member.getLogin());
+                            notifyDataSetChanged();
+                        }).setNegativeButton(android.R.string.no, null).show());
+
                 break;
             case "USER_EXPENSE":
                 holder.userBtn.setVisibility(View.GONE);
