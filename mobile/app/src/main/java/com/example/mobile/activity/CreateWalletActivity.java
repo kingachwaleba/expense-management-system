@@ -35,6 +35,9 @@ public class CreateWalletActivity extends BaseActivity{
     RecyclerView browseMembersRv;
     List<Category> categories;
 
+    List<Member> membersInit;
+    UserListAdapter userListAdapterInit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +58,8 @@ public class CreateWalletActivity extends BaseActivity{
 
         browseMembersRv = findViewById(R.id.browse_members_rv);
         browseMembersRv.setLayoutManager(new LinearLayoutManager(this));
-        List<Member> membersInit = new ArrayList<>();
-        UserListAdapter userListAdapterInit = new UserListAdapter(this, membersInit, "USER_BROWSER");
+        membersInit = new ArrayList<>();
+        userListAdapterInit = new UserListAdapter(this, membersInit, "USER_BROWSER");
         browseMembersRv.setAdapter(userListAdapterInit);
 
         infixEt.addTextChangedListener(new TextWatcher(){
@@ -84,7 +87,6 @@ public class CreateWalletActivity extends BaseActivity{
                     browseMembersRv.setAdapter(userListAdapterInit);
                     userListAdapterInit.notifyDataSetChanged();
                 }
-
             }
         });
 
@@ -112,14 +114,14 @@ public class CreateWalletActivity extends BaseActivity{
         createBtn.setOnClickListener(v -> {
             String nameS = nameEt.getText().toString();
             if(validateName(nameS)){
-                if(userListAdapterInit.getSelectedUser().size()>0){
+            //    if(userListAdapterInit.getSelectedUser().size()>0){
                     String descriptionS = descriptionEt.getText().toString();
                     walletCreate = new WalletCreate(nameS, descriptionS, category);
                     WalletHolder walletHolder = new WalletHolder(walletCreate, userListAdapterInit.getSelectedUser());
                     walletService.createWallet(accessToken, walletHolder);
                     userListAdapterInit.clearSelected();
                     finish();
-                }
+             //   }
             } else nameEt.setError("Podaj nazwe portfela!");
         });
 
@@ -131,5 +133,12 @@ public class CreateWalletActivity extends BaseActivity{
 
     public boolean validateName(String s){
         return s.length() > 0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        userListAdapterInit.clearSelected();
+        this.finish();
     }
 }

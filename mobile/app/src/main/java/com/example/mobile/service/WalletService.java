@@ -6,6 +6,9 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobile.activity.CreateWalletActivity;
+import com.example.mobile.activity.LoginActivity;
+import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.ErrorUtils;
@@ -86,7 +89,6 @@ public class WalletService {
             public void onResponse(@NotNull Call<WalletCreate> call, @NotNull Response<WalletCreate> response) {
                 callback.onOneWallet(response.body());
             }
-
             @Override
             public void onFailure(@NotNull Call<WalletCreate> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
@@ -138,6 +140,10 @@ public class WalletService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                } else ((WalletActivity) context).finish();
             }
 
             @Override
@@ -242,7 +248,7 @@ public class WalletService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                }
+                } else ((WalletActivity) context).finish();
             }
 
             @Override
