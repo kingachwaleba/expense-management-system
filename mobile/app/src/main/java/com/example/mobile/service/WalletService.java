@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mobile.activity.EditMembersActivity;
 import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
@@ -225,7 +227,7 @@ public class WalletService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                }
+                } else ((EditMembersActivity) context).finish();
             }
 
             @Override

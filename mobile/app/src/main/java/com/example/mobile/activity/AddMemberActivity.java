@@ -6,6 +6,8 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
@@ -49,8 +51,7 @@ public class AddMemberActivity extends BaseActivity {
 
         infixEt.addTextChangedListener(new TextWatcher(){
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
@@ -72,12 +73,13 @@ public class AddMemberActivity extends BaseActivity {
                 }
             }
         });
-
         sendInvitationsBtn.setOnClickListener(v -> {
-            for(int i = 0; i < userListAdapterInit.getSelectedUser().size(); i++)
-                walletService.sendInvitationToUser(accessToken, walletId, userListAdapterInit.getSelectedUser().get(i));
-            userListAdapterInit.clearSelected();
-            finish();
+            if(userListAdapterInit.getSelectedUser().size()>0){
+                for(int i = 0; i < userListAdapterInit.getSelectedUser().size(); i++)
+                    walletService.sendInvitationToUser(accessToken, walletId, userListAdapterInit.getSelectedUser().get(i));
+                userListAdapterInit.clearSelected();
+                finish();
+            } else Toast.makeText(this, "Nie wybrano żadnego użytkownika", Toast.LENGTH_LONG).show();
         });
     }
 }
