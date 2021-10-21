@@ -193,7 +193,7 @@ public class WalletController {
         if (walletService.deleteUser(wallet, user))
             return new ResponseEntity<>("User has been deleted from the wallet!", HttpStatus.OK);
         else
-            return new ResponseEntity<>("Cannot delete user from the wallet!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(errorMessage.get("wallet.deleteUser"), HttpStatus.CONFLICT);
     }
 
     @DeleteMapping("/wallet/{id}/current-logged-in-user")
@@ -205,7 +205,7 @@ public class WalletController {
         if (walletService.deleteUser(wallet, user))
             return new ResponseEntity<>("User has been deleted from the wallet!", HttpStatus.OK);
         else
-            return new ResponseEntity<>("Cannot delete user from the wallet!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(errorMessage.get("wallet.deleteUser"), HttpStatus.CONFLICT);
     }
 
     @DeleteMapping("/wallet/{id}")
