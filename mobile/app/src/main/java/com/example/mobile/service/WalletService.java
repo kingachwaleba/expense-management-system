@@ -3,11 +3,7 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.mobile.activity.CreateWalletActivity;
-import com.example.mobile.activity.LoginActivity;
 import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;

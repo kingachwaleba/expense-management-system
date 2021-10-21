@@ -3,7 +3,6 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-
 import com.example.mobile.activity.LoginActivity;
 import com.example.mobile.activity.MainActivity;
 import com.example.mobile.activity.RegistrationActivity;
@@ -13,9 +12,7 @@ import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.RegistrationForm;
-import com.example.mobile.model.User;
 import com.google.gson.JsonObject;
-
 import org.jetbrains.annotations.NotNull;
 
 import okhttp3.ResponseBody;
@@ -45,7 +42,9 @@ public class UserService {
                         String login = response.body().get("login").getAsString();
                         String token = response.body().get("token").getAsString();
                         String expiryDate = response.body().get("expiryDate").getAsString();
-                        String image = response.body().get("image").getAsString();
+                        String image="";
+                        if(!response.body().get("image").isJsonNull())
+                            image = response.body().get("image").getAsString();
                         session.createLoginSession(login, token, expiryDate, image);
                         Intent i = new Intent(context, MainActivity.class);
                         context.startActivity(i);
