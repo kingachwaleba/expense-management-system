@@ -114,14 +114,12 @@ public class CreateWalletActivity extends BaseActivity{
         createBtn.setOnClickListener(v -> {
             String nameS = nameEt.getText().toString();
             if(validateName(nameS)){
-            //    if(userListAdapterInit.getSelectedUser().size()>0){
                     String descriptionS = descriptionEt.getText().toString();
                     walletCreate = new WalletCreate(nameS, descriptionS, category);
                     WalletHolder walletHolder = new WalletHolder(walletCreate, userListAdapterInit.getSelectedUser());
                     walletService.createWallet(accessToken, walletHolder);
                     userListAdapterInit.clearSelected();
                     finish();
-             //   }
             } else nameEt.setError("Podaj nazwe portfela!");
         });
 
