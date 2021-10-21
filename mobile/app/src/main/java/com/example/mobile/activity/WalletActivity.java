@@ -135,32 +135,30 @@ public class WalletActivity extends BaseActivity {
             walletCategory = walletModel.getCategory().getName();
             walletDescription = walletModel.getDescription();
             members = walletModel.getUserList();
+
             String categoryText = getResources().getString(R.string.category_label) + " " + walletCategory;
             String descriptionText;
             String ownerText = getResources().getString(R.string.owner_label) + " " + walletModel.getOwner();
             String numberOfMembersText = getResources().getString(R.string.number_of_members_label) + " " + walletModel.getUserListCounter();
-
             String walletExpensesS = getResources().getString(R.string.all_balance_label) + " " + walletModel.getWalletExpensesCost();
             String userExpensesS = getResources().getString(R.string.your_expanses_label) + " " + walletModel.getUserExpensesCost();
             String yourBalanceS = getResources().getString(R.string.your_balance_label) + " " + walletModel.getLoggedInUserBalance();
 
             walletNameTv.setText(walletModel.getName());
             walletCategoryTv.setText(categoryText);
-
             walletExpensesTv.setText(walletExpensesS);
             userExpensesTv.setText(userExpensesS);
             userBalanceTv.setText(yourBalanceS);
+            ownerTv.setText(ownerText);
+            numberOfMembersTv.setText(numberOfMembersText);
 
             if(walletDescription!=null){
                 descriptionText = getResources().getString(R.string.description_label) + " " + walletDescription;
                 descriptionTv.setText(descriptionText);
             }
+            if(!walletCreate.getOwner().equals(session.getUserDetails().get(SessionManager.KEY_LOGIN)))
+                deleteWalletBtn.setVisibility(View.GONE);
 
-            if(!walletCreate.getOwner().equals(session.getUserDetails().get(SessionManager.KEY_LOGIN))) deleteWalletBtn.setVisibility(View.GONE);
-
-
-            ownerTv.setText(ownerText);
-            numberOfMembersTv.setText(numberOfMembersText);
             showMembersBtn.setOnClickListener(v -> {
                 if (!showMembersControl) {
                     membersListL .setVisibility(View.VISIBLE);
@@ -261,7 +259,6 @@ public class WalletActivity extends BaseActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     walletService.deleteWallet(accessToken, walletCreate.getId());
-                    finish();
                 })
                 .setNegativeButton(android.R.string.no, null).show());
 
@@ -271,7 +268,6 @@ public class WalletActivity extends BaseActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     walletService.deleteCurrentMember(accessToken, walletCreate.getId());
-                    finish();
                 }).setNegativeButton(android.R.string.no, null).show());
     }
 }

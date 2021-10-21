@@ -96,7 +96,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                             walletService.deleteMember(mAccessToken, mWalletId, member.getLogin());
                             notifyDataSetChanged();
                         }).setNegativeButton(android.R.string.no, null).show());
-
                 break;
             case "USER_EXPENSE":
                 holder.userBtn.setVisibility(View.GONE);

@@ -51,21 +51,20 @@ public class AddMemberActivity extends BaseActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
             @Override
             public void afterTextChanged(Editable s) {
                 if(infixEt.getText().toString().length()>0){
                     walletService.getMembersByInfixInWallet(members -> {
                         if(members.size() > 0){
-                            UserListAdapter userListAdapter = new UserListAdapter(AddMemberActivity.this, members, "USER_BROWSER");
+                            UserListAdapter userListAdapter =
+                                    new UserListAdapter(AddMemberActivity.this, members,
+                                            "USER_BROWSER");
                             browseMembersRv.setAdapter(userListAdapter);
                             userListAdapter.notifyDataSetChanged();}
                     }, accessToken, walletId, infixEt.getText().toString());
                 }
-
                 if(infixEt.getText().toString().length()==0){
                     userListAdapterInit.clear();
                     browseMembersRv.setAdapter(userListAdapterInit);
@@ -75,9 +74,8 @@ public class AddMemberActivity extends BaseActivity {
         });
 
         sendInvitationsBtn.setOnClickListener(v -> {
-            for(int i = 0; i < userListAdapterInit.getSelectedUser().size(); i++){
+            for(int i = 0; i < userListAdapterInit.getSelectedUser().size(); i++)
                 walletService.sendInvitationToUser(accessToken, walletId, userListAdapterInit.getSelectedUser().get(i));
-            }
             userListAdapterInit.clearSelected();
             finish();
         });
