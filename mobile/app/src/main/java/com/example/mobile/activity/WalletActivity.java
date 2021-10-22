@@ -63,6 +63,10 @@ public class WalletActivity extends BaseActivity {
         login = session.getUserDetails().get(SessionManager.KEY_LOGIN);
         expenseService = new ExpenseService(this);
 
+        showMembersControl = false;
+        showListsControl = false;
+        showExpensesControl = false;
+
         walletNameTv = findViewById(R.id.name_tv);
         descriptionTv = findViewById(R.id.description_tv);
         ownerTv = findViewById(R.id.owner_tv);
@@ -115,9 +119,6 @@ public class WalletActivity extends BaseActivity {
     }
 
     private void initView(){
-        showMembersControl = false;
-        showListsControl = false;
-        showExpensesControl = false;
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
             walletCreate = walletModel;
@@ -237,6 +238,11 @@ public class WalletActivity extends BaseActivity {
         });
 
         editMembersBtn.setOnClickListener(v -> {
+            membersListL.setVisibility(View.GONE);
+            membersRv.setAdapter(memberAdapter);
+            memberAdapter.notifyDataSetChanged();
+            showMembersBtn.setBackgroundResource(R.drawable.btn_list_closed);
+            showMembersControl = false;
             Intent intent = new Intent(WalletActivity.this, EditMembersActivity.class);
             intent.putExtra("accessToken", accessToken);
             intent.putExtra("wallet", walletCreate);
