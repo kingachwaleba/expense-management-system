@@ -43,7 +43,7 @@ public class CreateWalletActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_wallet);
 
-        walletService = new WalletService(getParent());
+        walletService = new WalletService(this);
 
         session = new SessionManager(getApplicationContext());
 
@@ -119,7 +119,6 @@ public class CreateWalletActivity extends BaseActivity{
                     WalletHolder walletHolder = new WalletHolder(walletCreate, userListAdapterInit.getSelectedUser());
                     walletService.createWallet(accessToken, walletHolder);
                     userListAdapterInit.clearSelected();
-                    finish();
             } else nameEt.setError("Podaj nazwe portfela!");
         });
 

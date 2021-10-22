@@ -24,6 +24,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     public static List<String> selectedUser = new ArrayList<>();
     public static String mTAG;
     private final String mAccessToken;
+    private final String mLogin;
     private final int mWalletId;
     private final Boolean mOwner;
 
@@ -33,15 +34,17 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         mTAG = TAG;
         mAccessToken = "";
         mWalletId = 0;
+        mLogin="";
         mOwner = false;
     }
 
-    public UserListAdapter(Context context, List<Member> members, String accessToken, int walletId, Boolean owner, String TAG) {
+    public UserListAdapter(Context context, List<Member> members, String accessToken, int walletId, Boolean owner, String login,String TAG) {
         mMembers = members;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
         mWalletId = walletId;
         mOwner = owner;
+        mLogin = login;
         mTAG = TAG;
     }
 
@@ -93,7 +96,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                             WalletService walletService = new WalletService(holder.itemView.getContext());
-                            walletService.deleteMember(mAccessToken, mWalletId, member.getLogin());
+                            if(mLogin.equals(member.getLogin())) walletService.deleteCurrentMember(mAccessToken, mWalletId,1);
+                                else walletService.deleteMember(mAccessToken, mWalletId, member.getLogin());
                             notifyDataSetChanged();
                         }).setNegativeButton(android.R.string.no, null).show());
                 break;
