@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobile.activity.CreateWalletActivity;
 import com.example.mobile.activity.EditMembersActivity;
 import com.example.mobile.activity.EditWalletActivity;
 import com.example.mobile.activity.WalletActivity;
@@ -104,7 +105,7 @@ public class WalletService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                }
+                } else ((CreateWalletActivity) context).finish();
             }
 
             @Override
