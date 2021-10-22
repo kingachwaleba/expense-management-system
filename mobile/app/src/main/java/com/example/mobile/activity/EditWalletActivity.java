@@ -72,7 +72,6 @@ public class EditWalletActivity extends BaseActivity {
                 String descriptionS = descriptionEt.getText().toString();
                 WalletCreate wallet = new WalletCreate(walletId, nameS, category,descriptionS);
                 walletService.updateWallet(accessToken, walletId, wallet);
-                finish();
             } else nameEt.setError("Podaj nazwę portfela");
         });
 

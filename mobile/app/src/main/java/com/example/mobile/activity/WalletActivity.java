@@ -123,11 +123,16 @@ public class WalletActivity extends BaseActivity {
             startActivity(intent);
         });
 
+        initView();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+        initView();
+    }
+
+    private void initView(){
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
             walletCreate = walletModel;
@@ -257,18 +262,14 @@ public class WalletActivity extends BaseActivity {
                 .setTitle("Usuwanie portfela")
                 .setMessage("Czy na pewno chcesz usunać portfel?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
-                    walletService.deleteWallet(accessToken, walletCreate.getId());
-                })
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> walletService.deleteWallet(accessToken, walletCreate.getId()))
                 .setNegativeButton(android.R.string.no, null).show());
 
         leaveWalletBtn.setOnClickListener(v -> new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
                 .setTitle("Opuszczanie portfela")
                 .setMessage("Czy na pewno chcesz opuścić ten portfel?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
-                    walletService.deleteCurrentMember(accessToken, walletCreate.getId());
-                }).setNegativeButton(android.R.string.no, null).show());
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> walletService.deleteCurrentMember(accessToken, walletCreate.getId())).setNegativeButton(android.R.string.no, null).show());
     }
 }
 
