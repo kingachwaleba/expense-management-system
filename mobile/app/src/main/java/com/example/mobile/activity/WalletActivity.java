@@ -33,7 +33,7 @@ public class WalletActivity extends BaseActivity {
 
     int id;
     Boolean showMembersControl, showListsControl, showExpensesControl;
-    String accessToken;
+    String accessToken, login;
     TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
     Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn, statisticsBtn;
     String walletName, walletDescription, walletCategory;
@@ -60,9 +60,7 @@ public class WalletActivity extends BaseActivity {
 
         id = Integer.parseInt(getIntent().getStringExtra("id"));
         accessToken = session.getUserDetails().get(SessionManager.KEY_TOKEN);
-        showMembersControl = false;
-        showListsControl = false;
-        showExpensesControl = false;
+        login = session.getUserDetails().get(SessionManager.KEY_LOGIN);
         expenseService = new ExpenseService(this);
 
         walletNameTv = findViewById(R.id.name_tv);
@@ -95,7 +93,6 @@ public class WalletActivity extends BaseActivity {
         memberAdapter = new MemberAdapter(this, members1, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
         membersRv.setAdapter(memberAdapter);
 
-
         shopListsRv = findViewById(R.id.shop_lists_rv);
         lists1 = new ArrayList<>();
         shopListsRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
@@ -108,21 +105,6 @@ public class WalletActivity extends BaseActivity {
         expensesAdapter = new ExpensesAdapter(this, expenses1, accessToken, members);
         expensesRv.setAdapter(expensesAdapter);
 
-        goToChatBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(WalletActivity.this, ChatActivity.class);
-            intent.putExtra("accessToken", accessToken);
-            intent.putExtra("walletId", id);
-            startActivity(intent);
-        });
-
-        statisticsBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(WalletActivity.this, StatisticsActivity.class);
-            intent.putExtra("accessToken", accessToken);
-            intent.putExtra("walletName", walletName);
-            intent.putExtra("walletId", id);
-            startActivity(intent);
-        });
-
         initView();
     }
 
@@ -133,6 +115,9 @@ public class WalletActivity extends BaseActivity {
     }
 
     private void initView(){
+        showMembersControl = false;
+        showListsControl = false;
+        showExpensesControl = false;
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
             walletCreate = walletModel;
@@ -255,6 +240,23 @@ public class WalletActivity extends BaseActivity {
             Intent intent = new Intent(WalletActivity.this, EditMembersActivity.class);
             intent.putExtra("accessToken", accessToken);
             intent.putExtra("wallet", walletCreate);
+            intent.putExtra("login", login);
+            startActivity(intent);
+
+        });
+
+        goToChatBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, ChatActivity.class);
+            intent.putExtra("accessToken", accessToken);
+            intent.putExtra("walletId", id);
+            startActivity(intent);
+        });
+
+        statisticsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(WalletActivity.this, StatisticsActivity.class);
+            intent.putExtra("accessToken", accessToken);
+            intent.putExtra("walletName", walletName);
+            intent.putExtra("walletId", id);
             startActivity(intent);
         });
 
@@ -269,7 +271,7 @@ public class WalletActivity extends BaseActivity {
                 .setTitle("Opuszczanie portfela")
                 .setMessage("Czy na pewno chcesz opuścić ten portfel?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> walletService.deleteCurrentMember(accessToken, walletCreate.getId())).setNegativeButton(android.R.string.no, null).show());
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> walletService.deleteCurrentMember(accessToken, walletCreate.getId(), 0)).setNegativeButton(android.R.string.no, null).show());
     }
 }
 

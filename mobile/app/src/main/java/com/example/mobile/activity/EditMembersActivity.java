@@ -17,7 +17,7 @@ public class EditMembersActivity extends BaseActivity {
     RecyclerView membersRv;
     TextView walletNameTv;
     UserListAdapter userListAdapter;
-    String accessToken;
+    String accessToken, login;
     Boolean owner;
     WalletCreate walletCreate;
     SessionManager session;
@@ -37,11 +37,12 @@ public class EditMembersActivity extends BaseActivity {
 
         accessToken = getIntent().getStringExtra("accessToken");
         walletCreate = getIntent().getParcelableExtra("wallet");
+        login = getIntent().getStringExtra("login");
         walletNameTv.setText(walletCreate.getName());
 
         owner = walletCreate.getOwner().equals(session.getUserDetails().get(SessionManager.KEY_LOGIN));
 
-        userListAdapter = new UserListAdapter(this, walletCreate.getUserList(), accessToken, walletCreate.getId(), owner, "USER_EDIT");
+        userListAdapter = new UserListAdapter(this, walletCreate.getUserList(), accessToken, walletCreate.getId(), owner, login, "USER_EDIT");
         membersRv.setLayoutManager(new LinearLayoutManager(EditMembersActivity.this));
         membersRv.setAdapter(userListAdapter);
 

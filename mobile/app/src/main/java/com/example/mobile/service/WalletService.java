@@ -1,6 +1,7 @@
 package com.example.mobile.service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.activity.CreateWalletActivity;
 import com.example.mobile.activity.EditMembersActivity;
 import com.example.mobile.activity.EditWalletActivity;
+import com.example.mobile.activity.MainActivity;
 import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
@@ -240,7 +242,7 @@ public class WalletService {
         });
     }
 
-    public void deleteCurrentMember(String accessToken, int id) {
+    public void deleteCurrentMember(String accessToken, int id, int from) {
         Call<ResponseBody> call = apiInterface.deleteCurrentMember("Bearer " + accessToken, id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -248,7 +250,14 @@ public class WalletService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } else ((WalletActivity) context).finish();
+                } else {
+                    if(from==0) ((WalletActivity) context).finish();
+                    else if(from==1) {
+                        Intent i = new Intent(context, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }
             }
 
             @Override
