@@ -28,7 +28,8 @@ public class ExpenseDetailController {
     private final UserService userService;
     private final ExpenseDetailRepository expenseDetailRepository;
 
-    public ExpenseDetailController(ExpenseService expenseService, UserService userService,ExpenseDetailRepository expenseDetailRepository) {
+    public ExpenseDetailController(ExpenseService expenseService, UserService userService,
+                                   ExpenseDetailRepository expenseDetailRepository) {
         this.expenseService = expenseService;
         this.userService = userService;
         this.expenseDetailRepository = expenseDetailRepository;
@@ -64,7 +65,8 @@ public class ExpenseDetailController {
     @DeleteMapping("/expense/{id}/delete-user")
     @PreAuthorize("@authenticationService.isWalletMemberByExpenseDetail(#id)")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
-        ExpenseDetail deletedUser = expenseDetailRepository.findById(id).orElseThrow(ExpenseDetailNotFoundException::new);
+        ExpenseDetail deletedUser = expenseDetailRepository.findById(id)
+                .orElseThrow(ExpenseDetailNotFoundException::new);
         Expense expense = deletedUser.getExpense();
 
         expenseDetailRepository.delete(deletedUser);
