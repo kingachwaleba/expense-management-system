@@ -92,7 +92,7 @@ public class WalletController {
 
         if (to.isBefore(from) || from.isAfter(LocalDateTime.now())
                 || to.isAfter(LocalDateTime.now().withHour(23).withMinute(59).withSecond(59)))
-            return new ResponseEntity<>("Wrong dates!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("wallet.stats"), HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(walletService.returnStats(wallet, from, to), HttpStatus.OK);
     }
