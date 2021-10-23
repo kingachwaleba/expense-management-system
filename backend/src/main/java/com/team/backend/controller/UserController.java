@@ -196,6 +196,15 @@ public class UserController {
         }
     }
 
+    @PutMapping("/account/delete-profile-picture")
+    public ResponseEntity<?> deleteImage() {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        user.setImage(null);
+        userService.save(user);
+
+        return new ResponseEntity<>("User image has been deleted!", HttpStatus.OK);
+    }
+
     @PutMapping("/delete-account")
     public ResponseEntity<?> deleteAccount(@RequestBody TextNode password) {
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
