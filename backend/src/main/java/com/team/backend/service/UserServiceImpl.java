@@ -276,7 +276,7 @@ public class UserServiceImpl implements UserService {
         String forgotPasswordToken = UUID.randomUUID().toString();
         user.setToken(forgotPasswordToken);
 
-        LocalDateTime date = LocalDateTime.now().plusMinutes(5);
+        LocalDateTime date = LocalDateTime.now().plusHours(1);
         user.setExpiryDate(date);
 
         userRepository.save(user);
