@@ -80,10 +80,12 @@ font-size: 90px;
 .checkmark {  /*Nowy styl*/
     position: absolute;
     background-image: url(../radio-button-off.svg);
-    height: 40px;
-    width: 40px;
-   
-    
+    size:auto;
+    margin:auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-size: contain;
     margin-left:-40px;
     margin-top: 5px;
    

@@ -149,7 +149,7 @@ input[type='text'], input[type='password'], input[type='email']{
   color: #F80000 !important;
 }
 .text-size{
-  font-size: 25px;
+  font-size: 25px !important;
 }
 .form-label{
   
@@ -182,19 +182,19 @@ input[type='text'], input[type='password'], input[type='email']{
 }
 .center-content{
   text-align: center;
-  padding-top: 3%;
+ /*padding-top: 3%;*/
   box-sizing: border-box;
 
 }
 .left-content{
   text-align: left;
-  padding-top: 3%;
+  /*padding-top: 3%;*/
   box-sizing: border-box;
 
 }
 .right-content{
   text-align: right;
-  padding-top: 3%;
+   /*padding-top: 3%;*/
   box-sizing: border-box;
 
 }
@@ -209,7 +209,15 @@ input[type='text'], input[type='password'], input[type='email']{
   
   
 }
-
+.delete-user-icon{
+    
+  background-image:url(remove-user.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+}
 .dropdown-arrow {
   
   
@@ -260,6 +268,10 @@ input[type='text'], input[type='password'], input[type='email']{
 .icons-size{
   width: 40px;
   height: 40px;
+}
+.icons-size-2{
+  width: 30px;
+  height: 30px;
 }
 /*PLACEHOLDER PROFILE PICTURE*/
 .profile-picture{

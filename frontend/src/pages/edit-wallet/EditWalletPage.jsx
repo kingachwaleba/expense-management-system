@@ -35,14 +35,8 @@ function EditWalletPage () {
 
     function handleChangeName(e) {
         var {value} = e.target;
-      
-     
-        name = value;
-       
 
-        
-        
-        
+        name = value;   
     }
 
     function handleChangeDescription(e) {
@@ -124,7 +118,7 @@ function EditWalletPage () {
                             id = "mainbuttonstyle"
                             onClick={e =>  {submitted = true
                                 handleEditWallet(e);
-                                //window.location.href='/home'
+                                window.location.href='/home'
                             
                             }
                                             

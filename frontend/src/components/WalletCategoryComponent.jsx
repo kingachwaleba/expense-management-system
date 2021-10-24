@@ -26,15 +26,15 @@ class WalletCategoryComponent extends Component {
     render() {
         return (
             <div className="box-subcontent">
-
-                <h2>Kategoria:</h2>
-               
+                <div className="text-size">
+                Kategoria:
+               </div>
                      {
                          
                                 this.state.categories.map(
                                     category =>
                                     <div key = {category.id} className = "center-content custom-radiobuttons">
-                                      <label className = "form-label" htmlFor={category.id}>
+                                      <label className = "form-label text-size" htmlFor={category.id}>
                                         <input type="radio" id={category.id} name  ="category" value={category.name} 
                                            
                                          
@@ -43,7 +43,7 @@ class WalletCategoryComponent extends Component {
                                                 
                                         </input>
                                         
-                                        <div className="checkmark"></div>
+                                        <div className="checkmark icons-size-2"></div>
                                          {category.name} </label>
                                         
                                     </div>

@@ -163,7 +163,7 @@ class CreateWalletPage extends React.Component {
                         method="post"
                         onSubmit={(e) => this.handleCreateWallet(e)}>
                         <div className={'form-group'}>
-                            <label className="form-label"  htmlFor="Name">Nazwa: </label>
+                            <label className="form-label text-size"  htmlFor="Name">Nazwa: </label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -177,7 +177,7 @@ class CreateWalletPage extends React.Component {
                         </div>
 
                         <div className={'form-group'}>
-                            <label className="form-label" htmlFor="Description">Opis: </label>
+                            <label className="form-label text-size" htmlFor="Description">Opis: </label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -199,7 +199,7 @@ class CreateWalletPage extends React.Component {
                         <br></br>
                         <br></br>
                         <button
-                            className="btn btn-primary btn-block form-button"
+                            className="btn btn-primary btn-block form-button text-size"
                             id = "mainbuttonstyle"
                             onClick={e =>{ 
 

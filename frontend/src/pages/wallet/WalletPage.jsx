@@ -11,6 +11,8 @@ import { Button } from 'reactstrap';
 import DeleteWalletService from '../../services/DeleteWalletService';
 import { Link } from 'react-router-dom';
 import { Container, Col, Row } from 'react-bootstrap';
+import ManageWalletUsersService from '../../services/ManageWalletUsersService';
+
 function WalletPage () {
 
 
@@ -58,6 +60,7 @@ function WalletPage () {
                     console.log("ownername " + response.data.owner)
                     if(user.login == response.data.owner) checkIsOwner(true)
                     else checkIsOwner(false)
+                    sessionStorage.setItem('walletOwner',JSON.stringify(response.data.owner))
                     
                 })
                 .catch(error=>{
@@ -117,7 +120,29 @@ function WalletPage () {
                     <div className="box-subcontent center-content">
                         <div className="grid-container-3">
                             <div className="left-content" >
-                                    <a href="/add-members"><button className="add-icon text-size icons-size"></button> </a>
+                                   {/*<a href="/add-members"><button className="add-icon text-size icons-size"></button> </a> 
+
+                                
+                                   <Link  
+                                        to={{
+                                        pathname: '/add-members', 
+                                        state:{
+                                            walletID: walletID
+                                        }
+                                            
+
+                                        }}>
+                                            <button className="add-icon text-size icons-size"></button>  
+                                    </Link>
+
+                                    */}
+                                <button className="add-icon text-size icons-size"
+                                onClick={(e)=>{
+                                    sessionStorage.setItem('walletID',JSON.stringify(walletID))
+                                    window.location.href='/add-members'
+                                }}>
+                                </button> 
+
                             </div>
 
                             <div className="center-content">
@@ -146,7 +171,8 @@ function WalletPage () {
                        </div> 
                     </div>
                        <div id="showing-content-users" className="hide-content box-subcontent-2" style={{display:'none'}}>
-                                           <DisplayWalletUsersDataComponent key={walletID} usersData= {walletUsersData}/>
+                           {console.log("WALLET OWNER TO "+ walletData.owner)}
+                                           <DisplayWalletUsersDataComponent walletId={walletID} usersData= {walletUsersData} walletOwner = {walletData.owner}/>
                         </div>
                    
 
@@ -248,24 +274,38 @@ function WalletPage () {
                                 <br></br>
                                 <br></br>
                                     <Button className="card-link main-button-style center-content btn btn-primary width-100 text-size" id="mainbuttonstyle deleteWalletButton"  
-                                        onClick={e =>{ 
-                                                
-                                                DeleteWalletService.deleteWallet(walletID,userToken)
-                                                .catch((error)=>{
-                    
-                                                    console.log(error)
-                                                });
+                                        onClick={e =>{
+                                            if(window.confirm('Czy na pewno chcesz usunąć portfel?')){  
+                                                DeleteWalletService
+                                                    .deleteWallet(walletID,UserService.getCurrentUser().token)
+                                                    .catch((error)=>{
+                                                        console.log(error)
+                                                    });
                                                 window.location.href='/home'
-
-                                        }}>
-                                
-                                                
-                                                Usuń portfel
-                                            
-                                                    
+                                            }
+                                        }}> 
+                                        Usuń portfel              
                                     </Button>
                                 </Container>
-                            ):(<Container />)}
+                            ):(
+                                <Container >
+                                    <Button className="card-link main-button-style center-content btn btn-primary width-100 text-size" id="mainbuttonstyle"  
+                                        onClick={e =>{ 
+                                            if(window.confirm('Czy na pewno chcesz opuścić portfel?')){
+                                                ManageWalletUsersService
+                                                    .leaveWallet(walletID,UserService.getCurrentUser().token)
+                                                    .catch((error)=>{
+                                                        console.log(error)
+                                                    });
+                                                window.location.href='/home'
+                                            }
+
+                                        }}> 
+                                        Opuść portfel          
+                                    </Button>
+                            
+                                </Container>
+                            )}
 
 
                 </div>
