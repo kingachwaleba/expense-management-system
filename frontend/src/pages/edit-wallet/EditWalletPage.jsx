@@ -24,20 +24,13 @@ function EditWalletPage () {
            userToken = user.token
            userName = user.name
          }
-        console.log("userToken komponentu to: " + userToken);
+       
 
 
     function readWalletCategory (event){
         var {id, value} = event.target;
-       
         walletCategory = walletCategory;
-        //walletCategory.id = id;
-        //walletCategory.name = value;
-        console.log({value})
-        walletCategory = new WalletCategory(id,value);
-        console.log({walletCategory})
-        
-        
+        walletCategory = new WalletCategory(id,value);  
     }
 
     function handleChangeName(e) {
@@ -53,44 +46,27 @@ function EditWalletPage () {
     }
 
     function handleChangeDescription(e) {
-        var {name, value} = e.target;
-        
-        
-        
-        description = value;
-     
+        var {name, value} = e.target; 
+        description = value; 
     }
     function handleEditWallet(e) {
-
         e.preventDefault();
         submitted = true;
         const wallet = new Wallet(name,description)
-        const editWallet = new editWalletHolder(name,walletCategory.name, description)
-        console.log("Edit wallet data: ")
-        console.log({editWallet})
-        console.log({walletID})
-        console.log({userToken})
-        
-       
-      
-    
-      
+        const editWallet = new editWalletHolder(walletID,name,walletCategory, description)
         if (!name || !description) {
             return;
         }
 
-        
         WalletService.editWallet(walletID,editWallet,userToken)
-       
+        .catch((error)=>{
+                   
+            console.log(error)
+        })
+  
    
     }
-    function walletHolderHelper(e){
-       //const wallet_holder = new WalletHolder()
-
-    
-       
-       //console.log(wallet_holder);
-    }
+   
         return (
             <div>
                 <div className="container">
@@ -148,7 +124,7 @@ function EditWalletPage () {
                             id = "mainbuttonstyle"
                             onClick={e =>  {submitted = true
                                 handleEditWallet(e);
-                                window.location.href='/home'
+                                //window.location.href='/home'
                             
                             }
                                             

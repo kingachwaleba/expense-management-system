@@ -11,7 +11,7 @@ class WalletSumComponent extends Component {
             wallets: [],
             username: undefined,
            
-
+            
         }
     }
 

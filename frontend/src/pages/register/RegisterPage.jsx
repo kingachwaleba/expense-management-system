@@ -80,7 +80,7 @@ class RegisterPage extends React.Component {
                         method="post"
                         onSubmit={(e) => this.handleRegister(e)}>
                         <div className={'form-group'}>
-                            <label className="form-label"  htmlFor="login">Login: </label>
+                            <label className="form-label text-size"  htmlFor="login">Login: </label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -95,7 +95,7 @@ class RegisterPage extends React.Component {
                         </div>
 
                         <div className={'form-group'}>
-                            <label className="form-label" htmlFor="Password">Hasło: </label>
+                            <label className="form-label text-size" htmlFor="Password">Hasło: </label>
                             <input
                                 type="password"
                                 className="form-control"
@@ -110,7 +110,7 @@ class RegisterPage extends React.Component {
                         </div>
 
                         <div className={'form-group'}>
-                            <label className="form-label" htmlFor="email">Email: </label>
+                            <label className="form-label text-size" htmlFor="email">Email: </label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -126,7 +126,7 @@ class RegisterPage extends React.Component {
                         <br></br>
                         <br></br>
                         <button
-                            className="btn btn-primary btn-block form-button"
+                            className="btn btn-primary btn-block form-button text-size"
                             id = "mainbuttonstyle"
                             onClick={() => this.setState({submitted: true})}
                             
@@ -136,7 +136,7 @@ class RegisterPage extends React.Component {
                         
                     </form>
                     <div className = "center-content">
-                         <a href="/login" className="card-link href-text center-content">Mam już konto, zaloguj</a>
+                         <a href="/login" className="card-link href-text center-content text-size">Mam już konto, zaloguj</a>
                     </div>
                    
                 </div>

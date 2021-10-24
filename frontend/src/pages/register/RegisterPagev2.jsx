@@ -69,7 +69,7 @@ function RegisterPagev2 (){
                             method="post"
                             onSubmit={doRegister}>
                             <div className={'form-group'}>
-                                <label className="form-label"  htmlFor="login">Login* </label>
+                                <label className="form-label text-size"  htmlFor="login">Login* </label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -83,7 +83,7 @@ function RegisterPagev2 (){
                             </div>
 
                             <div className={'form-group'}>
-                                <label className="form-label" htmlFor="email">Email* </label>
+                                <label className="form-label text-size" htmlFor="email">Email* </label>
                                 <input
                                     type="email"
                                     className="form-control"
@@ -97,7 +97,7 @@ function RegisterPagev2 (){
                             </div>
 
                             <div className={'form-group'}>
-                                <label className="form-label" htmlFor="Password">Hasło* </label>
+                                <label className="form-label text-size" htmlFor="Password">Hasło* </label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -135,20 +135,20 @@ function RegisterPagev2 (){
                             </div>
 
 
-                           <div>
+                           <div className="error-text text-size">
                                <br />
                                {errorMessageString}
                                <br />
                            </div>
                             
                             <br></br>
-                            <button className="btn btn-primary btn-block form-button main-button-style">
+                            <button className="btn btn-primary btn-block form-button main-button-style text-size">
                                 Zarejestruj
                             </button>
                             
                         </form>
                         <div className = "center-content">
-                            <a href="/login" className="card-link href-text center-content">Mam już konto, zaloguj</a>
+                            <a href="/login" className="card-link href-text center-content text-size">Mam już konto, zaloguj</a>
                         </div>
                     
                     </div>

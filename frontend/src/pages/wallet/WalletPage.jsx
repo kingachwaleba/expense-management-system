@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Button } from 'reactstrap';
 import DeleteWalletService from '../../services/DeleteWalletService';
 import { Link } from 'react-router-dom';
+import { Container, Col, Row } from 'react-bootstrap';
 function WalletPage () {
 
 
@@ -21,7 +22,7 @@ function WalletPage () {
         console.log("Wallet id: " + walletID);
    
 
-
+/*
     const user = UserService.getCurrentUser();
         if (user) {
            userToken = user.token
@@ -30,15 +31,18 @@ function WalletPage () {
         console.log("userToken komponentu to: " + userToken);
 
 
-
+*/
          
     const [walletData, getWalletData] = useState([]);
     const [walletCategoryData, getWalletCategoryData] = useState([]);
     const [walletUsersData, getWalletUsersData] = useState([]);
-
-
+    const [walletOwner, getWalletOwner] = useState("");
+    const [isOwner, checkIsOwner] = useState(false);
     useEffect(()=>{
-                WalletDetailService.getWalletDetail(walletID,userToken).then((response)=>{
+                const user = UserService.getCurrentUser();
+                console.log(user.token)
+                //WalletDetailService.getWalletDetail(walletID,userToken).then((response)=>{
+                    WalletDetailService.getWalletDetail(walletID,user.token).then((response)=>{
                     const allData = response.data
                     getWalletData(allData)
                     console.log("Response data: " + response.data)
@@ -47,33 +51,29 @@ function WalletPage () {
 
                     const categoryData = response.data.walletCategory
                     getWalletCategoryData(categoryData)
-
+                    getWalletOwner(response.data.owner)
                     const usersData = response.data.userList
                     getWalletUsersData(usersData)
+                    console.log("Username " + user.login)
+                    console.log("ownername " + response.data.owner)
+                    if(user.login == response.data.owner) checkIsOwner(true)
+                    else checkIsOwner(false)
+                    
                 })
                 .catch(error=>{
-                    console.error('Error during getting wallet detail:' + {error})
-                    window.location.href='/error-page'
+                    console.error({error})
+                    //window.location.href='/error-page'
                 
                 });
-        
+
+               
     },[])
    
-   function checkOwner(userName, ownerName){
-
-        if(userName == ownerName){
-            document.getElementById('showing-content-expenses').style.display = 'block';
-
-        }
-        else{
-            document.getElementById('showing-content-expenses').style.display = 'none';
-        }
-   }
+   
 
 
 
-    //UsersWalletsService.getUserWallets(user.token).then((response)=>{
-       // this.setState({wallets: response.data})
+
       
 
         
@@ -82,48 +82,50 @@ function WalletPage () {
     
     
         return (
-            <div className="container">
+            <Container>
                 <Header title = "Portfel"/>
 
-            
+            <Col>
                 <div className="container box-content">
                     <>
-                         
-                             
                                 <h2 className="text-label center-content">  {walletData.name}</h2> 
+
                                 <div className="separator-line" ></div>
+
                                 <h3>Opis: {walletData.description}</h3>  
+
                                 <div className="separator-line" ></div>   
+
                                 <h3>Kategoria: {walletCategoryData.name}</h3>  
                                 <h3>Właściciel: {walletData.owner}</h3>  
                                 <h3>Liczba członków: {walletData.userListCounter}</h3>       
                                 <h3>Wydatki: {walletData.walletExpensesCost} zł</h3>     
-                             <div className = "grid-container">
+                                 <div className = "grid-container">
                                     <div className = "center-content">
                                         <h3>Twoje wydatki: {walletData.walletExpensesCost} zł</h3>     
                                     </div>
                                     <div className = "center-content">
                                         <h3>Bilans: {walletData.walletExpensesCost} zł</h3>     
                                     </div>
-                            </div> 
+                                 </div> 
                     </>
 
 
                     <div className="box-subcontent center-content">
-                       <h3> <a href="/chat" className="card-link  href-text ">Otwórz czat</a></h3>
+                       <h3> <a href="/chat" className="card-link  href-text text-size">Otwórz czat</a></h3>
                     </div>
                     <div className="box-subcontent center-content">
                         <div className="grid-container-3">
                             <div className="left-content" >
-                                    <a href="/add-members"><button className="add-icon"></button> </a>
+                                    <a href="/add-members"><button className="add-icon text-size icons-size"></button> </a>
                             </div>
 
-                            <div>
-                                <h2 className="text-label ">Członkowie</h2> 
+                            <div className="center-content">
+                                <h2 className="text-label text-size">Członkowie</h2> 
                             </div>
                             
                             <div className="right-content">
-                                    <button id="show-hide-button-users" className="dropdown-arrow" onClick={function(e){
+                                    <button id="show-hide-button-users" className="dropdown-arrow icons-size" onClick={function(e){
 
                                                     console.log('Klik');
                                                     if ( !document.getElementById("show-hide-button-users").classList.contains('click-to-hide-arrow') ){
@@ -152,13 +154,13 @@ function WalletPage () {
                     <div className="box-subcontent center-content">
                             <div className="grid-container-3">
                                 <div className="left-content" >
-                                    <a href="/add-expense"><button className="add-icon"></button> </a>
+                                    <a href="/add-expense"><button className="add-icon icons-size"></button> </a>
                                 </div>
-                                <div>
-                                    <h2 className="text-label ">Wydatki</h2> 
+                                <div className="center-content">
+                                    <h2 className="text-label text-size">Wydatki</h2> 
                                 </div>
                                 <div className="right-content">
-                                        <button id="show-hide-button-expenses" className="dropdown-arrow" onClick={function(e){
+                                        <button id="show-hide-button-expenses" className="dropdown-arrow icons-size" onClick={function(e){
 
                                                         console.log('Klik');
                                                         if ( !document.getElementById("show-hide-button-expenses").classList.contains('click-to-hide-arrow') ){
@@ -187,17 +189,17 @@ function WalletPage () {
 
 
 
-
+                                                    
                         <div className="box-subcontent center-content">
                             <div className="grid-container-3">
                                 <div className="left-content" >
-                                    <a href="/create-list"><button className="add-icon"></button> </a>
+                                    <a href="/create-list"><button className="add-icon icons-size"></button> </a>
                                 </div>
-                                <div>
-                                    <h2 className="text-label ">Listy zakupów</h2> 
+                                <div className="center-content">
+                                    <h2 className="text-label text-size">Listy zakupów</h2> 
                                 </div>
                                 <div className="right-content">
-                                        <button id="show-hide-button-lists" className="dropdown-arrow" onClick={function(e){
+                                        <button id="show-hide-button-lists" className="dropdown-arrow icons-size" onClick={function(e){
 
                                                         console.log('Klik');
                                                         if ( !document.getElementById("show-hide-button-lists").classList.contains('click-to-hide-arrow') ){
@@ -230,44 +232,49 @@ function WalletPage () {
 
 
                     <div className="center-content">
-                            <a href="/wallet-stats" className="card-link center-content btn btn-primary width-100 main-button-style" >Statystyki</a>
+                            <Link to="/wallet-stats" className="card-link center-content btn btn-primary width-100 main-button-style text-size" >Statystyki</Link>
                             <br></br>
                             <br></br>
-                            
-                            <Link className="card-link center-content btn btn-primary width-100 main-button-style"  id="mainbuttonstyle"
-                                        to={{
-                                        pathname: '/edit-wallet', 
-                                        state:{
-                                            walletID: walletID
-                                        }
-                                            
+                            {isOwner ?(
+                                <Container>
+                                    <Link className="card-link center-content btn btn-primary width-100 main-button-style text-size"  id="mainbuttonstyle editWalletButton"
+                                                to={{
+                                                pathname: '/edit-wallet', 
+                                                state:{
+                                                    walletID: walletID
+                                                }}}>
+                                                Edytuj portfel                   
+                                    </Link>
+                                <br></br>
+                                <br></br>
+                                    <Button className="card-link main-button-style center-content btn btn-primary width-100 text-size" id="mainbuttonstyle deleteWalletButton"  
+                                        onClick={e =>{ 
+                                                
+                                                DeleteWalletService.deleteWallet(walletID,userToken)
+                                                .catch((error)=>{
+                    
+                                                    console.log(error)
+                                                });
+                                                window.location.href='/home'
 
-                                        }}>Edytuj portfel
-                                       
+                                        }}>
+                                
+                                                
+                                                Usuń portfel
                                             
-                                </Link>
-                            <br></br>
-                            <br></br>
-                            <Button className="card-link main-button-style center-content btn btn-primary width-100 "  
-                                onClick={e =>{ 
-                                        
-                                        DeleteWalletService.deleteWallet(walletID,userToken);
-                                        window.location.href='/home'
+                                                    
+                                    </Button>
+                                </Container>
+                            ):(<Container />)}
 
-                                }}>
-                          
-                                        
-                                        Usuń portfel
-                                       
-                                            
-                            </Button>
+
                 </div>
                 </div>
 
 
            
-                
-            </div>
+                </Col>
+            </Container>
         );
     }
 

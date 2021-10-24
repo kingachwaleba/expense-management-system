@@ -55,9 +55,12 @@ class App extends React.Component {
     }
 
     logOut() {
+      
         UserService.logOut();
-        this.props.history.push('/login');
+        
+        window.location.href='/login'
         window.location.reload();
+        
     }
 
     render() {
@@ -68,11 +71,11 @@ class App extends React.Component {
                     {this.state.login &&
                     <Navbar className="navbar navbar-expand navbar-dark width-100">
                         <Container>
-                            <Navbar.Brand className="navbarBrand" href="/home">eSakwa</Navbar.Brand>
+                            <Navbar.Brand className="navbarBrand" id="bootstrap-overrides" href="/home">eSakwa</Navbar.Brand>
                             <Nav className="content-right">
-                            <Nav.Link href="/home">Portfele</Nav.Link>
-                            <Nav.Link href="/profile"> Profil </Nav.Link>
-                            <Nav.Link onClick={this.logOut}> Wyloguj </Nav.Link>
+                            <Nav.Link className="text-size base-text" href="/home">Portfele</Nav.Link>
+                            <Nav.Link className="text-size base-text" href="/profile"> Profil </Nav.Link>
+                            <Nav.Link className="text-size base-text" onClick={this.logOut}> Wyloguj </Nav.Link>
                             <Nav.Link href="/profile">
                                 <img src="./photo_placeholder.png" alt="Picture"></img> 
                             </Nav.Link>
@@ -86,11 +89,11 @@ class App extends React.Component {
                      
                    <Navbar className="navbar-dark">
                         <Container>
-                        <Navbar.Brand className="navbarBrand" href="/start">eSakwa</Navbar.Brand>
+                        <Navbar.Brand className="navbar-brand" id="bootstrap-overrides" href="/start">eSakwa</Navbar.Brand>
                         <Nav className="content-right">
-                        <Nav.Link className="btn btn-primary main-button-style"href="/login">Zaloguj się</Nav.Link>
-                        <Nav.Link>|</Nav.Link>
-                        <Nav.Link href="/register">Zarejestruj się</Nav.Link>
+                        <Nav.Link className="btn btn-primary main-button-style text-size base-text"href="/login">Zaloguj się</Nav.Link>
+                        <Nav.Link className="text-size base-text" >|</Nav.Link>
+                        <Nav.Link className="text-size base-text" href="/register">Zarejestruj się</Nav.Link>
                         </Nav>
                         </Container>
                     </Navbar>

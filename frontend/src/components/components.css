@@ -6,9 +6,7 @@ header{
 color: #F7F7F7;
 font-size: 90px;
 }
-.text-size{
-    font-size: 1.2vw;
-}
+
 
 .footer{
     position:absolute;
@@ -105,9 +103,7 @@ font-size: 90px;
     .title-text{
         font-size: 60px;
     }
-    .text-size{
-        font-size: 25px;
-    }
+   
   }
   @media only screen and (max-width: 769px){
     .footer{  
@@ -116,9 +112,7 @@ font-size: 90px;
     .title-text{
         font-size: 50px;
     }
-    .text-size{
-        font-size: 15px;
-    }
+    
   }
   
   @media only screen and (max-width: 415px){
@@ -129,8 +123,6 @@ font-size: 90px;
     .title-text{
         font-size: 30px;
     }
-    .text-size{
-        font-size: 15px;
-    }
+    
   }
   
