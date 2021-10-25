@@ -3,6 +3,7 @@ import UsersWalletsService from '../services/UsersWalletsService';
 import UserService from '../services/user.service';
 import { Link } from 'react-router-dom';
 import WalletPage from '../pages/wallet/WalletPage'
+import { Button  } from 'reactstrap';
 class WalletSumComponent extends Component {
     constructor(props){
 
@@ -11,7 +12,7 @@ class WalletSumComponent extends Component {
             wallets: [],
             username: undefined,
            
-
+            
         }
     }
 
@@ -67,18 +68,16 @@ const user = UserService.getCurrentUser();
                               
                                
                                  
-                                 <Link className="card-link center-content btn btn-primary"  id="mainbuttonstyle"
-                                        to={{
-                                        pathname: '/wallet', 
-                                        state:{
-                                            walletID: wallet.id
-                                        }
-                                            
+                                 
+                                  <Button className="card-link center-content btn btn-primary"  id="mainbuttonstyle"
+                                       onClick={(e)=>{
+                                        sessionStorage.setItem('walletID',JSON.stringify(wallet.id))
+                                        window.location.href='/wallet'
+                                       }} 
+                                        > Przejdź do portfela
 
-                                        }}>Przejdź do portfela
-                                       
                                             
-                                </Link>
+                                </Button>
                              </div>
                              
                          )   

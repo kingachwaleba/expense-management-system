@@ -35,6 +35,8 @@ class HomePage extends React.Component {
         console.log(user);
         console.log("Token to: " + user.token);
         console.log("Type to: " + user.type);
+        
+
     }
 
     render() {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DisplayUsersByName from './DisplayUsersByName';
 import FindUsersToWalletService from '../services/FindUsersToWalletService';
 import UserService from '../services/user.service';
+import ManageWalletUsersService from '../services/ManageWalletUsersService';
 class AddUsersToNewWalletComponent extends Component {
 
 
@@ -12,14 +13,17 @@ class AddUsersToNewWalletComponent extends Component {
             
             usertoken: undefined,
             users: [],
-            classNameHelper: ""
-
+            classNameHelper: "",
+            walletExist: this.props.walletExist,
+            errorMessage: ""
         }
     }
 
 
     componentDidMount() {
         const currentUser = UserService.getCurrentUser();
+        console.log(this.props.walletExist)
+        console.log(this.props.walletId)
         if (currentUser) {
 
             
@@ -41,16 +45,51 @@ class AddUsersToNewWalletComponent extends Component {
         var {value} = e.target;
         if(value){
         
-
-        FindUsersToWalletService.getUsers(value, this.state.usertoken).then((response)=>{
-        this.setState({users: response.data})
-        var users = this.state.users;
-       
-        console.log("WYSŁANO RZĄDANIE")
-        
-        
-
-        })
+        if(!this.state.walletExist){
+            FindUsersToWalletService
+                .getUsers(value, this.state.usertoken)
+                .then((response)=>{
+                    this.setState({users: response.data})
+                    var users = this.state.users;
+                    if(users.length == 0){
+                        this.setState({errorMessage: "Brak użytkowników"})
+                        console.log("NIE ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
+                    else{
+                        this.setState({errorMessage: ""})
+                        console.log("ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
+                })
+                .catch((error)=>{
+                    
+                    console.log(error.response.data)
+                    
+                    this.setState({errorMessage: error.response.data})
+                });
+        }
+        else{
+            ManageWalletUsersService
+                .findUsersToWallet(this.props.walletId,value, this.state.usertoken)
+                .then((response)=>{
+                    this.setState({users: response.data})
+                    var users = this.state.users;
+                    if(users.length == 0){
+                        this.setState({errorMessage: "Brak użytkowników"})
+                        console.log("NIE ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
+                    else{
+                        this.setState({errorMessage: ""})
+                        console.log("ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
+                })
+                .catch((error)=>{
+                    console.log(error)
+                });
+        }
        } 
     }
 
@@ -67,7 +106,7 @@ class AddUsersToNewWalletComponent extends Component {
     render() {
         return (
             <div>
-                <label className="form-label"> Użytkownicy: </label>
+                <label className="form-label text-size"> Użytkownicy: </label>
 
                 
                             <input
@@ -84,13 +123,17 @@ class AddUsersToNewWalletComponent extends Component {
                                     
                                 }}
                             />
+                       <div className="text-size error-text">
+                           {this.state.errorMessage}
+                        </div> 
 
 {
-                         
+
+                        
                          this.state.users.map(
                              user =>
                              
-                             <div key = {user.login} className = "center-content grid-container-3">
+                             <div key = {user.login} className = "center-content grid-container-3 text-size">
                                {
                                   this.setHelperClassname(user.login)
                                }
@@ -110,8 +153,7 @@ class AddUsersToNewWalletComponent extends Component {
                                 <div>
                                     <input type="button"
                                         id={user.login} 
-                                      
-                                        className = { this.state.classNameHelper}
+                                        className = { this.state.classNameHelper }
                                         name ="user" 
                                         value="Click" 
                                         

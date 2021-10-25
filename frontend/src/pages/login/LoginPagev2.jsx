@@ -39,7 +39,7 @@ export default function LoginPagev2 () {
                             method="post"
                             onSubmit={doLogin}>
                             <div className={'form-group'}>
-                                <label className="form-label" htmlFor="Email">Email: </label>
+                                <label className="form-label text-size" htmlFor="Email">Email: </label>
                                     <input
                                         type="email"
                                         className="form-control"
@@ -53,7 +53,7 @@ export default function LoginPagev2 () {
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label" htmlFor="Password">Hasło: </label>
+                                <label className="form-label text-size" htmlFor="Password">Hasło: </label>
                                     <input
                                         type="password"
                                         className="form-control"
@@ -65,17 +65,18 @@ export default function LoginPagev2 () {
                                     />
                                
                             </div>
-                            
-                        {
-                        // Alert
-                            errorMassage
-                        }
+                           <div className="error-text">
+        
+                               {errorMassage}
+                             
+                            </div> 
+                       
                             <div className="center-content" >
                                     <a href="/remindpassword" className="card-link href-text">Nie pamietam hasła, przypomnij hasło.</a>
                             </div>
                             <br></br>
                             <div  className="center-content">
-                                    <button className="btn btn-primary form-button" id = "mainbuttonstyle" type="submit" disabled={!validateForm}>
+                                    <button className="btn btn-primary form-button main-button-style text-size" type="submit" disabled={!validateForm}>
                                         Zaloguj się
                                     </button>
                             </div>

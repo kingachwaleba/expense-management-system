@@ -6,9 +6,7 @@ header{
 color: #F7F7F7;
 font-size: 90px;
 }
-.text-size{
-    font-size: 1.2vw;
-}
+
 
 .footer{
     position:absolute;
@@ -82,10 +80,12 @@ font-size: 90px;
 .checkmark {  /*Nowy styl*/
     position: absolute;
     background-image: url(../radio-button-off.svg);
-    height: 40px;
-    width: 40px;
-   
-    
+    size:auto;
+    margin:auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-size: contain;
     margin-left:-40px;
     margin-top: 5px;
    
@@ -105,9 +105,7 @@ font-size: 90px;
     .title-text{
         font-size: 60px;
     }
-    .text-size{
-        font-size: 25px;
-    }
+   
   }
   @media only screen and (max-width: 769px){
     .footer{  
@@ -116,9 +114,7 @@ font-size: 90px;
     .title-text{
         font-size: 50px;
     }
-    .text-size{
-        font-size: 15px;
-    }
+    
   }
   
   @media only screen and (max-width: 415px){
@@ -129,8 +125,6 @@ font-size: 90px;
     .title-text{
         font-size: 30px;
     }
-    .text-size{
-        font-size: 15px;
-    }
+    
   }
   

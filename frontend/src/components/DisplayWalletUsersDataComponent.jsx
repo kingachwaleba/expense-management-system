@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
+import UserService from '../services/user.service';
 const DisplayWalletUsersDataComponent = (props) =>{
+   
 
 
     function setHelperClassname(user){
@@ -13,6 +15,14 @@ const DisplayWalletUsersDataComponent = (props) =>{
           
         }
     }
+
+    useEffect(()=>{
+        
+        const user = UserService.getCurrentUser();
+       
+    },[])
+
+
         return (
             <div className="container">
                 <div className="grid-container-3">
@@ -29,16 +39,14 @@ const DisplayWalletUsersDataComponent = (props) =>{
                              userData =>
                              
                              <div key = {userData.login} className = "center-content">
-                                 {
-                                   
-                                    }
-                                 <div className=" grid-container-3">
+                                
+                                 <div className=" grid-container-3 text-size">
 
                                       <div className="left-content">
-                                        <h4>{ userData.login }</h4>
+                                        { userData.login }
                                     </div>
                                     <div className="right-content">
-                                            <h4>{ userData.balance }</h4>
+                                        { userData.balance }
                                     </div>   
                                     <div className="right-content">
                                         <button></button>
@@ -47,11 +55,11 @@ const DisplayWalletUsersDataComponent = (props) =>{
 
                                  </div>
 
-
-                                 <div className = "box-subcontent">
-                                        
-                                 </div>
-                                   
+                                {/*
+                                    <div className = "box-subcontent">
+                                            
+                                    </div>
+                                */} 
                                 
                                
 
@@ -63,16 +71,9 @@ const DisplayWalletUsersDataComponent = (props) =>{
                              
                          )   
              }
-               
-               
-                <h4>Imie...    Bilans...</h4>
-                <h4>Imie...    Bilans...</h4>
-                <h4>Imie...    Bilans...</h4>
-                <div className="separator-line"></div>
-                <div className="center-content">
-                    <a className="center-content href-text" href="/edit-users-list">Edytuj listę członków</a> 
-                </div>
-               
+            
+          
+                
             </div>
         );
     

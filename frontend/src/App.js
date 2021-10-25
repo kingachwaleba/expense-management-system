@@ -22,11 +22,12 @@ import ListDetailPage from './pages/list-detail/ListDetailPage';
 import StatisticsPage from './pages/wallet-stats/StatisticsPage';
 import EditWalletPage from './pages/edit-wallet/EditWalletPage';
 import ErrorPage from './pages/error/ErrorPage';
-
+import { useHistory } from 'react-router';
 import WalletPage from './pages/wallet/WalletPage';
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
 import FooterPage from './components/Footer';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 
 class App extends React.Component {
 
@@ -54,9 +55,12 @@ class App extends React.Component {
     }
 
     logOut() {
+      
         UserService.logOut();
-        this.props.history.push('/login');
+        
+        window.location.href='/login'
         window.location.reload();
+        
     }
 
     render() {
@@ -65,73 +69,36 @@ class App extends React.Component {
             <Router>
                 <div>
                     {this.state.login &&
-                    <nav className="navbar navbar-expand navbar-dark">
-                        <a className="navbarBrand" href="/start">
-                            eSakwa
-                        </a>
-                        <div className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <a className="nav-link" href="/home">
-                                    <span className="fa fa-home"/>
-                                    Portfele
-                                </a>
-                            </li>
-                        
-
-                        
-                            <li className="nav-item">
-                                <a className="nav-link" href="/profile">
-                                    <span className="fa fa-user"/>
-                                    Profil
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/" onClick={this.logOut}>
-                                    <span className="fa fa-sign-out"/>
-                                    Wyloguj
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link">
-                                    <img src="./photo_placeholder.png" alt="Picture"></img>                                   
-                                </a>
-                            </li>
-                        </div>
-                    </nav>
+                    <Navbar className="navbar navbar-expand navbar-dark width-100">
+                        <Container>
+                            <Navbar.Brand className="navbarBrand" id="bootstrap-overrides" href="/home">eSakwa</Navbar.Brand>
+                            <Nav className="content-right">
+                            <Nav.Link className="text-size base-text" href="/home">Portfele</Nav.Link>
+                            <Nav.Link className="text-size base-text" href="/profile"> Profil </Nav.Link>
+                            <Nav.Link className="text-size base-text" onClick={this.logOut}> Wyloguj </Nav.Link>
+                            <Nav.Link href="/profile">
+                                {/* <img src="./photo_placeholder.png" alt="Picture"></img> */}
+                            </Nav.Link>
+                            </Nav>
+                        </Container>
+                    </Navbar>
                     }
                 </div>
                 <div>
                     {!this.state.login &&
-                    <nav className="navbar navbar-expand navbar-dark">
-                        <a className="navbarBrand" href="/">
-                            eSakwa
-                        </a>
-                        
-                        <div className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                            <a className="btn btn-primary" id = "mainbuttonstyle" href="/login">
-                                    <span className="fa fa-sign-in"/>
-                                    Zaloguj się
-                                </a>
-                                
-                            </li>
-                            <li className="nav-item"> 
-                            <a className="nav-link" href="">
-                                <span className="fa fa-sign-in"/>
-
-                                    &nbsp;
-                                    | 
-                         </a>
-                            </li>
-                            <li className="nav-item">
-                            <a className="nav-link" href="/register">
-                                    <span className="fa fa-user-plus"/>
-                                    &nbsp;
-                                    Załóż konto
-                                </a>
-                            </li>
-                        </div>
-                    </nav>
+                     
+                   <Navbar className="navbar-dark">
+                        <Container>
+                        <Navbar.Brand className="navbar-brand" id="bootstrap-overrides" href="/start">eSakwa</Navbar.Brand>
+                        <Nav className="content-right">
+                        <Nav.Link className="btn btn-primary main-button-style text-size base-text"href="/login">Zaloguj się</Nav.Link>
+                        <Nav.Link className="text-size base-text" >|</Nav.Link>
+                        <Nav.Link className="text-size base-text" href="/register">Zarejestruj się</Nav.Link>
+                        </Nav>
+                        </Container>
+                    </Navbar>
+  
+               
                     }
                 </div>
                 <div className="container">
