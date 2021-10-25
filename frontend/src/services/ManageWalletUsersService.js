@@ -23,11 +23,15 @@ class ManageWalletUsersService {
     }
 
     addNewUserToWallet(id, username, tokenStr){
-        return axios.put(MANAGE_WALLET_USERS_API_BASE_URL + id + "/users/"+username, {headers: {"Authorization" : `Bearer ${tokenStr}`}});
+        return axios.put(MANAGE_WALLET_USERS_API_BASE_URL + id + "/users/"+username,"",{headers: {"Authorization" : `Bearer ${tokenStr}`}});
     }
+
+    
     findUsersToWallet(id, infix, tokenStr){
         return axios.get(MANAGE_WALLET_USERS_API_BASE_URL + id + "/"+ infix, {headers: {"Authorization" : `Bearer ${tokenStr}`}});
     }
+
+
 }   
 
 export default new ManageWalletUsersService();

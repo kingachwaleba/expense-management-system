@@ -116,14 +116,13 @@ function EditWalletPage () {
                         <button
                             className="btn btn-primary btn-block form-button"
                             id = "mainbuttonstyle"
+                            type = "submit"
                             onClick={e =>  {submitted = true
-                                handleEditWallet(e);
-                                window.location.href='/home'
+                                //handleEditWallet(e);
+                                //window.location.href='/home'
+                               
                             
-                            }
-                                            
-
-                                    }
+                            }}
                             >
                             Zapisz zmiany
                         </button>

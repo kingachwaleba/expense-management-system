@@ -78,15 +78,18 @@ class AddMembersPage extends Component {
   
                                             if(this.state.userList.length != 0){
                                                 console.log(this.state.userList)
+                                                console.log(userToken)
                                                 console.log("Wysłano zaproszenia")
                                                     this.state.userList.forEach((element)=>{
+                                                        
                                                     ManageWalletUsersService
+                                                    
                                                         .addNewUserToWallet(this.state.walletId,element,userToken)
                                                         .catch((error)=>{
                                                             console.log(error.response.data)
 
                                                         });
-                                                    //window.location.href='/home'
+                                                    window.location.href='/wallet'
                                                 })
                                             }
                                             else{

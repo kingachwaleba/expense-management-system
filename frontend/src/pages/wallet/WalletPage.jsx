@@ -18,7 +18,11 @@ function WalletPage () {
 
     let location  = useLocation();
     console.log(location);
-    var walletID = location.state.walletID;
+    let walletID = '';
+    if (sessionStorage && sessionStorage.getItem('walletID')) {
+    walletID = JSON.parse(sessionStorage.getItem('walletID'));
+    }
+    //var walletID = location.state.walletID;
     var userToken;
     var userName;
         console.log("Wallet id: " + walletID);

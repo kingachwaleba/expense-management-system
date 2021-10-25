@@ -23,8 +23,9 @@ function EditUsersPage () {
                 setWalletUsers(response.data)
                 console.log(response.data)
                 console.log(walletUsers)
-                if(response.data.length === 0){
+                if(response.data.length == 0){
                     setMessage("Brak użytkowników")
+                    window.location.href='/home'
                 }
                 else{
                     setMessage("")
@@ -32,7 +33,7 @@ function EditUsersPage () {
 
                })
                .catch((error)=>{
-                   
+                     window.location.href='/home'
                    console.log(error.response.data)
                })
     },[])
@@ -46,6 +47,7 @@ function EditUsersPage () {
                         <div className="separator-line"></div>
                         {message}
                     {
+                        
                     walletUsers.map(
                             user =>
                             <Row key = {user.userId} >
@@ -63,16 +65,22 @@ function EditUsersPage () {
                                         if (sessionStorage && sessionStorage.getItem('walletID')) {
                                         walletIdHelper = JSON.parse(sessionStorage.getItem('walletID'));
                                         }
-                                        if(window.confirm('Użykownik nie  będzie już należeć do tego portfela, kontynuować?')){
-                                        ManageWalletUsersService
-                                        .deleteWalletUser(walletIdHelper,user.login,UserService.getCurrentUser().token)
-                                        .catch((error)=>{
-                                           
-                                            console.log(error.response.data)
-                                            setMessage(error.response.data)
-                                        })
-                                        //window.location.href='/home'
+                                        if(user.balance === 0){
+                                            if(window.confirm('Użykownik nie  będzie już należeć do tego portfela, kontynuować?')){
+                                                ManageWalletUsersService
+                                                .deleteWalletUser(walletIdHelper,user.login,UserService.getCurrentUser().token)
+                                                .catch((error)=>{
+                                                
+                                                    console.log(error.response.data)
+                                                    setMessage(error.response.data)
+                                                })
+                                                window.location.href='/edit-users-list'
+                                            }
                                         }
+                                        else{
+                                            window.alert("Nie możesz usunąć z porftela użytkownika o nieuregulowanym bilansie.")
+                                        }
+
                                     }}></button>
                                 </Col>
                             <br /><br />

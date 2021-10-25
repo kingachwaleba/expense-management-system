@@ -77,7 +77,7 @@ class App extends React.Component {
                             <Nav.Link className="text-size base-text" href="/profile"> Profil </Nav.Link>
                             <Nav.Link className="text-size base-text" onClick={this.logOut}> Wyloguj </Nav.Link>
                             <Nav.Link href="/profile">
-                                <img src="./photo_placeholder.png" alt="Picture"></img> 
+                                {/* <img src="./photo_placeholder.png" alt="Picture"></img> */}
                             </Nav.Link>
                             </Nav>
                         </Container>
