@@ -67,7 +67,7 @@ public class WalletController {
 
     @GetMapping("/wallet-users/{id}")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
-    public ResponseEntity<?> findsWalletUsers(@PathVariable int id) {
+    public ResponseEntity<?> findWalletUsers(@PathVariable int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         List<Map<String, Object>> userList = walletService.findUserList(wallet);
 
