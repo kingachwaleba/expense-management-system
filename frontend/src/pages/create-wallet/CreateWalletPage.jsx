@@ -97,7 +97,7 @@ class CreateWalletPage extends React.Component {
         WalletService
             .create_wallet(wallet_holder,this.state.usertoken)
             .catch((error)=>{
-                console.log(error)
+                console.log(error.response.data)
             });
     }
     readWalletCategory = (event) => {
@@ -151,7 +151,7 @@ class CreateWalletPage extends React.Component {
                             this.setState({submitted: true});
                             this.walletHolderHelper(e);   
                             this.handleCreateWallet(e)
-                            window.location.href='/home'
+                            //window.location.href='/home'
 
 
                         }}>
@@ -163,6 +163,8 @@ class CreateWalletPage extends React.Component {
                                 name="name"
                                 placeholder="Wpisz nazwę..."
                                 required
+                                minLength="1"
+                                maxLength="45"
                                 onChange={(e) => this.handleChangeName(e)}/>
                             <div className="invalid-feedback">
                                 Nazwa jest wymagana.
@@ -176,7 +178,8 @@ class CreateWalletPage extends React.Component {
                                 className="form-control"
                                 name="description"
                                 placeholder="Wpisz opis..."
-                                required
+                                required 
+                                maxLength="1000"
                                 onChange={(e) => this.handleChangeDescription(e)}/>
                             <div className="invalid-feedback">
                                 Opis jest wymagany.

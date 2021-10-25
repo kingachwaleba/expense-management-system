@@ -7,6 +7,9 @@ import { Wallet } from '../../models/wallet';
 import WalletService from '../../services/WalletService';
 import { useLocation } from 'react-router';
 import UserService from '../../services/user.service';
+import { useEffect } from 'react';
+import WalletDetailService from '../../services/WalletDetailService';
+import { useState } from 'react';
 
 function EditWalletPage () {
     let location  = useLocation();
@@ -17,7 +20,7 @@ function EditWalletPage () {
     var description;
     var userToken;
     var userName;
-
+    const [walletData, getWalletData] = useState([]);
 
     const user = UserService.getCurrentUser();
         if (user) {
@@ -25,7 +28,21 @@ function EditWalletPage () {
            userName = user.name
          }
        
+         useEffect(()=>{
+            const user = UserService.getCurrentUser();
+            WalletDetailService.getWalletDetail(walletID,user.token).then((response)=>{
+                const allData = response.data
+                getWalletData(allData)
+                
+            })
+            .catch(error=>{
+                console.error({error})
+              
+            
+            });
 
+           
+},[])
 
     function readWalletCategory (event){
         var {id, value} = event.target;
@@ -67,8 +84,8 @@ function EditWalletPage () {
                  <Header title='Edytuj portfel:' />
                 <div className="form-container">
 
-                <div className="box-content">
-                    <h4 className="text-label center-content" >Edytuj profil</h4>
+                <div className="box-content text-size">
+                    <div className="text-label center-content text-size" >{walletData.name}</div>
                     <div className="separator-line"></div>
                     <form
                         name="form"
@@ -80,9 +97,10 @@ function EditWalletPage () {
                                 type="text"
                                 className="form-control"
                                 name="name"
-                                placeholder="Wpisz nazwę..."
+                                placeholder={walletData.name}
                                 required
-                                
+                                minLength="1"
+                                maxLength="45"
                                 onChange={(e) => handleChangeName(e)}/>
                             <div className="invalid-feedback">
                                 A valid login is required.
@@ -95,9 +113,9 @@ function EditWalletPage () {
                                 type="text"
                                 className="form-control"
                                 name="description"
-                                placeholder="Wpisz opis..."
+                                placeholder={walletData.description}
                                 required
-                               
+                                maxLength="1000"
                                 onChange={(e) => handleChangeDescription(e)}/>
                             <div className="invalid-feedback">
                                 Password is required.
