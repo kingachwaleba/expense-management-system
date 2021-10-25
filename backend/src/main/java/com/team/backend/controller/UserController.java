@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/wallet/{id}/{infix}")
-    @PreAuthorize("@authenticationService.isWalletOwner(#id)")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> findUserForWallet(@PathVariable int id, @PathVariable String infix) {
 
         return new ResponseEntity<>(userService.findUserForWallet(id, infix), HttpStatus.OK);
