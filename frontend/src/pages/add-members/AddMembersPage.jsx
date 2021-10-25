@@ -75,21 +75,25 @@ class AddMembersPage extends Component {
                                                var userToken = user.token
                                                var userName = user.name
                                              }
-                                           
-                                    
-                                                
-                                                console.log(userToken)
-                                                this.state.userList.forEach((element)=>{
-                                                ManageWalletUsersService
-                                                    //.leaveWallet(this.state.walletId,userService.getCurrentUser().token)
-                                                    .addNewUserToWallet(this.state.walletId,element,userToken)
-            
-                                                    .catch((error)=>{
-                                                        console.log(error.response.data)
+  
+                                            if(this.state.userList.length != 0){
+                                                console.log(this.state.userList)
+                                                console.log("Wysłano zaproszenia")
+                                                    this.state.userList.forEach((element)=>{
+                                                    ManageWalletUsersService
+                                                        .addNewUserToWallet(this.state.walletId,element,userToken)
+                                                        .catch((error)=>{
+                                                            console.log(error.response.data)
 
-                                                    });
-                                                //window.location.href='/wallet'
-                                            })
+                                                        });
+                                                    //window.location.href='/home'
+                                                })
+                                            }
+                                            else{
+                                                console.log("Nie wysłano zaproszenia")
+                                                alert("Musisz wybrać użytkownków dodania!");
+                                            }
+
                                             
 
                                         }}> 

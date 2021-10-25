@@ -17,9 +17,6 @@ function EditUsersPage () {
           }
          setWalletId(walletIdHelper)
          setUserToken(UserService.getCurrentUser().token)
-         //console.log(walletId)
-         console.log("User token to " + userToken)
-         console.log("Wallet Id to " + walletIdHelper)
          ManageWalletUsersService
             .getWalletUsers(walletIdHelper,UserService.getCurrentUser().token)
             .then((response)=>{
@@ -47,11 +44,12 @@ function EditUsersPage () {
                 <Col className="box-content text-size">
                     <h4 className="text-label center-content"> Portfel</h4>
                         <div className="separator-line"></div>
+                        {message}
                     {
                     walletUsers.map(
                             user =>
                             <Row key = {user.userId} >
-                            
+                                
                                 <Col md="2">
                                 #ProfilePic
                                 </Col>
@@ -69,10 +67,11 @@ function EditUsersPage () {
                                         ManageWalletUsersService
                                         .deleteWalletUser(walletIdHelper,user.login,UserService.getCurrentUser().token)
                                         .catch((error)=>{
-                                            
+                                           
                                             console.log(error.response.data)
+                                            setMessage(error.response.data)
                                         })
-                                        window.location.href='/home'
+                                        //window.location.href='/home'
                                         }
                                     }}></button>
                                 </Col>
@@ -81,6 +80,11 @@ function EditUsersPage () {
                             
                             </Row>      
                         )}
+                         <div className="error-text">
+        
+                                {message}
+      
+                        </div> 
                 
                 <Row>
                             <button className="text-size base-text main-button-style"

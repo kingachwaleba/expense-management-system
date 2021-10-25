@@ -14,8 +14,8 @@ class AddUsersToNewWalletComponent extends Component {
             usertoken: undefined,
             users: [],
             classNameHelper: "",
-            walletExist: this.props.walletExist
-
+            walletExist: this.props.walletExist,
+            errorMessage: ""
         }
     }
 
@@ -46,27 +46,45 @@ class AddUsersToNewWalletComponent extends Component {
         if(value){
         
         if(!this.state.walletExist){
-            console.log("PORTFEL NIE ISTNIEJE")
-            console.log(this.state.walletExists)
             FindUsersToWalletService
                 .getUsers(value, this.state.usertoken)
                 .then((response)=>{
                     this.setState({users: response.data})
                     var users = this.state.users;
-                    console.log("WYSŁANO RZĄDANIE")
+                    if(users.length == 0){
+                        this.setState({errorMessage: "Brak użytkowników"})
+                        console.log("NIE ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
+                    else{
+                        this.setState({errorMessage: ""})
+                        console.log("ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
                 })
                 .catch((error)=>{
-                    console.log(error)
+                    
+                    console.log(error.response.data)
+                    
+                    this.setState({errorMessage: error.response.data})
                 });
         }
         else{
-            console.log("PORTFEL ISTNIEJE")
             ManageWalletUsersService
                 .findUsersToWallet(this.props.walletId,value, this.state.usertoken)
                 .then((response)=>{
                     this.setState({users: response.data})
                     var users = this.state.users;
-                    console.log("WYSŁANO RZĄDANIE")
+                    if(users.length == 0){
+                        this.setState({errorMessage: "Brak użytkowników"})
+                        console.log("NIE ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
+                    else{
+                        this.setState({errorMessage: ""})
+                        console.log("ZNALEZIONO")
+                        console.log(this.state.errorMessage)
+                    }
                 })
                 .catch((error)=>{
                     console.log(error)
@@ -105,9 +123,13 @@ class AddUsersToNewWalletComponent extends Component {
                                     
                                 }}
                             />
+                       <div className="text-size error-text">
+                           {this.state.errorMessage}
+                        </div> 
 
 {
-                         
+
+                        
                          this.state.users.map(
                              user =>
                              

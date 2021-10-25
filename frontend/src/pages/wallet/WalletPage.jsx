@@ -43,7 +43,7 @@ function WalletPage () {
     useEffect(()=>{
                 const user = UserService.getCurrentUser();
                 console.log(user.token)
-                //WalletDetailService.getWalletDetail(walletID,userToken).then((response)=>{
+                
                     WalletDetailService.getWalletDetail(walletID,user.token).then((response)=>{
                     const allData = response.data
                     getWalletData(allData)
@@ -60,7 +60,7 @@ function WalletPage () {
                     console.log("ownername " + response.data.owner)
                     if(user.login == response.data.owner) checkIsOwner(true)
                     else checkIsOwner(false)
-                    sessionStorage.setItem('walletOwner',JSON.stringify(response.data.owner))
+                    
                     
                 })
                 .catch(error=>{
@@ -172,7 +172,23 @@ function WalletPage () {
                     </div>
                        <div id="showing-content-users" className="hide-content box-subcontent-2" style={{display:'none'}}>
                            {console.log("WALLET OWNER TO "+ walletData.owner)}
-                                           <DisplayWalletUsersDataComponent walletId={walletID} usersData= {walletUsersData} walletOwner = {walletData.owner}/>
+                            <DisplayWalletUsersDataComponent walletId={walletID} usersData= {walletUsersData} walletOwner = {walletData.owner}/>
+                            <div className="separator-line"></div>
+                            { 
+                            isOwner ? (
+                                    <div className="center-content">
+                                        <a className="center-content href-text text-size"   
+                                            onClick={(e)=>{
+                                                sessionStorage.setItem('walletID',JSON.stringify(walletID))
+                                                console.log(walletID)
+                                                window.location.href='/edit-users-list'
+                                            }}>
+                                            Edytuj listę członków
+                                        </a> 
+                                    </div>
+                                ):(<div/>)
+                            }      
+                
                         </div>
                    
 
@@ -258,11 +274,20 @@ function WalletPage () {
 
 
                     <div className="center-content">
-                            <Link to="/wallet-stats" className="card-link center-content btn btn-primary width-100 main-button-style text-size" >Statystyki</Link>
-                            <br></br>
-                            <br></br>
+                        <Container>
+                            <Col>
+                            <br />
+                                <Row>
+                                    <br />
+                                    <Link to="/wallet-stats" className="card-link center-content btn btn-primary width-100 main-button-style text-size" >Statystyki</Link>
+                                </Row>
+                           
+                            
                             {isOwner ?(
-                                <Container>
+                                 <div>
+                                 <br />
+                                
+                                <Row>
                                     <Link className="card-link center-content btn btn-primary width-100 main-button-style text-size"  id="mainbuttonstyle editWalletButton"
                                                 to={{
                                                 pathname: '/edit-wallet', 
@@ -272,7 +297,9 @@ function WalletPage () {
                                                 Edytuj portfel                   
                                     </Link>
                                 <br></br>
-                                <br></br>
+                               </Row>
+                               <br />
+                               <Row>
                                     <Button className="card-link main-button-style center-content btn btn-primary width-100 text-size" id="mainbuttonstyle deleteWalletButton"  
                                         onClick={e =>{
                                             if(window.confirm('Czy na pewno chcesz usunąć portfel?')){  
@@ -286,9 +313,13 @@ function WalletPage () {
                                         }}> 
                                         Usuń portfel              
                                     </Button>
-                                </Container>
+                                   </Row> 
+                                </div>
                             ):(
-                                <Container >
+                                <div>
+                                    <br />
+                                <Row >
+                                    
                                     <Button className="card-link main-button-style center-content btn btn-primary width-100 text-size" id="mainbuttonstyle"  
                                         onClick={e =>{ 
                                             if(window.confirm('Czy na pewno chcesz opuścić portfel?')){
@@ -304,8 +335,11 @@ function WalletPage () {
                                         Opuść portfel          
                                     </Button>
                             
-                                </Container>
+                                </Row>
+                                </div>
                             )}
+                            </Col>
+                            </Container>
 
 
                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
+
 import UserService from '../services/user.service';
 const DisplayWalletUsersDataComponent = (props) =>{
    
@@ -16,22 +16,9 @@ const DisplayWalletUsersDataComponent = (props) =>{
         }
     }
 
-    const [isOwner, checkIsOwner] = useState(false);
     useEffect(()=>{
         
         const user = UserService.getCurrentUser();
-        let walletOwner = ''
-        if (sessionStorage && sessionStorage.getItem('walletOwner')) {
-           walletOwner = JSON.parse(sessionStorage.getItem('walletOwner'));
-          }
-          console.log("CZY TO WŁAŚCICIEL " + isOwner)
-        if(UserService.getCurrentUser().login === walletOwner) {
-           
-            checkIsOwner(true)}
-        else {
-        console.log("NIE JEST WŁAŚCICIELEM")
-         checkIsOwner(false)   
-        }
        
     },[])
 
@@ -84,22 +71,8 @@ const DisplayWalletUsersDataComponent = (props) =>{
                              
                          )   
              }
-             <div className="separator-line"></div>
-               { 
-                isOwner ? (
-                        <div className="center-content">
-                            <a className="center-content href-text text-size"   
-                                onClick={(e)=>{
-                                    sessionStorage.setItem('walletID',JSON.stringify(props.walletId))
-                                    console.log(props.walletId)
-                                     window.location.href='/edit-users-list'
-                                }}>
-                                Edytuj listę członków
-                            </a> 
-                        </div>
-                    ):(<div/>)
-              }      
-                
+            
+          
                 
             </div>
         );
