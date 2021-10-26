@@ -36,7 +36,7 @@ class WalletCategoryComponent extends Component {
                                     <div key = {category.id} className = "center-content custom-radiobuttons">
                                       <label className = "form-label text-size" htmlFor={category.id}>
                                         <input type="radio" id={category.id} name  ="category" value={category.name} 
-                                           checked
+                                          
                                          
                                             onChange={this.props.readWalletCategory}
                                             >
