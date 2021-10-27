@@ -3,7 +3,6 @@ package com.example.mobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,7 +22,7 @@ import java.util.List;
 public class ExpenseActivity extends BaseActivity {
 
     String accessToken;
-    int expenseId, walletId;
+    int expenseId;
     ExpenseService expenseService;
     User expenseOwner;
 
@@ -61,7 +60,16 @@ public class ExpenseActivity extends BaseActivity {
         forWhoRv.setLayoutManager(new LinearLayoutManager(ExpenseActivity.this));
         forWhoRv.setAdapter(userListAdapter);
 
+        initView();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initView();
+    }
+
+    private void initView(){
         expenseService.getExpenseById(expense -> {
             nameExpense = expense.getExpense().getName();
             costExpense = String.valueOf(expense.getExpense().getTotal_cost());
@@ -111,8 +119,6 @@ public class ExpenseActivity extends BaseActivity {
 
         deleteExpenseBtn.setOnClickListener(v -> {
             expenseService.deleteExpense(accessToken, expenseId);
-            finish();
         });
     }
-
 }

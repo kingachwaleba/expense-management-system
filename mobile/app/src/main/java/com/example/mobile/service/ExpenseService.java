@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.example.mobile.ImageHelper;
 import com.example.mobile.activity.CreateExpenseActivity;
 import com.example.mobile.activity.EditExpenseActivity;
+import com.example.mobile.activity.ExpenseActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.ErrorUtils;
@@ -158,7 +159,10 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
+                if (!response.isSuccessful()){
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                } else ((ExpenseActivity) context).finish();
             }
 
             @Override

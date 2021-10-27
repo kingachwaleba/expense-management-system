@@ -187,12 +187,12 @@ public class EditExpenseActivity extends BaseActivity {
             if(bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
                 try {
                     imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
+                    receiptIv.setImageBitmap(imageBitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             else Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
 
-            receiptIv.setImageBitmap(imageBitmap);
             receiptIv.setVisibility(View.VISIBLE);
             deletePhotoBtn.setVisibility(View.VISIBLE);
         }
