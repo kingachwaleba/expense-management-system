@@ -36,6 +36,7 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         session = new SessionManager(getApplicationContext());
+
     }
 
     @Override

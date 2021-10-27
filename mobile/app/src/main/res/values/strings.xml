@@ -127,5 +127,6 @@
     <string name="to_label">Do:</string>
     <string name="show_statistics">Pokaż statystyki</string>
     <string name="receipt_photo">Zdjęcie paragonu:</string>
+    <string name="delete_image">Usuń zdjęcie</string>
 
 </resources>

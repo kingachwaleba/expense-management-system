@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="40dp"
     android:background="@drawable/bg_background">
 
     <LinearLayout
@@ -42,7 +43,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="35dp"
             android:layout_marginTop="30dp"
             android:text="@string/choose_image_text"
             android:textAppearance="@style/simple_label_bold"
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
-            android:layout_marginHorizontal="40dp"
+
             android:background="@drawable/et_edittext"
             android:drawableStart="@drawable/ic_image"
             android:paddingStart="20dp"
@@ -99,9 +99,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_simple"
-            android:layout_marginHorizontal="40dp"
             android:text="@string/save_photo"
             android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/delete_image_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_simple"
+            android:text="@string/delete_image"
+            android:textAppearance="@style/simple_button"
+            android:layout_marginVertical="20dp"
             android:textColor="@color/light_gray"
             app:backgroundTint="@null" />
 
@@ -110,8 +120,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_simple"
-            android:layout_marginTop="50dp"
-            android:layout_marginHorizontal="40dp"
             android:text="@string/change_password"
             android:textAppearance="@style/simple_button"
             android:textColor="@color/light_gray"
@@ -121,7 +129,6 @@
             android:id="@+id/delete_account_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
             android:background="@drawable/btn_simple"
             android:layout_marginVertical="20dp"
             android:text="@string/delete_account"
