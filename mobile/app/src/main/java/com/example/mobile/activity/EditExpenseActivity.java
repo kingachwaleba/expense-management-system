@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import com.example.mobile.service.ExpenseService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
 public class EditExpenseActivity extends BaseActivity {
 
@@ -157,13 +160,15 @@ public class EditExpenseActivity extends BaseActivity {
             else if(costExpenseEt.getText().toString().length()==0) costExpenseEt.setError("Wpisz kwote wydatku!");
             else if(selectedUsersLogin.size()==0) Toast.makeText(EditExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
             else if(imageBitmap!=null){
-                expenseService.uploadReceiptImage(imageBitmap, accessToken, nameExpenseEt.getText().toString(), path -> imagePath = path);
-                imageBitmap = null;}
+                expenseService.uploadReceiptImage(imageBitmap, accessToken, nameExpenseEt.getText().toString(), path -> {
+                    Expense editExpense = new Expense(nameExpenseEt.getText().toString(), path, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
+                    ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
+                    expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
+                }); }
             else {
-                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), imagePath, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
+                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
                 ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
                 expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
-                finish();
             }
         });
     }
@@ -174,12 +179,20 @@ public class EditExpenseActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
-            try {
-                imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            receiptIv.setImageBitmap(imageBitmap);
+
+            BitmapFactory.Options bitMapOption=new BitmapFactory.Options();
+            bitMapOption.inJustDecodeBounds=true;
+            BitmapFactory.decodeFile(ImageHelper.getRealPathFromURI(this,selectedImage), bitMapOption);
+
+            if(bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
+                try {
+                    imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
+                    receiptIv.setImageBitmap(imageBitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            else Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
+
             receiptIv.setVisibility(View.VISIBLE);
             deletePhotoBtn.setVisibility(View.VISIBLE);
         }

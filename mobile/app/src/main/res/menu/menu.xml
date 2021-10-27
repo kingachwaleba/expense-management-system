@@ -5,30 +5,30 @@
     app:showAsAction="never"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-        <item
-            android:id="@+id/action_add_contact"
-            android:title="Profil"
-            app:showAsAction="ifRoom"
-            android:icon="@drawable/ic_baseline_person_24">
-            <menu>
-                <item
-                    android:id="@+id/goToWallets"
-                    android:title="Portfele"
-                    app:showAsAction="never"
-                    android:textAppearance="@style/simple_label"
-                    android:textSize="14sp"/>
-                <item
-                    android:id="@+id/goToProfile"
-                    android:title="Profil"
-                    app:showAsAction="never"
-                    android:textAppearance="@style/simple_label"
-                    android:textSize="14sp"/>
-                <item
-                    android:id="@+id/logout"
-                    android:title="Wyloguj"
-                    app:showAsAction="never"
-                    android:textAppearance="@style/simple_label"
-                    android:textSize="14sp"/>
-            </menu>
-       </item>
+    <item
+        android:id="@+id/action_menu"
+        android:title="Profil"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/bg_round_box_dark">
+        <menu>
+            <item
+                android:id="@+id/goToWallets"
+                android:title="Portfele"
+                app:showAsAction="never"
+                android:textAppearance="@style/simple_label"
+                android:textSize="14sp"/>
+            <item
+                android:id="@+id/goToProfile"
+                android:title="Profil"
+                app:showAsAction="never"
+                android:textAppearance="@style/simple_label"
+                android:textSize="14sp"/>
+            <item
+                android:id="@+id/logout"
+                android:title="Wyloguj"
+                app:showAsAction="never"
+                android:textAppearance="@style/simple_label"
+                android:textSize="14sp"/>
+        </menu>
+    </item>
 </menu>
