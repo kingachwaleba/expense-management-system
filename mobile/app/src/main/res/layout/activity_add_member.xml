@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:padding="20dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_background">
@@ -17,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp">
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:id="@+id/edit_members_label"
@@ -45,7 +46,6 @@
             android:orientation="vertical"
             android:gravity="center"
             android:padding="20dp"
-            android:layout_margin="20dp"
             android:background="@drawable/bg_round_box_dark">
 
             <TextView
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_user_search"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="10dp"/>
 
         </LinearLayout>
 
@@ -90,9 +90,8 @@
             android:id="@+id/send_invitations_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_simple"
             android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/btn_simple"
             android:text="@string/send_invitations"
             android:textAppearance="@style/simple_button"
             android:textColor="@color/light_gray"
