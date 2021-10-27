@@ -59,6 +59,9 @@ public interface ApiInterface  {
     @PUT("account/change-profile-picture")
     Call<ResponseBody> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
 
+    @PUT("account/delete-profile-picture")
+    Call<ResponseBody> deleteProfileImage(@Header("Authorization") String accessToken);
+
     @PUT("delete-account")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteAccount(@Header("Authorization") String accessToken, @Body String password);

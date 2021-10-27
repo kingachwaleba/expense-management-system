@@ -123,6 +123,29 @@ public class AccountService {
         });
     }
 
+    public void deleteProfileImage() {
+        Call<ResponseBody> call = apiInterface.deleteProfileImage("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN));
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()){
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(context, "Zdjęcie profilowe zostało usunięte", Toast.LENGTH_SHORT).show();
+                    session.setKeyImagePathServer(null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
     public void deleteAccount(String password) {
         Call<ResponseBody> call = apiInterface.deleteAccount("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), password);
         call.enqueue(new Callback<ResponseBody>() {

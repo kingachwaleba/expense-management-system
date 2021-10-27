@@ -30,7 +30,7 @@ import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
 public class EditProfileActivity extends BaseActivity {
 
-    Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteAccountBtn, rotateLeftBtn, rotateRightBtn;
+    Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteImageBtn, deleteAccountBtn, rotateLeftBtn, rotateRightBtn;
     AccountService accountService;
     Uri selectedImage;
     ImageView imageView;
@@ -45,6 +45,7 @@ public class EditProfileActivity extends BaseActivity {
         chooseImageBtn = findViewById(R.id.choose_image_btn);
         saveChangeBtn = findViewById(R.id.save_change_btn);
         changePasswordBtn = findViewById(R.id.change_password_btn);
+        deleteImageBtn = findViewById(R.id.delete_image_btn);
         deleteAccountBtn = findViewById(R.id.delete_account_btn);
         imageView = findViewById(R.id.profile_image_iv);
         imagePreviewL = findViewById(R.id.image_preview_l);
@@ -63,6 +64,8 @@ public class EditProfileActivity extends BaseActivity {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, 100);
         });
+
+        deleteImageBtn.setOnClickListener(v -> accountService.deleteProfileImage());
 
         changePasswordBtn.setOnClickListener(v -> {
             Intent intent = new Intent(EditProfileActivity.this, ChangePasswordActivity.class);
