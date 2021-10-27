@@ -43,9 +43,7 @@ public class ExpenseActivity extends BaseActivity {
 
         accessToken = getIntent().getStringExtra("accessToken");
         expenseId = getIntent().getIntExtra("expenseId", 0);
-        walletId = getIntent().getIntExtra("walletId", 0);
         walletUsers = getIntent().getParcelableArrayListExtra("allMembers");
-        Log.d("aaa",  " " + walletId);
 
         expenseService = new ExpenseService(this);
         nameExpenseTv = findViewById(R.id.name_tv);

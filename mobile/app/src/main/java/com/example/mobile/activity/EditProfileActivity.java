@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,11 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
+
+import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.service.AccountService;
 import java.io.IOException;
+
+import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
 public class EditProfileActivity extends BaseActivity {
 
@@ -47,12 +54,9 @@ public class EditProfileActivity extends BaseActivity {
         session = new SessionManager(this);
         accountService = new AccountService(this);
 
-        deleteAccountBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EditProfileActivity.this, DeleteProfileActivity.class);
-                startActivity(intent);
-            }
+        deleteAccountBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(EditProfileActivity.this, DeleteProfileActivity.class);
+            startActivity(intent);
         });
 
         chooseImageBtn.setOnClickListener(v -> {
@@ -118,12 +122,19 @@ public class EditProfileActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
-            try {
-                //imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImage);
-                imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            BitmapFactory.Options bitMapOption=new BitmapFactory.Options();
+            bitMapOption.inJustDecodeBounds=true;
+            BitmapFactory.decodeFile(ImageHelper.getRealPathFromURI(this,selectedImage), bitMapOption);
+
+            if(bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
+                try {
+                    imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            else Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
+
             imageView.setImageBitmap(imageBitmap);
             imagePreviewL.setVisibility(View.VISIBLE);
         }

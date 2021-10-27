@@ -3,21 +3,19 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.Toast;
-
 import com.example.mobile.ImageHelper;
+import com.example.mobile.activity.CreateExpenseActivity;
+import com.example.mobile.activity.EditExpenseActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.model.DebtsHolder;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.ExpenseHolder;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -87,7 +85,7 @@ public class ExpenseService {
                 if (!response.isSuccessful()){
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                }
+                } else ((CreateExpenseActivity) context).finish();
             }
 
             @Override
@@ -144,7 +142,7 @@ public class ExpenseService {
                 if (!response.isSuccessful()){
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                }
+                } else ((EditExpenseActivity) context).finish();
             }
 
             @Override
