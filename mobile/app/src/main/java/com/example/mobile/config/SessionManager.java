@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import com.example.mobile.activity.LoginActivity;
-
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class SessionManager {
@@ -123,7 +121,6 @@ public class SessionManager {
             return false;
         }
         Duration duration = Duration.between(now, expiry);
-        if(duration.getSeconds() > 43200) return true;
-            else return false;
+        return duration.getSeconds() > 43200;
     }
 }

@@ -37,6 +37,7 @@ import retrofit2.http.Query;
 
 public interface ApiInterface  {
 
+    //User
     @POST("login")
     Call<JsonObject> login(@Body LoginForm loginForm);
     @POST("register")
@@ -45,7 +46,7 @@ public interface ApiInterface  {
     @POST("account/forgot-password")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> restorePassword(@Query("email") String email);
-    //User
+
     //Account
     @GET("account")
     @Headers("Content-Type: application/json")
