@@ -19,4 +19,5 @@
         <item name="android:textColor">@color/light_gray</item>
         <item name="android:itemTextAppearance">@style/simple_label</item>
     </style>
+
 </resources>

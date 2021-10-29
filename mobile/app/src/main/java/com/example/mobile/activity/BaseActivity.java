@@ -7,18 +7,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.mobile.CircleTransform;
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-
 import java.util.Objects;
 
 
@@ -45,8 +41,6 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu, menu);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setElevation(0);
 
         String profile = session.getUserDetails().get(SessionManager.KEY_IMAGE_PATH_SERVER);
 
@@ -67,9 +61,9 @@ public class BaseActivity extends AppCompatActivity {
         };
         if (profile != null) {
             ImageHelper.downloadImage((picasso, urlBuilder) ->
-                            picasso.load(String.valueOf(urlBuilder)).into(mTarget), getApplicationContext(),
+                            picasso.load(String.valueOf(urlBuilder)).resize(70,70).into(mTarget), getApplicationContext(),
                     session.getUserDetails().get(SessionManager.KEY_TOKEN), profile);
-        } else Picasso.with(this).load(R.drawable.profile_picture_placeholder).into(mTarget);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
