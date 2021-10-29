@@ -161,11 +161,10 @@ public class WalletService {
         call.enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(@NotNull Call<Map<String, Object>> call, @NotNull Response<Map<String, Object>> response) {
-                if (response.code() == 200)
-                    callback.onStats(response.body());
-                else if (response.code() == 400)
-                    Toast.makeText(context, "Nieporpawne daty", Toast.LENGTH_LONG).show();
-                else Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                if (!response.isSuccessful()) {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                } else callback.onStats(response.body());
             }
 
             @Override
