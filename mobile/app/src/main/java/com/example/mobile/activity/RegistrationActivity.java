@@ -1,6 +1,5 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,10 +7,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.mobile.R;
 import com.example.mobile.model.RegistrationForm;
 import com.example.mobile.model.User;
 import com.example.mobile.service.UserService;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 

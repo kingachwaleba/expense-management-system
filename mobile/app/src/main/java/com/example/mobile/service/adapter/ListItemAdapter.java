@@ -8,14 +8,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.SetActivityField;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.Status;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> {
@@ -26,7 +30,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
     private final ListService listService;
     private final SetActivityField editInterface;
 
-    public ListItemAdapter(Context context, List<Product> product, String accessToken, String login, SetActivityField setActivityField){
+    public ListItemAdapter(Context context, List<Product> product, String accessToken, String login, SetActivityField setActivityField) {
         mProduct = product;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
@@ -46,7 +50,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         Product product = mProduct.get(position);
 
         holder.itemId = product.getId();
-        if(product.getUser()!=null){
+        if (product.getUser() != null) {
             holder.personCb.setChecked(true);
             holder.personCb.setEnabled(product.getUser().getLogin().equals(mLogin));
             holder.whoTakeItem.setVisibility(View.VISIBLE);
@@ -56,7 +60,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             holder.whoTakeItem.setVisibility(View.INVISIBLE);
         }
 
-        if(product.getStatus().getId()==1){
+        if (product.getStatus().getId() == 1) {
             holder.itemCb.setChecked(true);
             holder.personCb.setEnabled(false);
             holder.deleteItem.setEnabled(false);
@@ -78,10 +82,10 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
 
 
         holder.personCb.setOnClickListener(v -> {
-            if(product.getUser()==null){
+            if (product.getUser() == null) {
                 product.setUser(new User(mLogin));
                 listService.changeListElementStatus(mAccessToken, holder.itemId, 2);
-            } else if(product.getUser().getLogin().equals(mLogin)){
+            } else if (product.getUser().getLogin().equals(mLogin)) {
                 product.setUser(null);
                 listService.changeListElementStatus(mAccessToken, holder.itemId, 3);
             }
@@ -89,12 +93,11 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         });
 
         holder.itemCb.setOnClickListener(v -> {
-            if(product.getStatus().getId() == 3) {
+            if (product.getStatus().getId() == 3) {
                 product.setUser(new User(mLogin));
                 product.setStatus(new Status(1, "zrealizowany"));
                 listService.changeListElementStatus(mAccessToken, holder.itemId, 1);
-            }
-            else if(product.getStatus().getId() == 2){
+            } else if (product.getStatus().getId() == 2) {
                 product.setUser(new User(mLogin));
                 product.setStatus(new Status(1, "zrealizowany"));
                 listService.changeListElementStatus(mAccessToken, holder.itemId, 1);

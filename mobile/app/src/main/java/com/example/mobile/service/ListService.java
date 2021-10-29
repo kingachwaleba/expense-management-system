@@ -3,6 +3,8 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.mobile.activity.CreateListActivity;
+import com.example.mobile.activity.EditListActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.ErrorUtils;
@@ -28,14 +30,6 @@ public class ListService {
     public ListService(Context context) {
         this.context = context;
         this.apiInterface = new ApiClient().getService();
-    }
-
-    public interface OnListCallback {
-        void onAllList(List<ListShop> lists);
-    }
-
-    public interface OnOneListCallback {
-        void onOneList(ListShop listShop);
     }
 
     public void getAllLists(ListService.OnListCallback callback, String accessToken, int id) {
@@ -79,6 +73,7 @@ public class ListService {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
+                ((CreateListActivity) context).finish();
             }
 
             @Override
@@ -98,6 +93,7 @@ public class ListService {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
+                ((EditListActivity) context).finish();
             }
 
             @Override
@@ -204,5 +200,13 @@ public class ListService {
                 call.cancel();
             }
         });
+    }
+
+    public interface OnListCallback {
+        void onAllList(List<ListShop> lists);
+    }
+
+    public interface OnOneListCallback {
+        void onOneList(ListShop listShop);
     }
 }

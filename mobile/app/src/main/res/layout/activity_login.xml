@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/bg_background"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@drawable/bg_background"
         android:gravity="center"
-        android:background="@drawable/bg_background">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -25,18 +24,17 @@
                 android:id="@+id/log_in_label"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:text="@string/baner_label"
                 android:textAppearance="@style/simple_label"
-                android:textSize="30sp"
-                android:layout_alignParentStart="true"
-                />
+                android:textSize="30sp" />
 
             <View
                 android:id="@+id/vector"
                 android:layout_width="156dp"
                 android:layout_height="15dp"
-                android:layout_marginTop="-10dp"
                 android:layout_below="@+id/log_in_label"
+                android:layout_marginTop="-10dp"
                 android:background="@drawable/v_underline" />
 
         </RelativeLayout>
@@ -55,12 +53,12 @@
             android:id="@+id/email_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="20dp"
             android:background="@drawable/et_edittext"
             android:importantForAutofill="no"
-            tools:ignore="LabelFor"  />
+            android:inputType="textEmailAddress"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/password_reg_tv"
@@ -75,11 +73,11 @@
             android:id="@+id/password_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="20dp"
             android:background="@drawable/et_edittext"
             android:importantForAutofill="no"
+            android:inputType="textPassword"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -87,24 +85,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
+            android:clickable="true"
             android:text="@string/password_forget_text"
             android:textAppearance="@style/simple_label_bold"
-            android:textSize="18sp"
             android:textColor="@drawable/btn_text"
-            android:clickable="true" />
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/log_in_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
             android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/btn_simple"
             android:paddingBottom="6dp"
             android:text="@string/log_in"
-            app:backgroundTint="@null"
-            android:textColor="@color/light_gray"
             android:textAppearance="@style/simple_button"
-            android:background="@drawable/btn_simple" />
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -115,13 +113,12 @@
                 android:id="@+id/sign_up_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/no_account_label"
                 android:clickable="true"
                 android:text="@string/sign_up_text"
                 android:textAppearance="@style/simple_label_bold"
                 android:textColor="@drawable/btn_text"
-                android:textSize="18sp"
-                android:layout_toEndOf="@+id/no_account_label"
-                />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/no_account_label"

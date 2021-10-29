@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg_background">
+    android:background="@drawable/bg_background"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginTop="40dp"
-        android:padding="20dp"
-        android:background="@drawable/bg_round_box_dark">
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_round_box_dark"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/name_tv"
@@ -21,54 +21,56 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textAppearance="@style/simple_label_bold"
-            android:textSize="36sp"
-            android:textColor="@color/yellow" />
+            android:textColor="@color/yellow"
+            android:textSize="36sp" />
 
         <View
             android:id="@+id/vector_1"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/v_line_white" />
 
 
-            <RelativeLayout
-                android:id="@+id/message_et_btn"
+        <RelativeLayout
+            android:id="@+id/message_et_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/message_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/edit_send_message_rl"
+                android:layout_marginBottom="20dp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/message_rv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/edit_send_message_rl"
-                    android:layout_marginBottom="20dp" />
+            <LinearLayout
+                android:id="@+id/edit_send_message_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/bg_round_box_light"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-                <LinearLayout
-                    android:id="@+id/edit_send_message_rl"
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/message_et"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="horizontal"
+                    android:layout_weight="0.8"
                     android:background="@drawable/bg_round_box_light"
-                    android:padding="10dp">
-                    <EditText
-                        android:id="@+id/message_et"
-                        android:hint="@string/enter_message"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/bg_round_box_light"
-                        android:importantForAutofill="no"
-                        android:inputType="text" />
-                    <Button
-                        android:id="@+id/send_message_btn"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/btn_send"/>
-                </LinearLayout>
-            </RelativeLayout>
+                    android:hint="@string/enter_message"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/send_message_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_send" />
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

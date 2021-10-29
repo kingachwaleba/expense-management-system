@@ -39,18 +39,6 @@ public class AccountService {
         this.session = new SessionManager(context);
     }
 
-    public interface OnAccountCallback {
-        void onMyAccount(User user);
-    }
-
-    public interface OnInvitationCallback {
-        void onAllInvitations(List<Invitation> invitations);
-    }
-
-    public interface OnNotificationCallback {
-        void onAllNotifications(List<Message> messages);
-    }
-
     public void getAccount(OnAccountCallback callback, String accessToken) {
         Call<User> call = apiInterface.getAccount("Bearer " + accessToken);
         call.enqueue(new Callback<User>() {
@@ -128,11 +116,10 @@ public class AccountService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                if (!response.isSuccessful()){
+                if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
                     Toast.makeText(context, "Zdjęcie profilowe zostało usunięte", Toast.LENGTH_SHORT).show();
                     session.setKeyImagePathServer(null);
                 }
@@ -227,5 +214,17 @@ public class AccountService {
                 call.cancel();
             }
         });
+    }
+
+    public interface OnAccountCallback {
+        void onMyAccount(User user);
+    }
+
+    public interface OnInvitationCallback {
+        void onAllInvitations(List<Invitation> invitations);
+    }
+
+    public interface OnNotificationCallback {
+        void onAllNotifications(List<Message> messages);
     }
 }

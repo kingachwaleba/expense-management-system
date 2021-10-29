@@ -11,7 +11,7 @@ public class ApiClient {
     private static ApiInterface apiInterface;
     private static Retrofit retrofit;
 
-    public ApiClient(){
+    public ApiClient() {
         String BASE_URL = "http://192.168.0.31:8080/";
 
         Gson gson = new GsonBuilder()
@@ -26,11 +26,11 @@ public class ApiClient {
         apiInterface = retrofit.create(ApiInterface.class);
     }
 
-    public ApiInterface getService(){
-        return apiInterface;
-    }
-
     public static Retrofit getRetrofit() {
         return retrofit;
+    }
+
+    public ApiInterface getService() {
+        return apiInterface;
     }
 }

@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.model.WalletCreate;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder> {
@@ -19,7 +23,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
     private final List<WalletCreate> mWalletItem;
     private final LayoutInflater mInflater;
 
-    public WalletAdapter(Context context, List<WalletCreate> walletItems){
+    public WalletAdapter(Context context, List<WalletCreate> walletItems) {
         mWalletItem = walletItems;
         mInflater = LayoutInflater.from(context);
     }
@@ -44,7 +48,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
 
         holder.goToWalletBtn.setOnClickListener(v -> {
             Intent i = new Intent(holder.itemView.getContext(), WalletActivity.class);
-            i.putExtra("id",String.valueOf(holder.id));
+            i.putExtra("id", String.valueOf(holder.id));
             holder.itemView.getContext().startActivity(i);
         });
     }
@@ -56,9 +60,9 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-         public TextView nameTv, ownerTv, numberOfMembersTv, balanceTv;
-         public int id;
-         public Button goToWalletBtn;
+        public TextView nameTv, ownerTv, numberOfMembersTv, balanceTv;
+        public int id;
+        public Button goToWalletBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);

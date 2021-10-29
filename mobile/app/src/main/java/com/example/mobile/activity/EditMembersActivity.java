@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.WalletCreate;
@@ -16,11 +18,12 @@ public class EditMembersActivity extends BaseActivity {
     Button goToSendInvitationBtn;
     RecyclerView membersRv;
     TextView walletNameTv;
+
+    SessionManager session;
     UserListAdapter userListAdapter;
     String accessToken, login;
     Boolean owner;
     WalletCreate walletCreate;
-    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,13 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.activity.ProfileActivity;
 import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.model.Message;
 import com.example.mobile.service.AccountService;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHolder> {
@@ -22,7 +26,7 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
     private final String mAccessToken;
     private final AccountService accountService;
 
-    public WarningAdapter(Context context, List<Message> warningItems, String accessToken){
+    public WarningAdapter(Context context, List<Message> warningItems, String accessToken) {
         mWarnings = warningItems;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
@@ -36,11 +40,11 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(WarningAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(WarningAdapter.@NotNull ViewHolder holder, int position) {
         Message warningItem = mWarnings.get(position);
         String debtS = mInflater.getContext().getResources().getString(R.string.debt) + " " + warningItem.getContent();
 
-        if(warningItem.getType().equals("S")){
+        if (warningItem.getType().equals("S")) {
             holder.ownerNameTv.setVisibility(View.INVISIBLE);
             holder.contentTv.setText(mInflater.getContext().getResources().getString(R.string.new_debt_notification));
         } else {
@@ -54,7 +58,7 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
             Intent intent = new Intent(holder.itemView.getContext(), WalletActivity.class);
             intent.putExtra("id", String.valueOf(warningItem.getWallet().getId()));
             holder.itemView.getContext().startActivity(intent);
-            ((ProfileActivity)(holder.itemView.getContext())).finish();
+            ((ProfileActivity) (holder.itemView.getContext())).finish();
         });
 
         holder.denyBtn.setOnClickListener(v -> {
@@ -67,6 +71,10 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mWarnings.size();
+    }
+
+    public void clear() {
+        mWarnings.clear();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,9 +90,5 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
             denyBtn = itemView.findViewById(R.id.delete_notification_btn);
             contentTv = itemView.findViewById(R.id.warning_info_tv);
         }
-    }
-
-    public void clear(){
-        mWarnings.clear();
     }
 }

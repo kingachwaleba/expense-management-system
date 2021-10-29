@@ -1,139 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:background="@drawable/bg_background"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:orientation="vertical"
+        android:background="@drawable/bg_round_box_dark"
         android:gravity="center"
-        android:background="@drawable/bg_round_box_dark">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-            <TextView
-                android:id="@+id/name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/simple_label_bold"
-                android:textSize="36sp"
-                android:textColor="@color/yellow" />
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/simple_label_bold"
+            android:textColor="@color/yellow"
+            android:textSize="36sp" />
 
-            <View
-                android:id="@+id/vector_1"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/v_line_white" />
+        <View
+            android:id="@+id/vector_1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/v_line_white" />
 
-            <TextView
-                android:id="@+id/description_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:text="@string/description_label" />
+        <TextView
+            android:id="@+id/description_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/description_label"
+            android:textAppearance="@style/simple_label"
+            android:textSize="20sp" />
 
-            <View
-                android:id="@+id/vector_2"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/v_line_white" />
+        <View
+            android:id="@+id/vector_2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/v_line_white" />
 
-            <TextView
-                android:id="@+id/owner_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:text="@string/owner_label" />
+        <TextView
+            android:id="@+id/owner_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/owner_label"
+            android:textAppearance="@style/simple_label"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/category_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:text="@string/category_label" />
+        <TextView
+            android:id="@+id/category_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/category_label"
+            android:textAppearance="@style/simple_label"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/number_of_members_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:text="@string/number_of_members_label" />
+        <TextView
+            android:id="@+id/number_of_members_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/number_of_members_label"
+            android:textAppearance="@style/simple_label"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/wallet_expenses_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:text="@string/all_balance_label" />
+        <TextView
+            android:id="@+id/wallet_expenses_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="1"
+            android:text="@string/all_balance_label"
+            android:textAppearance="@style/simple_label"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/your_expanses_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:text="@string/your_expanses_label" />
+        <TextView
+            android:id="@+id/your_expanses_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/your_expanses_label"
+            android:textAppearance="@style/simple_label"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/your_balance_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/simple_label"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:text="@string/your_balance_label" />
+        <TextView
+            android:id="@+id/your_balance_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/your_balance_label"
+            android:textAppearance="@style/simple_label"
+            android:textSize="20sp" />
 
-            <View
-                android:id="@+id/vector_3"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/v_line_white" />
+        <View
+            android:id="@+id/vector_3"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/v_line_white" />
 
-            <Button
-                android:id="@+id/open_chat_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_round_box_light"
-                android:gravity="center_horizontal"
-                android:paddingVertical="15dp"
-                android:text="@string/open_chat"
-                android:textAllCaps="false"
-                android:textColor="@color/yellow"
-                android:textSize="24sp" />
+        <Button
+            android:id="@+id/open_chat_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_round_box_light"
+            android:gravity="center_horizontal"
+            android:paddingVertical="15dp"
+            android:text="@string/open_chat"
+            android:textAllCaps="false"
+            android:textColor="@color/yellow"
+            android:textSize="24sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="15dp"
-            android:paddingHorizontal="30dp"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_round_box_light"
             android:gravity="center"
-            android:background="@drawable/bg_round_box_light">
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="15dp">
 
             <Button
                 android:id="@+id/add_member_btn"
@@ -141,24 +140,26 @@
                 android:layout_height="35dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/btn_plus"/>
+                android:background="@drawable/btn_plus" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textColor="@color/yellow"
-                android:text="@string/members"
                 android:layout_alignParentStart="false"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:textSize="24sp"/>
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/members"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
+
             <ImageButton
                 android:id="@+id/show_members_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_list_closed"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"/>
+                android:background="@drawable/btn_list_closed" />
 
         </RelativeLayout>
 
@@ -166,160 +167,165 @@
             android:id="@+id/members_list_l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_marginBottom="10dp"
-            android:padding="20dp"
             android:background="@drawable/bg_round_box_light"
+            android:gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:padding="20dp"
+            android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/members_wallet_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_member" />
+
             <View
                 android:id="@+id/vector_4"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_marginVertical="5dp"
                 android:background="@drawable/v_line_gradient" />
+
             <TextView
                 android:id="@+id/edit_members_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_members_list"
-                android:textSize="18sp"
-                android:textAppearance="@style/simple_button" />
+                android:textAppearance="@style/simple_button"
+                android:textSize="18sp" />
         </LinearLayout>
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="15dp"
-                android:paddingHorizontal="30dp"
-                android:gravity="center"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_round_box_light">
-                <Button
-                    android:id="@+id/add_expense_btn"
-                    android:layout_width="30dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/btn_plus"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:textColor="@color/yellow"
-                    android:text="@string/expenses"
-                    android:layout_alignParentStart="false"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="24sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_round_box_light"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="15dp">
 
-                <ImageButton
-                    android:id="@+id/show_expenses_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/btn_list_closed"/>
-            </RelativeLayout>
+            <Button
+                android:id="@+id/add_expense_btn"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_plus" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="false"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/expenses"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/show_expenses_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_list_closed" />
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/expenses_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_expense"
-            />
+            tools:listitem="@layout/item_expense" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="15dp"
-                android:paddingHorizontal="30dp"
-                android:gravity="center"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_round_box_light">
-                <Button
-                    android:id="@+id/add_shop_list_btn"
-                    android:layout_width="30dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/btn_plus"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:textColor="@color/yellow"
-                    android:text="@string/shop_lists"
-                    android:layout_alignParentStart="false"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="24sp"/>
-                <ImageButton
-                    android:id="@+id/show_shop_lists_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/btn_list_closed"/>
-            </RelativeLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/shop_lists_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/item_one_list"
-                />
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_round_box_light"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="15dp">
 
             <Button
-                android:id="@+id/statistics_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/btn_simple"
-                android:text="@string/statistics"
-                android:textAppearance="@style/simple_button"
-                android:textColor="@color/light_gray"
-                app:backgroundTint="@null" />
+                android:id="@+id/add_shop_list_btn"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_plus" />
 
-            <Button
-                android:id="@+id/edit_wallet_btn"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/btn_simple"
-                android:text="@string/edit_wallet"
-                android:textAppearance="@style/simple_button"
-                android:textColor="@color/light_gray"
-                app:backgroundTint="@null" />
+                android:layout_alignParentStart="false"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/shop_lists"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
 
-            <Button
-                android:id="@+id/delete_wallet_btn"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/show_shop_lists_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/btn_danger"
-                android:text="@string/delete_wallet"
-                android:textAppearance="@style/simple_button"
-                android:textColor="@color/light_gray"
-                app:backgroundTint="@null" />
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_list_closed" />
+        </RelativeLayout>
 
-            <Button
-                android:id="@+id/leave_wallet_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/btn_danger"
-                android:text="@string/leave_wallet"
-                android:textAppearance="@style/simple_button"
-                android:textColor="@color/light_gray"
-                app:backgroundTint="@null" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shop_lists_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_one_list" />
+
+
+        <Button
+            android:id="@+id/statistics_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_simple"
+            android:text="@string/statistics"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/edit_wallet_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_simple"
+            android:text="@string/edit_wallet"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/delete_wallet_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_danger"
+            android:text="@string/delete_wallet"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/leave_wallet_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_danger"
+            android:text="@string/leave_wallet"
+            android:textAppearance="@style/simple_button"
+            android:textColor="@color/light_gray"
+            app:backgroundTint="@null" />
     </LinearLayout>
 </ScrollView>

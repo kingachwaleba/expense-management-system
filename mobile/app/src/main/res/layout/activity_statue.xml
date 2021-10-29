@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_background">
@@ -21,18 +20,18 @@
                 android:id="@+id/statue_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:text="@string/statue_label"
                 android:textAppearance="@style/simple_label"
-                android:textSize="40sp"
-                android:layout_alignParentStart="true" />
+                android:textSize="40sp" />
 
             <View
                 android:id="@+id/vector"
                 android:layout_width="156dp"
                 android:layout_height="15dp"
-                android:layout_marginTop="-10dp"
                 android:layout_below="@+id/statue_label"
                 android:layout_alignEnd="@+id/statue_label"
+                android:layout_marginTop="-10dp"
                 android:background="@drawable/v_underline" />
 
         </RelativeLayout>
@@ -42,36 +41,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:textSize="24sp"
+            android:text="@string/statue_text_1"
             android:textAppearance="@style/simple_label"
-            android:text="@string/statue_text_1"/>
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/statue_2_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:textSize="24sp"
+            android:text="@string/statue_text_2"
             android:textAppearance="@style/simple_label"
-            android:text="@string/statue_text_2"/>
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/statue_3_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:textSize="24sp"
+            android:text="@string/statue_text_3"
             android:textAppearance="@style/simple_label"
-            android:text="@string/statue_text_3"/>
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/statue_4_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:textSize="24sp"
+            android:text="@string/statue_text_4"
             android:textAppearance="@style/simple_label"
-            android:text="@string/statue_text_4"/>
+            android:textSize="24sp" />
 
     </LinearLayout>
 

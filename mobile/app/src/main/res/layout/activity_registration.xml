@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -24,18 +23,18 @@
                 android:id="@+id/sign_up_label"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:text="@string/sign_up_label"
                 android:textAppearance="@style/simple_label"
-                android:textSize="40sp"
-                android:layout_alignParentStart="true" />
+                android:textSize="40sp" />
 
             <View
                 android:id="@+id/vector"
                 android:layout_width="156dp"
                 android:layout_height="15dp"
-                android:layout_marginTop="-10dp"
                 android:layout_below="@+id/sign_up_label"
                 android:layout_alignEnd="@+id/sign_up_label"
+                android:layout_marginTop="-10dp"
                 android:background="@drawable/v_underline" />
 
         </RelativeLayout>
@@ -54,11 +53,11 @@
             android:id="@+id/login_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"
             android:background="@drawable/et_edittext"
             android:importantForAutofill="no"
+            android:inputType="text"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -74,12 +73,12 @@
             android:id="@+id/email_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"
             android:background="@drawable/et_edittext"
             android:importantForAutofill="no"
-            tools:ignore="LabelFor"  />
+            android:inputType="textEmailAddress"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/password_reg_tv"
@@ -94,11 +93,11 @@
             android:id="@+id/password_reg_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"
             android:background="@drawable/et_edittext"
             android:importantForAutofill="no"
+            android:inputType="textPassword"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -136,8 +135,8 @@
             android:id="@+id/statue_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -148,21 +147,21 @@
                 android:id="@+id/statue_reg_cb"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:button="@drawable/cb_simple"
                 android:text="@string/statute_text"
                 android:textAppearance="@style/simple_label"
                 android:textColor="@color/light_gray"
-                android:button="@drawable/cb_simple"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/statue_reg_tv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="true"
                 android:paddingStart="35dp"
                 android:text="@string/statute_required"
                 android:textAppearance="@style/simple_label_bold"
                 android:textColor="@drawable/btn_text"
-                android:clickable="true"
                 android:textSize="16sp"
                 tools:ignore="RtlSymmetry" />
         </LinearLayout>
@@ -171,12 +170,12 @@
             android:id="@+id/sign_up_reg_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
             android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/btn_simple"
             android:text="@string/sign_up"
             android:textAppearance="@style/simple_button"
             android:textColor="@color/light_gray"
-            app:backgroundTint="@null"
-            android:background="@drawable/btn_simple" />
+            app:backgroundTint="@null" />
     </LinearLayout>
 </ScrollView>

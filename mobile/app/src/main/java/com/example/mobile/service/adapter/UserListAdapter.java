@@ -8,37 +8,41 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.WalletService;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
-    private final List<Member> mMembers;
-    private final LayoutInflater mInflater;
     public static List<String> selectedUser = new ArrayList<>();
     public static String mTAG;
+    private final List<Member> mMembers;
+    private final LayoutInflater mInflater;
     private final String mAccessToken;
     private final String mLogin;
     private final int mWalletId;
     private final Boolean mOwner;
 
-    public UserListAdapter(Context context, List<Member> members, String TAG){
-        mMembers= members;
+    public UserListAdapter(Context context, List<Member> members, String TAG) {
+        mMembers = members;
         mInflater = LayoutInflater.from(context);
         mTAG = TAG;
         mAccessToken = "";
         mWalletId = 0;
-        mLogin="";
+        mLogin = "";
         mOwner = false;
     }
 
-    public UserListAdapter(Context context, List<Member> members, String accessToken, int walletId, Boolean owner, String login,String TAG) {
+    public UserListAdapter(Context context, List<Member> members, String accessToken, int walletId, Boolean owner, String login, String TAG) {
         mMembers = members;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
@@ -59,7 +63,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         Member member = mMembers.get(position);
         holder.memberNameTv.setText(member.getLogin());
 
-        if(member.getImage()!=null){
+        if (member.getImage() != null) {
             ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(holder.profileImageIv), holder.itemView.getContext(), mAccessToken, member.getImage());
         }
 
@@ -96,8 +100,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                             WalletService walletService = new WalletService(holder.itemView.getContext());
-                            if(mLogin.equals(member.getLogin())) walletService.deleteCurrentMember(mAccessToken, mWalletId,1);
-                                else walletService.deleteMember(mAccessToken, mWalletId, member.getLogin());
+                            if (mLogin.equals(member.getLogin()))
+                                walletService.deleteCurrentMember(mAccessToken, mWalletId, 1);
+                            else
+                                walletService.deleteMember(mAccessToken, mWalletId, member.getLogin());
                             notifyDataSetChanged();
                         }).setNegativeButton(android.R.string.no, null).show());
                 break;
@@ -115,6 +121,18 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         return mMembers.size();
     }
 
+    public void clear() {
+        mMembers.clear();
+    }
+
+    public void clearSelected() {
+        selectedUser.clear();
+    }
+
+    public List<String> getSelectedUser() {
+        return selectedUser;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView profileImageIv;
@@ -129,17 +147,5 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             userBtn = itemView.findViewById(R.id.user_btn);
             profileImageIv = itemView.findViewById(R.id.profile_image_iv);
         }
-    }
-
-    public void clear(){
-        mMembers.clear();
-    }
-
-    public void clearSelected(){
-        selectedUser.clear();
-    }
-
-    public List<String> getSelectedUser(){
-        return selectedUser;
     }
 }

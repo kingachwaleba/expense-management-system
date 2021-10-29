@@ -1,23 +1,27 @@
 package com.example.mobile.activity;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class ChatActivity extends BaseActivity {
 
-    String accessToken;
-    int walletId;
     EditText contentEt;
     Button sendMessageBtn;
     RecyclerView messageRv;
+    String accessToken;
+    int walletId;
     private WebSocketClient webSocketClient;
 
     @Override
@@ -40,8 +44,7 @@ public class ChatActivity extends BaseActivity {
         try {
             // Connect to local host
             uri = new URI("ws://192.168.0.31:8080/websocket");
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
         }
@@ -51,32 +54,38 @@ public class ChatActivity extends BaseActivity {
                 Log.i("WebSocket", "Session is starting");
                 webSocketClient.send("Hello World!");
             }
+
             @Override
             public void onTextReceived(String s) {
                 Log.i("WebSocket", "Message received");
                 final String message = s;
                 runOnUiThread(() -> {
-                    try{
+                    try {
                         TextView textView = findViewById(R.id.name_tv);
                         textView.setText(message);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
             }
+
             @Override
             public void onBinaryReceived(byte[] data) {
             }
+
             @Override
             public void onPingReceived(byte[] data) {
             }
+
             @Override
             public void onPongReceived(byte[] data) {
             }
+
             @Override
             public void onException(Exception e) {
                 System.out.println(e.getMessage());
             }
+
             @Override
             public void onCloseReceived() {
                 Log.i("WebSocket", "Closed ");

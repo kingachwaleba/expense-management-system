@@ -128,5 +128,6 @@
     <string name="show_statistics">Pokaż statystyki</string>
     <string name="receipt_photo">Zdjęcie paragonu:</string>
     <string name="delete_image">Usuń zdjęcie</string>
+    <string name="wallets">Portfele</string>
 
 </resources>

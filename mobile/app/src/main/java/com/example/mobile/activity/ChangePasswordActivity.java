@@ -3,19 +3,22 @@ package com.example.mobile.activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.service.AccountService;
+
 import java.util.regex.Pattern;
 
 public class ChangePasswordActivity extends BaseActivity {
 
     EditText oldPasswordEt, newPasswordEt, newPasswordConfirmEt;
     Button saveChangesBtn;
+
     SessionManager session;
-    String accessToken;
     AccountService accountService;
+    String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,8 @@ public class ChangePasswordActivity extends BaseActivity {
         accountService = new AccountService(this);
 
         saveChangesBtn.setOnClickListener(v -> {
-            if(validateDataPassword()!=null)
-                accountService.changePassword(accessToken,validateDataPassword());
+            if (validateDataPassword() != null)
+                accountService.changePassword(accessToken, validateDataPassword());
         });
     }
 

@@ -6,8 +6,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
@@ -17,6 +19,7 @@ import com.example.mobile.model.User;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
 import com.example.mobile.service.adapter.WarningAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +28,15 @@ public class ProfileActivity extends BaseActivity {
     ImageView profileImage;
     Button editProfileBtn;
     ImageButton openNotificationBtn;
-    Boolean ifOpenNotification;
+    TextView loginTv, emailTv, numberOfWalletTv, balanceTv, goToStatuteTv;
     RecyclerView notificationInvitationRv, notificationWarningRv;
+
     SessionManager session;
     String accessToken;
     AccountService accountService;
-    TextView loginTv, emailTv, numberOfWalletTv, balanceTv, goToStatuteTv;
     User user;
+    Boolean ifOpenNotification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +80,7 @@ public class ProfileActivity extends BaseActivity {
             String numberOfWalletText = getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber();
             String balanceText = getResources().getString(R.string.saldo_label) + " " + account.getUserBalance();
             session.setKeyImagePathServer(account.getImage());
-            if(account.getImage()!=null){
+            if (account.getImage() != null) {
                 ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(profileImage), getApplicationContext(), accessToken, account.getImage());
             }
 
@@ -92,7 +97,7 @@ public class ProfileActivity extends BaseActivity {
 
         openNotificationBtn.setOnClickListener(v -> {
             ifOpenNotification = !ifOpenNotification;
-            if(ifOpenNotification){
+            if (ifOpenNotification) {
                 openNotificationBtn.setBackgroundResource(R.drawable.btn_list_opened);
                 accountService.getInvitations(invitations -> {
                     InvitationAdapter invitationAdapter = new InvitationAdapter(ProfileActivity.this, invitations, accessToken);

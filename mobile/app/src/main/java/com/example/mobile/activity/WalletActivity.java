@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Expense;
@@ -29,26 +31,23 @@ import java.util.List;
 
 public class WalletActivity extends BaseActivity {
 
-    SessionManager session;
+    ImageButton showMembersBtn, showListsBtn, showExpensesBtn;
+    LinearLayout membersListL;
+    TextView editMembersBtn, walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
+    Button addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn, statisticsBtn;
+    RecyclerView shopListsRv, expensesRv, membersRv;
 
+    SessionManager session;
     int id;
     Boolean showMembersControl, showListsControl, showExpensesControl;
-    String accessToken, login;
-    TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
-    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn, statisticsBtn;
-    String walletName, walletDescription, walletCategory;
+    String walletName, walletDescription, walletCategory, accessToken, login;
     ListsAdapter listAdapter;
     ExpensesAdapter expensesAdapter;
-    RecyclerView shopListsRv, expensesRv, membersRv;
     List<ListShop> lists1;
     List<Expense> expenses1;
     List<Member> members1, members;
     MemberAdapter memberAdapter;
     ExpenseService expenseService;
-    ImageButton showMembersBtn, showListsBtn, showExpensesBtn;
-    LinearLayout membersListL;
-    TextView editMembersBtn;
-
     WalletCreate walletCreate;
 
     @Override
@@ -100,7 +99,7 @@ public class WalletActivity extends BaseActivity {
         shopListsRv = findViewById(R.id.shop_lists_rv);
         lists1 = new ArrayList<>();
         shopListsRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
-        listAdapter = new ListsAdapter(this, lists1, accessToken);
+        listAdapter = new ListsAdapter(this, lists1);
         shopListsRv.setAdapter(listAdapter);
 
         expensesRv = findViewById(R.id.expenses_rv);
@@ -118,7 +117,7 @@ public class WalletActivity extends BaseActivity {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         WalletService walletService = new WalletService(this);
         walletService.getWalletById(walletModel -> {
             walletCreate = walletModel;
@@ -143,16 +142,16 @@ public class WalletActivity extends BaseActivity {
             ownerTv.setText(ownerText);
             numberOfMembersTv.setText(numberOfMembersText);
 
-            if(walletDescription!=null){
+            if (walletDescription != null) {
                 descriptionText = getResources().getString(R.string.description_label) + " " + walletDescription;
                 descriptionTv.setText(descriptionText);
             }
-            if(!walletCreate.getOwner().equals(session.getUserDetails().get(SessionManager.KEY_LOGIN)))
+            if (!walletCreate.getOwner().equals(session.getUserDetails().get(SessionManager.KEY_LOGIN)))
                 deleteWalletBtn.setVisibility(View.GONE);
 
             showMembersBtn.setOnClickListener(v -> {
                 if (!showMembersControl) {
-                    membersListL .setVisibility(View.VISIBLE);
+                    membersListL.setVisibility(View.VISIBLE);
                     MemberAdapter memberAdapter1 = new MemberAdapter(getApplicationContext(), members, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
                     membersRv.setAdapter(memberAdapter1);
                     memberAdapter1.notifyDataSetChanged();
@@ -171,17 +170,17 @@ public class WalletActivity extends BaseActivity {
 
         addMemberBtn.setOnClickListener(v -> {
             Intent intent = new Intent(WalletActivity.this, AddMemberActivity.class);
-            intent.putExtra("name",walletNameTv.getText().toString());
-            intent.putExtra("walletId",id);
+            intent.putExtra("name", walletNameTv.getText().toString());
+            intent.putExtra("walletId", id);
             intent.putExtra("accessToken", accessToken);
-            intent.putParcelableArrayListExtra("members", (ArrayList<Member>)members);
+            intent.putParcelableArrayListExtra("members", (ArrayList<Member>) members);
             startActivity(intent);
         });
 
         editWalletBtn.setOnClickListener(v -> {
             Intent intent = new Intent(WalletActivity.this, EditWalletActivity.class);
             intent.putExtra("accessToken", accessToken);
-            intent.putExtra("walletId",id);
+            intent.putExtra("walletId", id);
             intent.putExtra("walletName", walletName);
             intent.putExtra("walletDescription", walletDescription);
             intent.putExtra("walletCategory", walletCategory);
@@ -191,7 +190,7 @@ public class WalletActivity extends BaseActivity {
         addListBtn.setOnClickListener(v -> {
             Intent intent = new Intent(WalletActivity.this, CreateListActivity.class);
             intent.putExtra("accessToken", accessToken);
-            intent.putExtra("walletId",id);
+            intent.putExtra("walletId", id);
             startActivity(intent);
         });
 
@@ -200,7 +199,7 @@ public class WalletActivity extends BaseActivity {
             ListService listService = new ListService(getParent());
             listService.getAllLists(lists -> {
                 if (!showListsControl) {
-                    ListsAdapter listsAdapter1 = new ListsAdapter(getApplicationContext(), lists, accessToken);
+                    ListsAdapter listsAdapter1 = new ListsAdapter(getApplicationContext(), lists);
                     shopListsRv.setAdapter(listsAdapter1);
                     listsAdapter1.notifyDataSetChanged();
                     showListsBtn.setBackgroundResource(R.drawable.btn_list_opened);

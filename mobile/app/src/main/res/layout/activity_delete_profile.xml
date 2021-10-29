@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_background">
@@ -8,8 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -21,18 +20,18 @@
                 android:id="@+id/delete_account_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:text="@string/delete_account_label"
                 android:textAppearance="@style/simple_label"
-                android:textSize="40sp"
-                android:layout_alignParentStart="true" />
+                android:textSize="40sp" />
 
             <View
                 android:id="@+id/vector"
                 android:layout_width="156dp"
                 android:layout_height="15dp"
-                android:layout_marginTop="-10dp"
                 android:layout_below="@+id/delete_account_label"
                 android:layout_alignEnd="@+id/delete_account_label"
+                android:layout_marginTop="-10dp"
                 android:background="@drawable/v_underline" />
 
         </RelativeLayout>
@@ -40,10 +39,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_margin="20dp"
             android:gravity="center"
-            android:padding="20dp"
-            android:layout_margin="20dp">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -51,47 +50,47 @@
                 android:gravity="center_horizontal"
                 android:text="@string/delete_account_question_label"
                 android:textAppearance="@style/simple_label_bold"
-                android:textSize="30sp"
-                android:textColor="@color/light_gray" />
+                android:textColor="@color/light_gray"
+                android:textSize="30sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
                 android:gravity="center_horizontal"
                 android:text="@string/warning"
                 android:textAppearance="@style/simple_label_bold"
-                android:textSize="24sp"
-                android:layout_marginVertical="20dp"
-                android:textColor="@color/yellow" />
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/password_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/password_hint"
-                android:background="@drawable/et_simple"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/light_gray"
-                android:importantForAutofill="no"/>
+                android:background="@drawable/et_simple"
+                android:hint="@string/password_hint"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:textColor="@color/light_gray" />
 
 
             <Button
                 android:id="@+id/delete_account_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_simple"
                 android:text="@string/yes_delete"
-                android:layout_marginBottom="20dp"
                 android:textAppearance="@style/simple_button" />
 
             <Button
                 android:id="@+id/cancel_account_delete_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/btn_danger"
                 android:text="@string/no_exit"
-                android:layout_marginBottom="10dp"
                 android:textAppearance="@style/simple_button" />
 
         </LinearLayout>

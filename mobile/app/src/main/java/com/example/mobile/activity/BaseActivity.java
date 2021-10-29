@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,13 +18,14 @@ import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
 import java.util.Objects;
 
 
 public class BaseActivity extends AppCompatActivity {
 
-    SessionManager session;
     Menu menu;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +50,21 @@ public class BaseActivity extends AppCompatActivity {
 
         String profile = session.getUserDetails().get(SessionManager.KEY_IMAGE_PATH_SERVER);
 
-            final Target mTarget = new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                    BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(),  new CircleTransform().getCroppedBitmap(bitmap));
-                    menu.getItem(0).setIcon(mBitmapDrawable);
-                }
+        final Target mTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+                BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), new CircleTransform().getCroppedBitmap(bitmap));
+                menu.getItem(0).setIcon(mBitmapDrawable);
+            }
 
-                @Override
-                public void onBitmapFailed(Drawable drawable) {
-                }
+            @Override
+            public void onBitmapFailed(Drawable drawable) {
+            }
 
-                @Override
-                public void onPrepareLoad(Drawable drawable) {
-                }
-            };
+            @Override
+            public void onPrepareLoad(Drawable drawable) {
+            }
+        };
         if (profile != null) {
             ImageHelper.downloadImage((picasso, urlBuilder) ->
                             picasso.load(String.valueOf(urlBuilder)).into(mTarget), getApplicationContext(),
@@ -73,20 +75,20 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.logout){
+        if (id == R.id.logout) {
             session.logoutUser();
             finish();
             return true;
         }
-        if(id == R.id.goToProfile){
+        if (id == R.id.goToProfile) {
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
             return true;
         }
 
-        if(id == R.id.goToWallets){
+        if (id == R.id.goToWallets) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             return true;

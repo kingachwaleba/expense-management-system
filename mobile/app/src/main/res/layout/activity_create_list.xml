@@ -1,139 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bg_background">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="20dp"
             android:layout_margin="20dp"
-            android:background="@drawable/bg_round_box_dark">
+            android:background="@drawable/bg_round_box_dark"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/create_list_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/simple_label_bold"
-                android:textSize="30sp"
                 android:text="@string/create_list_label"
-                android:textColor="@color/yellow" />
+                android:textAppearance="@style/simple_label_bold"
+                android:textColor="@color/yellow"
+                android:textSize="30sp" />
 
             <View
                 android:id="@+id/vector"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/v_line_white" />
 
             <EditText
                 android:id="@+id/name_list_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/name_hint"
-                android:background="@drawable/et_simple"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/light_gray"
-                android:importantForAutofill="no"/>
+                android:background="@drawable/et_simple"
+                android:hint="@string/name_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textColor="@color/light_gray" />
 
             <TextView
                 android:id="@+id/added_product_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/simple_label_bold"
-                android:textSize="24sp"
                 android:text="@string/added_product_label"
-                android:textColor="@color/yellow" />
+                android:textAppearance="@style/simple_label_bold"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
 
             <View
                 android:id="@+id/vector_2"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/v_line_white" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/added_products_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_list_create"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                tools:listitem="@layout/item_list_create" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="20dp"
             android:layout_margin="20dp"
-            android:background="@drawable/bg_round_box_dark">
+            android:background="@drawable/bg_round_box_dark"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/add_product_to_list_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/simple_label_bold"
-                android:textSize="24sp"
                 android:text="@string/add_product_to_list_label"
-                android:textColor="@color/yellow" />
+                android:textAppearance="@style/simple_label_bold"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
 
             <View
                 android:id="@+id/vector_3"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/v_line_white" />
 
             <EditText
                 android:id="@+id/name_prodcut_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/name_hint"
-                android:background="@drawable/et_simple"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/light_gray"
-                android:importantForAutofill="no"/>
+                android:background="@drawable/et_simple"
+                android:hint="@string/name_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textColor="@color/light_gray" />
 
 
             <EditText
                 android:id="@+id/quantity_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/quantity_hint"
-                android:background="@drawable/et_simple"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/light_gray"
-                android:importantForAutofill="no"/>
+                android:background="@drawable/et_simple"
+                android:hint="@string/quantity_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textColor="@color/light_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round_box_light"
-                android:padding="20dp"
                 android:layout_marginBottom="20dp"
-                android:orientation="vertical">
+                android:background="@drawable/bg_round_box_light"
+                android:orientation="vertical"
+                android:padding="20dp">
+
                 <RadioGroup
                     android:id="@+id/unit_RG"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:orientation="vertical" />
             </LinearLayout>
 
             <Button
@@ -144,6 +147,7 @@
                 android:text="@string/add"
                 android:textAppearance="@style/simple_button" />
         </LinearLayout>
+
         <Button
             android:id="@+id/create_list_btn"
             android:layout_width="match_parent"
@@ -158,10 +162,10 @@
             android:id="@+id/cancel_list_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/btn_danger"
             android:text="@string/cancel"
-            android:layout_marginBottom="10dp"
-            android:layout_marginHorizontal="20dp"
             android:textAppearance="@style/simple_button" />
     </LinearLayout>
 </ScrollView>

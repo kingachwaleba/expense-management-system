@@ -7,22 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.activity.ExpenseActivity;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.Member;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHolder>{
+public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHolder> {
     private final List<Expense> mExpenses;
     private final LayoutInflater mInflater;
     private final String mAccessToken;
     private final List<Member> mAllMembers;
 
-    public ExpensesAdapter(Context context, List<Expense> expenses, String accessToken, List<Member> allMembers){
+    public ExpensesAdapter(Context context, List<Expense> expenses, String accessToken, List<Member> allMembers) {
         mExpenses = expenses;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
@@ -31,14 +35,14 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
 
     @Override
     public @NotNull ExpensesAdapter.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        View view= mInflater.inflate(R.layout.item_expense, parent, false);
+        View view = mInflater.inflate(R.layout.item_expense, parent, false);
         return new ExpensesAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ExpensesAdapter.ViewHolder holder, int position) {
         Expense expense = mExpenses.get(position);
-        String expenseOwner = mInflater.getContext().getResources().getString(R.string.who_make_label) + " " +  expense.getUser().getLogin();
+        String expenseOwner = mInflater.getContext().getResources().getString(R.string.who_make_label) + " " + expense.getUser().getLogin();
         String expenseCost = mInflater.getContext().getResources().getString(R.string.cost_label) + " " + expense.getTotal_cost();
         String expenseCategory = mInflater.getContext().getResources().getString(R.string.category_label) + " " + expense.getCategory().getName();
 

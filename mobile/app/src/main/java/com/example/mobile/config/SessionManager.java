@@ -3,52 +3,43 @@ package com.example.mobile.config;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import com.example.mobile.activity.LoginActivity;
 
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class SessionManager {
+    // User login (make variable public to access from outside)
+    public static final String KEY_LOGIN = "login";
+    // Sharedpref file name
+    private static final String PREF_NAME = "auth0";
+    // All Shared Preferences Keys
+    private static final String IS_LOGIN = "IsLoggedIn";
+    // User token
+    public static String KEY_TOKEN = "token";
+    //User image path in server
+    public static String KEY_IMAGE_PATH_SERVER = "imageServer";
+    public static String KEY_EXPIRY_DATE = "expiry_date";
     // Shared Preferences
     SharedPreferences pref;
-
     // Editor for Shared preferences
     SharedPreferences.Editor editor;
-
     // Context
     Context _context;
-
     // Shared pref mode
     int PRIVATE_MODE = 0;
 
-    // Sharedpref file name
-    private static final String PREF_NAME = "auth0";
-
-    // All Shared Preferences Keys
-    private static final String IS_LOGIN = "IsLoggedIn";
-
-    // User login (make variable public to access from outside)
-    public static final String KEY_LOGIN = "login";
-
-    // User token
-    public static String KEY_TOKEN = "token";
-
-    //User image path in server
-    public static String KEY_IMAGE_PATH_SERVER = "imageServer";
-
-    public static String KEY_EXPIRY_DATE="expiry_date";
-
     // Constructor
-    public SessionManager(Context context){
+    public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
 
-    public void createLoginSession(String login, String token, String expiryDate, String imageServerPath){
+    public void createLoginSession(String login, String token, String expiryDate, String imageServerPath) {
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -65,7 +56,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public HashMap<String, String> getUserDetails(){
+    public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<>();
         user.put(KEY_LOGIN, pref.getString(KEY_LOGIN, null));
         user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
@@ -79,12 +70,12 @@ public class SessionManager {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             _context.startActivity(i);
-        } else if(!checkdate()){
+        } else if (!checkdate()) {
             logoutUser();
         }
     }
 
-    public void logoutUser(){
+    public void logoutUser() {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
@@ -102,17 +93,17 @@ public class SessionManager {
     }
 
     // Get Login State
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
-    public void setKeyImagePathServer(String path){
+    public void setKeyImagePathServer(String path) {
         editor.putString(KEY_IMAGE_PATH_SERVER, path);
         // commit changes
         editor.commit();
     }
 
-    private boolean checkdate(){
+    private boolean checkdate() {
         LocalDateTime expiry;
         LocalDateTime now;
         try {
@@ -123,7 +114,6 @@ public class SessionManager {
             return false;
         }
         Duration duration = Duration.between(now, expiry);
-        if(duration.getSeconds() > 43200) return true;
-            else return false;
+        return duration.getSeconds() > 43200;
     }
 }

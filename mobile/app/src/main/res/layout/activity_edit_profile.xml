@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="40dp"
-    android:background="@drawable/bg_background">
+    android:background="@drawable/bg_background"
+    android:padding="40dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/edit_profile_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:text="@string/edit_profile_label"
                 android:textAppearance="@style/simple_label"
-                android:textSize="40sp"
-                android:layout_alignParentStart="true" />
+                android:textSize="40sp" />
 
             <View
                 android:id="@+id/vector_1"
                 android:layout_width="156dp"
                 android:layout_height="15dp"
-                android:layout_marginTop="-10dp"
-                android:layout_marginStart="50dp"
                 android:layout_below="@+id/edit_profile_label"
                 android:layout_alignEnd="@+id/edit_profile_label"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="-10dp"
                 android:background="@drawable/v_underline" />
 
         </RelativeLayout>
@@ -46,7 +46,7 @@
             android:layout_marginTop="30dp"
             android:text="@string/choose_image_text"
             android:textAppearance="@style/simple_label_bold"
-            android:textSize="24sp"/>
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/choose_image_btn"
@@ -67,15 +67,14 @@
             android:id="@+id/image_preview_l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/rotate_left_btn"
-                android:layout_height="50dp"
                 android:layout_width="50dp"
-                android:background="@drawable/btn_rotate_left"
-                />
+                android:layout_height="50dp"
+                android:background="@drawable/btn_rotate_left" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image_iv"
@@ -83,15 +82,13 @@
                 android:layout_height="200dp"
                 android:elevation="5dp"
                 android:padding="20dp"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop" />
 
             <Button
                 android:id="@+id/rotate_right_btn"
-                android:layout_height="50dp"
                 android:layout_width="50dp"
-                android:background="@drawable/btn_rotate_right"
-                />
+                android:layout_height="50dp"
+                android:background="@drawable/btn_rotate_right" />
         </LinearLayout>
 
         <Button
@@ -108,10 +105,10 @@
             android:id="@+id/delete_image_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
             android:background="@drawable/btn_simple"
             android:text="@string/delete_image"
             android:textAppearance="@style/simple_button"
-            android:layout_marginVertical="20dp"
             android:textColor="@color/light_gray"
             app:backgroundTint="@null" />
 
@@ -129,8 +126,8 @@
             android:id="@+id/delete_account_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_simple"
             android:layout_marginVertical="20dp"
+            android:background="@drawable/btn_simple"
             android:text="@string/delete_account"
             android:textAppearance="@style/simple_button"
             android:textColor="@color/light_gray"

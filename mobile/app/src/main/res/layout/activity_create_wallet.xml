@@ -1,95 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/bg_background">
+    android:background="@drawable/bg_background"
+    android:padding="20dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@drawable/bg_round_box_dark"
         android:gravity="center"
-        android:padding="20dp"
-        android:background="@drawable/bg_round_box_dark">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/add_wallet_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/simple_label_bold"
-            android:textSize="30sp"
             android:text="@string/add_wallet_label"
-            android:textColor="@color/yellow" />
+            android:textAppearance="@style/simple_label_bold"
+            android:textColor="@color/yellow"
+            android:textSize="30sp" />
 
         <View
             android:id="@+id/vector"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/v_line_white" />
 
         <EditText
             android:id="@+id/name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/name_hint"
-            android:background="@drawable/et_simple"
             android:layout_marginBottom="20dp"
-            android:textColor="@color/light_gray"
-            android:importantForAutofill="no"/>
+            android:background="@drawable/et_simple"
+            android:hint="@string/name_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/light_gray" />
+
         <EditText
             android:id="@+id/description_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/description_hint"
-            android:background="@drawable/et_simple"
             android:layout_marginBottom="20dp"
-            android:textColor="@color/light_gray"
-            android:importantForAutofill="no"/>
+            android:background="@drawable/et_simple"
+            android:hint="@string/description_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/light_gray" />
+
         <EditText
             android:id="@+id/infix_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:background="@drawable/et_simple"
-            android:hint="@string/find_user_hint"
             android:layout_marginBottom="20dp"
-            android:textColor="@color/light_gray"
+            android:background="@drawable/et_simple"
             android:drawableEnd="@drawable/ic_search"
-            android:importantForAutofill="no" />
+            android:hint="@string/find_user_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/light_gray" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/browse_members_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_user_search"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            tools:listitem="@layout/item_user_search" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_round_box_light"
-            android:padding="20dp"
             android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+            android:background="@drawable/bg_round_box_light"
+            android:orientation="vertical"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:text="@string/category_label"
                 android:textAppearance="@style/simple_label_bold"
-                android:textSize="24sp"
-                android:layout_marginBottom="20dp"/>
+                android:textSize="24sp" />
 
             <RadioGroup
                 android:id="@+id/category_RG"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:orientation="vertical" />
 
         </LinearLayout>
 

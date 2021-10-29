@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/action_more"
     android:title=""
-    app:showAsAction="never"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:showAsAction="never">
     <item
         android:id="@+id/action_menu"
+        android:icon="@drawable/bg_round_box_dark"
         android:title="Profil"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/bg_round_box_dark">
+        app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/goToWallets"
-                android:title="Portfele"
-                app:showAsAction="never"
                 android:textAppearance="@style/simple_label"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:title="@string/wallets"
+                app:showAsAction="never" />
             <item
                 android:id="@+id/goToProfile"
-                android:title="Profil"
-                app:showAsAction="never"
                 android:textAppearance="@style/simple_label"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:title="@string/profil"
+                app:showAsAction="never" />
             <item
                 android:id="@+id/logout"
-                android:title="Wyloguj"
-                app:showAsAction="never"
                 android:textAppearance="@style/simple_label"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:title="@string/logout"
+                app:showAsAction="never" />
         </menu>
     </item>
 </menu>

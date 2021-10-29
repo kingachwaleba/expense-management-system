@@ -3,6 +3,7 @@ package com.example.mobile.activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.example.mobile.R;
 import com.example.mobile.service.ListService;
 
@@ -10,8 +11,9 @@ public class EditListActivity extends BaseActivity {
 
     EditText newNameListEt;
     Button saveChangeBtn, cancelBtn;
-    String oldName, accessToken;
+
     int listId;
+    String oldName, accessToken;
     ListService listService;
 
     @Override
@@ -29,7 +31,7 @@ public class EditListActivity extends BaseActivity {
         listService = new ListService(this);
 
         saveChangeBtn.setOnClickListener(v -> {
-            if(newNameListEt.getText().toString().length()>0){
+            if (newNameListEt.getText().toString().length() > 0) {
                 listService.editListName(accessToken, listId, newNameListEt.getText().toString());
                 finish();
             } else newNameListEt.setError("Podaj nazwe listy zakupw!");

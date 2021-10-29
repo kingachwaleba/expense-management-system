@@ -6,8 +6,25 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class User implements Parcelable {
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
     @SerializedName("id")
     int id;
+    @SerializedName("deleted")
+    String deleted;
+    @SerializedName("roles")
+    String roles;
+    @SerializedName("userBalance")
+    Double userBalance;
     @SerializedName("login")
     private String login;
     @SerializedName("email")
@@ -18,12 +35,6 @@ public class User implements Parcelable {
     private String image;
     @SerializedName("walletsNumber")
     private int walletsNumber;
-    @SerializedName("deleted")
-    String deleted;
-    @SerializedName("roles")
-    String roles;
-    @SerializedName("userBalance")
-    Double userBalance;
 
     public User(int id, String login, String email, String image, int walletsNumber, Double userBalance) {
         this.id = id;
@@ -100,18 +111,6 @@ public class User implements Parcelable {
         deleted = in.readString();
         roles = in.readString();
     }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     public int getId() {
         return id;

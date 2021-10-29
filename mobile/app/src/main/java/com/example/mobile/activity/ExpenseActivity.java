@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.model.ExpenseDetail;
@@ -16,24 +18,23 @@ import com.example.mobile.model.Member;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ExpenseService;
 import com.example.mobile.service.adapter.UserListAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseActivity extends BaseActivity {
 
-    String accessToken;
-    int expenseId;
-    ExpenseService expenseService;
-    User expenseOwner;
-
     TextView nameExpenseTv, makeWhoTv, categoryTv, dateTv, costTv;
     Button editExpenseBtn, deleteExpenseBtn;
     ImageView receiptIv;
     RecyclerView forWhoRv;
+
     UserListAdapter userListAdapter;
     List<Member> seletedUsers, walletUsers;
-    String nameExpense, costExpense, categoryExpense, receiptPath;
-
+    String nameExpense, costExpense, categoryExpense, receiptPath, accessToken;
+    int expenseId;
+    ExpenseService expenseService;
+    User expenseOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,33 +70,33 @@ public class ExpenseActivity extends BaseActivity {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         expenseService.getExpenseById(expense -> {
             nameExpense = expense.getExpense().getName();
             costExpense = String.valueOf(expense.getExpense().getTotal_cost());
             categoryExpense = expense.getExpense().getCategory().getName();
             expenseOwner = expense.getExpense().getUser();
             receiptPath = expense.getExpense().getReceipt_image();
-            String expenseOwner = getResources().getString(R.string.who_make_label) + " " +  expense.getExpense().getUser().getLogin();
-            String cost = getResources().getString(R.string.cost_label) + " " +  expense.getExpense().getTotal_cost();
-            String category = getResources().getString(R.string.category_label) + " " +  expense.getExpense().getCategory().getName();
-            String date = getResources().getString(R.string.date_label) + " " +  expense.getExpense().getDate();
+            String expenseOwner = getResources().getString(R.string.who_make_label) + " " + expense.getExpense().getUser().getLogin();
+            String cost = getResources().getString(R.string.cost_label) + " " + expense.getExpense().getTotal_cost();
+            String category = getResources().getString(R.string.category_label) + " " + expense.getExpense().getCategory().getName();
+            String date = getResources().getString(R.string.date_label) + " " + expense.getExpense().getDate();
             nameExpenseTv.setText(expense.getExpense().getName());
             makeWhoTv.setText(expenseOwner);
             costTv.setText(cost);
             categoryTv.setText(category);
             dateTv.setText(date.replace("T", " "));
             seletedUsers.clear();
-            for(ExpenseDetail item : expense.getExpense().getExpenseDetailsSet()) {
+            for (ExpenseDetail item : expense.getExpense().getExpenseDetailsSet()) {
                 item.getMember().setBalance(item.getCost());
                 seletedUsers.add(item.getMember());
             }
 
-            if(expense.getExpense().getReceipt_image()!=null){
+            if (expense.getExpense().getReceipt_image() != null) {
                 ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(receiptIv), getApplicationContext(), accessToken, expense.getExpense().getReceipt_image());
             }
 
-            if(expense.getDeletedUserList()==null){
+            if (expense.getDeletedUserList() == null) {
                 editExpenseBtn.setVisibility(View.GONE);
                 deleteExpenseBtn.setVisibility(View.GONE);
             }
@@ -117,8 +118,6 @@ public class ExpenseActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        deleteExpenseBtn.setOnClickListener(v -> {
-            expenseService.deleteExpense(accessToken, expenseId);
-        });
+        deleteExpenseBtn.setOnClickListener(v -> expenseService.deleteExpense(accessToken, expenseId));
     }
 }

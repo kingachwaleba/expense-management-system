@@ -3,47 +3,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_background">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="20dp"
             android:layout_margin="20dp"
-            android:background="@drawable/bg_round_box_dark">
+            android:background="@drawable/bg_round_box_dark"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/edit_list_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/simple_label_bold"
-                android:textSize="30sp"
                 android:text="@string/edit_list_label"
-                android:textColor="@color/yellow" />
+                android:textAppearance="@style/simple_label_bold"
+                android:textColor="@color/yellow"
+                android:textSize="30sp" />
 
             <View
                 android:id="@+id/vector"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/v_line_white" />
 
             <EditText
                 android:id="@+id/new_name_list_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/name_hint"
-                android:background="@drawable/et_simple"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/light_gray"
-                android:importantForAutofill="no"/>
+                android:background="@drawable/et_simple"
+                android:hint="@string/name_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textColor="@color/light_gray" />
 
         </LinearLayout>
 
