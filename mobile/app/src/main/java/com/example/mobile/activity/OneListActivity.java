@@ -30,16 +30,16 @@ public class OneListActivity extends BaseActivity {
     EditText nameItemEt, quantityItemEt;
     Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn;
     RadioGroup unitRg;
-    Unit unit;
-    int firstRadioButton;
+    CheckBox personListCb, listCb;
     RecyclerView listItemRv;
+
+    Unit unit;
     ListService listService;
     SessionManager session;
     String accessToken, login;
-    int listId;
+    int listId, firstRadioButton;
     static Boolean ifEdit;
     static int productEditId;
-    CheckBox personListCb, listCb;
     List<Unit> units;
 
     @Override

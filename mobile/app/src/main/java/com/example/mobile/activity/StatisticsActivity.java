@@ -20,14 +20,14 @@ import java.util.Map;
 
 public class StatisticsActivity extends BaseActivity {
 
-    String accessToken, walletName;
-    int walletId;
-    TextView walletNameTv;
+    TextView walletNameTv, biggestExpensesMembersTv, allExpensesTv;
     Button showStatisticsBtn, backBtn;
-    WalletService walletService;
-    TextView biggestExpensesMembersTv, allExpensesTv;
     LinearLayout ll;
     Spinner day1, day2, month1, month2, year1, year2;
+
+    WalletService walletService;
+    String accessToken, walletName;
+    int walletId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

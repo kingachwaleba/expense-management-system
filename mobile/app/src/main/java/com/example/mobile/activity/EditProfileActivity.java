@@ -31,10 +31,11 @@ import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 public class EditProfileActivity extends BaseActivity {
 
     Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteImageBtn, deleteAccountBtn, rotateLeftBtn, rotateRightBtn;
-    AccountService accountService;
-    Uri selectedImage;
     ImageView imageView;
     LinearLayout imagePreviewL;
+
+    AccountService accountService;
+    Uri selectedImage;
     Bitmap imageBitmap;
 
     @Override

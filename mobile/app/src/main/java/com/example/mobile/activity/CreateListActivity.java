@@ -1,8 +1,6 @@
 package com.example.mobile.activity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -21,19 +19,18 @@ import java.util.List;
 
 public class CreateListActivity extends BaseActivity {
 
-    String accessToken;
-    int walletId;
-    Unit unit;
-    ListService listService;
-
     Button addProductBtn, createListBtn, cancelListBtn;
     EditText nameListEt, nameProductEt, quantityProductEt;
     RadioGroup unitRg;
     RecyclerView addedProductsRv;
-    List<Product> productList;
+
     ProductCreateListAdapter productCreateListAdapter;
-    int firstRadioButton;
     List<Unit> units;
+    List<Product> productList;
+    int firstRadioButton, walletId;
+    String accessToken;
+    Unit unit;
+    ListService listService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

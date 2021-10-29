@@ -22,8 +22,9 @@ public class AddMemberActivity extends BaseActivity {
     RecyclerView browseMembersRv;
     EditText infixEt;
     TextView nameTv;
-    WalletService walletService;
     Button sendInvitationsBtn;
+
+    WalletService walletService;
     int walletId;
     String accessToken;
 

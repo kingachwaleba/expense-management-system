@@ -22,19 +22,17 @@ import java.util.List;
 
 public class CreateWalletActivity extends BaseActivity{
 
-    SessionManager session;
-    WalletService walletService;
-
-    WalletCreate walletCreate;
-    Category category;
-    String accessToken;
-
     RadioGroup categoryRg;
     EditText nameEt, descriptionEt, infixEt;
     Button createBtn, cancelBtn;
     RecyclerView browseMembersRv;
-    List<Category> categories;
 
+    SessionManager session;
+    WalletService walletService;
+    WalletCreate walletCreate;
+    Category category;
+    String accessToken;
+    List<Category> categories;
     List<Member> membersInit;
     UserListAdapter userListAdapterInit;
 

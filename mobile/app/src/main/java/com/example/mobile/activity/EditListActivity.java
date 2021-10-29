@@ -10,8 +10,9 @@ public class EditListActivity extends BaseActivity {
 
     EditText newNameListEt;
     Button saveChangeBtn, cancelBtn;
-    String oldName, accessToken;
+
     int listId;
+    String oldName, accessToken;
     ListService listService;
 
     @Override

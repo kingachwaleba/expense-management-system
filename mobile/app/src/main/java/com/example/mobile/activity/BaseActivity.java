@@ -22,8 +22,8 @@ import java.util.Objects;
 
 public class BaseActivity extends AppCompatActivity {
 
-    SessionManager session;
     Menu menu;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

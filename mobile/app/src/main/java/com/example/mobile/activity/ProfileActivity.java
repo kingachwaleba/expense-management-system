@@ -25,13 +25,15 @@ public class ProfileActivity extends BaseActivity {
     ImageView profileImage;
     Button editProfileBtn;
     ImageButton openNotificationBtn;
-    Boolean ifOpenNotification;
+    TextView loginTv, emailTv, numberOfWalletTv, balanceTv, goToStatuteTv;
     RecyclerView notificationInvitationRv, notificationWarningRv;
+
     SessionManager session;
     String accessToken;
     AccountService accountService;
-    TextView loginTv, emailTv, numberOfWalletTv, balanceTv, goToStatuteTv;
     User user;
+    Boolean ifOpenNotification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -13,9 +13,10 @@ public class ChangePasswordActivity extends BaseActivity {
 
     EditText oldPasswordEt, newPasswordEt, newPasswordConfirmEt;
     Button saveChangesBtn;
+
     SessionManager session;
-    String accessToken;
     AccountService accountService;
+    String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

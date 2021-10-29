@@ -16,11 +16,12 @@ public class EditMembersActivity extends BaseActivity {
     Button goToSendInvitationBtn;
     RecyclerView membersRv;
     TextView walletNameTv;
+
+    SessionManager session;
     UserListAdapter userListAdapter;
     String accessToken, login;
     Boolean owner;
     WalletCreate walletCreate;
-    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

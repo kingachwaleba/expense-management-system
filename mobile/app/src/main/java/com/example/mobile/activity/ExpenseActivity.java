@@ -21,19 +21,17 @@ import java.util.List;
 
 public class ExpenseActivity extends BaseActivity {
 
-    String accessToken;
-    int expenseId;
-    ExpenseService expenseService;
-    User expenseOwner;
-
     TextView nameExpenseTv, makeWhoTv, categoryTv, dateTv, costTv;
     Button editExpenseBtn, deleteExpenseBtn;
     ImageView receiptIv;
     RecyclerView forWhoRv;
+
     UserListAdapter userListAdapter;
     List<Member> seletedUsers, walletUsers;
-    String nameExpense, costExpense, categoryExpense, receiptPath;
-
+    String nameExpense, costExpense, categoryExpense, receiptPath, accessToken;
+    int expenseId;
+    ExpenseService expenseService;
+    User expenseOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +115,6 @@ public class ExpenseActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        deleteExpenseBtn.setOnClickListener(v -> {
-            expenseService.deleteExpense(accessToken, expenseId);
-        });
+        deleteExpenseBtn.setOnClickListener(v -> expenseService.deleteExpense(accessToken, expenseId));
     }
 }

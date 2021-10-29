@@ -13,12 +13,13 @@ import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class ChatActivity extends BaseActivity {
 
-    String accessToken;
-    int walletId;
     EditText contentEt;
     Button sendMessageBtn;
     RecyclerView messageRv;
+
     private WebSocketClient webSocketClient;
+    String accessToken;
+    int walletId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

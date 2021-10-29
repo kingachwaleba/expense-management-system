@@ -15,12 +15,12 @@ public class EditWalletActivity extends BaseActivity {
 
     EditText nameEt, descriptionEt;
     RadioGroup categoryRg;
-    String accessToken;
-    Category category;
     Button updateWalletBtn, cancelBtn;
+
     WalletService walletService;
     int walletId;
-    String walletName, walletDescription, walletCategory;
+    String walletName, walletDescription, walletCategory, accessToken;
+    Category category;
     List<Category> categories;
 
     @Override

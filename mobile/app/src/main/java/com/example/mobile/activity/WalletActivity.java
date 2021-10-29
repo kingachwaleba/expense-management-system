@@ -29,26 +29,23 @@ import java.util.List;
 
 public class WalletActivity extends BaseActivity {
 
-    SessionManager session;
+    ImageButton showMembersBtn, showListsBtn, showExpensesBtn;
+    LinearLayout membersListL;
+    TextView editMembersBtn, walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
+    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn, statisticsBtn;
+    RecyclerView shopListsRv, expensesRv, membersRv;
 
+    SessionManager session;
     int id;
     Boolean showMembersControl, showListsControl, showExpensesControl;
-    String accessToken, login;
-    TextView walletNameTv, walletCategoryTv, descriptionTv, ownerTv, numberOfMembersTv, walletExpensesTv, userExpensesTv, userBalanceTv;
-    Button  addMemberBtn, editWalletBtn, addListBtn, goToChatBtn, addExpenseBtn, deleteWalletBtn, leaveWalletBtn, statisticsBtn;
-    String walletName, walletDescription, walletCategory;
+    String walletName, walletDescription, walletCategory, accessToken, login;
     ListsAdapter listAdapter;
     ExpensesAdapter expensesAdapter;
-    RecyclerView shopListsRv, expensesRv, membersRv;
     List<ListShop> lists1;
     List<Expense> expenses1;
     List<Member> members1, members;
     MemberAdapter memberAdapter;
     ExpenseService expenseService;
-    ImageButton showMembersBtn, showListsBtn, showExpensesBtn;
-    LinearLayout membersListL;
-    TextView editMembersBtn;
-
     WalletCreate walletCreate;
 
     @Override

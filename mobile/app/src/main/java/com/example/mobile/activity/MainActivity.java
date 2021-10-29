@@ -20,13 +20,14 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    static List<Category> categoriesWallet,  categoriesExpense;
-    static List<Unit> productUnits;
-    SessionManager session;
     RecyclerView walletRv;
     TextView helloTv;
     Button addNewWalletBtn;
+
+    SessionManager session;
     ValidationTableService validationTableService;
+    static List<Category> categoriesWallet,  categoriesExpense;
+    static List<Unit> productUnits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

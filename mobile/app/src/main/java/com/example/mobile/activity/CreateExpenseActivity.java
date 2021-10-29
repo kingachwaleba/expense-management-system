@@ -38,14 +38,15 @@ public class CreateExpenseActivity extends BaseActivity {
     RadioGroup categoryRg;
     Button createExpenseBtn, cancelBtn, chooseImageBtn;
     ImageView receiptIv;
+    LinearLayout membersCb;
+
+    ExpenseService expenseService;
     int walletId;
     String accessToken;
     List<Member> members;
-    LinearLayout membersCb;
     List<Category> categoriesExpense;
     Category selectedCategory;
     List<String> selectedMembers;
-    ExpenseService expenseService;
     Uri selectedImage;
     Bitmap imageBitmap;
 

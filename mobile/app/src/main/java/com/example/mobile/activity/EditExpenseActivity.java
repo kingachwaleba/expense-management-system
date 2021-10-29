@@ -36,23 +36,22 @@ import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
 public class EditExpenseActivity extends BaseActivity {
 
-    String accessToken;
-    int expenseId;
-    ExpenseService expenseService;
-    String nameExpense, costExpense, category, receiptPath;
-    List<Member> selectedUser, allMembers;
-    List<String> selectedUsersLogin;
-    List<Category> categoriesExpense;
     RadioGroup categoryRg;
     LinearLayout membersCb;
     Button editExpenseBtn, cancelEditBtn, chooseImageBtn, deletePhotoBtn;
     ImageView receiptIv;
     EditText nameExpenseEt, costExpenseEt;
+
+    ExpenseService expenseService;
+    int expenseId;
+    String nameExpense, costExpense, category, receiptPath, accessToken, imagePath;
+    List<Member> selectedUser, allMembers;
+    List<String> selectedUsersLogin;
+    List<Category> categoriesExpense;
     Category selectedCategory;
     User expenseOwner;
     Uri selectedImage;
     Bitmap imageBitmap;
-    String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
