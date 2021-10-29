@@ -14,19 +14,19 @@
                 android:id="@+id/goToWallets"
                 android:textAppearance="@style/simple_label"
                 android:textSize="14sp"
-                android:title="Portfele"
+                android:title="@string/wallets"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/goToProfile"
                 android:textAppearance="@style/simple_label"
                 android:textSize="14sp"
-                android:title="Profil"
+                android:title="@string/profil"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/logout"
                 android:textAppearance="@style/simple_label"
                 android:textSize="14sp"
-                android:title="Wyloguj"
+                android:title="@string/logout"
                 app:showAsAction="never" />
         </menu>
     </item>
