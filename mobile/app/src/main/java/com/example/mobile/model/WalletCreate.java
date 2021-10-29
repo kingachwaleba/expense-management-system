@@ -2,18 +2,23 @@ package com.example.mobile.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class WalletCreate implements Parcelable {
-    @SerializedName("id")
-    private int id;
-    @SerializedName("name")
-    private String name;
-    @SerializedName("description")
-    private String description;
-    @SerializedName("walletCategory")
-    private Category category;
+    public static final Creator<WalletCreate> CREATOR = new Creator<WalletCreate>() {
+        @Override
+        public WalletCreate createFromParcel(Parcel in) {
+            return new WalletCreate(in);
+        }
+
+        @Override
+        public WalletCreate[] newArray(int size) {
+            return new WalletCreate[size];
+        }
+    };
     @SerializedName("owner")
     String owner;
     @SerializedName("userListCounter")
@@ -26,6 +31,14 @@ public class WalletCreate implements Parcelable {
     Double userExpensesCost;
     @SerializedName("loggedInUserBalance")
     Double loggedInUserBalance;
+    @SerializedName("id")
+    private int id;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("description")
+    private String description;
+    @SerializedName("walletCategory")
+    private Category category;
 
     public WalletCreate(int id, String name, Category category, String description) {
         this.id = id;
@@ -104,18 +117,6 @@ public class WalletCreate implements Parcelable {
             loggedInUserBalance = in.readDouble();
         }
     }
-
-    public static final Creator<WalletCreate> CREATOR = new Creator<WalletCreate>() {
-        @Override
-        public WalletCreate createFromParcel(Parcel in) {
-            return new WalletCreate(in);
-        }
-
-        @Override
-        public WalletCreate[] newArray(int size) {
-            return new WalletCreate[size];
-        }
-    };
 
     public int getId() {
         return id;

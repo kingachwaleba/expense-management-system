@@ -1,11 +1,14 @@
 package com.example.mobile.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.mobile.R;
 import com.example.mobile.service.UserService;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -23,7 +26,7 @@ public class PasswordRestoreActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.restore_password_btn);
 
         sendBtn.setOnClickListener(v -> {
-            if(validateEmail(emailEt)){
+            if (validateEmail(emailEt)) {
                 UserService userService = new UserService(getApplicationContext());
                 userService.restorePassword(emailEt.getText().toString());
             } else emailEt.setError("Podaj poprawny email");

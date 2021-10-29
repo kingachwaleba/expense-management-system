@@ -8,7 +8,7 @@ public class UpdatePasswordHolder {
     @SerializedName("oldPassword")
     private String oldPassword;
     @SerializedName("confirmPassword")
-    private String confirmPassword;
+    private final String confirmPassword;
 
     public UpdatePasswordHolder(String password, String oldPassword, String confirmPassword) {
         this.password = password;

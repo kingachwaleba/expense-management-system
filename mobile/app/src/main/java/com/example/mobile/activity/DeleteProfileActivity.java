@@ -3,8 +3,10 @@ package com.example.mobile.activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.example.mobile.R;
 import com.example.mobile.service.AccountService;
+
 import java.util.regex.Pattern;
 
 public class DeleteProfileActivity extends BaseActivity {
@@ -27,8 +29,8 @@ public class DeleteProfileActivity extends BaseActivity {
         accountService = new AccountService(this);
 
         deleteAccountBtn.setOnClickListener(v -> {
-            if(!validatePassword(passwordEt)) passwordEt.setError("Nie poprawne hasło");
-                else accountService.deleteAccount(passwordEt.getText().toString());
+            if (!validatePassword(passwordEt)) passwordEt.setError("Nie poprawne hasło");
+            else accountService.deleteAccount(passwordEt.getText().toString());
         });
     }
 

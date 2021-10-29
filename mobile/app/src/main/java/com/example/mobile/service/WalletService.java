@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobile.activity.CreateWalletActivity;
@@ -22,13 +23,12 @@ import com.example.mobile.service.adapter.WalletAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.util.Map;
 
 public class WalletService {
 
@@ -45,18 +45,6 @@ public class WalletService {
     public WalletService(Context context) {
         this.context = context;
         this.apiInterface = new ApiClient().getService();
-    }
-
-    public interface OnWalletCallback {
-        void onOneWallet(WalletCreate walletCreate);
-    }
-
-    public interface OnMemberSearchCallback {
-        void onMembersList(List<Member> members);
-    }
-
-    public interface OnStatsCallback {
-        void onStats(Map<String, Object> response);
     }
 
     public void getUserWallets(String accessToken) {
@@ -91,6 +79,7 @@ public class WalletService {
             public void onResponse(@NotNull Call<WalletCreate> call, @NotNull Response<WalletCreate> response) {
                 callback.onOneWallet(response.body());
             }
+
             @Override
             public void onFailure(@NotNull Call<WalletCreate> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
@@ -250,8 +239,8 @@ public class WalletService {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 } else {
-                    if(from==0) ((WalletActivity) context).finish();
-                    else if(from==1) {
+                    if (from == 0) ((WalletActivity) context).finish();
+                    else if (from == 1) {
                         Intent i = new Intent(context, MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
@@ -265,5 +254,17 @@ public class WalletService {
                 call.cancel();
             }
         });
+    }
+
+    public interface OnWalletCallback {
+        void onOneWallet(WalletCreate walletCreate);
+    }
+
+    public interface OnMemberSearchCallback {
+        void onMembersList(List<Member> members);
+    }
+
+    public interface OnStatsCallback {
+        void onStats(Map<String, Object> response);
     }
 }

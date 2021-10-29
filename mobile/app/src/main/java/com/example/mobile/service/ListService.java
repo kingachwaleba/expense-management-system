@@ -32,14 +32,6 @@ public class ListService {
         this.apiInterface = new ApiClient().getService();
     }
 
-    public interface OnListCallback {
-        void onAllList(List<ListShop> lists);
-    }
-
-    public interface OnOneListCallback {
-        void onOneList(ListShop listShop);
-    }
-
     public void getAllLists(ListService.OnListCallback callback, String accessToken, int id) {
         Call<List<ListShop>> call = apiInterface.getWalletLists("Bearer " + accessToken, id);
         call.enqueue(new Callback<List<ListShop>>() {
@@ -80,7 +72,8 @@ public class ListService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } ((CreateListActivity) context).finish();
+                }
+                ((CreateListActivity) context).finish();
             }
 
             @Override
@@ -99,7 +92,8 @@ public class ListService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } ((EditListActivity) context).finish();
+                }
+                ((EditListActivity) context).finish();
             }
 
             @Override
@@ -206,5 +200,13 @@ public class ListService {
                 call.cancel();
             }
         });
+    }
+
+    public interface OnListCallback {
+        void onAllList(List<ListShop> lists);
+    }
+
+    public interface OnOneListCallback {
+        void onOneList(ListShop listShop);
     }
 }

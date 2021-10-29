@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.model.Message;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
@@ -18,7 +21,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private final int OTHER_USER_MESSAGE = 0;
     private final int CURRENT_USER_MESSAGE = 1;
 
-    public ChatAdapter(Context context, List<Message> messages){
+    public ChatAdapter(Context context, List<Message> messages) {
         mMessage = messages;
         mInflater = LayoutInflater.from(context);
     }
@@ -26,10 +29,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public @NotNull ChatAdapter.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View messageView;
-        if(viewType == OTHER_USER_MESSAGE){
+        if (viewType == OTHER_USER_MESSAGE) {
             messageView = mInflater.inflate(R.layout.other_user_message, parent, false);
             return new ChatAdapter.ViewHolder(messageView);
-        } else if(viewType == CURRENT_USER_MESSAGE){
+        } else if (viewType == CURRENT_USER_MESSAGE) {
             messageView = mInflater.inflate(R.layout.current_user_message, parent, false);
             return new ChatAdapter.ViewHolder(messageView);
         } else return null;

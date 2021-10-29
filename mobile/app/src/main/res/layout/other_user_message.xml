@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,8 +14,8 @@
         android:src="@drawable/ic_profile_image"
         app:layout_constraintBottom_toTopOf="@+id/txtLogin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintEnd_toStartOf="@+id/txtMessage"
+        app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -34,6 +33,7 @@
         android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="192dp"
         android:background="@drawable/et_simple"
         android:elevation="5dp"
         android:maxWidth="240dp"
@@ -41,7 +41,6 @@
         android:text="Hi, John's message"
         android:textAppearance="@style/simple_label"
         android:textSize="15sp"
-        android:layout_marginEnd="192dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDate"
@@ -51,14 +50,13 @@
         android:id="@+id/txtLogin"
         android:layout_width="56dp"
         android:layout_height="15dp"
-        android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:text="18.05.2021 13:02"
         android:textAppearance="@style/simple_label_bold"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_user_image"
         app:layout_constraintEnd_toStartOf="@+id/txtMessage"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/profile_user_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,18 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.activity.OneListActivity;
 import com.example.mobile.model.ListShop;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> {
     private final List<ListShop> mListShops;
     private final LayoutInflater mInflater;
 
-    public ListsAdapter(Context context, List<ListShop> listShops){
+    public ListsAdapter(Context context, List<ListShop> listShops) {
         mListShops = listShops;
         mInflater = LayoutInflater.from(context);
     }
@@ -51,6 +55,10 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
         return mListShops.size();
     }
 
+    public void clear() {
+        mListShops.clear();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView listNameTv, numberOfElementsTv, goToListBtn;
@@ -62,9 +70,5 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
             goToListBtn = itemView.findViewById(R.id.go_to_list_tv);
             numberOfElementsTv = itemView.findViewById(R.id.number_of_elements_tv);
         }
-    }
-
-    public void clear(){
-        mListShops.clear();
     }
 }

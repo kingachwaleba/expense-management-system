@@ -3,6 +3,7 @@ package com.example.mobile.service;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+
 import com.example.mobile.activity.LoginActivity;
 import com.example.mobile.activity.MainActivity;
 import com.example.mobile.activity.RegistrationActivity;
@@ -13,6 +14,7 @@ import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.LoginForm;
 import com.example.mobile.model.RegistrationForm;
 import com.google.gson.JsonObject;
+
 import org.jetbrains.annotations.NotNull;
 
 import okhttp3.ResponseBody;
@@ -36,25 +38,27 @@ public class UserService {
         Call<JsonObject> call = apiInterface.login(loginForm);
         call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response){
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null && response.code() == 200) {
                         String login = response.body().get("login").getAsString();
                         String token = response.body().get("token").getAsString();
                         String expiryDate = response.body().get("expiryDate").getAsString();
-                        String image="";
-                        if(!response.body().get("image").isJsonNull())
+                        String image = "";
+                        if (!response.body().get("image").isJsonNull())
                             image = response.body().get("image").getAsString();
                         session.createLoginSession(login, token, expiryDate, image);
                         Intent i = new Intent(context, MainActivity.class);
                         context.startActivity(i);
                         ((LoginActivity) context).finish();
-                    } else Toast.makeText(context, "Nie poprawne dane logowania", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(context, "Nie poprawne dane logowania", Toast.LENGTH_LONG).show();
                 } else {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Logowanie nie powiodło się", Toast.LENGTH_LONG).show();
@@ -65,9 +69,9 @@ public class UserService {
 
     public void register(RegistrationForm registrationForm) {
         Call<ResponseBody> call = apiInterface.register(registrationForm);
-        call.enqueue(new Callback<ResponseBody>(){
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response){
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
@@ -77,6 +81,7 @@ public class UserService {
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Nie udało się zarejestrować użytkownika", Toast.LENGTH_LONG).show();

@@ -5,8 +5,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
@@ -14,6 +16,7 @@ import com.example.mobile.model.Product;
 import com.example.mobile.model.Unit;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.adapter.ProductCreateListAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +66,7 @@ public class CreateListActivity extends BaseActivity {
         cancelListBtn.setOnClickListener(v -> finish());
 
         units = MainActivity.getProductUnits();
-        for(int i = 0; i < units.size(); i++){
+        for (int i = 0; i < units.size(); i++) {
             RadioButton rdbtn = new RadioButton(CreateListActivity.this);
             rdbtn.setId(units.get(i).getId());
             rdbtn.setText(units.get(i).getName());
@@ -71,7 +74,7 @@ public class CreateListActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             unitRg.addView(rdbtn);
-            if(i == 0) {
+            if (i == 0) {
                 rdbtn.setChecked(true);
                 unit = new Unit(rdbtn.getId(), units.get(i).getName());
             }
@@ -79,25 +82,27 @@ public class CreateListActivity extends BaseActivity {
         firstRadioButton = unitRg.getCheckedRadioButtonId();
 
         unitRg.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb=findViewById(checkedId);
+            RadioButton rb = findViewById(checkedId);
             String radioText = rb.getText().toString();
             unit = new Unit(checkedId, radioText);
         });
 
         addProductBtn.setOnClickListener(v -> {
-            if(nameProductEt.getText().toString().length()==0) nameProductEt.setError("Wprowadź nazwe produktu!");
-                else if(quantityProductEt.getText().toString().length()==0) quantityProductEt.setError("Wprowadź ilość produku!");
-                    else {
-                        productList.add(new Product(nameProductEt.getText().toString(), Double.parseDouble(quantityProductEt.getText().toString()), unit));
-                        productCreateListAdapter.notifyDataSetChanged();
-                        nameProductEt.setText("");
-                        quantityProductEt.setText("");
-                        unitRg.check(firstRadioButton);
-                    }
+            if (nameProductEt.getText().toString().length() == 0)
+                nameProductEt.setError("Wprowadź nazwe produktu!");
+            else if (quantityProductEt.getText().toString().length() == 0)
+                quantityProductEt.setError("Wprowadź ilość produku!");
+            else {
+                productList.add(new Product(nameProductEt.getText().toString(), Double.parseDouble(quantityProductEt.getText().toString()), unit));
+                productCreateListAdapter.notifyDataSetChanged();
+                nameProductEt.setText("");
+                quantityProductEt.setText("");
+                unitRg.check(firstRadioButton);
+            }
         });
 
         createListBtn.setOnClickListener(v -> {
-            if(nameListEt.getText().toString().length()>0){
+            if (nameListEt.getText().toString().length() > 0) {
                 listService.createList(accessToken, walletId, new ListCreate(new ListShop(nameListEt.getText().toString()), productList));
                 finish();
             } else nameListEt.setError("Podaj nazwe listy zakupów!");

@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center"
+    android:layout_marginVertical="5dp"
     android:background="@drawable/bg_round_box_dark"
-    android:layout_marginVertical="5dp">
+    android:gravity="center"
+    android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image_iv"
@@ -13,25 +13,24 @@
         android:layout_height="50dp"
         android:layout_weight="0.2"
         android:elevation="5dp"
-        android:src="@drawable/profile_picture_placeholder"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_picture_placeholder" />
 
     <TextView
         android:id="@+id/member_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
         android:layout_weight="0.8"
-        android:textAppearance="@style/simple_label"
-        android:textSize="18sp"
         android:gravity="center_vertical"
-        android:layout_marginHorizontal="10dp">
-    </TextView>
+        android:textAppearance="@style/simple_label"
+        android:textSize="18sp"></TextView>
 
     <Button
         android:id="@+id/user_btn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_weight="0.08"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginEnd="10dp"
+        android:layout_weight="0.08" />
 
 </LinearLayout>

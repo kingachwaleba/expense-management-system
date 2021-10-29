@@ -6,22 +6,21 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 public class ImageHelper {
 
 
-    public interface onPicasso{
-        void onPicassoCallback(Picasso picasso, HttpUrl.Builder urlBuilder);
-    }
-
-    public static void downloadImage(onPicasso callback, Context context, String accessToken, String path){
+    public static void downloadImage(onPicasso callback, Context context, String accessToken, String path) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .authenticator((route, response) -> response.request().newBuilder()
                         .header("Authorization", "Bearer " + accessToken)
@@ -46,7 +45,7 @@ public class ImageHelper {
 
             //Convert bitmap to byte array
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0 , bos); // YOU can also save it in JPEG
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos); // YOU can also save it in JPEG
             byte[] bitmapdata = bos.toByteArray();
 
             //write the bytes in file
@@ -55,19 +54,23 @@ public class ImageHelper {
             fos.flush();
             fos.close();
             return file;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return file; // it will return null
         }
     }
 
     public static String getRealPathFromURI(Context context, Uri contentUri) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(contentUri, filePathColumn, null, null, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String filePath = cursor.getString(columnIndex);
         cursor.close();
         return filePath;
+    }
+
+    public interface onPicasso {
+        void onPicassoCallback(Picasso picasso, HttpUrl.Builder urlBuilder);
     }
 }

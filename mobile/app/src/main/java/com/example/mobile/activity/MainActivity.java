@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Category;
@@ -14,20 +16,32 @@ import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.ValidationTableService;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.WalletAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
+    static List<Category> categoriesWallet, categoriesExpense;
+    static List<Unit> productUnits;
     RecyclerView walletRv;
     TextView helloTv;
     Button addNewWalletBtn;
-
     SessionManager session;
     ValidationTableService validationTableService;
-    static List<Category> categoriesWallet,  categoriesExpense;
-    static List<Unit> productUnits;
+
+    static public List<Category> getCategoriesWallet() {
+        return categoriesWallet;
+    }
+
+    static public List<Category> getCategoriesExpense() {
+        return categoriesExpense;
+    }
+
+    static public List<Unit> getProductUnits() {
+        return productUnits;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +71,13 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
-        if (session.isLoggedIn()){
+        if (session.isLoggedIn()) {
             HashMap<String, String> user = session.getUserDetails();
             String login = user.get(SessionManager.KEY_LOGIN);
             String hello = getResources().getString(R.string.hello) + " " + login + "!";
@@ -72,18 +85,6 @@ public class MainActivity extends BaseActivity {
             WalletService walletService = new WalletService(MainActivity.this, walletRv);
             walletService.getUserWallets(user.get(SessionManager.KEY_TOKEN));
         }
-    }
-
-    static public List<Category> getCategoriesWallet() {
-        return categoriesWallet;
-    }
-
-    static public List<Category> getCategoriesExpense() {
-        return categoriesExpense;
-    }
-
-    static public List<Unit> getProductUnits() {
-        return productUnits;
     }
 
 }

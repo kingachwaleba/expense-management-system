@@ -19,7 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
+
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.model.Category;
@@ -27,9 +29,11 @@ import com.example.mobile.model.Expense;
 import com.example.mobile.model.ExpenseHolder;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.ExpenseService;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
 public class CreateExpenseActivity extends BaseActivity {
@@ -130,13 +134,13 @@ public class CreateExpenseActivity extends BaseActivity {
                 expenseCostEt.setError("Wpisz kwote wydatku!");
             else if (selectedMembers.size() == 0)
                 Toast.makeText(CreateExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
-            else if(imageBitmap!=null){
+            else if (imageBitmap != null) {
                 expenseService.uploadReceiptImage(imageBitmap, accessToken, expenseNameEt.getText().toString(), path -> {
                     Expense expense = new Expense(expenseNameEt.getText().toString(), path, Double.parseDouble(expenseCostEt.getText().toString()), selectedCategory);
                     ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMembers);
                     expenseService.createExpense(accessToken, walletId, expenseHolder);
-                });}
-            else{
+                });
+            } else {
                 Expense expense = new Expense(expenseNameEt.getText().toString(), null, Double.parseDouble(expenseCostEt.getText().toString()), selectedCategory);
                 ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMembers);
                 expenseService.createExpense(accessToken, walletId, expenseHolder);
@@ -150,17 +154,18 @@ public class CreateExpenseActivity extends BaseActivity {
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
 
-            BitmapFactory.Options bitMapOption=new BitmapFactory.Options();
-            bitMapOption.inJustDecodeBounds=true;
-            BitmapFactory.decodeFile(ImageHelper.getRealPathFromURI(this,selectedImage), bitMapOption);
+            BitmapFactory.Options bitMapOption = new BitmapFactory.Options();
+            bitMapOption.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(ImageHelper.getRealPathFromURI(this, selectedImage), bitMapOption);
 
-            if(bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
+            if (bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
                 try {
-                    imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
+                    imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), selectedImage));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            else Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
 
             receiptIv.setImageBitmap(imageBitmap);
             receiptIv.setVisibility(View.VISIBLE);

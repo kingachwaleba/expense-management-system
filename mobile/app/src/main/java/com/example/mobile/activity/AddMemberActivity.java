@@ -10,10 +10,12 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.UserListAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,24 +52,29 @@ public class AddMemberActivity extends BaseActivity {
         UserListAdapter userListAdapterInit = new UserListAdapter(this, membersInit, "USER_BROWSER");
         browseMembersRv.setAdapter(userListAdapterInit);
 
-        infixEt.addTextChangedListener(new TextWatcher(){
+        infixEt.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(infixEt.getText().toString().length()>0){
+                if (infixEt.getText().toString().length() > 0) {
                     walletService.getMembersByInfixInWallet(members -> {
-                        if(members.size() > 0){
+                        if (members.size() > 0) {
                             UserListAdapter userListAdapter =
                                     new UserListAdapter(AddMemberActivity.this, members,
                                             "USER_BROWSER");
                             browseMembersRv.setAdapter(userListAdapter);
-                            userListAdapter.notifyDataSetChanged();}
+                            userListAdapter.notifyDataSetChanged();
+                        }
                     }, accessToken, walletId, infixEt.getText().toString());
                 }
-                if(infixEt.getText().toString().length()==0){
+                if (infixEt.getText().toString().length() == 0) {
                     userListAdapterInit.clear();
                     browseMembersRv.setAdapter(userListAdapterInit);
                     userListAdapterInit.notifyDataSetChanged();
@@ -75,12 +82,13 @@ public class AddMemberActivity extends BaseActivity {
             }
         });
         sendInvitationsBtn.setOnClickListener(v -> {
-            if(userListAdapterInit.getSelectedUser().size()>0){
-                for(int i = 0; i < userListAdapterInit.getSelectedUser().size(); i++)
+            if (userListAdapterInit.getSelectedUser().size() > 0) {
+                for (int i = 0; i < userListAdapterInit.getSelectedUser().size(); i++)
                     walletService.sendInvitationToUser(accessToken, walletId, userListAdapterInit.getSelectedUser().get(i));
                 userListAdapterInit.clearSelected();
                 finish();
-            } else Toast.makeText(this, "Nie wybrano żadnego użytkownika", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(this, "Nie wybrano żadnego użytkownika", Toast.LENGTH_LONG).show();
         });
     }
 }

@@ -6,11 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.SetActivityField;
 import com.example.mobile.model.Product;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreateListAdapter.ViewHolder> {
@@ -19,7 +23,7 @@ public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreate
     private final LayoutInflater mInflater;
     private final SetActivityField editInterface;
 
-    public ProductCreateListAdapter(Context context, List<Product> productsItems, SetActivityField setActivityField){
+    public ProductCreateListAdapter(Context context, List<Product> productsItems, SetActivityField setActivityField) {
         mProducts = productsItems;
         mInflater = LayoutInflater.from(context);
         editInterface = setActivityField;
@@ -41,7 +45,7 @@ public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreate
 
         holder.editProductBtn.setOnClickListener(v -> {
             mProducts.remove(position);
-            editInterface.editProduct(productItem.getName(), String.valueOf(productItem.getQuantity()),productItem.getUnit(), productItem.getId());
+            editInterface.editProduct(productItem.getName(), String.valueOf(productItem.getQuantity()), productItem.getUnit(), productItem.getId());
             notifyDataSetChanged();
         });
 
@@ -54,6 +58,10 @@ public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreate
     @Override
     public int getItemCount() {
         return mProducts.size();
+    }
+
+    public void clear() {
+        mProducts.clear();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -69,9 +77,5 @@ public class ProductCreateListAdapter extends RecyclerView.Adapter<ProductCreate
             deleteProductBtn = itemView.findViewById(R.id.delete_list_item_btn);
             editProductBtn = itemView.findViewById(R.id.edit_list_item_btn);
         }
-    }
-
-    public void clear(){
-        mProducts.clear();
     }
 }

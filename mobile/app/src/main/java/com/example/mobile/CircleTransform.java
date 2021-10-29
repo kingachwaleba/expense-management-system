@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+
 import com.squareup.picasso.Transformation;
 
 public class CircleTransform implements Transformation {
@@ -42,6 +43,7 @@ public class CircleTransform implements Transformation {
     public String key() {
         return "circle";
     }
+
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);

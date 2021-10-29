@@ -11,8 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Product;
@@ -21,25 +23,25 @@ import com.example.mobile.model.Unit;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.adapter.ListItemAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class OneListActivity extends BaseActivity {
 
+    static Boolean ifEdit;
+    static int productEditId;
     TextView nameListTv;
     EditText nameItemEt, quantityItemEt;
     Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn;
     RadioGroup unitRg;
     CheckBox personListCb, listCb;
     RecyclerView listItemRv;
-
     Unit unit;
     ListService listService;
     SessionManager session;
     String accessToken, login;
     int listId, firstRadioButton;
-    static Boolean ifEdit;
-    static int productEditId;
     List<Unit> units;
 
     @Override
@@ -79,22 +81,24 @@ public class OneListActivity extends BaseActivity {
         listItemRv.setAdapter(listItemAdapterInit);
 
         addItemBtn.setOnClickListener(v -> {
-            if(nameItemEt.getText().toString().length()==0) nameItemEt.setError("Podaj nazwe produktu");
-                else if(quantityItemEt.getText().toString().length()==0) quantityItemEt.setError("Podaj ilość produktu");
-                    else{
-                        Product product = new Product(nameItemEt.getText().toString(), Double.parseDouble(quantityItemEt.getText().toString()), unit);
-                        if(!ifEdit){
-                            listService.addListItem(accessToken, listId, product);
-                        } else {
-                            listService.editListItem(accessToken, productEditId, product);
-                            ifEdit = true;
-                        }
-                        unitRg.check(firstRadioButton);
-                        nameItemEt.setText("");
-                        quantityItemEt.setText("");
-                        finish();
-                        startActivity(getIntent());
-                   }
+            if (nameItemEt.getText().toString().length() == 0)
+                nameItemEt.setError("Podaj nazwe produktu");
+            else if (quantityItemEt.getText().toString().length() == 0)
+                quantityItemEt.setError("Podaj ilość produktu");
+            else {
+                Product product = new Product(nameItemEt.getText().toString(), Double.parseDouble(quantityItemEt.getText().toString()), unit);
+                if (!ifEdit) {
+                    listService.addListItem(accessToken, listId, product);
+                } else {
+                    listService.editListItem(accessToken, productEditId, product);
+                    ifEdit = true;
+                }
+                unitRg.check(firstRadioButton);
+                nameItemEt.setText("");
+                quantityItemEt.setText("");
+                finish();
+                startActivity(getIntent());
+            }
         });
 
         deleteListShopBtn.setOnClickListener(v -> {
@@ -119,11 +123,11 @@ public class OneListActivity extends BaseActivity {
         initView();
     }
 
-    protected void initView(){
+    protected void initView() {
 
         listService.getListById(listShop -> {
             nameListTv.setText(listShop.getName());
-            ListItemAdapter listItemAdapter= new ListItemAdapter(OneListActivity.this, listShop.getListDetailSet(), accessToken, login, (nameProduct, quantityProduct, unit, id) -> {
+            ListItemAdapter listItemAdapter = new ListItemAdapter(OneListActivity.this, listShop.getListDetailSet(), accessToken, login, (nameProduct, quantityProduct, unit, id) -> {
                 nameItemEt.setText(nameProduct);
                 quantityItemEt.setText(quantityProduct);
                 unitRg.check(unit.getId());
@@ -132,7 +136,7 @@ public class OneListActivity extends BaseActivity {
             });
             listItemRv.setAdapter(listItemAdapter);
 
-            if(listShop.getUser()!=null){
+            if (listShop.getUser() != null) {
                 personListCb.setChecked(true);
                 personListCb.setEnabled(listShop.getUser().getLogin().equals(login));
                 whoTakeListBtn.setVisibility(View.VISIBLE);
@@ -142,7 +146,7 @@ public class OneListActivity extends BaseActivity {
                 whoTakeListBtn.setVisibility(View.INVISIBLE);
             }
 
-            if(listShop.getStatus().getId()==1){
+            if (listShop.getStatus().getId() == 1) {
                 listCb.setChecked(true);
                 personListCb.setEnabled(false);
             } else {
@@ -152,11 +156,11 @@ public class OneListActivity extends BaseActivity {
             whoTakeListBtn.setOnClickListener(v -> Toast.makeText(this, "To kupi " + listShop.getUser().getLogin(), Toast.LENGTH_SHORT).show());
 
             personListCb.setOnClickListener(v -> {
-                if(listShop.getUser()==null){
+                if (listShop.getUser() == null) {
                     listShop.setUser(new User(login));
                     whoTakeListBtn.setVisibility(View.VISIBLE);
                     listService.changeListStatus(accessToken, listId, 2);
-                } else if(listShop.getUser().getLogin().equals(login)){
+                } else if (listShop.getUser().getLogin().equals(login)) {
                     listShop.setUser(null);
                     whoTakeListBtn.setVisibility(View.INVISIBLE);
                     listService.changeListStatus(accessToken, listId, 3);
@@ -165,15 +169,14 @@ public class OneListActivity extends BaseActivity {
             });
 
             listCb.setOnClickListener(v -> {
-                if(listShop.getStatus().getId() == 3) {
+                if (listShop.getStatus().getId() == 3) {
                     listShop.setUser(new User(login));
                     listShop.setStatus(new Status(1, "zrealizowany"));
                     personListCb.setChecked(true);
                     personListCb.setEnabled(false);
                     whoTakeListBtn.setVisibility(View.VISIBLE);
                     listService.changeListStatus(accessToken, listId, 1);
-                }
-                else if(listShop.getStatus().getId() == 2){
+                } else if (listShop.getStatus().getId() == 2) {
                     listShop.setUser(new User(login));
                     listShop.setStatus(new Status(1, "zrealizowany"));
                     listService.changeListStatus(accessToken, listId, 1);
@@ -192,7 +195,7 @@ public class OneListActivity extends BaseActivity {
         }, accessToken, listId);
 
         units = MainActivity.getProductUnits();
-        for(int i = 0; i < units.size(); i++){
+        for (int i = 0; i < units.size(); i++) {
             RadioButton rdbtn = new RadioButton(OneListActivity.this);
             rdbtn.setId(units.get(i).getId());
             rdbtn.setText(units.get(i).getName());
@@ -200,7 +203,7 @@ public class OneListActivity extends BaseActivity {
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             unitRg.addView(rdbtn);
-            if(i == 0) {
+            if (i == 0) {
                 rdbtn.setChecked(true);
                 unit = new Unit(units.get(i).getId(), units.get(i).getName());
             }
@@ -208,7 +211,7 @@ public class OneListActivity extends BaseActivity {
         firstRadioButton = unitRg.getCheckedRadioButtonId();
 
         unitRg.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb=findViewById(checkedId);
+            RadioButton rb = findViewById(checkedId);
             String radioText = rb.getText().toString();
             unit = new Unit(checkedId, radioText);
         });

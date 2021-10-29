@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.model.Invitation;
 import com.example.mobile.service.AccountService;
 
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.ViewHolder> {
@@ -20,7 +23,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.Vi
     private final String mAccessToken;
     private final AccountService accountService;
 
-    public InvitationAdapter(Context context, List<Invitation> invitationItems, String accessToken){
+    public InvitationAdapter(Context context, List<Invitation> invitationItems, String accessToken) {
         mInvitations = invitationItems;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
@@ -44,13 +47,13 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.Vi
         holder.numberOfMembersTv.setText(numberOfMembersS);
 
         holder.acceptBtn.setOnClickListener(v -> {
-            accountService.manageInvitation(mAccessToken, invitationItem.getWalletUserId(),true);
+            accountService.manageInvitation(mAccessToken, invitationItem.getWalletUserId(), true);
             mInvitations.remove(position);
             notifyDataSetChanged();
         });
 
         holder.denyBtn.setOnClickListener(v -> {
-            accountService.manageInvitation(mAccessToken, invitationItem.getWalletUserId(),false);
+            accountService.manageInvitation(mAccessToken, invitationItem.getWalletUserId(), false);
             mInvitations.remove(position);
             notifyDataSetChanged();
         });
@@ -59,6 +62,10 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.Vi
     @Override
     public int getItemCount() {
         return mInvitations.size();
+    }
+
+    public void clear() {
+        mInvitations.clear();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,9 +82,5 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.Vi
             acceptBtn = itemView.findViewById(R.id.accept_btn);
             denyBtn = itemView.findViewById(R.id.deny_btn);
         }
-    }
-
-    public void clear(){
-        mInvitations.clear();
     }
 }

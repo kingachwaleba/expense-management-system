@@ -1,7 +1,5 @@
 package com.example.mobile.activity;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +7,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Category;
@@ -17,10 +19,11 @@ import com.example.mobile.model.WalletCreate;
 import com.example.mobile.model.WalletHolder;
 import com.example.mobile.service.WalletService;
 import com.example.mobile.service.adapter.UserListAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateWalletActivity extends BaseActivity{
+public class CreateWalletActivity extends BaseActivity {
 
     RadioGroup categoryRg;
     EditText nameEt, descriptionEt, infixEt;
@@ -60,27 +63,29 @@ public class CreateWalletActivity extends BaseActivity{
         userListAdapterInit = new UserListAdapter(this, membersInit, "USER_BROWSER");
         browseMembersRv.setAdapter(userListAdapterInit);
 
-        infixEt.addTextChangedListener(new TextWatcher(){
+        infixEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(infixEt.getText().toString().length()>0){
+                if (infixEt.getText().toString().length() > 0) {
                     walletService.getMembersByInfix(members -> {
-                        if(members.size() > 0){
-                        UserListAdapter userListAdapter = new UserListAdapter(CreateWalletActivity.this, members, "USER_BROWSER");
-                        browseMembersRv.setAdapter(userListAdapter);
-                        userListAdapter.notifyDataSetChanged();}
+                        if (members.size() > 0) {
+                            UserListAdapter userListAdapter = new UserListAdapter(CreateWalletActivity.this, members, "USER_BROWSER");
+                            browseMembersRv.setAdapter(userListAdapter);
+                            userListAdapter.notifyDataSetChanged();
+                        }
                     }, accessToken, infixEt.getText().toString());
                 }
 
-                if(infixEt.getText().toString().length()==0){
+                if (infixEt.getText().toString().length() == 0) {
                     userListAdapterInit.clear();
                     browseMembersRv.setAdapter(userListAdapterInit);
                     userListAdapterInit.notifyDataSetChanged();
@@ -89,7 +94,7 @@ public class CreateWalletActivity extends BaseActivity{
         });
 
         categories = MainActivity.getCategoriesWallet();
-        for(int i = 0; i < categories.size(); i++){
+        for (int i = 0; i < categories.size(); i++) {
             RadioButton rdbtn = new RadioButton(CreateWalletActivity.this);
             rdbtn.setId(categories.get(i).getId());
             rdbtn.setText(categories.get(i).getName());
@@ -97,26 +102,26 @@ public class CreateWalletActivity extends BaseActivity{
             rdbtn.setTextSize(18);
             rdbtn.setButtonDrawable(R.drawable.rb_radio_button);
             categoryRg.addView(rdbtn);
-            if(i == 0){
+            if (i == 0) {
                 rdbtn.setChecked(true);
                 category = new Category(rdbtn.getId(), categories.get(i).getName());
             }
         }
 
         categoryRg.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb=findViewById(checkedId);
+            RadioButton rb = findViewById(checkedId);
             String radioText = rb.getText().toString();
             category = new Category(checkedId, radioText);
         });
 
         createBtn.setOnClickListener(v -> {
             String nameS = nameEt.getText().toString();
-            if(validateName(nameS)){
-                    String descriptionS = descriptionEt.getText().toString();
-                    walletCreate = new WalletCreate(nameS, descriptionS, category);
-                    WalletHolder walletHolder = new WalletHolder(walletCreate, userListAdapterInit.getSelectedUser());
-                    walletService.createWallet(accessToken, walletHolder);
-                    userListAdapterInit.clearSelected();
+            if (validateName(nameS)) {
+                String descriptionS = descriptionEt.getText().toString();
+                walletCreate = new WalletCreate(nameS, descriptionS, category);
+                WalletHolder walletHolder = new WalletHolder(walletCreate, userListAdapterInit.getSelectedUser());
+                walletService.createWallet(accessToken, walletHolder);
+                userListAdapterInit.clearSelected();
             } else nameEt.setError("Podaj nazwe portfela!");
         });
 
@@ -126,7 +131,7 @@ public class CreateWalletActivity extends BaseActivity{
         });
     }
 
-    public boolean validateName(String s){
+    public boolean validateName(String s) {
         return s.length() > 0;
     }
 

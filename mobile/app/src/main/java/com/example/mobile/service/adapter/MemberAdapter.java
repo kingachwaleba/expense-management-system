@@ -10,10 +10,13 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.ExpenseService;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder> {
@@ -23,8 +26,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     private final String mLogin, mAccessToken;
     private final int mWalletId;
 
-    public MemberAdapter(Context context, List<Member> members, String login, String accessToken, int walletId){
-        mMember= members;
+    public MemberAdapter(Context context, List<Member> members, String login, String accessToken, int walletId) {
+        mMember = members;
         mInflater = LayoutInflater.from(context);
         mLogin = login;
         mAccessToken = accessToken;
@@ -43,19 +46,18 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         holder.memberNameTv.setText(member.getLogin());
         String balance;
 
-        if(member.getBalance() >= 0){
+        if (member.getBalance() >= 0) {
             balance = "+" + member.getBalance() + "zł";
             holder.memberBalanceTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.green));
-        }
-        else {
+        } else {
             balance = member.getBalance() + "zł";
             holder.memberBalanceTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red_error));
         }
         holder.memberBalanceTv.setText(balance);
 
-        if(member.getDebt()!=null && !member.getLogin().equals(mLogin)){
+        if (member.getDebt() != null && !member.getLogin().equals(mLogin)) {
             holder.showDebthBtn.setVisibility(View.VISIBLE);
-            if(member.getDebt().getCreditor().getLogin().equals(mLogin)){
+            if (member.getDebt().getCreditor().getLogin().equals(mLogin)) {
                 holder.showDebthBtn.setBackgroundResource(R.drawable.btn_debtor);
             } else {
                 holder.showDebthBtn.setBackgroundResource(R.drawable.btn_creditor);
@@ -64,13 +66,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
         holder.showDebthBtn.setOnClickListener(v -> {
             String label;
-            if(holder.memberBalanceToYouTv.getVisibility()==View.VISIBLE){
+            if (holder.memberBalanceToYouTv.getVisibility() == View.VISIBLE) {
                 holder.memberBalanceToYouTv.setVisibility(View.GONE);
                 holder.reminderBtn.setVisibility(View.GONE);
                 holder.handshakeBtn.setVisibility(View.GONE);
-            }
-            else{
-                if(member.getDebt().getCreditor().getLogin().equals(mLogin)){
+            } else {
+                if (member.getDebt().getCreditor().getLogin().equals(mLogin)) {
                     label = "Należność: " + member.getDebt().getHowMuch() + "zł";
                     holder.memberBalanceToYouTv.setText(label);
                     holder.memberBalanceToYouTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.green));

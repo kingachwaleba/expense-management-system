@@ -9,32 +9,36 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="10dp"
-        android:background="@drawable/btn_delete_active"/>
+        android:background="@drawable/btn_delete_active" />
+
     <Button
         android:id="@+id/edit_list_item_btn"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="10dp"
-        android:background="@drawable/btn_edit"/>
+        android:background="@drawable/btn_edit" />
+
     <TextView
         android:id="@+id/name_list_item_tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:textSize="18sp"
-        android:textAppearance="@style/simple_label" />
+        android:textAppearance="@style/simple_label"
+        android:textSize="18sp" />
+
     <TextView
         android:id="@+id/quantity_list_item_tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:textSize="18sp"
-        android:textAppearance="@style/simple_label"/>
+        android:textAppearance="@style/simple_label"
+        android:textSize="18sp" />
+
     <TextView
         android:id="@+id/unit_list_item_tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:textSize="18sp"
-        android:textAppearance="@style/simple_label"/>
+        android:textAppearance="@style/simple_label"
+        android:textSize="18sp" />
 </LinearLayout>

@@ -24,6 +24,7 @@ import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.service.AccountService;
+
 import java.io.IOException;
 
 import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
@@ -74,30 +75,30 @@ public class EditProfileActivity extends BaseActivity {
         });
 
         saveChangeBtn.setOnClickListener(v -> {
-            if (selectedImage != null){
-                try{
+            if (selectedImage != null) {
+                try {
                     int max = 400;
                     int factor;
                     int newHeigh, newWidth;
                     BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
-                    if(bitmap.getHeight() > bitmap.getWidth() && (bitmap.getWidth() > 400 && bitmap.getWidth() > 400)){
+                    if (bitmap.getHeight() > bitmap.getWidth() && (bitmap.getWidth() > 400 && bitmap.getWidth() > 400)) {
                         factor = bitmap.getHeight() / max;
                         newHeigh = max;
-                        newWidth = bitmap.getWidth()/factor;
+                        newWidth = bitmap.getWidth() / factor;
                     } else {
                         factor = bitmap.getWidth() / max;
                         newWidth = max;
-                        newHeigh = bitmap.getHeight()/factor;
+                        newHeigh = bitmap.getHeight() / factor;
                     }
 
-                    accountService.uploadProfileImage(Bitmap.createScaledBitmap(bitmap,newWidth, newHeigh, true));
+                    accountService.uploadProfileImage(Bitmap.createScaledBitmap(bitmap, newWidth, newHeigh, true));
                     imagePreviewL.setVisibility(View.GONE);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-               // a
+            // a
         });
 
         if (ContextCompat.checkSelfPermission(this,
@@ -127,24 +128,25 @@ public class EditProfileActivity extends BaseActivity {
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
 
-            BitmapFactory.Options bitMapOption=new BitmapFactory.Options();
-            bitMapOption.inJustDecodeBounds=true;
-            BitmapFactory.decodeFile(ImageHelper.getRealPathFromURI(this,selectedImage), bitMapOption);
+            BitmapFactory.Options bitMapOption = new BitmapFactory.Options();
+            bitMapOption.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(ImageHelper.getRealPathFromURI(this, selectedImage), bitMapOption);
 
-            if(bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
+            if (bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
                 try {
-                    imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),selectedImage));
+                    imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), selectedImage));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            else Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
 
             imageView.setImageBitmap(imageBitmap);
             imagePreviewL.setVisibility(View.VISIBLE);
         }
     }
 
-    public void setProfileImagePreview(int degree){
+    public void setProfileImagePreview(int degree) {
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         Matrix matrix = new Matrix();
