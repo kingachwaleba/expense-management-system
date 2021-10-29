@@ -36,9 +36,12 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.Vi
     @Override
     public void onBindViewHolder(InvitationAdapter.ViewHolder holder, int position) {
         Invitation invitationItem = mInvitations.get(position);
+        String ownerNameS = mInflater.getContext().getResources().getString(R.string.owner_label) + " " + invitationItem.getOwner();
+        String numberOfMembersS = mInflater.getContext().getResources().getString(R.string.number_of_members_label) + " " + invitationItem.getUserListCounter();
+
         holder.walletNameTv.setText(invitationItem.getName());
-        holder.ownerNameTv.setText(mInflater.getContext().getResources().getString(R.string.owner_label) + " " + invitationItem.getOwner());
-        holder.numberOfMembersTv.setText(mInflater.getContext().getResources().getString(R.string.number_of_members_label) + " " + invitationItem.getUserListCounter());
+        holder.ownerNameTv.setText(ownerNameS);
+        holder.numberOfMembersTv.setText(numberOfMembersS);
 
         holder.acceptBtn.setOnClickListener(v -> {
             accountService.manageInvitation(mAccessToken, invitationItem.getWalletUserId(),true);
@@ -61,7 +64,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView walletNameTv, ownerNameTv, numberOfMembersTv;
-        public int walletId, walletUserId;
+        public int walletId;
         public Button acceptBtn, denyBtn;
 
         public ViewHolder(View itemView) {

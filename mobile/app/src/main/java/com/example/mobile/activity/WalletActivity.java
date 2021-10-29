@@ -97,7 +97,7 @@ public class WalletActivity extends BaseActivity {
         shopListsRv = findViewById(R.id.shop_lists_rv);
         lists1 = new ArrayList<>();
         shopListsRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
-        listAdapter = new ListsAdapter(this, lists1, accessToken);
+        listAdapter = new ListsAdapter(this, lists1);
         shopListsRv.setAdapter(listAdapter);
 
         expensesRv = findViewById(R.id.expenses_rv);
@@ -197,7 +197,7 @@ public class WalletActivity extends BaseActivity {
             ListService listService = new ListService(getParent());
             listService.getAllLists(lists -> {
                 if (!showListsControl) {
-                    ListsAdapter listsAdapter1 = new ListsAdapter(getApplicationContext(), lists, accessToken);
+                    ListsAdapter listsAdapter1 = new ListsAdapter(getApplicationContext(), lists);
                     shopListsRv.setAdapter(listsAdapter1);
                     listsAdapter1.notifyDataSetChanged();
                     showListsBtn.setBackgroundResource(R.drawable.btn_list_opened);

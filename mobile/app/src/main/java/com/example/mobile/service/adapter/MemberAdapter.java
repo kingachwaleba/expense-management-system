@@ -23,14 +23,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     private final String mLogin, mAccessToken;
     private final int mWalletId;
 
-    public MemberAdapter(Context context, List<Member> members, String login){
-        mMember= members;
-        mInflater = LayoutInflater.from(context);
-        mLogin = login;
-        mAccessToken = "";
-        mWalletId = 0;
-    }
-
     public MemberAdapter(Context context, List<Member> members, String login, String accessToken, int walletId){
         mMember= members;
         mInflater = LayoutInflater.from(context);

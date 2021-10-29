@@ -36,7 +36,7 @@ public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(WarningAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(WarningAdapter.@NotNull ViewHolder holder, int position) {
         Message warningItem = mWarnings.get(position);
         String debtS = mInflater.getContext().getResources().getString(R.string.debt) + " " + warningItem.getContent();
 
