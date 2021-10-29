@@ -22,21 +22,12 @@ class AddUsersToNewWalletComponent extends Component {
 
     componentDidMount() {
         const currentUser = UserService.getCurrentUser();
-        console.log(this.props.walletExist)
-        console.log(this.props.walletId)
         if (currentUser) {
-
-            
             this.setState({
-                
                 username: currentUser.login,
                 usertoken: currentUser.token,
-                
             });
-
-           
         }
-        
     }
 
 
@@ -53,12 +44,12 @@ class AddUsersToNewWalletComponent extends Component {
                     var users = this.state.users;
                     if(users.length == 0){
                         this.setState({errorMessage: "Brak użytkowników"})
-                        console.log("NIE ZNALEZIONO")
+                       
                         console.log(this.state.errorMessage)
                     }
                     else{
                         this.setState({errorMessage: ""})
-                        console.log("ZNALEZIONO")
+                        
                         console.log(this.state.errorMessage)
                     }
                 })

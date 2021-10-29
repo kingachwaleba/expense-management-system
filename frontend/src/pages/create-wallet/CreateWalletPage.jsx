@@ -11,6 +11,7 @@ import AddUsersToNewWalletComponent from '../../components/AddUsersToNewWalletCo
 import UserService from '../../services/user.service';
 import { useHistory } from 'react-router';
 import { withRouter } from 'react-router';
+import WalletCategoryService from '../../services/WalletCategoryService';
 class CreateWalletPage extends React.Component {
 
     constructor(props, context) {
@@ -24,7 +25,8 @@ class CreateWalletPage extends React.Component {
    
         state = {
             wallet_holder: new WalletHolder('', ''),
-            wallet: new Wallet('','',''), 
+            wallet: new Wallet('',"",''), 
+            categories: undefined,
             walletCategory: new WalletCategory('',''),
             userList: new Array,
             tmp: "",
@@ -37,13 +39,27 @@ class CreateWalletPage extends React.Component {
       
 
      componentDidMount() {
+        WalletCategoryService.getCategories()
+        .then((response)=>{
+                
+                this.categories = response.data
+                var walletCategory = this.state.walletCategory
+                walletCategory.id = Object.values(this.categories)[0].id
+                walletCategory.name = Object.values(this.categories)[0].name
+                console.log(this.state.walletCategory) 
+               
+                
+               
+        })
+        .catch(error=>{
+            console.error({error})      
+        });
+
         const currentUser = UserService.getCurrentUser();
         if (currentUser) {
 
             
             this.setState({
-                
-               
                 usertoken: currentUser.token,
                 
             });
@@ -92,12 +108,14 @@ class CreateWalletPage extends React.Component {
         e.preventDefault();
         this.setState({submitted: true});
        var wallet_holder = this.state.wallet_holder;  
-        if (!wallet_holder.wallet.name || !wallet_holder.wallet.description)return;
+        if (!wallet_holder.wallet.name)return;
         this.setState(({loading: true}));
+        console.log(wallet_holder)
         WalletService
             .create_wallet(wallet_holder,this.state.usertoken)
             .catch((error)=>{
                 console.log(error.response.data)
+                this.setState({errorMessage: error.response.data})
             });
     }
     readWalletCategory = (event) => {
@@ -138,11 +156,8 @@ class CreateWalletPage extends React.Component {
                 <div className="form-container">
                  
 
-                    {errorMessage &&
-                    <div className="alert alert-danger" role="alert">
-                        {errorMessage}
-                    </div>
-                    }
+                   
+                    
                 <div className="box-content">
                     <form
                         name="form"
@@ -151,7 +166,7 @@ class CreateWalletPage extends React.Component {
                             this.setState({submitted: true});
                             this.walletHolderHelper(e);   
                             this.handleCreateWallet(e)
-                            //window.location.href='/home'
+                            window.location.href='/home'
 
 
                         }}>
@@ -166,9 +181,6 @@ class CreateWalletPage extends React.Component {
                                 minLength="1"
                                 maxLength="45"
                                 onChange={(e) => this.handleChangeName(e)}/>
-                            <div className="invalid-feedback">
-                                Nazwa jest wymagana.
-                            </div>
                         </div>
 
                         <div className={'form-group'}>
@@ -178,22 +190,21 @@ class CreateWalletPage extends React.Component {
                                 className="form-control"
                                 name="description"
                                 placeholder="Wpisz opis..."
-                                required 
                                 maxLength="1000"
                                 onChange={(e) => this.handleChangeDescription(e)}/>
-                            <div className="invalid-feedback">
-                                Opis jest wymagany.
-                            </div>
                         </div>
                         <div className={'form-group'}>
                             <AddUsersToNewWalletComponent createUsersList={this.createUsersList} currentList = {this.state.userList}/>
                         </div>
                         <div>
-                            <WalletCategoryComponent  readWalletCategory={this.readWalletCategory} />
+                            <WalletCategoryComponent  readWalletCategory={this.readWalletCategory} currentCategory=""/>
                         </div>
                     
                         <br></br>
                         <br></br>
+                        <div className="text-size error-text">
+                            {this.state.errorMessage}
+                        </div>
                         <button
                             className="btn btn-primary btn-block form-button text-size"
                             id = "mainbuttonstyle"
