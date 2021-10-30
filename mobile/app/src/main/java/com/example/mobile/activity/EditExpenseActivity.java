@@ -34,6 +34,7 @@ import com.example.mobile.service.ExpenseService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
@@ -158,20 +159,22 @@ public class EditExpenseActivity extends BaseActivity {
         });
 
         editExpenseBtn.setOnClickListener(v -> {
+            Double costD = validateCost(costExpenseEt.getText().toString());
+
             if (nameExpenseEt.getText().toString().length() == 0)
                 nameExpenseEt.setError("Wpisz nazwe wydatku!");
-            else if (costExpenseEt.getText().toString().length() == 0)
-                costExpenseEt.setError("Wpisz kwote wydatku!");
+            else if (costD == 0)
+                costExpenseEt.setError("Wpisz poprawną kwote wydatku !");
             else if (selectedUsersLogin.size() == 0)
                 Toast.makeText(EditExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
             else if (imageBitmap != null) {
                 expenseService.uploadReceiptImage(imageBitmap, accessToken, nameExpenseEt.getText().toString(), path -> {
-                    Expense editExpense = new Expense(nameExpenseEt.getText().toString(), path, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
+                    Expense editExpense = new Expense(nameExpenseEt.getText().toString(), path, costD, selectedCategory, expenseOwner);
                     ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
                     expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
                 });
             } else {
-                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, Double.parseDouble(costExpenseEt.getText().toString()), selectedCategory, expenseOwner);
+                Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, costD, selectedCategory, expenseOwner);
                 ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
                 expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
             }
@@ -202,5 +205,15 @@ public class EditExpenseActivity extends BaseActivity {
             receiptIv.setVisibility(View.VISIBLE);
             deletePhotoBtn.setVisibility(View.VISIBLE);
         }
+    }
+
+    public double validateCost(String cost){
+        if (Pattern.compile("^\\d{0,8}(\\.\\d{1,2})?$").matcher(cost).matches()){
+            try {
+                return Double.parseDouble(cost);
+            } catch (NumberFormatException e){
+                return 0;
+            }
+        } else return 0;
     }
 }
