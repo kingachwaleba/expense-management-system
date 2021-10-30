@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_menu"
-        android:icon="@drawable/bg_round_box_dark"
-        android:title="Profil"
+        android:icon="@drawable/profile_picture_placeholder"
+        android:title="@string/wallets"
         app:showAsAction="ifRoom">
         <menu>
             <item
