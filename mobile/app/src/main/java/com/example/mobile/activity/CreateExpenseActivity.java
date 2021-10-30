@@ -33,6 +33,7 @@ import com.example.mobile.service.ExpenseService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
@@ -128,20 +129,22 @@ public class CreateExpenseActivity extends BaseActivity {
         }
 
         createExpenseBtn.setOnClickListener(v -> {
+            Double costD = validateCost(expenseCostEt.getText().toString());
+
             if (expenseNameEt.getText().toString().length() == 0)
                 expenseNameEt.setError("Wpisz nazwe wydatku!");
-            else if (expenseCostEt.getText().toString().length() == 0)
-                expenseCostEt.setError("Wpisz kwote wydatku!");
+            else if (costD == 0)
+                expenseCostEt.setError("Wpisz poprawną kwote wydatku !");
             else if (selectedMembers.size() == 0)
                 Toast.makeText(CreateExpenseActivity.this, "Wybierz osoby dla których zrobiony jest wydatek", Toast.LENGTH_LONG).show();
             else if (imageBitmap != null) {
                 expenseService.uploadReceiptImage(imageBitmap, accessToken, expenseNameEt.getText().toString(), path -> {
-                    Expense expense = new Expense(expenseNameEt.getText().toString(), path, Double.parseDouble(expenseCostEt.getText().toString()), selectedCategory);
+                    Expense expense = new Expense(expenseNameEt.getText().toString(), path, costD, selectedCategory);
                     ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMembers);
                     expenseService.createExpense(accessToken, walletId, expenseHolder);
                 });
             } else {
-                Expense expense = new Expense(expenseNameEt.getText().toString(), null, Double.parseDouble(expenseCostEt.getText().toString()), selectedCategory);
+                Expense expense = new Expense(expenseNameEt.getText().toString(), null, costD, selectedCategory);
                 ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMembers);
                 expenseService.createExpense(accessToken, walletId, expenseHolder);
             }
@@ -170,5 +173,15 @@ public class CreateExpenseActivity extends BaseActivity {
             receiptIv.setImageBitmap(imageBitmap);
             receiptIv.setVisibility(View.VISIBLE);
         }
+    }
+
+    public double validateCost(String cost){
+        if (Pattern.compile("^\\d{0,8}(\\.\\d{1,2})?$").matcher(cost).matches()){
+            try {
+                return Double.parseDouble(cost);
+            } catch (NumberFormatException e){
+                return 0;
+            }
+        } else return 0;
     }
 }

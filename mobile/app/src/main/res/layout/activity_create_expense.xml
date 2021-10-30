@@ -49,7 +49,7 @@
             android:background="@drawable/et_simple"
             android:hint="@string/cost_hint"
             android:importantForAutofill="no"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:textColor="@color/light_gray" />
 
         <LinearLayout
