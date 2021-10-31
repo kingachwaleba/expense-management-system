@@ -123,7 +123,9 @@ input[type='text'], input[type='password'], input[type='email'],input[type='numb
   border-color: transparent;
 }
 
-
+.margin-left-text{
+  margin-left: 50px;
+}
 
 .form-container{
   position: relative;
@@ -179,6 +181,31 @@ input[type='text'], input[type='password'], input[type='email'],input[type='numb
   height: auto;
   
   
+}
+.add-photo-icon{
+  background-image:url(photo-icon.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+}
+#insert-photo-button{
+
+flex-direction: row;
+justify-content: center;
+align-items: center;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+border-color: #c4c4c4;
+
+
+background: #dadada;
+border-radius: 38px;
+
+}
+.img-preview{
+  max-width: 100%;
+  max-height: 100%;
 }
 .center-content{
   text-align: center;
