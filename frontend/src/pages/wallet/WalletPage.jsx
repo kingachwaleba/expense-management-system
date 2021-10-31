@@ -17,28 +17,12 @@ function WalletPage () {
 
 
     let location  = useLocation();
-    console.log(location);
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
     walletID = JSON.parse(sessionStorage.getItem('walletID'));
     }
-    //var walletID = location.state.walletID;
     var userToken;
-    var userName;
-        console.log("Wallet id: " + walletID);
-   
-
-/*
-    const user = UserService.getCurrentUser();
-        if (user) {
-           userToken = user.token
-           userName = user.name
-         }
-        console.log("userToken komponentu to: " + userToken);
-
-
-*/
-         
+    var userName;     
     const [walletData, getWalletData] = useState([]);
     const [walletCategoryData, getWalletCategoryData] = useState([]);
     const [walletUsersData, getWalletUsersData] = useState([]);
@@ -46,22 +30,16 @@ function WalletPage () {
     const [isOwner, checkIsOwner] = useState(false);
     useEffect(()=>{
                 const user = UserService.getCurrentUser();
-                console.log(user.token)
+               
                 
                     WalletDetailService.getWalletDetail(walletID,user.token).then((response)=>{
                     const allData = response.data
                     getWalletData(allData)
-                    console.log("Response data: " + response.data)
-                    console.log(response.data)
-
-
                     const categoryData = response.data.walletCategory
                     getWalletCategoryData(categoryData)
                     getWalletOwner(response.data.owner)
                     const usersData = response.data.userList
                     getWalletUsersData(usersData)
-                    console.log("Username " + user.login)
-                    console.log("ownername " + response.data.owner)
                     if(user.login == response.data.owner) checkIsOwner(true)
                     else checkIsOwner(false)
                     
@@ -69,8 +47,6 @@ function WalletPage () {
                 })
                 .catch(error=>{
                     console.error({error})
-                    //window.location.href='/error-page'
-                
                 });
 
                
@@ -124,22 +100,7 @@ function WalletPage () {
                     <div className="box-subcontent center-content">
                         <div className="grid-container-3">
                             <div className="left-content" >
-                                   {/*<a href="/add-members"><button className="add-icon text-size icons-size"></button> </a> 
-
                                 
-                                   <Link  
-                                        to={{
-                                        pathname: '/add-members', 
-                                        state:{
-                                            walletID: walletID
-                                        }
-                                            
-
-                                        }}>
-                                            <button className="add-icon text-size icons-size"></button>  
-                                    </Link>
-
-                                    */}
                                 <button className="add-icon text-size icons-size"
                                 onClick={(e)=>{
                                     sessionStorage.setItem('walletID',JSON.stringify(walletID))
@@ -175,7 +136,6 @@ function WalletPage () {
                        </div> 
                     </div>
                        <div id="showing-content-users" className="hide-content box-subcontent-2" style={{display:'none'}}>
-                           {console.log("WALLET OWNER TO "+ walletData.owner)}
                             <DisplayWalletUsersDataComponent walletId={walletID} usersData= {walletUsersData} walletOwner = {walletData.owner}/>
                             <div className="separator-line"></div>
                             { 
@@ -184,7 +144,6 @@ function WalletPage () {
                                         <a className="center-content href-text text-size"   
                                             onClick={(e)=>{
                                                 sessionStorage.setItem('walletID',JSON.stringify(walletID))
-                                                console.log(walletID)
                                                 window.location.href='/edit-users-list'
                                             }}>
                                             Edytuj listę członków
@@ -228,7 +187,7 @@ function WalletPage () {
                         </div>
                         <div id="showing-content-expenses" className="hide-content" style={{display:'none'}}>
                                             <DisplayWalletExpensesSumComponent/>
-                                            <DisplayWalletExpensesSumComponent/>
+                                            
                         </div>
 
 
