@@ -27,6 +27,7 @@ import WalletPage from './pages/wallet/WalletPage';
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
 import FooterPage from './components/Footer';
+import EditExpensePage from './pages/edit-expense/EditExpensePage';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 
 class App extends React.Component {
@@ -125,6 +126,7 @@ class App extends React.Component {
                         <AuthGuard path="/edit-users-list" component={EditUsersPage}/>
                         <AuthGuard path="/add-expense" component={AddExpensePage}/>
                         <AuthGuard path="/expense-detail" component={ExpenseDetailPage}/>
+                        <AuthGuard path="/edit-expense" component={EditExpensePage}/>
                         <AuthGuard path="/create-list" component={CreateListPage}/>
                         <AuthGuard path="/list-detail" component={ListDetailPage}/>
                         <AuthGuard path="/wallet-stats" component={StatisticsPage}/>        

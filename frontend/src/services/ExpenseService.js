@@ -19,6 +19,10 @@ class ExpenseService {
     deleteExpense(id, tokenStr){
     return axios.delete(EXPENSE_DETAIL_API_BASE_URL + id, {headers: {"Authorization" : `Bearer ${tokenStr} `}});
     }
+
+    editExpense(id, expenseHolder ,tokenStr){
+        return axios.put(EXPENSE_DETAIL_API_BASE_URL + id,expenseHolder, {headers: {"Authorization" : `Bearer ${tokenStr} `, "Content-Type" : "application/json"}});
+    }
 }   
 
 export default new ExpenseService();
