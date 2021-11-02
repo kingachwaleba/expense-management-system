@@ -94,7 +94,7 @@ function AddExpensePage () {
         else {
             index = currentList.indexOf(e.target.value)
             currentList.splice(index, 1)
-            if(currentList.length == 0) setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")
+            if(currentList.length == 0) setErrorMessage("Lista musi zawierać co najmniej jednego użytkownika.")
           
         }
         setExpenseUsersList(currentList)
@@ -131,7 +131,7 @@ function AddExpensePage () {
     function handleCreateExpense(e){
         e.preventDefault();
         submitted = true;
-        if(expenseUsersList.length == 0){setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")} 
+        if(expenseUsersList.length == 0){setErrorMessage("Lista musi zawierać co najmniej jednego użytkownika.")} 
         else{
         const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
         const expenseHolder = new ExpenseHolder(expense, expenseUsersList);

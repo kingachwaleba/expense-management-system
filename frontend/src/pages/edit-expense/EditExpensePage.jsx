@@ -167,7 +167,7 @@ function EditExpensePage () {
 
                 index = currentList.indexOf(e.target.value)
             currentList.splice(index, 1)
-            if(currentList.length == 0) setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")
+            if(currentList.length == 0) setErrorMessage("Lista musi zawierać co najmniej jednego użytkownika.")
             }
 
         }
@@ -238,7 +238,7 @@ function EditExpensePage () {
                 <Col md="7" className="box-content base-text text-size form-container">
                     <div className = "href-text center-content">Edytuj wydatek</div>
                     <div className="separator-line"/>
-                <form name="form"
+                    <form name="form"
                         method="post"
                         onSubmit={(e)=>handleCreateExpense(e)}
                         >

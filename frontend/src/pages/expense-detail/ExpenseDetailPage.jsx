@@ -92,20 +92,24 @@ function ExpenseDetailPage(){
         });
           
     },[expenseDetailSet])
+    
     useEffect(()=>{
       if(receiptImg != null){
         setMessage("")
         document.getElementById('img-preview-div').style.display = 'block';
+        /*
         var formData = new FormData();
             formData.append('imageName',receiptImg)
         console.log(receiptImg)
         console.log(formData.get('imageName')) 
 
-        /*
-        ImageService.getImg(formData, userData.token)
+        */
+        ImageService.getImg(expenseID, userData.token)
         .then(response=>{
             console.log(response)
-            //setDisplayImg(response.data)
+            const url = URL.createObjectURL(response.data)
+            setDisplayImg(url)
+            console.log(url)
         })
         .catch(error=>{
             console.error(error)
@@ -164,7 +168,7 @@ function ExpenseDetailPage(){
                         <div className="center-content">
                                     {message}
                         <div id="img-preview-div">
-                            <img src={displayImg} alt="img" />
+                            <img src={displayImg} className="img-preview"  alt="img" />
                         </div>         
                         
 
