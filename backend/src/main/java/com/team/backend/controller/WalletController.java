@@ -74,10 +74,10 @@ public class WalletController {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
-    @GetMapping("/wallet/{id}/stats")
+    @GetMapping("/wallet/{id}/stats/{dateFrom}/{dateTo}")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
-    public ResponseEntity<?> getStats(@PathVariable int id, @RequestParam("dateFrom") String dateFrom,
-                                      @RequestParam("dateTo") String dateTo) {
+    public ResponseEntity<?> getStats(@PathVariable int id, @PathVariable String dateFrom,
+                                      @PathVariable String dateTo) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         LocalDateTime from;
