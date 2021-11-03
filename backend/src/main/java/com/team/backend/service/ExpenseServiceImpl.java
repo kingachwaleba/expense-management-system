@@ -53,10 +53,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
 
-        WalletUser walletUser = walletUserList.stream()
+        WalletUser walletOwner = walletUserList.stream()
                 .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(WalletUserNotFoundException::new);
-        BigDecimal balance = walletUser.getBalance().add(cost);
-        walletUser.setBalance(balance);
 
         for (String login : userList) {
             if (!login.equals(owner.getLogin())) {
@@ -67,11 +65,20 @@ public class ExpenseServiceImpl implements ExpenseService {
                 expenseDetail.setCost(cost);
                 expenseDetail.setUser(member);
 
-                walletUser = walletUserList.stream()
+                WalletUser walletUser = walletUserList.stream()
                         .filter(temp -> temp.getUser().equals(member)).findAny()
                         .orElseThrow(WalletUserNotFoundException::new);
-                balance = walletUser.getBalance().subtract(cost);
+                BigDecimal balance = walletUser.getBalance().subtract(cost);
+                walletOwner.setBalance(walletOwner.getBalance().add(cost));
                 balanceMap.put(walletUser.getId(), balance);
+
+                expense.addExpenseDetail(expenseDetail);
+            }
+            else {
+                ExpenseDetail expenseDetail = new ExpenseDetail();
+
+                expenseDetail.setCost(cost);
+                expenseDetail.setUser(owner);
 
                 expense.addExpenseDetail(expenseDetail);
             }

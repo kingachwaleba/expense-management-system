@@ -287,9 +287,8 @@ public class WalletServiceImpl implements WalletService {
         BigDecimal minBalance = Collections.min(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
         BigDecimal maxBalance = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getValue();
 
-        if (minBalance.compareTo(BigDecimal.valueOf(0.00)) == 0 && maxBalance.compareTo(BigDecimal.valueOf(0.00)) == 0) {
+        if (minBalance.compareTo(BigDecimal.valueOf(0.00)) == 0 && maxBalance.compareTo(BigDecimal.valueOf(0.00)) == 0)
             return;
-        }
 
         Integer minKey = Collections.min(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
         Integer maxKey = Collections.max(balanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
@@ -306,6 +305,8 @@ public class WalletServiceImpl implements WalletService {
 
         DebtsHolder debtsHolder = new DebtsHolder(debtor, creditor, min);
         debtsList.add(debtsHolder);
+
+        simplifyDebts(balanceMap, debtsList);
     }
 
     @Override
