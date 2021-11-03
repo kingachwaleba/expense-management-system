@@ -34,7 +34,7 @@ public class OneListActivity extends BaseActivity {
     static int productEditId;
     TextView nameListTv;
     EditText nameItemEt, quantityItemEt;
-    Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn;
+    Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn, cancelItemBtn;
     RadioGroup unitRg;
     CheckBox personListCb, listCb;
     RecyclerView listItemRv;
@@ -62,6 +62,7 @@ public class OneListActivity extends BaseActivity {
         nameItemEt = findViewById(R.id.name_prodcut_et);
         quantityItemEt = findViewById(R.id.quantity_et);
         addItemBtn = findViewById(R.id.add_product_btn);
+        cancelItemBtn = findViewById(R.id.cancel_product_btn);
         deleteListShopBtn = findViewById(R.id.delete_list_btn);
         editListBtn = findViewById(R.id.edit_list_btn);
         listItemRv = findViewById(R.id.list_item_rv);
@@ -93,7 +94,7 @@ public class OneListActivity extends BaseActivity {
                     listService.addListItem(accessToken, listId, product);
                 } else {
                     listService.editListItem(accessToken, productEditId, product);
-                    ifEdit = true;
+                    ifEdit = false;
                 }
                 unitRg.check(firstRadioButton);
                 nameItemEt.setText("");
@@ -101,6 +102,13 @@ public class OneListActivity extends BaseActivity {
                 finish();
                 startActivity(getIntent());
             }
+        });
+
+        cancelItemBtn.setOnClickListener(v -> {
+            unitRg.check(firstRadioButton);
+            nameItemEt.setText("");
+            quantityItemEt.setText("");
+            ifEdit = false;
         });
 
         deleteListShopBtn.setOnClickListener(v -> listService.deleteList(accessToken, listId));

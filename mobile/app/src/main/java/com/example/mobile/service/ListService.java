@@ -2,9 +2,7 @@ package com.example.mobile.service;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
-
 import com.example.mobile.activity.CreateListActivity;
 import com.example.mobile.activity.EditListActivity;
 import com.example.mobile.config.ApiClient;
@@ -13,11 +11,8 @@ import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.model.ListCreate;
 import com.example.mobile.model.ListShop;
 import com.example.mobile.model.Product;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -117,8 +117,10 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             notifyDataSetChanged();
         });
 
-        holder.editItem.setOnClickListener(v -> editInterface.editProduct(product.getName(), String.valueOf(product.getQuantity()), product.getUnit(), holder.itemId));
-
+        holder.editItem.setOnClickListener(v -> {
+            editInterface.editProduct(product.getName(), String.valueOf(product.getQuantity()), product.getUnit(), holder.itemId);
+            notifyDataSetChanged();
+        });
     }
 
     @Override
