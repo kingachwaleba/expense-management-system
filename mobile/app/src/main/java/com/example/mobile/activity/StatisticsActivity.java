@@ -1,6 +1,7 @@
 package com.example.mobile.activity;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -124,7 +125,7 @@ public class StatisticsActivity extends BaseActivity {
 
                     for (Map.Entry<String, Double> entry : statsList.entrySet()) {
                         TextView t = new TextView(StatisticsActivity.this);
-                        temp = entry.getKey() + ": " + entry.getValue();
+                        temp = entry.getKey() + ": \t" + entry.getValue();
                         t.setText(temp);
                         t.setTextAppearance(R.style.simple_label_bold);
                         t.setTextSize(18);
