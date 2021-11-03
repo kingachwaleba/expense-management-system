@@ -66,12 +66,13 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             holder.deleteItem.setEnabled(false);
             holder.deleteItem.setBackgroundResource(R.drawable.btn_delete_not_active);
             holder.editItem.setEnabled(false);
-            //zmiana background dla editItem
+            holder.editItem.setBackgroundResource(R.drawable.btn_edit_not_active);
         } else {
             holder.itemCb.setChecked(false);
             holder.deleteItem.setEnabled(true);
             holder.deleteItem.setBackgroundResource(R.drawable.btn_delete_active);
             holder.editItem.setEnabled(true);
+            holder.editItem.setBackgroundResource(R.drawable.btn_edit);
         }
 
         holder.itemNameTv.setText(product.getName());
@@ -116,8 +117,10 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             notifyDataSetChanged();
         });
 
-        holder.editItem.setOnClickListener(v -> editInterface.editProduct(product.getName(), String.valueOf(product.getQuantity()), product.getUnit(), holder.itemId));
-
+        holder.editItem.setOnClickListener(v -> {
+            editInterface.editProduct(product.getName(), String.valueOf(product.getQuantity()), product.getUnit(), holder.itemId);
+            notifyDataSetChanged();
+        });
     }
 
     @Override

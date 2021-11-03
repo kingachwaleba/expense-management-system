@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/yellow"></Spinner>
+                android:backgroundTint="@color/yellow"/>
 
             <Spinner
                 android:id="@+id/month1"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/yellow"></Spinner>
+                android:backgroundTint="@color/yellow"/>
 
             <Spinner
                 android:id="@+id/year1"
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/yellow"></Spinner>
+                android:backgroundTint="@color/yellow"/>
 
         </LinearLayout>
 
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/yellow"></Spinner>
+                android:backgroundTint="@color/yellow"/>
 
             <Spinner
                 android:id="@+id/month2"
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/yellow"></Spinner>
+                android:backgroundTint="@color/yellow"/>
 
             <Spinner
                 android:id="@+id/year2"
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/yellow"></Spinner>
+                android:backgroundTint="@color/yellow"/>
 
         </LinearLayout>
 
@@ -181,6 +181,7 @@
                 android:id="@+id/biggest_expense_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
                 android:text="@string/biggest_expense_label"
                 android:textAppearance="@style/simple_label_bold"
                 android:textColor="@color/light_gray"
@@ -214,6 +215,7 @@
                     android:id="@+id/all_expenses_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/all_expenses_label"
                     android:textAppearance="@style/simple_label_bold"
                     android:textColor="@color/light_gray"
@@ -233,14 +235,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/v_line_white" />
 
             <LinearLayout
                 android:id="@+id/stats_l"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:paddingStart="10dp"
                 android:orientation="vertical">
 
                 <!-- Dodać tutaj tabele kategoria: koszt PLN-->

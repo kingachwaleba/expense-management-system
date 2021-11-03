@@ -26,6 +26,7 @@ import com.example.mobile.service.adapter.ListItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class OneListActivity extends BaseActivity {
 
@@ -33,7 +34,7 @@ public class OneListActivity extends BaseActivity {
     static int productEditId;
     TextView nameListTv;
     EditText nameItemEt, quantityItemEt;
-    Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn;
+    Button addItemBtn, deleteListShopBtn, editListBtn, whoTakeListBtn, cancelItemBtn;
     RadioGroup unitRg;
     CheckBox personListCb, listCb;
     RecyclerView listItemRv;
@@ -61,6 +62,7 @@ public class OneListActivity extends BaseActivity {
         nameItemEt = findViewById(R.id.name_prodcut_et);
         quantityItemEt = findViewById(R.id.quantity_et);
         addItemBtn = findViewById(R.id.add_product_btn);
+        cancelItemBtn = findViewById(R.id.cancel_product_btn);
         deleteListShopBtn = findViewById(R.id.delete_list_btn);
         editListBtn = findViewById(R.id.edit_list_btn);
         listItemRv = findViewById(R.id.list_item_rv);
@@ -81,17 +83,18 @@ public class OneListActivity extends BaseActivity {
         listItemRv.setAdapter(listItemAdapterInit);
 
         addItemBtn.setOnClickListener(v -> {
+            Double quantityD = validateQuantity(quantityItemEt.getText().toString());
             if (nameItemEt.getText().toString().length() == 0)
                 nameItemEt.setError("Podaj nazwe produktu");
-            else if (quantityItemEt.getText().toString().length() == 0)
-                quantityItemEt.setError("Podaj ilość produktu");
+            else if (quantityD == 0)
+                quantityItemEt.setError("Wpisz poprawną ilość produktu!");
             else {
-                Product product = new Product(nameItemEt.getText().toString(), Double.parseDouble(quantityItemEt.getText().toString()), unit);
+                Product product = new Product(nameItemEt.getText().toString(), quantityD, unit);
                 if (!ifEdit) {
                     listService.addListItem(accessToken, listId, product);
                 } else {
                     listService.editListItem(accessToken, productEditId, product);
-                    ifEdit = true;
+                    ifEdit = false;
                 }
                 unitRg.check(firstRadioButton);
                 nameItemEt.setText("");
@@ -101,10 +104,14 @@ public class OneListActivity extends BaseActivity {
             }
         });
 
-        deleteListShopBtn.setOnClickListener(v -> {
-            listService.deleteList(accessToken, listId);
-            finish();
+        cancelItemBtn.setOnClickListener(v -> {
+            unitRg.check(firstRadioButton);
+            nameItemEt.setText("");
+            quantityItemEt.setText("");
+            ifEdit = false;
         });
+
+        deleteListShopBtn.setOnClickListener(v -> listService.deleteList(accessToken, listId));
 
         editListBtn.setOnClickListener(v -> {
             Intent intent = new Intent(OneListActivity.this, EditListActivity.class);
@@ -160,6 +167,12 @@ public class OneListActivity extends BaseActivity {
                     listShop.setUser(new User(login));
                     whoTakeListBtn.setVisibility(View.VISIBLE);
                     listService.changeListStatus(accessToken, listId, 2);
+                    for(int i = 0; i < listShop.getListDetailSet().size(); i++){
+                        if(!listShop.getListDetailSet().get(i).getStatus().getName().equals("zrealizowany")){
+                            listShop.getListDetailSet().get(i).setStatus(new Status(2, "zarezerwowany"));
+                            listShop.getListDetailSet().get(i).setUser(new User(login));
+                        }
+                    }
                 } else if (listShop.getUser().getLogin().equals(login)) {
                     listShop.setUser(null);
                     whoTakeListBtn.setVisibility(View.INVISIBLE);
@@ -176,11 +189,22 @@ public class OneListActivity extends BaseActivity {
                     personListCb.setEnabled(false);
                     whoTakeListBtn.setVisibility(View.VISIBLE);
                     listService.changeListStatus(accessToken, listId, 1);
+                    for(int i = 0; i < listShop.getListDetailSet().size(); i++) {
+                        if (!listShop.getListDetailSet().get(i).getStatus().getName().equals("zrealizowany")) {
+                            listShop.getListDetailSet().get(i).setStatus(new Status(1, "zrealizowany"));
+                            listShop.getListDetailSet().get(i).setUser(new User(login));
+                        }
+                    }
                 } else if (listShop.getStatus().getId() == 2) {
                     listShop.setUser(new User(login));
                     listShop.setStatus(new Status(1, "zrealizowany"));
                     listService.changeListStatus(accessToken, listId, 1);
-
+                    for(int i = 0; i < listShop.getListDetailSet().size(); i++) {
+                        if (!listShop.getListDetailSet().get(i).getStatus().getName().equals("zrealizowany")) {
+                            listShop.getListDetailSet().get(i).setStatus(new Status(1, "zrealizowany"));
+                            listShop.getListDetailSet().get(i).setUser(new User(login));
+                        }
+                    }
                 } else {
                     listShop.setUser(null);
                     personListCb.setChecked(false);
@@ -195,6 +219,7 @@ public class OneListActivity extends BaseActivity {
         }, accessToken, listId);
 
         units = MainActivity.getProductUnits();
+        unitRg.removeAllViews();
         for (int i = 0; i < units.size(); i++) {
             RadioButton rdbtn = new RadioButton(OneListActivity.this);
             rdbtn.setId(units.get(i).getId());
@@ -215,5 +240,15 @@ public class OneListActivity extends BaseActivity {
             String radioText = rb.getText().toString();
             unit = new Unit(checkedId, radioText);
         });
+    }
+
+    public double validateQuantity(String cost){
+        if (Pattern.compile("^\\d{0,5}(\\.\\d{1,2})?$").matcher(cost).matches()){
+            try {
+                return Double.parseDouble(cost);
+            } catch (NumberFormatException e){
+                return 0;
+            }
+        } else return 0;
     }
 }
