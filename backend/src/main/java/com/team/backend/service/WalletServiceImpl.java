@@ -306,10 +306,6 @@ public class WalletServiceImpl implements WalletService {
 
         DebtsHolder debtsHolder = new DebtsHolder(debtor, creditor, min);
         debtsList.add(debtsHolder);
-
-        if (balanceMap.get(minKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0
-                || balanceMap.get(maxKey).abs().compareTo(BigDecimal.valueOf(0.10)) > 0)
-            simplifyDebts(balanceMap, debtsList);
     }
 
     @Override
