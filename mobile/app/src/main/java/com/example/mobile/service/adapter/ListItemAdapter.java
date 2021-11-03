@@ -72,6 +72,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             holder.deleteItem.setEnabled(true);
             holder.deleteItem.setBackgroundResource(R.drawable.btn_delete_active);
             holder.editItem.setEnabled(true);
+            holder.editItem.setBackgroundResource(R.drawable.btn_edit);
         }
 
         holder.itemNameTv.setText(product.getName());

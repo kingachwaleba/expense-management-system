@@ -111,7 +111,6 @@ public class ListService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                ((Activity) context).recreate();
             }
 
             @Override
