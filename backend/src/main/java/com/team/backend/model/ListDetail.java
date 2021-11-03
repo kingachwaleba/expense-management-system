@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -24,10 +24,11 @@ public class ListDetail {
     @NotBlank(message = "{listDetail.name.notBlank}")
     private String name;
 
-    @Column(nullable = false, length = 45)
-    @Size(min = 1, max = 45, message = "{listDetail.quantity.size}")
-    @NotBlank(message = "{listDetail.quantity.notBlank}")
-    private String quantity;
+    @Column(precision = 8, scale = 3, nullable = false)
+    @NotNull(message = "{listDetail.quantity.notNull}")
+    @DecimalMin(value = "0.0", inclusive = false, message = "{listDetail.quantity.decimalMin}")
+    @Digits(integer = 5, fraction = 3, message = "{listDetail.quantity.digits}")
+    private BigDecimal quantity;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
