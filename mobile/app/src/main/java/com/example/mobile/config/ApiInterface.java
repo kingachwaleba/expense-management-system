@@ -121,9 +121,9 @@ public interface ApiInterface {
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteWallet(@Header("Authorization") String accessToken, @Path("id") int id);
 
-    @GET("wallet/{id}/stats")
+    @GET("wallet/{id}/stats/{dateFrom}/{dateTo}")
     @Headers("Content-Type: application/json")
-    Call<Map<String, Object>> getStats(@Header("Authorization") String accessToken, @Path("id") int id, @Query("dateFrom") String dateFrom, @Query("dateTo") String dateTo);
+    Call<Map<String, Object>> getStats(@Header("Authorization") String accessToken, @Path("id") int id, @Path("dateFrom") String dateFrom, @Path("dateTo") String dateTo);
 
     //Members
     @GET("find-users/{infix}")
