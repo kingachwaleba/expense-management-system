@@ -92,11 +92,36 @@ font-size: 90px;
   }
 
     /* Gdy checked */
-  .custom-radiobuttons input:checked ~ .checkmark {
+  .custom-radiobuttons input:checked ~ .checkmark{
     background-image: url(../radio-button-checked.svg);
   }
-  
- 
+  /*Checkboxes style */
+  .custom-checkboxes input{  /*Ukrycie domyślenego radiobuttona */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+}
+.checkmark-checkbox {  /*Nowy styl*/
+    position: absolute;
+    background-image: url(../checkbox-unchecked.svg);
+    size:auto;
+    margin:auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-size: contain;
+    margin-left:-40px;
+    margin-top: 5px;
+   
+  }
+
+    /* Gdy checked */
+  .custom-checkboxes input:checked ~ .checkmark-checkbox {
+    background-image: url(../checkbox-checked.svg);
+  }
   
   @media only screen and (max-width: 1025px){ 
     .footer{  

@@ -12,20 +12,42 @@ import { Expense } from '../../models/expense';
 import { ExpenseHolder } from '../../models/helpers/expenseHolder';
 import ImageService from '../../services/ImageService';
 
-function AddExpensePage () {
+function EditExpensePage () {
     var submitted = false;
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
-    walletID = JSON.parse(sessionStorage.getItem('walletID'));
+        walletID = JSON.parse(sessionStorage.getItem('walletID'));
     }
+    let expenseID = '';
+    if (sessionStorage && sessionStorage.getItem('expenseID')) {
+        expenseID = JSON.parse(sessionStorage.getItem('expenseID'));
+    }
+    let currentExpenseUsersList= '';
+    if (sessionStorage && sessionStorage.getItem('currentExpenseUsersList')) {
+        currentExpenseUsersList = JSON.parse(sessionStorage.getItem('currentExpenseUsersList'));
+    }
+    const userData = UserService.getCurrentUser()
+
     const userToken = UserService.getCurrentUser()
     const [expenseCategories, getExpenseCategories] = useState([])
     const [walletUsers, setWalletUsers] = useState([])
+
     const [expenseName, setExpenseName] = useState("")
+    const [currentExpenseName, setCurrentExpenseName] = useState("")
+
     const [expensePrice, setExpensePrice] = useState("")
+    const [currentExpensePrice, setCurrentExpensePrice] = useState("")
+
     const [expenseCategory, setExpenseCategory] = useState([])
+    const [currentExpenseCategory, setCurrentExpenseCategory] = useState([])
+
     const [expenseUsersList, setExpenseUsersList] = useState([])
+ 
+
     const [expenseReceiptImg, setExpenseReceiptImg] = useState()
+    const [currentExpenseReceiptImg, setCurrentExpenseReceiptImg] = useState()
+
+
     const [imagePreview, setImagePreview]=useState(null)
     
     const [errorMessage, setErrorMessage]=useState("")
@@ -42,30 +64,75 @@ function AddExpensePage () {
             console.error({error})
         });
         
-        CategoriesService.getCategories(userData.token)
+       
+
+
+            ExpenseService.getExpenseDetail(expenseID,userData.token)
             .then((response)=>{
-                const allCategories = response.data
-                getExpenseCategories(allCategories)
-                const defaultId = Object.values(response.data)[0].id
-                const defaultName = Object.values(response.data)[0].name
-                setExpenseCategory(new category(defaultId,defaultName))
+                //--------------------------------------------
+                CategoriesService.getCategories(userData.token)
+                .then((response)=>{
+                    const allCategories = response.data
+                    getExpenseCategories(allCategories)
+                 
+    
+                   
+                })
+                .catch(error=>{
+    
+                    console.log({error})
+                   
+                })
+                 //--------------------------------------------
+                console.log("Get expenseDetail data (responseData)")
+                console.log(response.data)
+        
+                console.log("Expense category (responseData)")
+                console.log(response.data.expense.category)
+                setCurrentExpenseCategory(response.data.expense.category)
+                setExpenseCategory(response.data.expense.category)
 
-               
+                setCurrentExpensePrice(response.data.expense.total_cost)
+                setExpensePrice(response.data.expense.total_cost)
+
+                setCurrentExpenseName(response.data.expense.name)
+                setExpenseName(response.data.expense.name)
+                setExpenseUsersList(currentExpenseUsersList)
+           
             })
+           
             .catch(error=>{
-
-                console.log({error})
-               
-            })
+                console.error({error})
+            });
+                   
           
     },[])
+
+ 
+
+
+
+
     useEffect(()=>{
        
     },[expenseCategory])
     useEffect(()=>{
        
+    },[currentExpenseCategory])
+    useEffect(()=>{
+       
     },[imagePreview])
 
+   
+    function handleDefaultCheckedUsers(data){
+        if(currentExpenseUsersList.includes(data)){
+            console.log("AKTUALNA LISTA ZAWIERA TEGO USERA")
+        }
+        else{
+            console.log("AKTUALNA LISTA NIE ZAWIERA TEGO USERA")
+            return false
+        }
+    }
     function handleChangeName(e) {
         var {value} = e.target;
         setExpenseName(value)
@@ -87,17 +154,26 @@ function AddExpensePage () {
     function handleCreateExpenseUsersList(e){
         let index
         const currentList = expenseUsersList
+        console.log("Lista przed")
+        console.log(expenseUsersList)
         if(e.target.checked){
+            if(!currentList.includes(e.target.value)){
             currentList.push(e.target.value)
             setErrorMessage("")
+             }
         }
         else {
-            index = currentList.indexOf(e.target.value)
+            if(currentList.includes(e.target.value)){
+
+                index = currentList.indexOf(e.target.value)
             currentList.splice(index, 1)
             if(currentList.length == 0) setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")
-          
+            }
+
         }
-        setExpenseUsersList(currentList)
+        setExpenseUsersList(currentList)  
+        console.log("Lista po")
+        console.log(expenseUsersList)
         
     }
 
@@ -122,7 +198,16 @@ function AddExpensePage () {
           
           }
     }
-
+    function handleDefaultCheck(data){
+        if(data === currentExpenseCategory.name){
+            
+           return true; 
+        }
+        else{
+            
+           return false; 
+        } 
+    }
     function handleClearChoosenImg(e){
         document.getElementById("insert-photo-button").value = "";
         setImagePreview(null)
@@ -135,23 +220,23 @@ function AddExpensePage () {
         else{
         const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
         const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
-        ExpenseService.addExpense(walletID, expenseHolder, userToken.token)
+        ExpenseService.editExpense(expenseID, expenseHolder, userToken.token)
         .catch(error=>{
             console.error({error})
             setErrorMessage(error.response.data)
         });
-        //console.log("ExpenseHolder:")
-       // console.log(expenseHolder)
+        console.log("ExpenseHolder:")
+        console.log(expenseHolder)
     }
         
     }
         return (
             <Container className="container">
                 <Row>
-                  <Header title="Dodaj wydatek"/>  
+                  <Header title="Edytuj wydatek"/>  
                 </Row>
                 <Col md="7" className="box-content base-text text-size form-container">
-                    <div className = "href-text center-content">Dodaj wydatek</div>
+                    <div className = "href-text center-content">Edytuj wydatek</div>
                     <div className="separator-line"/>
                 <form name="form"
                         method="post"
@@ -160,11 +245,11 @@ function AddExpensePage () {
                         <div className={'form-group'}>
                             <label className="form-label"  htmlFor="Name">Nazwa: </label>
                             <input
-                                required
+                               
                                 type="text"
                                 className="form-control"
                                 name="name"
-                                placeholder="Wpisz nazwę..."
+                                placeholder={currentExpenseName}
                                 minLength="1"
                                 maxLength="45"
                                 onChange={(e)=>handleChangeName(e)}
@@ -175,12 +260,12 @@ function AddExpensePage () {
                         <div className={'form-group'}>
                             <label className="form-label" htmlFor="Description">Kwota: </label>
                             <input
-                                required
+                                
                                 type="number"
                                 step="0.01"
                                 className="form-control"
                                 name="price"
-                                placeholder="Wpisz kwotę..."
+                                placeholder={currentExpensePrice}
                                 maxLength="1000"
                                 pattern="^\d{0,8}(\.\d{1,2})?$"
                                 onChange={(e)=>handleChangePrice(e)}
@@ -199,10 +284,10 @@ function AddExpensePage () {
                              category =>
                             
                              <div key = {category.id} className = "left-content custom-radiobuttons margin-left-text">
-                           
+                               
                              <label className = "form-label text-size" htmlFor={category.id}>
                                <input type="radio" id={category.id} name="category" value={category.name} 
-                                    defaultChecked = {category.name === Object.values(expenseCategories)[0].name}
+                                    defaultChecked = {handleDefaultCheck(category.name)}
                                    
                                    onChange={(e)=>readExpenseCategory(e)}
                                    >
@@ -234,7 +319,7 @@ function AddExpensePage () {
                            
                              <label className = "form-label text-size" htmlFor={user.userId}>
                                <input type="checkbox" id={user.userId} name="users" value={user.login} 
-                                   
+                                   defaultChecked={currentExpenseUsersList.includes(user.login)}
                                    
                                    onChange={(e)=>handleCreateExpenseUsersList(e)}
                                    >
@@ -281,10 +366,10 @@ function AddExpensePage () {
                             id = "mainbuttonstyle"
                             type = "submit"
                             onClick={e =>  {submitted = true
-                                window.location.href='/home' 
+                                window.location.href='/wallet' 
                             }}
                             >
-                            Dodaj
+                            Zapisz zmiany
                         </button>
                 </form>
                 <br />
@@ -307,4 +392,4 @@ function AddExpensePage () {
     
 }
 
-export default AddExpensePage;
+export default EditExpensePage;
