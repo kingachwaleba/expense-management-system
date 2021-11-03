@@ -43,7 +43,7 @@ public class ExpenseDetailController {
         User user = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
         BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
-                .getExpenseDetailSet().size() + 1), 2, RoundingMode.CEILING);
+                .getExpenseDetailSet().size() + 1), 2, RoundingMode.HALF_UP);
 
         ExpenseDetail expenseDetail = new ExpenseDetail();
         expenseDetail.setCost(cost);
@@ -72,7 +72,7 @@ public class ExpenseDetailController {
         expenseDetailRepository.delete(deletedUser);
 
         BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(expense
-                .getExpenseDetailSet().size()), 2, RoundingMode.CEILING);
+                .getExpenseDetailSet().size()), 2, RoundingMode.HALF_UP);
 
         for (ExpenseDetail expenseDetail : expense.getExpenseDetailSet()) {
             expenseDetail.setCost(cost);
