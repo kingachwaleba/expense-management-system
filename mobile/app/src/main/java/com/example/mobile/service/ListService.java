@@ -1,6 +1,8 @@
 package com.example.mobile.service;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.mobile.activity.CreateListActivity;
@@ -109,6 +111,7 @@ public class ListService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                ((Activity) context).recreate();
             }
 
             @Override
@@ -124,6 +127,7 @@ public class ListService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                ((Activity) context).finish();
             }
 
             @Override

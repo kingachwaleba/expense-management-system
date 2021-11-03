@@ -103,7 +103,6 @@ public class OneListActivity extends BaseActivity {
 
         deleteListShopBtn.setOnClickListener(v -> {
             listService.deleteList(accessToken, listId);
-            finish();
         });
 
         editListBtn.setOnClickListener(v -> {
@@ -195,6 +194,7 @@ public class OneListActivity extends BaseActivity {
         }, accessToken, listId);
 
         units = MainActivity.getProductUnits();
+        unitRg.removeAllViews();
         for (int i = 0; i < units.size(); i++) {
             RadioButton rdbtn = new RadioButton(OneListActivity.this);
             rdbtn.setId(units.get(i).getId());

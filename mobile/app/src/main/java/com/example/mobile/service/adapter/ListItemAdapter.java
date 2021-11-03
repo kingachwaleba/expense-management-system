@@ -66,7 +66,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             holder.deleteItem.setEnabled(false);
             holder.deleteItem.setBackgroundResource(R.drawable.btn_delete_not_active);
             holder.editItem.setEnabled(false);
-            //zmiana background dla editItem
+            holder.editItem.setBackgroundResource(R.drawable.btn_edit_not_active);
         } else {
             holder.itemCb.setChecked(false);
             holder.deleteItem.setEnabled(true);
