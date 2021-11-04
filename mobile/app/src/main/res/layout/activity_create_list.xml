@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     android:background="@drawable/bg_background">
 
     <LinearLayout
@@ -14,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/bg_round_box_dark"
             android:gravity="center"
             android:orientation="vertical"
@@ -77,8 +78,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:background="@drawable/bg_round_box_dark"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="20dp">
@@ -153,7 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/btn_simple"
             android:text="@string/create_list"
             android:textAppearance="@style/simple_button" />

@@ -6,7 +6,7 @@
     android:background="@drawable/bg_round_box_light"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="40dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/name_list_tv"
