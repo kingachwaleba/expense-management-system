@@ -48,40 +48,33 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setUser(owner);
         expense.setDate(date);
 
-        BigDecimal cost = expense.getTotal_cost().divide(BigDecimal.valueOf(userList.size()), 2,
-                RoundingMode.HALF_UP);
+        BigDecimal cost = expense.getTotal_cost().divide(new BigDecimal(userList.size()), 2, RoundingMode.HALF_UP);
+        BigDecimal totalCost = expense.getTotal_cost();
 
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
 
-        WalletUser walletOwner = walletUserList.stream()
+        WalletUser walletUser = walletUserList.stream()
                 .filter(temp -> temp.getUser().equals(owner)).findAny().orElseThrow(WalletUserNotFoundException::new);
+        BigDecimal balance = walletUser.getBalance().add(expense.getTotal_cost());
+        walletUser.setBalance(balance);
 
         for (String login : userList) {
-            if (!login.equals(owner.getLogin())) {
-                User member = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
+            User member = userService.findByLogin(login).orElseThrow(UserNotFoundException::new);
 
-                ExpenseDetail expenseDetail = new ExpenseDetail();
+            ExpenseDetail expenseDetail = new ExpenseDetail();
+            expenseDetail.setCost(cost);
+            expenseDetail.setUser(member);
 
-                expenseDetail.setCost(cost);
-                expenseDetail.setUser(member);
+            walletUser = walletUserList.stream()
+                    .filter(temp -> temp.getUser().equals(member)).findAny()
+                    .orElseThrow(WalletUserNotFoundException::new);
+            balance = walletUser.getBalance().subtract(cost);
+            balanceMap.put(walletUser.getId(), balance);
+            expense.addExpenseDetail(expenseDetail);
 
-                WalletUser walletUser = walletUserList.stream()
-                        .filter(temp -> temp.getUser().equals(member)).findAny()
-                        .orElseThrow(WalletUserNotFoundException::new);
-                BigDecimal balance = walletUser.getBalance().subtract(cost);
-                walletOwner.setBalance(walletOwner.getBalance().add(cost));
-                balanceMap.put(walletUser.getId(), balance);
-
-                expense.addExpenseDetail(expenseDetail);
-            }
-            else {
-                ExpenseDetail expenseDetail = new ExpenseDetail();
-
-                expenseDetail.setCost(cost);
-                expenseDetail.setUser(owner);
-
-                expense.addExpenseDetail(expenseDetail);
-            }
+            totalCost = totalCost.subtract(cost).setScale(2, RoundingMode.HALF_UP);
+            if (userList.get(userList.size() - 2).equals(login))
+                cost = totalCost;
         }
 
         expenseRepository.save(expense);
