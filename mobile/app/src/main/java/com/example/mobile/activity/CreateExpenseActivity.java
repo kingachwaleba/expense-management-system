@@ -141,12 +141,12 @@ public class CreateExpenseActivity extends BaseActivity {
                 expenseService.uploadReceiptImage(imageBitmap, accessToken, expenseNameEt.getText().toString(), path -> {
                     Expense expense = new Expense(expenseNameEt.getText().toString(), path, costD, selectedCategory);
                     ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMembers);
-                    expenseService.createExpense(accessToken, walletId, expenseHolder);
+                    expenseService.createExpense(accessToken, walletId, expenseHolder, walletId);
                 });
             } else {
                 Expense expense = new Expense(expenseNameEt.getText().toString(), null, costD, selectedCategory);
                 ExpenseHolder expenseHolder = new ExpenseHolder(expense, selectedMembers);
-                expenseService.createExpense(accessToken, walletId, expenseHolder);
+                expenseService.createExpense(accessToken, walletId, expenseHolder, walletId);
             }
         });
     }

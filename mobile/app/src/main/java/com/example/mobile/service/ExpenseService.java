@@ -1,6 +1,7 @@
 package com.example.mobile.service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
@@ -8,6 +9,7 @@ import com.example.mobile.ImageHelper;
 import com.example.mobile.activity.CreateExpenseActivity;
 import com.example.mobile.activity.EditExpenseActivity;
 import com.example.mobile.activity.ExpenseActivity;
+import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.config.ErrorUtils;
@@ -70,7 +72,7 @@ public class ExpenseService {
         });
     }
 
-    public void createExpense(String accessToken, int id, ExpenseHolder expenseHolder) {
+    public void createExpense(String accessToken, int id, ExpenseHolder expenseHolder, int walletId) {
         Call<ResponseBody> call = apiInterface.createExpense("Bearer " + accessToken, id, expenseHolder);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -78,7 +80,12 @@ public class ExpenseService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } else ((CreateExpenseActivity) context).finish();
+                } else {
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(walletId));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override
@@ -127,7 +134,7 @@ public class ExpenseService {
         });
     }
 
-    public void editExpenseById(String accessToken, int id, ExpenseHolder expense) {
+    public void editExpenseById(String accessToken, int id, ExpenseHolder expense, int walletId) {
         Call<ResponseBody> call = apiInterface.editExpenseById("Bearer " + accessToken, id, expense);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -135,7 +142,12 @@ public class ExpenseService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } else ((EditExpenseActivity) context).finish();
+                } else {
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(walletId));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override
@@ -146,7 +158,7 @@ public class ExpenseService {
         });
     }
 
-    public void deleteExpense(String accessToken, int id) {
+    public void deleteExpense(String accessToken, int id, int walletId) {
         Call<ResponseBody> call = apiInterface.deleteExpense("Bearer " + accessToken, id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -154,7 +166,12 @@ public class ExpenseService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } else ((ExpenseActivity) context).finish();
+                } else {
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(walletId));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override
@@ -170,7 +187,12 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
+                if(response.isSuccessful()){
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(id));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override
@@ -186,7 +208,7 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
+                Toast.makeText(context, "Przypomnienie o długu zostało wysłane", Toast.LENGTH_SHORT).show();
             }
 
             @Override

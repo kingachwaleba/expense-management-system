@@ -47,7 +47,7 @@ public class EditExpenseActivity extends BaseActivity {
     EditText nameExpenseEt, costExpenseEt;
 
     ExpenseService expenseService;
-    int expenseId;
+    int expenseId, walletId;
     String nameExpense, costExpense, category, receiptPath, accessToken, imagePath;
     List<Member> selectedUser, allMembers;
     List<String> selectedUsersLogin;
@@ -63,6 +63,7 @@ public class EditExpenseActivity extends BaseActivity {
         setContentView(R.layout.activity_edit_expense);
 
         accessToken = getIntent().getStringExtra("accessToken");
+        walletId = getIntent().getIntExtra("walletId", 0);
         expenseId = getIntent().getIntExtra("expenseId", 0);
         nameExpense = getIntent().getStringExtra("nameExpense");
         costExpense = getIntent().getStringExtra("costExpense");
@@ -171,12 +172,12 @@ public class EditExpenseActivity extends BaseActivity {
                 expenseService.uploadReceiptImage(imageBitmap, accessToken, nameExpenseEt.getText().toString(), path -> {
                     Expense editExpense = new Expense(nameExpenseEt.getText().toString(), path, costD, selectedCategory, expenseOwner);
                     ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
-                    expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
+                    expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder, walletId);
                 });
             } else {
                 Expense editExpense = new Expense(nameExpenseEt.getText().toString(), null, costD, selectedCategory, expenseOwner);
                 ExpenseHolder editExpenseHolder = new ExpenseHolder(editExpense, selectedUsersLogin);
-                expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder);
+                expenseService.editExpenseById(accessToken, expenseId, editExpenseHolder, walletId);
             }
         });
     }
