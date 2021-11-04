@@ -4,8 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/drawable/btn_edit_not_active.xml" value="0.287109375" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/drawable/ic_bell.xml" value="0.165625" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_one_list.xml" value="0.168359375" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_statistics.xml" value="0.168359375" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_wallet.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_member.xml" value="0.19706284153005466" />
       </map>
     </option>
   </component>

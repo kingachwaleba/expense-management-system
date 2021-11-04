@@ -171,7 +171,7 @@
             android:background="@drawable/bg_round_box_light"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="20dp"
+            android:padding="10dp"
             android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
