@@ -5,18 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
 import com.example.mobile.model.Member;
 import com.example.mobile.service.ExpenseService;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder> {
@@ -56,15 +52,15 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         holder.memberBalanceTv.setText(balance);
 
         if (member.getDebt() != null && !member.getLogin().equals(mLogin)) {
-            holder.showDebthBtn.setVisibility(View.VISIBLE);
+            holder.showDebtBtn.setVisibility(View.VISIBLE);
             if (member.getDebt().getCreditor().getLogin().equals(mLogin)) {
-                holder.showDebthBtn.setBackgroundResource(R.drawable.btn_debtor);
+                holder.showDebtBtn.setBackgroundResource(R.drawable.btn_debtor);
             } else {
-                holder.showDebthBtn.setBackgroundResource(R.drawable.btn_creditor);
+                holder.showDebtBtn.setBackgroundResource(R.drawable.btn_creditor);
             }
         }
 
-        holder.showDebthBtn.setOnClickListener(v -> {
+        holder.showDebtBtn.setOnClickListener(v -> {
             String label;
             if (holder.memberBalanceToYouTv.getVisibility() == View.VISIBLE) {
                 holder.memberBalanceToYouTv.setVisibility(View.GONE);
@@ -90,13 +86,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         holder.handshakeBtn.setOnClickListener(v -> {
             ExpenseService expenseService = new ExpenseService(holder.itemView.getContext());
             expenseService.payDebt(mAccessToken, mWalletId, member.getDebt());
-            Toast.makeText(holder.itemView.getContext(), "Dług został uregulowany", Toast.LENGTH_LONG).show();
+            notifyDataSetChanged();
         });
 
         holder.reminderBtn.setOnClickListener(v -> {
             ExpenseService expenseService = new ExpenseService(holder.itemView.getContext());
             expenseService.sendDebtNotification(mAccessToken, mWalletId, member.getDebt());
-            Toast.makeText(holder.itemView.getContext(), "Przypomnienie o długu zostało wysłane", Toast.LENGTH_LONG).show();
         });
     }
 
@@ -108,7 +103,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView memberNameTv, memberBalanceTv, memberBalanceToYouTv;
-        public Button reminderBtn, handshakeBtn, showDebthBtn;
+        public Button handshakeBtn, showDebtBtn, reminderBtn;
         public int id;
 
         public ViewHolder(View itemView) {
@@ -118,12 +113,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
             memberBalanceToYouTv = itemView.findViewById(R.id.member_balance_to_you_tv);
             reminderBtn = itemView.findViewById(R.id.reminder_btn);
             handshakeBtn = itemView.findViewById(R.id.handshake_btn);
-            showDebthBtn = itemView.findViewById(R.id.show_debth_btn);
+            showDebtBtn = itemView.findViewById(R.id.show_debth_btn);
 
             memberBalanceToYouTv.setVisibility(View.GONE);
             reminderBtn.setVisibility(View.GONE);
             handshakeBtn.setVisibility(View.GONE);
-            showDebthBtn.setVisibility(View.INVISIBLE);
+            showDebtBtn.setVisibility(View.INVISIBLE);
         }
     }
 }

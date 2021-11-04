@@ -71,13 +71,14 @@
 
         <Button
             android:id="@+id/reminder_btn"
-            android:layout_width="24dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentStart="false"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="10dp"
+            android:gravity="right"
             android:layout_toStartOf="@+id/handshake_btn"
-            android:layout_toEndOf="@+id/member_balance_to_you_tv"
+            android:layout_toLeftOf="@+id/member_balance_to_you_tv"
             android:background="@drawable/ic_bell"
             android:visibility="gone" />
 

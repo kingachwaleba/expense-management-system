@@ -5,10 +5,21 @@
       <map>
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/drawable/btn_edit_not_active.xml" value="0.287109375" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/drawable/ic_bell.xml" value="0.165625" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_create_list.xml" value="0.19706284153005466" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_one_list.xml" value="0.168359375" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_profile.xml" value="0.15275772451631534" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_statistics.xml" value="0.168359375" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_wallet.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_expense.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_list.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_list_create.xml" value="0.19706284153005466" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_member.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_notification_invitation.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_notification_message.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_notification_warning.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_one_list.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_user_search.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/item_wallet.xml" value="0.19706284153005466" />
       </map>
     </option>
   </component>

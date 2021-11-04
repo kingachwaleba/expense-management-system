@@ -170,7 +170,7 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
+                Toast.makeText(context, "Dług został uregulowany", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -186,7 +186,7 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-
+                Toast.makeText(context, "Przypomnienie o długu zostało wysłane", Toast.LENGTH_SHORT).show();
             }
 
             @Override
