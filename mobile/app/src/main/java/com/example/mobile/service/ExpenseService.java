@@ -172,10 +172,12 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                Intent i = new Intent(context, WalletActivity.class);
-                i.putExtra("id", String.valueOf(id));
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                (context).startActivity(i);
+                if(response.isSuccessful()){
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(id));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override
