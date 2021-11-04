@@ -24,7 +24,7 @@
         android:layout_weight="0.8"
         android:gravity="center_vertical"
         android:textAppearance="@style/simple_label"
-        android:textSize="18sp"></TextView>
+        android:textSize="18sp"/>
 
     <Button
         android:id="@+id/user_btn"
