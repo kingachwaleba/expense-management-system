@@ -25,12 +25,14 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     private final LayoutInflater mInflater;
     private final String mAccessToken;
     private final List<Member> mAllMembers;
+    private final int mWalletId;
 
-    public ExpensesAdapter(Context context, List<Expense> expenses, String accessToken, List<Member> allMembers) {
+    public ExpensesAdapter(Context context, List<Expense> expenses, String accessToken, List<Member> allMembers, int walletId) {
         mExpenses = expenses;
         mInflater = LayoutInflater.from(context);
         mAccessToken = accessToken;
         mAllMembers = allMembers;
+        mWalletId = walletId;
     }
 
     @Override
@@ -54,6 +56,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
         holder.goToExpenseBtn.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), ExpenseActivity.class);
             intent.putExtra("expenseId", expense.getId());
+            intent.putExtra("walletId", mWalletId);
             intent.putExtra("accessToken", mAccessToken);
             intent.putParcelableArrayListExtra("allMembers", (ArrayList<? extends Parcelable>) mAllMembers);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

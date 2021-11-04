@@ -72,7 +72,7 @@ public class ExpenseService {
         });
     }
 
-    public void createExpense(String accessToken, int id, ExpenseHolder expenseHolder) {
+    public void createExpense(String accessToken, int id, ExpenseHolder expenseHolder, int walletId) {
         Call<ResponseBody> call = apiInterface.createExpense("Bearer " + accessToken, id, expenseHolder);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -80,7 +80,12 @@ public class ExpenseService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } else ((CreateExpenseActivity) context).finish();
+                } else {
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(walletId));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override
@@ -129,7 +134,7 @@ public class ExpenseService {
         });
     }
 
-    public void editExpenseById(String accessToken, int id, ExpenseHolder expense) {
+    public void editExpenseById(String accessToken, int id, ExpenseHolder expense, int walletId) {
         Call<ResponseBody> call = apiInterface.editExpenseById("Bearer " + accessToken, id, expense);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -137,7 +142,12 @@ public class ExpenseService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } else ((EditExpenseActivity) context).finish();
+                } else {
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(walletId));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override
@@ -148,7 +158,7 @@ public class ExpenseService {
         });
     }
 
-    public void deleteExpense(String accessToken, int id) {
+    public void deleteExpense(String accessToken, int id, int walletId) {
         Call<ResponseBody> call = apiInterface.deleteExpense("Bearer " + accessToken, id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -156,7 +166,12 @@ public class ExpenseService {
                 if (!response.isSuccessful()) {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
-                } else ((ExpenseActivity) context).finish();
+                } else {
+                    Intent i = new Intent(context, WalletActivity.class);
+                    i.putExtra("id", String.valueOf(walletId));
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (context).startActivity(i);
+                }
             }
 
             @Override

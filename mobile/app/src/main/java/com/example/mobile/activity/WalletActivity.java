@@ -99,7 +99,7 @@ public class WalletActivity extends BaseActivity {
         expensesRv = findViewById(R.id.expenses_rv);
         expenses1 = new ArrayList<>();
         expensesRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
-        expensesAdapter = new ExpensesAdapter(this, expenses1, accessToken, members);
+        expensesAdapter = new ExpensesAdapter(this, expenses1, accessToken, members, id);
         expensesRv.setAdapter(expensesAdapter);
 
         membersRv = findViewById(R.id.members_wallet_rv);
@@ -215,7 +215,7 @@ public class WalletActivity extends BaseActivity {
 
         showExpensesBtn.setOnClickListener(v -> expenseService.getAllExpenses(expenses -> {
             if (!showExpensesControl) {
-                ExpensesAdapter expensesAdapter1 = new ExpensesAdapter(getApplicationContext(), expenses, accessToken, members);
+                ExpensesAdapter expensesAdapter1 = new ExpensesAdapter(getApplicationContext(), expenses, accessToken, members, id);
                 expensesRv.setAdapter(expensesAdapter1);
                 expensesAdapter1.notifyDataSetChanged();
                 showExpensesBtn.setBackgroundResource(R.drawable.btn_list_opened);

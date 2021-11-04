@@ -32,7 +32,7 @@ public class ExpenseActivity extends BaseActivity {
     UserListAdapter userListAdapter;
     List<Member> seletedUsers, walletUsers;
     String nameExpense, costExpense, categoryExpense, receiptPath, accessToken;
-    int expenseId;
+    int expenseId, walletId;
     ExpenseService expenseService;
     User expenseOwner;
 
@@ -43,6 +43,7 @@ public class ExpenseActivity extends BaseActivity {
 
         accessToken = getIntent().getStringExtra("accessToken");
         expenseId = getIntent().getIntExtra("expenseId", 0);
+        walletId = getIntent().getIntExtra("walletId", 0);
         walletUsers = getIntent().getParcelableArrayListExtra("allMembers");
 
         expenseService = new ExpenseService(this);
@@ -108,6 +109,7 @@ public class ExpenseActivity extends BaseActivity {
         editExpenseBtn.setOnClickListener(v -> {
             Intent intent = new Intent(ExpenseActivity.this, EditExpenseActivity.class);
             intent.putExtra("accessToken", accessToken);
+            intent.putExtra("walletId", walletId);
             intent.putExtra("expenseId", expenseId);
             intent.putExtra("nameExpense", nameExpense);
             intent.putExtra("costExpense", costExpense);
@@ -118,6 +120,6 @@ public class ExpenseActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        deleteExpenseBtn.setOnClickListener(v -> expenseService.deleteExpense(accessToken, expenseId));
+        deleteExpenseBtn.setOnClickListener(v -> expenseService.deleteExpense(accessToken, expenseId, walletId));
     }
 }
