@@ -79,12 +79,14 @@ public class BaseActivity extends AppCompatActivity {
         if (id == R.id.goToProfile) {
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
 
         if (id == R.id.goToWallets) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
