@@ -90,12 +90,6 @@ public class WalletActivity extends BaseActivity {
         membersListL = findViewById(R.id.members_list_l);
         editMembersBtn = findViewById(R.id.edit_members_btn);
 
-        membersRv = findViewById(R.id.members_wallet_rv);
-        members1 = new ArrayList<>();
-        membersRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
-        memberAdapter = new MemberAdapter(this, members1, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
-        membersRv.setAdapter(memberAdapter);
-
         shopListsRv = findViewById(R.id.shop_lists_rv);
         lists1 = new ArrayList<>();
         shopListsRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
@@ -107,6 +101,12 @@ public class WalletActivity extends BaseActivity {
         expensesRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
         expensesAdapter = new ExpensesAdapter(this, expenses1, accessToken, members);
         expensesRv.setAdapter(expensesAdapter);
+
+        membersRv = findViewById(R.id.members_wallet_rv);
+        members1 = new ArrayList<>();
+        membersRv.setLayoutManager(new LinearLayoutManager(WalletActivity.this));
+        memberAdapter = new MemberAdapter(this, members1, session.getUserDetails().get(SessionManager.KEY_LOGIN), accessToken, id);
+        membersRv.setAdapter(memberAdapter);
 
         initView();
     }
@@ -278,5 +278,7 @@ public class WalletActivity extends BaseActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> walletService.deleteCurrentMember(accessToken, walletCreate.getId(), 0)).setNegativeButton(android.R.string.no, null).show());
     }
+
+
 }
 
