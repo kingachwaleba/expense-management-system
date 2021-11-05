@@ -281,7 +281,7 @@ function AddExpensePage () {
                             id = "mainbuttonstyle"
                             type = "submit"
                             onClick={e =>  {submitted = true
-                                window.location.href='/home' 
+                                window.location.href='/wallet' 
                             }}
                             >
                             Dodaj

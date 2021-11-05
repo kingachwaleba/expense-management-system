@@ -42,7 +42,7 @@ function WalletPage () {
                     getWalletUsersData(usersData)
                     if(user.login == response.data.owner) checkIsOwner(true)
                     else checkIsOwner(false)
-                    
+                    console.log(walletData)
                     
                 })
                 .catch(error=>{
@@ -88,7 +88,7 @@ function WalletPage () {
                                         <h3>Twoje wydatki: {walletData.walletExpensesCost} zł</h3>     
                                     </div>
                                     <div className = "center-content">
-                                        <h3>Bilans: {walletData.walletExpensesCost} zł</h3>     
+                                        <h3>Twój bilans: {walletData.loggedInUserBalance} zł</h3>     
                                     </div>
                                  </div> 
                     </>

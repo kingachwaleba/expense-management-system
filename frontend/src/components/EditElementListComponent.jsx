@@ -6,7 +6,7 @@ import UserService from '../services/user.service';
 import { useState } from 'react';
 import { category } from '../models/category';
 import { ListDetail } from '../models/listDetail';
-function AddElementToListComponent(props) {
+function EditElementListComponent(props) {
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
         walletID = JSON.parse(sessionStorage.getItem('walletID'));
@@ -14,10 +14,10 @@ function AddElementToListComponent(props) {
     const userData = UserService.getCurrentUser()
     const [units, setUnits] = useState([]);
     const [errorMessage, setErrorMessage]=useState("")
-    const [inputName, setInputName] = useState("")
-    const [inputQuantity, setInputQuantity] = useState("")
-    const [inputCategoryName, setInputCategoryName] = useState("")
-    const [inputCategoryId, setInputCategoryId] = useState("")
+    const [inputName, setInputName] = useState(props.currentName)
+    const [inputQuantity, setInputQuantity] = useState(props.currentQuantity)
+    const [inputCategoryName, setInputCategoryName] = useState(props.currentCategoryName)
+    const [inputCategoryId, setInputCategoryId] = useState(props.currentCategoryId)
     const [listElementData, setListElementData] = useState([])
     useEffect(()=>{
        
@@ -25,8 +25,11 @@ function AddElementToListComponent(props) {
         .then((response)=>{
             console.log(response.data)
             setUnits(response.data)
-            setInputCategoryName(Object.values(response.data)[0].name)
-            setInputCategoryId(Object.values(response.data)[0].id)
+           // setInputCategoryName(Object.values(response.data)[0].name)
+            ///setInputCategoryId(Object.values(response.data)[0].id)
+            //setInputCategoryName(props.currentCategoryName)
+           // setInputCategoryId(props.currentCategoryId)
+            
             //setDefaultCategory()
         })
        
@@ -94,7 +97,7 @@ function AddElementToListComponent(props) {
                                 type="text"
                                 className="form-control"
                                 name="name"
-                                placeholder="Wpisz nazwę"
+                                placeholder={props.currentName}
                                 minLength="1"
                                 maxLength="45"
                                 value = {inputName}
@@ -111,7 +114,7 @@ function AddElementToListComponent(props) {
                                 step="0.01"
                                 className="form-control"
                                 name="price"
-                                placeholder="Wpisz ilość"
+                                placeholder={props.currentQuantity}
                                 maxLength="1000"
                                 value={inputQuantity}
                                 pattern="^\d{0,8}(\.\d{1,2})?$"
@@ -132,7 +135,7 @@ function AddElementToListComponent(props) {
                                
                             <label className = "form-label text-size" htmlFor={unit.id}>
                               <input type="radio" id={unit.id} name="unit" value={unit.name} 
-                                   defaultChecked = {unit.name === Object.values(units)[0].name}
+                                   defaultChecked = {unit.name === props.currentCategoryName}
                                   
                                   onChange={(e)=>handleChangeCategory( unit.name, unit.id)}
                                   >
@@ -160,7 +163,17 @@ function AddElementToListComponent(props) {
                                 //window.location.href='/wallet' 
                             }}
                             >
-                            Dodaj
+                            Zapisz zmiany
+                        </button>
+                        <button
+                            className="btn btn-primary btn-block form-button text-size"
+                            id = "mainbuttonstyle"
+                           
+                            onClick={e =>  {
+                                props.cancel()
+                            }}
+                            >
+                            Anuluj
                         </button>
                 </form>
                                 
@@ -169,4 +182,4 @@ function AddElementToListComponent(props) {
     )
 }
 
-export default AddElementToListComponent
+export default EditElementListComponent
