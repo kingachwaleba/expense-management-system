@@ -7,10 +7,7 @@ import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import AddElementToListComponent from '../../components/AddElementToListComponent';
 import EditElementListComponent from '../../components/EditElementListComponent';
-import { ListDetail } from '../../models/listDetail';
-import {List} from '../../models/list';
 import {Unit} from '../../models/unit';
-import { ListHolder } from '../../models/helpers/listHolder';
 import ListsService from '../../services/ListsService'
 
 function CreateListPage () {
@@ -24,27 +21,7 @@ function CreateListPage () {
     const [errorMessageCreateList, setErrorMessageCreateList]=useState("")
     const [edit, setEdit] = useState([])
     const [listName, setListName] = useState([])
-    const [listDetailList, setListDetailList] = useState([])
-    const[listDetailListElement, setListDetailListElement]=useState({
-        name: "",
-        quantity: "",
-        unit:{
-            id: "",
-            name: ""
-        }
-    })
-    const [listHolder, setListHolder] = useState({
-        list:{
-            name:""
-        },
-        listDetailList:[]
-
-    })
-    const [elName, setElName] = useState("")
-    const [elQuantity, setElQuantity] = useState("")
-    const [elUnitName, setElUnitName] = useState("")
-    const [elUnitId, setElUnitId] = useState("")
-    
+  
     useEffect(()=>{
        
         UnitService.getUnits(userData.token)
@@ -98,9 +75,7 @@ function CreateListPage () {
             categoryId: ""
         })
     }
-    useEffect(()=>{
-    
-    },[listDetailListElement])
+ 
     const cancelUpdate = e => {
         setEdit({
             id: null,
@@ -115,70 +90,56 @@ function CreateListPage () {
         setErrorMessageCreateList("")
         setListName(e.target.value)
     }
-    const setElements = () =>{
-        setListDetailListElement({
-            name: elName,
-            quantity: elQuantity,
-            unit:{
-                id: elUnitId,
-                name: elUnitName
-            }
-        })
-    }
+ 
     function handleCreateList(){
         console.log(currentElements)
         if(currentElements.length != 0){
+            let listDetailList = []
             currentElements.forEach(function (element){
-                if(element.length != 0){
-                //const unit = new Unit(element.categoryId, element.categoryName)
-                console.log(element)
+             
                 if(element.name || element.categoryName || element.categoryId || element.quantity){
-                    setElName(element.name)
-                    console.log(elName)
-                    setElQuantity(element.quantity)
-                    console.log(elQuantity)
-                    setElUnitId(element.categoryId)
-                    console.log(elUnitId)
-                    setElUnitName(element.categoryName)
-                    console.log(elUnitName)
-                    setElements()
-
+                let unit = new Unit(element.categoryId, element.categoryName)
+                let arrayEl = {
+                    name: element.name,
+                    quantity: element.quantity,
+                    unit: unit
+                }
+                console.log(arrayEl)
+                listDetailList.push(arrayEl)
+            
                
 
                 }else{
                  console.log("Brak danych") 
                 }
-                console.log(listDetailListElement)
-                const currentList  = listDetailList
-                currentList.push(listDetailListElement)
-                setListDetailList(currentList)
-               }else console.log("Brak danych")
+             
+                console.log(listDetailList)
                 
                 
             })
-            setListHolder({
+            console.log(listDetailList)
+          
+            let listHolder = {
                 list:{
                     name: listName
                 },
                 listDetailList: listDetailList
-            })
+            }
             console.log("ListHolder:")
             console.log(listHolder)
-            ListsService.createList(walletID, listHolder, userData.token)
-            .then((response)=>{
-                console.log(response.data)
+            if(listName.length != 0){
+                ListsService.createList(walletID, listHolder, userData.token)
+                .then((response)=>{
+                    console.log(response.data)
                 
-            })
-           
-            .catch(error=>{
-                console.error({error})
-            });
-        }else{
-            setErrorMessageCreateList("Lista jest pusta. Dodaj elementy do listy!")
-        }
-       
+                })
             
-        
+                .catch(error=>{
+                    console.error({error})
+                });
+            }else setErrorMessage("Podaj nazwę listy!")
+        }else setErrorMessageCreateList("Lista jest pusta. Dodaj elementy do listy!")
+    setCurrentElements([])
     }
 
     if(edit.id){
@@ -281,7 +242,7 @@ function CreateListPage () {
                             onClick={e =>  {
                                 console.log(currentElements)
                                 handleCreateList()
-                               // window.location.href='/wallet'
+                                window.location.href='/wallet'
                             }}
                             >
                             Utwórz

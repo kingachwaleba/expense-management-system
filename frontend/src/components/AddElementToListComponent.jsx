@@ -4,8 +4,7 @@ import UnitsService from '../services/UnitsService';
 import { useEffect } from 'react';
 import UserService from '../services/user.service';
 import { useState } from 'react';
-import { category } from '../models/category';
-import { ListDetail } from '../models/listDetail';
+
 function AddElementToListComponent(props) {
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
@@ -18,7 +17,7 @@ function AddElementToListComponent(props) {
     const [inputQuantity, setInputQuantity] = useState("")
     const [inputCategoryName, setInputCategoryName] = useState("")
     const [inputCategoryId, setInputCategoryId] = useState("")
-    const [listElementData, setListElementData] = useState([])
+   
     useEffect(()=>{
        
         UnitsService.getUnits(userData.token)
@@ -27,7 +26,7 @@ function AddElementToListComponent(props) {
             setUnits(response.data)
             setInputCategoryName(Object.values(response.data)[0].name)
             setInputCategoryId(Object.values(response.data)[0].id)
-            //setDefaultCategory()
+           
         })
        
         .catch(error=>{
@@ -36,11 +35,7 @@ function AddElementToListComponent(props) {
                
           
     },[])
-   
-    function setDefaultCategory(){
-        setInputCategoryName(Object.values(units)[0].name)
-        setInputCategoryId(Object.values(units)[0].id)
-    }
+ 
 
     const handleSubmit = e =>{
         e.preventDefault();
@@ -157,7 +152,7 @@ function AddElementToListComponent(props) {
                             id = "mainbuttonstyle"
                             type = "submit"
                             onClick={e =>  {
-                                //window.location.href='/wallet' 
+                                
                             }}
                             >
                             Dodaj
