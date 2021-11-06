@@ -78,7 +78,7 @@ public class ProfileActivity extends BaseActivity {
             String loginText = getResources().getString(R.string.login_label) + " " + account.getLogin();
             String emailText = getResources().getString(R.string.email_label) + " " + account.getEmail();
             String numberOfWalletText = getResources().getString(R.string.numer_of_wallets_label) + " " + account.getWalletsNumber();
-            String balanceText = getResources().getString(R.string.saldo_label) + " " + account.getUserBalance();
+            String balanceText = getResources().getString(R.string.balance_label) + " " + account.getUserBalance();
             session.setKeyImagePathServer(account.getImage());
             if (account.getImage() != null) {
                 ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into(profileImage), getApplicationContext(), accessToken, account.getImage());

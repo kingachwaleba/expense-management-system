@@ -11,19 +11,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Product;
-import com.example.mobile.model.Status;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
 import com.example.mobile.service.adapter.ListItemAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -153,7 +149,7 @@ public class OneListActivity extends BaseActivity {
                 whoTakeListBtn.setVisibility(View.INVISIBLE);
             }
 
-            if (listShop.getStatus().getId() == 1) {
+            if (listShop.getStatus().getId() == MainActivity.getStatusByName("zrealizowany").getId()) {
                 listCb.setChecked(true);
                 personListCb.setEnabled(false);
             } else {
@@ -166,42 +162,42 @@ public class OneListActivity extends BaseActivity {
                 if (listShop.getUser() == null) {
                     listShop.setUser(new User(login));
                     whoTakeListBtn.setVisibility(View.VISIBLE);
-                    listService.changeListStatus(accessToken, listId, 2);
+                    listService.changeListStatus(accessToken, listId, MainActivity.getStatusByName("zarezerwowany").getId());
                     for(int i = 0; i < listShop.getListDetailSet().size(); i++){
                         if(!listShop.getListDetailSet().get(i).getStatus().getName().equals("zrealizowany")){
-                            listShop.getListDetailSet().get(i).setStatus(new Status(2, "zarezerwowany"));
+                            listShop.getListDetailSet().get(i).setStatus(MainActivity.getStatusByName("zarezerwowany"));
                             listShop.getListDetailSet().get(i).setUser(new User(login));
                         }
                     }
                 } else if (listShop.getUser().getLogin().equals(login)) {
                     listShop.setUser(null);
                     whoTakeListBtn.setVisibility(View.INVISIBLE);
-                    listService.changeListStatus(accessToken, listId, 3);
+                    listService.changeListStatus(accessToken, listId, MainActivity.getStatusByName("oczekujący").getId());
                 }
                 listItemAdapter.notifyDataSetChanged();
             });
 
             listCb.setOnClickListener(v -> {
-                if (listShop.getStatus().getId() == 3) {
+                if (listShop.getStatus().getId() == MainActivity.getStatusByName("oczekujący").getId()) {
                     listShop.setUser(new User(login));
-                    listShop.setStatus(new Status(1, "zrealizowany"));
+                    listShop.setStatus(MainActivity.getStatusByName("zrealizowany"));
                     personListCb.setChecked(true);
                     personListCb.setEnabled(false);
                     whoTakeListBtn.setVisibility(View.VISIBLE);
-                    listService.changeListStatus(accessToken, listId, 1);
+                    listService.changeListStatus(accessToken, listId, MainActivity.getStatusByName("zrealizowany").getId());
                     for(int i = 0; i < listShop.getListDetailSet().size(); i++) {
                         if (!listShop.getListDetailSet().get(i).getStatus().getName().equals("zrealizowany")) {
-                            listShop.getListDetailSet().get(i).setStatus(new Status(1, "zrealizowany"));
+                            listShop.getListDetailSet().get(i).setStatus(MainActivity.getStatusByName("zrealizowany"));
                             listShop.getListDetailSet().get(i).setUser(new User(login));
                         }
                     }
-                } else if (listShop.getStatus().getId() == 2) {
+                } else if (listShop.getStatus().getId() == MainActivity.getStatusByName("zarezerwowany").getId()) {
                     listShop.setUser(new User(login));
-                    listShop.setStatus(new Status(1, "zrealizowany"));
-                    listService.changeListStatus(accessToken, listId, 1);
+                    listShop.setStatus(MainActivity.getStatusByName("zrealizowany"));
+                    listService.changeListStatus(accessToken, listId, MainActivity.getStatusByName("zrealizowany").getId());
                     for(int i = 0; i < listShop.getListDetailSet().size(); i++) {
                         if (!listShop.getListDetailSet().get(i).getStatus().getName().equals("zrealizowany")) {
-                            listShop.getListDetailSet().get(i).setStatus(new Status(1, "zrealizowany"));
+                            listShop.getListDetailSet().get(i).setStatus(MainActivity.getStatusByName("zrealizowany"));
                             listShop.getListDetailSet().get(i).setUser(new User(login));
                         }
                     }
@@ -210,8 +206,8 @@ public class OneListActivity extends BaseActivity {
                     personListCb.setChecked(false);
                     personListCb.setEnabled(true);
                     whoTakeListBtn.setVisibility(View.INVISIBLE);
-                    listShop.setStatus(new Status(3, "oczekujący"));
-                    listService.changeListStatus(accessToken, listId, 3);
+                    listShop.setStatus(MainActivity.getStatusByName("oczekujący"));
+                    listService.changeListStatus(accessToken, listId, MainActivity.getStatusByName("oczekujący").getId());
                 }
                 listItemAdapter.notifyDataSetChanged();
             });
