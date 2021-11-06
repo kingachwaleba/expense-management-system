@@ -1,9 +1,7 @@
 package com.team.backend.service;
 
 import com.team.backend.helpers.ExpenseHolder;
-import com.team.backend.model.Expense;
-import com.team.backend.model.User;
-import com.team.backend.model.Wallet;
+import com.team.backend.model.*;
 import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
@@ -23,11 +21,13 @@ public interface ExpenseService {
     List<Expense> findAllByWalletOrderByDate(Wallet wallet);
     List<Expense> findAllByWalletAndUser(Wallet wallet, User user);
     List<Expense> findAllByWalletAndDateBetween(Wallet wallet, LocalDateTime dateFrom, LocalDateTime dateTo);
+    List<WalletUser> findWalletUsersInExpense(List<ExpenseDetail> expenseDetailList, List<WalletUser> walletUserList);
 
     void editUserList(Expense updatedExpense, Expense newExpense, List<String> userList);
     void edit(Expense updatedExpense, Expense newExpense);
     void deleteExpense(Expense expense);
-    void calculateNewBalance(Wallet wallet, Expense expense, BigDecimal cost);
+    void cleanBalance(Wallet wallet, Expense expense);
+    void calculateNewBalance(Wallet wallet, Expense expense);
     BigDecimal calculateExpensesCost(Wallet wallet);
     BigDecimal calculateExpensesCostForUser(Wallet wallet, User user);
 
