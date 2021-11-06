@@ -152,8 +152,6 @@ public class WalletController {
     @PutMapping("/pay-debt/wallet/{id}")
     @PreAuthorize("@authenticationService.isCreditor(#debtsHolder)")
     public ResponseEntity<?> payDebt(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
-        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
-
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
         WalletUser debtorInfo = walletUserRepository
