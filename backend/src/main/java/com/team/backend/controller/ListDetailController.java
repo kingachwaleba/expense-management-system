@@ -58,11 +58,12 @@ public class ListDetailController {
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {
         ListDetail updatedElement = listDetailService.findById(id).orElseThrow(ListDetailNotFoundException::new);
         Status chosenStatus = statusRepository.findById(statusId).orElseThrow(StatusNotFoundException::new);
+        Status pendingStatus = statusRepository.findByName("oczekujący").orElseThrow(StatusNotFoundException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         updatedElement.setStatus(chosenStatus);
 
-        if (statusId == 3)
+        if (chosenStatus.equals(pendingStatus))
             updatedElement.setUser(null);
         else
             updatedElement.setUser(user);
