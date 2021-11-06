@@ -140,6 +140,7 @@ function AddExpensePage () {
             console.error({error})
             setErrorMessage(error.response.data)
         });
+        window.location.href='/wallet'
         //console.log("ExpenseHolder:")
        // console.log(expenseHolder)
     }
@@ -173,7 +174,7 @@ function AddExpensePage () {
                         </div>
 
                         <div className={'form-group'}>
-                            <label className="form-label" htmlFor="Description">Kwota: </label>
+                            <label className="form-label" htmlFor="price">Kwota: </label>
                             <input
                                 required
                                 type="number"
@@ -293,7 +294,7 @@ function AddExpensePage () {
                             id = "mainbuttonstyle"
                             type = "button"
                             onClick={e =>  {
-                                window.location.href='/wallet'
+                              
                             }}
                             >
                             Anuluj

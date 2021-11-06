@@ -226,8 +226,7 @@ function WalletPage () {
                         </div>
                         <div id="showing-content-lists" className="hide-content" style={{display:'none'}}>
                                             <DisplayWalletListsSumComponent/>
-                                            <DisplayWalletListsSumComponent/>
-                                            <DisplayWalletListsSumComponent/>
+                                          
                         </div>
 
 

@@ -61,7 +61,7 @@ const user = UserService.getCurrentUser();
                                     <h4>Właściciel: {wallet.owner}</h4>
                                     <h4>Kategoria: {wallet.walletCategory.name}</h4>
                                     <h4>Liczba członków: {wallet.userListCounter}</h4>
-                                    <h4>Wydatki w portfelu: {wallet.walletExpensesCost}</h4>
+                                    <h4>Wydatki w portfelu: {wallet.walletExpensesCost} zł</h4>
                                   {console.log(wallet.id)}       
                                  
                                  
