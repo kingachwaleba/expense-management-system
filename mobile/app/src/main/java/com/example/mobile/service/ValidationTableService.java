@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Category;
+import com.example.mobile.model.Status;
 import com.example.mobile.model.Unit;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,12 +71,31 @@ public class ValidationTableService {
         });
     }
 
+    public void getStatuses(OnValidateTableStatus callback) {
+        Call<List<Status>> call = apiInterface.getStatuses();
+        call.enqueue(new Callback<List<Status>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<Status>> call, @NotNull Response<List<Status>> response) {
+                callback.onStatuses(response.body());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<Status>> call, @NotNull Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
     public interface OnValidationTableCategory {
         void onCategories(List<Category> categories);
     }
 
     public interface OnValidationTableUnit {
         void onUnits(List<Unit> units);
+    }
+
+    public interface OnValidateTableStatus {
+        void onStatuses(List<Status> statuses);
     }
 
 }

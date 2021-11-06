@@ -12,6 +12,7 @@ import com.example.mobile.model.Member;
 import com.example.mobile.model.Message;
 import com.example.mobile.model.Product;
 import com.example.mobile.model.RegistrationForm;
+import com.example.mobile.model.Status;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
@@ -99,6 +100,10 @@ public interface ApiInterface {
     @GET("units")
     @Headers("Content-Type: application/json")
     Call<List<Unit>> getUnits();
+
+    @GET("statues")
+    @Headers("Content-Type: application/json")
+    Call<List<Status>> getStatuses();
 
     //Wallet
     @GET("wallets")

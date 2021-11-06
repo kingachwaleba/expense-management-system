@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.model.Category;
+import com.example.mobile.model.Status;
 import com.example.mobile.model.Unit;
 import com.example.mobile.model.WalletCreate;
 import com.example.mobile.service.ValidationTableService;
@@ -25,6 +26,7 @@ public class MainActivity extends BaseActivity {
 
     static List<Category> categoriesWallet, categoriesExpense;
     static List<Unit> productUnits;
+    static List<Status> statusesList;
     RecyclerView walletRv;
     TextView helloTv;
     Button addNewWalletBtn;
@@ -42,6 +44,12 @@ public class MainActivity extends BaseActivity {
     static public List<Unit> getProductUnits() {
         return productUnits;
     }
+
+    static public List<Status> getStatusesList(){
+        return statusesList;
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +72,8 @@ public class MainActivity extends BaseActivity {
         validationTableService.getExpenseCategories(categories -> categoriesExpense = categories);
 
         validationTableService.getUnits(units -> productUnits = units);
+
+        validationTableService.getStatuses(statuses -> statusesList = statuses);
 
         addNewWalletBtn.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, CreateWalletActivity.class);
