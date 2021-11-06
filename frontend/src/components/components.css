@@ -65,7 +65,15 @@ font-size: 90px;
   margin-bottom:20px;
   margin-top:20px;
 }
-
+.separator-line-thin{
+  background-color:#F7F7F7;
+  border-radius: 24px;
+  width: auto;
+  height: 2px;
+  margin: 5px;
+  margin-bottom:20px;
+  margin-top:20px;
+}
 
 
 /*Checkboxes style*/
@@ -95,6 +103,9 @@ font-size: 90px;
   .custom-radiobuttons input:checked ~ .checkmark{
     background-image: url(../radio-button-checked.svg);
   }
+
+
+  /*===================================================================================*/
   /*Checkboxes style */
   .custom-checkboxes input{  /*Ukrycie domyślenego radiobuttona */
     position: absolute;
@@ -123,6 +134,34 @@ font-size: 90px;
     background-image: url(../checkbox-checked.svg);
   }
   
+  /*===================================================================================*/
+   /*Checkboxes style - LISTS*/
+   .custom-checkboxes-list-buy input{  /*Ukrycie domyślenego radiobuttona */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+}
+.checkmark-checkbox-list-buy {  /*Nowy styl*/
+    
+    background-image: url(../checkbox-unchecked.svg);
+    size:auto;
+    margin:auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-size: contain;
+    margin-left:-40px;
+    margin-top: 5px;
+   
+  }
+
+    /* Gdy checked */
+  .custom-checkboxes-list-buy input:checked ~ .checkmark-checkbox-list-buy {
+    background-image: url(../element-bought.svg);
+  }
   @media only screen and (max-width: 1025px){ 
     .footer{  
         font-size: 25px;

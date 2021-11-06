@@ -191,8 +191,8 @@ function CreateListPage () {
                                     <div key = {element.id} className = "text-size">
                                     
                                         <Row  className="grid-container">
-                                            <Col> 
-                                                <button className="delete-user-icon icons-size-2"
+                                            <Col className="center-content"> 
+                                                <button className="delete-list-element icons-size-2"
                                                     onClick={(e)=>{ removeElement(element.id)
                                                     
                                            
@@ -201,7 +201,7 @@ function CreateListPage () {
                                     
                                              </Col>
                                             <Col> 
-                                                <button className="delete-user-icon icons-size-2"
+                                                <button className="edit-list-element icons-size"
                                                     onClick={(e)=>{
                                                     
                                                         setEdit({
