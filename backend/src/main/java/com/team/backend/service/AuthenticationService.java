@@ -1,6 +1,7 @@
 package com.team.backend.service;
 
 import com.team.backend.exception.*;
+import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.*;
 import com.team.backend.repository.ExpenseDetailRepository;
 import com.team.backend.repository.UserStatusRepository;
@@ -53,6 +54,13 @@ public class AuthenticationService {
         User owner = walletOwnerDetail.getUser();
 
         return owner.equals(currentUser);
+    }
+
+    public boolean isCreditor(DebtsHolder debtsHolder) {
+        User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        User creditor = debtsHolder.getCreditor();
+
+        return creditor.getLogin().equals(currentUser.getLogin());
     }
 
     public boolean checkIfMember(Wallet wallet) {

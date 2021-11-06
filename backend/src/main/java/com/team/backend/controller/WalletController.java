@@ -150,7 +150,7 @@ public class WalletController {
     }
     
     @PutMapping("/pay-debt/wallet/{id}")
-    @PreAuthorize("@authenticationService.isWalletMember(#id)")
+    @PreAuthorize("@authenticationService.isCreditor(#debtsHolder)")
     public ResponseEntity<?> payDebt(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         
@@ -168,11 +168,6 @@ public class WalletController {
         BigDecimal debt = debtsHolder.getHowMuch();
         BigDecimal newDebtorBalance = debtorInfo.getBalance().add(debt);
         BigDecimal newCreditorBalance = creditorInfo.getBalance().subtract(debt);
-
-        if (newDebtorBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
-            newDebtorBalance = BigDecimal.valueOf(0.00);
-        if (newCreditorBalance.abs().compareTo(BigDecimal.valueOf(0.10)) < 0)
-            newCreditorBalance = BigDecimal.valueOf(0.00);
 
         debtorInfo.setBalance(newDebtorBalance);
         creditorInfo.setBalance(newCreditorBalance);
