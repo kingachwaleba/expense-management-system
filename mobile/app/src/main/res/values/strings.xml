@@ -20,7 +20,6 @@
     <string name="statute_text">Przeczytałem/am i akceptuję warunki </string>
     <string name="go_to_wallet">Przejdź do porfela</string>
     <string name="balance_label">Bilans:</string>
-    <string name="saldo_label">Saldo:</string>
     <string name="number_of_members_label">Liczba członków:</string>
     <string name="owner_label">Właściciel:</string>
     <string name="logout">Wyloguj się</string>
