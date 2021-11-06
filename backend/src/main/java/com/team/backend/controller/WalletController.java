@@ -153,10 +153,6 @@ public class WalletController {
     @PreAuthorize("@authenticationService.isCreditor(#debtsHolder)")
     public ResponseEntity<?> payDebt(@PathVariable int id, @RequestBody DebtsHolder debtsHolder) {
         User currentUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
-        
-        if (!currentUser.getLogin().equals(debtsHolder.getCreditor().getLogin()))
-            return new ResponseEntity<>("Only creditor can tell that the debt has been paid!",
-                    HttpStatus.FORBIDDEN);
 
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
