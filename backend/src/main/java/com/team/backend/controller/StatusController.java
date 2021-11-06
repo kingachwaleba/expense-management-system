@@ -18,7 +18,7 @@ public class StatusController {
         this.statusRepository = statusRepository;
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/statues")
     public ResponseEntity<?> getAllStatuses() {
         List<Status> statusList = statusRepository.findAll();
 
