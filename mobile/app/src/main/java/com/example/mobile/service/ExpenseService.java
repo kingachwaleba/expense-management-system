@@ -192,6 +192,9 @@ public class ExpenseService {
                     i.putExtra("id", String.valueOf(id));
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     (context).startActivity(i);
+                } else {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -208,7 +211,12 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                Toast.makeText(context, "Przypomnienie o długu zostało wysłane", Toast.LENGTH_SHORT).show();
+                if(response.isSuccessful())
+                    Toast.makeText(context, "Przypomnienie o długu zostało wysłane", Toast.LENGTH_SHORT).show();
+                else {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
