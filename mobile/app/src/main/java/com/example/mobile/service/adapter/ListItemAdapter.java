@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobile.R;
 import com.example.mobile.SetActivityField;
+import com.example.mobile.activity.MainActivity;
 import com.example.mobile.model.Product;
-import com.example.mobile.model.Status;
 import com.example.mobile.model.User;
 import com.example.mobile.service.ListService;
 
@@ -60,7 +60,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             holder.whoTakeItem.setVisibility(View.INVISIBLE);
         }
 
-        if (product.getStatus().getId() == 1) {
+        if (product.getStatus().getId() == MainActivity.getStatusByName("zrealizowany").getId()) {
             holder.itemCb.setChecked(true);
             holder.personCb.setEnabled(false);
             holder.deleteItem.setEnabled(false);
@@ -85,28 +85,33 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         holder.personCb.setOnClickListener(v -> {
             if (product.getUser() == null) {
                 product.setUser(new User(mLogin));
-                listService.changeListElementStatus(mAccessToken, holder.itemId, 2);
+                listService.changeListElementStatus(mAccessToken, holder.itemId,
+                        MainActivity.getStatusByName("zarezerwowany").getId());
             } else if (product.getUser().getLogin().equals(mLogin)) {
                 product.setUser(null);
-                listService.changeListElementStatus(mAccessToken, holder.itemId, 3);
+                listService.changeListElementStatus(mAccessToken, holder.itemId,
+                        MainActivity.getStatusByName("oczekujący").getId());
             }
             notifyDataSetChanged();
         });
 
         holder.itemCb.setOnClickListener(v -> {
-            if (product.getStatus().getId() == 3) {
+            if (product.getStatus().getId() == MainActivity.getStatusByName("oczekujący").getId()) {
                 product.setUser(new User(mLogin));
-                product.setStatus(new Status(1, "zrealizowany"));
-                listService.changeListElementStatus(mAccessToken, holder.itemId, 1);
-            } else if (product.getStatus().getId() == 2) {
+                product.setStatus(MainActivity.getStatusByName("zrealizowany"));
+                listService.changeListElementStatus(mAccessToken, holder.itemId,
+                        MainActivity.getStatusByName("zrealizowany").getId());
+            } else if (product.getStatus().getId() == MainActivity.getStatusByName("zarezerwowany").getId()) {
                 product.setUser(new User(mLogin));
-                product.setStatus(new Status(1, "zrealizowany"));
-                listService.changeListElementStatus(mAccessToken, holder.itemId, 1);
+                product.setStatus(MainActivity.getStatusByName("zrealizowany"));
+                listService.changeListElementStatus(mAccessToken, holder.itemId,
+                        MainActivity.getStatusByName("zrealizowany").getId());
 
             } else {
                 product.setUser(null);
-                product.setStatus(new Status(3, "oczekujący"));
-                listService.changeListElementStatus(mAccessToken, holder.itemId, 3);
+                product.setStatus(MainActivity.getStatusByName("oczekujący"));
+                listService.changeListElementStatus(mAccessToken, holder.itemId,
+                        MainActivity.getStatusByName("oczekujący").getId());
             }
             notifyDataSetChanged();
         });
