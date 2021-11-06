@@ -49,7 +49,9 @@ public class MainActivity extends BaseActivity {
         return statusesList;
     }
 
-
+    static public Status getStatusByName(String name){
+        return statusesList.stream().filter(status -> name.equals(status.getName())).findAny().orElse(null);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class MainActivity extends BaseActivity {
             Intent i = new Intent(MainActivity.this, CreateWalletActivity.class);
             startActivity(i);
         });
+
     }
 
     @Override
