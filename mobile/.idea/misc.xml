@@ -5,7 +5,9 @@
       <map>
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/drawable/btn_edit_not_active.xml" value="0.287109375" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/drawable/ic_bell.xml" value="0.165625" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_create_expense.xml" value="0.19296448087431695" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_create_list.xml" value="0.19706284153005466" />
+        <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_edit_expense.xml" value="0.19296448087431695" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_one_list.xml" value="0.168359375" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_profile.xml" value="0.15275772451631534" />
         <entry key="..\:/Projekty/PracaInz/expense-management-system/mobile/app/src/main/res/layout/activity_statistics.xml" value="0.168359375" />

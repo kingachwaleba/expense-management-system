@@ -109,7 +109,8 @@
             android:id="@+id/choose_image_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/et_edittext"
             android:drawableStart="@drawable/ic_image"
             android:paddingStart="20dp"
@@ -117,11 +118,21 @@
             android:textAppearance="@style/simple_button"
             android:textColor="@color/gray" />
 
+        <Button
+            android:id="@+id/delete_photo_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="right"
+            android:background="@drawable/btn_delete_2"
+            android:textAppearance="@style/simple_button"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/receipt_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginVertical="5dp"
+            android:adjustViewBounds="true"
             android:visibility="gone" />
 
         <Button
