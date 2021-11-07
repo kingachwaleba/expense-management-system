@@ -41,13 +41,13 @@ public class CreateExpenseActivity extends BaseActivity {
 
     EditText expenseNameEt, expenseCostEt;
     RadioGroup categoryRg;
-    Button createExpenseBtn, cancelBtn, chooseImageBtn;
+    Button createExpenseBtn, cancelBtn, chooseImageBtn, deletePhotoBtn;
     ImageView receiptIv;
     LinearLayout membersCb;
 
     ExpenseService expenseService;
     int walletId;
-    String accessToken;
+    String accessToken, imagePath;
     List<Member> members;
     List<Category> categoriesExpense;
     Category selectedCategory;
@@ -74,11 +74,19 @@ public class CreateExpenseActivity extends BaseActivity {
         membersCb = findViewById(R.id.members_cb);
         receiptIv = findViewById(R.id.receipt_iv);
         chooseImageBtn = findViewById(R.id.choose_image_btn);
+        deletePhotoBtn = findViewById(R.id.delete_photo_btn);
 
         cancelBtn.setOnClickListener(v -> finish());
 
         categoriesExpense = MainActivity.getCategoriesExpense();
         selectedMembers = new ArrayList<>();
+
+        deletePhotoBtn.setOnClickListener(v -> {
+            imageBitmap = null;
+            imagePath = null;
+            receiptIv.setVisibility(View.GONE);
+            deletePhotoBtn.setVisibility(View.GONE);
+        });
 
         chooseImageBtn.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(this,
@@ -164,14 +172,15 @@ public class CreateExpenseActivity extends BaseActivity {
             if (bitMapOption.outWidth < GL_MAX_TEXTURE_SIZE && bitMapOption.outHeight < GL_MAX_TEXTURE_SIZE)
                 try {
                     imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), selectedImage));
+                    receiptIv.setImageBitmap(imageBitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             else
                 Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
 
-            receiptIv.setImageBitmap(imageBitmap);
             receiptIv.setVisibility(View.VISIBLE);
+            deletePhotoBtn.setVisibility(View.VISIBLE);
         }
     }
 
