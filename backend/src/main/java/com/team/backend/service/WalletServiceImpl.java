@@ -379,13 +379,7 @@ public class WalletServiceImpl implements WalletService {
         List<ExpenseDetail> expenseDetailList = new ArrayList<>();
         expenseList.forEach(expense -> expenseDetailList.addAll(expense.getExpenseDetailSet()));
 
-        Map<User, BigDecimal> mapByUser = expenseDetailList.stream()
-                .collect(Collectors.groupingBy(
-                        ExpenseDetail::getUser,
-                        Collectors.reducing(
-                                BigDecimal.ZERO,
-                                ExpenseDetail::getCost,
-                                BigDecimal::add)));
+        Map<User, BigDecimal> mapByUser = expenseService.calculateUserExpenses(expenseDetailList);
 
         BigDecimal maxExpensesValue = Collections.max(mapByUser.values());
 

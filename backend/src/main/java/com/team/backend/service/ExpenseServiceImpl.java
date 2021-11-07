@@ -14,6 +14,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -322,13 +323,24 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public BigDecimal calculateExpensesCostForUser(Wallet wallet, User user) {
-        List<Expense> expenseList = findAllByWalletAndUser(wallet, user);
-        BigDecimal totalCost = BigDecimal.valueOf(0.00);
+        List<Expense> expenseList = findAllByWalletOrderByDate(wallet);
+        List<ExpenseDetail> expenseDetailList = new ArrayList<>();
+        expenseList.forEach(expense -> expenseDetailList.addAll(expense.getExpenseDetailSet()));
+        Map<User, BigDecimal> mapByUser = calculateUserExpenses(expenseDetailList);
 
-        for (Expense expense : expenseList)
-            totalCost = totalCost.add(expense.getTotal_cost());
+        return mapByUser.get(user);
+    }
 
-        return totalCost;
+    @Override
+    public Map<User, BigDecimal> calculateUserExpenses(List<ExpenseDetail> expenseDetailList) {
+
+        return expenseDetailList.stream()
+                .collect(Collectors.groupingBy(
+                        ExpenseDetail::getUser,
+                        Collectors.reducing(
+                                BigDecimal.ZERO,
+                                ExpenseDetail::getCost,
+                                BigDecimal::add)));
     }
 
     @Override

@@ -30,6 +30,7 @@ public interface ExpenseService {
     void calculateNewBalance(Wallet wallet, Expense expense);
     BigDecimal calculateExpensesCost(Wallet wallet);
     BigDecimal calculateExpensesCostForUser(Wallet wallet, User user);
+    Map<User, BigDecimal> calculateUserExpenses(List<ExpenseDetail> expenseDetailList);
 
     Map<String, Object> getOne(int id);
     List<Expense> getAll(int id);
