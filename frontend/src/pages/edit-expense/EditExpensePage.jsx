@@ -50,7 +50,8 @@ function EditExpensePage () {
     
 
     const [imagePreview, setImagePreview]=useState(null)
-    
+    const [displayImg, setDisplayImg] = useState (null)
+    const [message, setMessage] = useState("")
     const [errorMessage, setErrorMessage]=useState("")
     useEffect(()=>{
         const userData = UserService.getCurrentUser();
@@ -99,6 +100,7 @@ function EditExpensePage () {
                 setCurrentExpenseName(response.data.expense.name)
                 setExpenseName(response.data.expense.name)
                 setExpenseUsersList(currentExpenseUsersList)
+                setCurrentExpenseReceiptImg(response.data.expense.receipt_image)
            
             })
            
@@ -112,7 +114,35 @@ function EditExpensePage () {
  
 
 
-
+    useEffect(()=>{
+        if(currentExpenseReceiptImg != null){
+          setMessage("")
+          document.getElementById('img-preview-div').style.display = 'block';
+          /*
+          var formData = new FormData();
+              formData.append('imageName',receiptImg)
+          console.log(receiptImg)
+          console.log(formData.get('imageName')) 
+  
+          */
+          ImageService.getImg(expenseID, userData.token)
+          .then(response=>{
+              console.log(response)
+              const url = URL.createObjectURL(response.data)
+              setDisplayImg(url)
+              console.log(url)
+          })
+          .catch(error=>{
+              console.error(error)
+          });
+         
+  
+        }
+        else{
+            setMessage("Brak zdjęcia paragonu")
+            document.getElementById('img-preview-div').style.display = 'none';
+        }
+      },[currentExpenseReceiptImg])
 
     useEffect(()=>{
        
@@ -179,8 +209,10 @@ function EditExpensePage () {
     }
 
     function handleImageChange(e){
+        
         if (e.target.files && e.target.files[0]) {
-            setImagePreview(URL.createObjectURL(e.target.files[0]))
+            setDisplayImg(URL.createObjectURL(e.target.files[0]))
+           
             document.getElementById('img-preview-div').style.display = 'block';
             let img = e.target.files[0];
             var formData = new FormData();
@@ -211,7 +243,8 @@ function EditExpensePage () {
     }
     function handleClearChoosenImg(e){
         document.getElementById("insert-photo-button").value = "";
-        setImagePreview(null)
+        setDisplayImg(null)
+        setExpenseReceiptImg(null)
         document.getElementById('img-preview-div').style.display = 'none';
     }
     function handleCreateExpense(e){
@@ -340,7 +373,15 @@ function EditExpensePage () {
                 <div className = "box-subcontent">
                         <div className="base-text text-size">
                         Zdjęcie paragonu:
-                
+                        <div className="center-content">
+                                    {message}
+                        <div id="img-preview-div" style={{display:'none'}}>
+                            <img src={displayImg} className="img-preview"  alt="img" />
+                        </div>         
+                        
+
+                        </div>        
+                        
                         </div>
                         
                         <input  
@@ -349,8 +390,8 @@ function EditExpensePage () {
                             type="file"
                             onChange={(e)=>handleImageChange(e)} />
                    <br /><br />
-                   <div id="img-preview-div" style={{display:'none'}}>
-                        <img src={imagePreview} className="img-preview" alt="Podgląd zdjęcia" /> 
+                   <div id="img-preview-div">
+                        
                         <button
                         className="delete-user-icon icons-size"
                         onClick={(e)=>handleClearChoosenImg(e)}

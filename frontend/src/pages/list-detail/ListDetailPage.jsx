@@ -7,9 +7,11 @@ import ListsService from '../../services/ListsService';
 import EditListDetailElementComponent from '../../components/EditListDetailElementComponent';
 import AddElementToExistingListComponent from '../../components/AddElementToExistingListComponent';
 import StatusService from '../../services/StatusService';
+
 import { useLayoutEffect } from 'react';
 
 function ListDetailPage () {
+    let counter = 0;
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
         walletID = JSON.parse(sessionStorage.getItem('walletID'));
@@ -25,42 +27,48 @@ function ListDetailPage () {
     const[edit, setEdit] = useState([])
     const[errorMessage,setErrorMessage] = useState("")
     const[errorManageElementMessage,setErrorManageElementMessage] = useState("")
+    const[loading, setLoading] = useState(true)
     useEffect(()=>{
         console.log("WalletId:")
         console.log(walletID)
         console.log("userToken:")
         console.log(userData.token)
-        
+        let isMounted = true;
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
+            if(isMounted){
+                setListDetailData(response.data.listDetailSet)
+            }
             console.log("Get expenseSum data (responseData)")
-            console.log(response.data)
-           
-            setListDetailData(response.data.listDetailSet)
-            console.log(response.data.listDetailSet)
-       
+            //console.log(response.data)
+            
+            //setListDetailData(response.data.listDetailSet)
+            //console.log(response.data.listDetailSet)
+            
         })
         .catch(error=>{
             console.error({error})
-        });
+        })
+        return()=>{isMounted = false
+        setLoading(false)}
 
         StatusService.getStatues()
         .then((response)=>{
             setStatus(response.data)
-            console.log(response.data)
+           // console.log(response.data)
         })
         .catch(error=>{
             console.error({error})
         });      
           
     },[])
-
+/*
     useEffect(()=>{ 
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
           
-            setListDetailData(response.data.listDetailSet)
-            
+            //setListDetailData(response.data.listDetailSet)
+            loadListDetailData(response.data.listDetailSet)
             
         })
         .catch(error=>{
@@ -69,17 +77,33 @@ function ListDetailPage () {
                
           
     },[status])
-    useEffect(()=>{ 
-     console.log(listDetailData)
- 
-     
-    },[listDetailData])
+    */
+    
+    const counterIncrease =()=>{
+        counter++
+    }
+
+   
     useEffect(()=>{ 
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
           
-            setListDetailData(response.data.listDetailSet)
+            let isMounted = true;
+            ListsService.getListDetail(listID,userData.token)
+            .then((response)=>{
+            if(isMounted)setListDetailData(response.data.listDetailSet)
+            console.log("Get expenseSum data (responseData)")
+            //console.log(response.data)
             
+            //setListDetailData(response.data.listDetailSet)
+            //console.log(response.data.listDetailSet)
+            
+        })
+        .catch(error=>{
+            console.error({error})
+        })
+        return()=>{isMounted = false}
+
             
         })
         .catch(error=>{
@@ -88,7 +112,7 @@ function ListDetailPage () {
                
           
     },[edit])
-
+/*
     useEffect(()=>{ 
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
@@ -103,6 +127,25 @@ function ListDetailPage () {
                
           
     },[refresh])
+    */
+
+
+    const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
+    
+    const loadListDetailData = (data) =>{
+        sleep(5000).then(()=>{
+             setListDetailData(data)
+             setLoading(false)
+        
+        }
+            
+          
+           
+        )
+        counter++
+    }
     //------------------------
     const addElement = element =>{
         if(!element.name || !element.quantity)return
@@ -123,6 +166,7 @@ function ListDetailPage () {
             setErrorMessage(error.response.data)
         });
     }
+    /*
     useLayoutEffect(() => {
          ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
@@ -136,7 +180,7 @@ function ListDetailPage () {
         });
              
     }, [])
-   
+   */
     const submitUpdate = newElement => {
         console.log(newElement)
         console.log(listID)
@@ -177,7 +221,143 @@ function ListDetailPage () {
             categoryId: ""
         })
     }
+const renderMaping = (listData) =>{
+    
+    return(
+                                
+        listData.map(
+            element =>
+            <div key = {element.id} className = "text-size">
+            {console.log(element)}
+                <Row>
+                    <Col xs="1"> 
+                        <button 
+                        className={`delete-list-element icons-size-2 left-content ${element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
+                            disabled={element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id}
+                            onClick={(e)=>{
+                                if(window.confirm('Czy chcesz usunąć ten element z listy zakupów?')){
+                                ListsService.deleteListElement(element.id, userData.token)
+                                .then((response)=>{
+                                    
+                                    console.log(response.data)
+                                    if(refresh) setRefresh(false)
+                                    else setRefresh(true)
+                                    
+                                })
+                                .catch(error=>{
+                                    console.error({error})
+                                    setErrorManageElementMessage(error.response.data)
+                                });
+                            }}
+                        }
+                            title="Usuń element"
+                        ></button>
 
+                     </Col>
+                    <Col xs="1"> 
+                        <button 
+                        className={`edit-list-element icons-size left-content ${element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
+                        title="Edytuj element"
+                        disabled={element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id}
+                            onClick={(e)=>{
+                            if(element.status.id == Object.values(status)[0].id){
+                                setEdit({
+                                    id: element.id,
+                                    name: element.name,
+                                    quantity: element.quantity,
+                                      unit:{
+                                        id: element.unit.id,
+                                        name: element.unit.name
+                                    },
+                                    status:{
+                                        id: element.status.id,
+                                        name: element.status.name
+                                    },
+                                    user:element.user
+                                })
+                                setErrorMessage("")
+                            }
+                            else(setErrorMessage("Nie możesz edytować tego elementu."))
+
+                        }}></button>
+                    </Col>
+                    <Col xs="3" className="center-content ">{element.name}</Col>
+                   
+                    <Col xs="1" className="center-content">{element.quantity}</Col >
+
+                    <Col xs="3" className="right-content">{element.unit.name}</Col>
+                    <Col xs="1" >
+                                    <div className="form-container">
+                                        <div  className = "custom-checkboxes-list-buy margin-left-text " >
+                                        <label className = "form-label text-size " htmlFor={element.name+"-booking"}>
+                                        <input type="checkbox" id={element.name + "-booking"} name="users"
+                                            defaultChecked={element.status.id == Object.values(status)[2].id || element.status.id == Object.values(status)[1].id}
+                                            title={element.user + " zadeklarował kupno."}
+                                            
+                                            onChange={(e)=>{
+                                                if(e.target.checked){
+                                                    console.log(element.id)
+                                                    console.log(Object.values(status)[1].id)
+                                                    
+                                                    ListsService.changeElementStatus(element.id, Object.values(status)[1].id, userData.token)
+                                                    .then((response)=>{
+                                    
+                                                        console.log(response.data)
+                                                        if(refresh) setRefresh(false)
+                                                        else setRefresh(true)
+                                                        
+                                                    })
+                                                    .catch(error=>{
+                                                        console.error({error})
+                                                        e.target.checked=false
+                                                        setErrorManageElementMessage(error.response.data)
+                                                    });
+                                                }
+                                                else{
+                                                 
+                                                }
+
+                                            }}
+                            >
+                                
+                            </input>
+                        
+                        <div className="checkmark-checkbox-list-buy icons-size-2"></div>
+                        </label>
+                        </div>
+                        </div>
+                    </Col>
+                    <Col xs="1">
+                                    <div className="form-container">
+                                        <div  className = "custom-checkboxes-list-buy margin-left-text" >
+                                        <label className = "form-label text-size " htmlFor={element.name+"-buy"}>
+                                        <input type="checkbox" id={element.name+"-buy"} name="users"
+                                            defaultChecked={element.status.id == Object.values(status)[2].id}
+                                            disabled={element.status.id == Object.values(status)[2].id}
+                                            onChange={(e)=>{
+                                                if(e.target.checked){
+                                    
+                                                    
+                                                }
+                                                else{
+                                                    
+                                                }
+
+                                            }}
+                            >
+                                
+                            </input>
+                        
+                        <div className="checkmark-checkbox-list-buy icons-size-2"></div>
+                        </label>
+                        </div>
+                        </div>
+                    </Col>
+                    <div className="separator-line-thin"></div>
+                </Row>  
+        </div> 
+    ))
+}
 
     
     if(edit.id){
@@ -245,141 +425,18 @@ function ListDetailPage () {
                     </Row>        
                                 <div className="separator-line"></div>
                                 <Container>
-                              
-                                { 
+                                {console.log(listDetailData)}
+                                {console.log(counter)}
+                                {
+
+                                   
                                 
-                                listDetailData.map(
-                                    element =>
-                                    <div key = {element.id} className = "text-size">
-                                    {console.log(element)}
-                                        <Row>
-                                            <Col xs="1"> 
-                                                <button 
-                                                className={`delete-list-element icons-size-2 left-content ${element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
-                                                    disabled={element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id}
-                                                    onClick={(e)=>{
-                                                        if(window.confirm('Czy chcesz usunąć ten element z listy zakupów?')){
-                                                        ListsService.deleteListElement(element.id, userData.token)
-                                                        .then((response)=>{
-                                                            
-                                                            console.log(response.data)
-                                                            if(refresh) setRefresh(false)
-                                                            else setRefresh(true)
-                                                            
-                                                        })
-                                                        .catch(error=>{
-                                                            console.error({error})
-                                                            setErrorManageElementMessage(error.response.data)
-                                                        });
-                                                    }}
-                                                }
-                                                    title="Usuń element"
-                                                ></button>
-
-                                             </Col>
-                                            <Col xs="1"> 
-                                                <button 
-                                                className={`edit-list-element icons-size left-content ${element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
-                                                title="Edytuj element"
-                                                disabled={element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id}
-                                                    onClick={(e)=>{
-                                                    if(element.status.id == Object.values(status)[0].id){
-                                                        setEdit({
-                                                            id: element.id,
-                                                            name: element.name,
-                                                            quantity: element.quantity,
-                                                              unit:{
-                                                                id: element.unit.id,
-                                                                name: element.unit.name
-                                                            },
-                                                            status:{
-                                                                id: element.status.id,
-                                                                name: element.status.name
-                                                            },
-                                                            user:element.user
-                                                        })
-                                                        setErrorMessage("")
-                                                    }
-                                                    else(setErrorMessage("Nie możesz edytować tego elementu."))
-
-                                                }}></button>
-                                            </Col>
-                                            <Col xs="3" className="center-content ">{element.name}</Col>
-                                           
-                                            <Col xs="1" className="center-content">{element.quantity}</Col >
-                        
-                                            <Col xs="3" className="right-content">{element.unit.name}</Col>
-                                            <Col xs="1" >
-                                                            <div className="form-container">
-                                                                <div  className = "custom-checkboxes-list-buy margin-left-text " >
-                                                                <label className = "form-label text-size " htmlFor={element.name+"-booking"}>
-                                                                <input type="checkbox" id={element.name + "-booking"} name="users"
-                                                                    defaultChecked={element.status.id == Object.values(status)[2].id || element.status.id == Object.values(status)[1].id}
-                                                                    title={element.user + " zadeklarował kupno."}
-                                                                    
-                                                                    onChange={(e)=>{
-                                                                        if(e.target.checked){
-                                                                            console.log(element.id)
-                                                                            console.log(Object.values(status)[1].id)
-                                                                            
-                                                                            ListsService.changeElementStatus(element.id, Object.values(status)[1].id, userData.token)
-                                                                            .then((response)=>{
-                                                            
-                                                                                console.log(response.data)
-                                                                                if(refresh) setRefresh(false)
-                                                                                else setRefresh(true)
-                                                                                
-                                                                            })
-                                                                            .catch(error=>{
-                                                                                console.error({error})
-                                                                                e.target.checked=false
-                                                                                setErrorManageElementMessage(error.response.data)
-                                                                            });
-                                                                        }
-                                                                        else{
-                                                                         
-                                                                        }
-
-                                                                    }}
-                                                    >
-                                                        
-                                                    </input>
-                                                
-                                                <div className="checkmark-checkbox-list-buy icons-size-2"></div>
-                                                </label>
-                                                </div>
-                                                </div>
-                                            </Col>
-                                            <Col xs="1">
-                                                            <div className="form-container">
-                                                                <div  className = "custom-checkboxes-list-buy margin-left-text" >
-                                                                <label className = "form-label text-size " htmlFor={element.name+"-buy"}>
-                                                                <input type="checkbox" id={element.name+"-buy"} name="users"
-                                                                    defaultChecked={element.status.id == Object.values(status)[2].id}
-                                                                    disabled={element.status.id == Object.values(status)[2].id}
-                                                                    onChange={(e)=>{
-                                                                        if(e.target.checked){
-                                                            
-                                                                            
-                                                                        }
-                                                                        else{
-                                                                            
-                                                                        }
-
-                                                                    }}
-                                                    >
-                                                        
-                                                    </input>
-                                                
-                                                <div className="checkmark-checkbox-list-buy icons-size-2"></div>
-                                                </label>
-                                                </div>
-                                                </div>
-                                            </Col>
-                                            <div className="separator-line-thin"></div>
-                                        </Row>  
-                                </div> 
-                            )}
+                               
+                                   
+                                        !loading ? (renderMaping(listDetailData)):(<div> listDetailData.id = null</div>)
+                                     
+                               
+                                }
                             </Container>
 
                 </div>

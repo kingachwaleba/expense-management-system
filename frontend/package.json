@@ -17,6 +17,7 @@
     "react-scripts": "4.0.3",
     "reactstrap": "^8.9.0",
     "rxjs": "^7.2.0",
+    "use-state-with-callback": "^2.0.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
