@@ -47,6 +47,7 @@ function EditExpensePage () {
     const [expenseReceiptImg, setExpenseReceiptImg] = useState()
     const [currentExpenseReceiptImg, setCurrentExpenseReceiptImg] = useState()
 
+    
 
     const [imagePreview, setImagePreview]=useState(null)
     

@@ -16,8 +16,8 @@ function NotificationComponent(){
     
     const [userToken, setUserToken] = useState("")
     const [message, setMessage] = useState("")
-
-    
+    const [reminders, setReminders] = useState("")
+    const [messageReminder, setMessageReminder] = useState("")
     useEffect(()=>{
        
            
@@ -44,7 +44,23 @@ function NotificationComponent(){
                    
                    console.log(error)
                })
-         
+             
+               NotificationService.getReminders(userData.token)
+               .then((response)=>{
+                setReminders(response.data)
+                console.log(response.data)
+                if(response.data.length === 0){
+                    setMessageReminder("Brak powiadomień")
+                }
+                else{
+                    setMessageReminder("")
+                }
+               })
+               .catch((error)=>{
+                   
+                   console.log(error)
+               })
+              
                
        
 
@@ -69,7 +85,7 @@ function NotificationComponent(){
                 {
                     notification.map(
                         notificationTab =>
-                        <div key = {notificationTab.walletId} >
+                        <div key =  {Math.floor(Math.random() * 100000)} >
                             <div className="box-content">
                                 <h3 className="text-label">{notificationTab.name}</h3>
                                 <div className="separator-line"></div>
@@ -98,6 +114,37 @@ function NotificationComponent(){
                     )
                 }
                 {message}
+                {/*
+                    reminders.map(
+                        reminderTab =>
+                        <div key =  {Math.floor(Math.random() * 100000)} >
+                            <div className="box-content">
+                                <div className="text-label">NIEUREGULOWANA NALEŻNOŚĆ</div>
+                                <div className="separator-line"></div>
+                                <div className = "center-content error-text">Użytkownik: {reminderTab.sender.name} przypomina Ci o uregulowaniu należności </div>
+                                <div>Portfel: {reminderTab.wallet.name}</div> 
+                                <br />
+                                <div>Wysokość należności: {reminderTab.content}</div> 
+                                
+                                <br />
+                                <Button 
+                                    className="card-link center-content btn btn-primary main-button-style"
+                                    onClick={function(e){
+                                        //NotificationResponse(JSON.stringify(true), reminderTab.walletUserId); 
+                                    }}>
+                                    Zaakceptuj
+                                </Button>
+                        
+                                <Button className="card-link center-content btn btn-primary main-button-style" 
+                                    onClick={function(e){
+                                       //NotificationResponse(JSON.stringify(false), reminderTab.walletUserId);    
+                                    }}> 
+                                    Odrzuć
+                                </Button>
+                            </div>
+                        </div>      
+                    )
+                                */}
               
             </Container>
         );

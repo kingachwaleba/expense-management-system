@@ -39,6 +39,8 @@ function WalletPage () {
                     getWalletCategoryData(categoryData)
                     getWalletOwner(response.data.owner)
                     const usersData = response.data.userList
+                    console.log("USERS DATA")
+                    console.log([usersData])
                     getWalletUsersData(usersData)
                     if(user.login == response.data.owner) checkIsOwner(true)
                     else checkIsOwner(false)

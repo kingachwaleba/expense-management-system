@@ -25,6 +25,7 @@ function ExpenseDetailPage(){
     const [receiptImg, setReceiptImg] = useState([])
     const [expenseCost, setExpenseCost] = useState("")
     const [message, setMessage] = useState("")
+    const [expenseDate, setExpenseDate]=useState("")
     const [displayImg, setDisplayImg] = useState(null)
     useEffect(()=>{
         console.log("WalletId:")
@@ -65,6 +66,7 @@ function ExpenseDetailPage(){
             console.log("ExpenseCost (responseData)")
             console.log(response.data.expense.total_cost)
             setExpenseCost(response.data.expense.total_cost)
+            setExpenseDate(response.data.expense.date)
         })
        
         .catch(error=>{
@@ -114,31 +116,7 @@ function ExpenseDetailPage(){
         .catch(error=>{
             console.error(error)
         });
-        
-       //-------------------------------------------------------------
-       /*
-                fetch('http://localhost:8080/files', {
-                        method: 'GET',
-                        responseType: 'blob',
-                        headers: {
-                        "Authorization" : `Bearer ${userData.token}`,
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                },
-                })
-                .then((response) => {
-                console.log(response.text());
-                })
-                .then((data) => {
-                    console.log("Fetched IMG:")
-                    console.log( JSON.parse(data) )
-                    setDisplayImg(JSON.parse(data))
-                })
-                .catch(error=>{
-                    console.error({error})
-                });
-                */
-               //--------------------------------------------------------
+       
 
       }
       else{
@@ -163,6 +141,10 @@ function ExpenseDetailPage(){
                         <div  className="grid-container">
                                 <div  className="text-label right-content">Koszt:</div >
                                 <div className="left-content">{expenseCost} zł</div >
+                        </div >
+                        <div  className="grid-container">
+                                <div  className="text-label right-content">Data:</div >
+                                <div className="left-content">{expenseDate}</div >
                         </div >
                         <div className='separator-line'></div>
                         <div className="center-content">

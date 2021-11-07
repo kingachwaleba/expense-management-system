@@ -148,7 +148,10 @@ input[type='text'], input[type='password'], input[type='email'],input[type='numb
   color: #F7F7F7 !important;
 }
 .error-text{
-  color: #F80000 !important;
+  color: #F55B5B!important;
+}
+.green-text{
+  color: #41C236!important;
 }
 .text-size{
   font-size: 25px !important;
@@ -190,6 +193,25 @@ input[type='text'], input[type='password'], input[type='email'],input[type='numb
   background-color: transparent;
   
 }
+.reminder-icon{
+  background-image:url(reminder.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+}
+.handshake-icon{
+  background-image:url(handshake.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+}
+
+
+
 #insert-photo-button{
 
 flex-direction: row;
@@ -228,12 +250,25 @@ border-radius: 38px;
 .grey-scale{
   filter: grayscale(100%);
 }
+.invert-colors{
+  filter: invert(1);
+}
 .margin-bot-5{
   margin-bottom: 5px;
 }
 .add-icon{
   
   background-image:url(add-icon.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+  
+}
+.cash-icon{
+  
+  background-image:url(cash-icon.svg);
   background-size: contain;
   background-repeat: no-repeat;
   border-color:transparent;

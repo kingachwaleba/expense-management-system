@@ -8,6 +8,7 @@ import EditListDetailElementComponent from '../../components/EditListDetailEleme
 import AddElementToExistingListComponent from '../../components/AddElementToExistingListComponent';
 import StatusService from '../../services/StatusService';
 import { useLayoutEffect } from 'react';
+
 function ListDetailPage () {
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
@@ -37,7 +38,7 @@ function ListDetailPage () {
            
             setListDetailData(response.data.listDetailSet)
             console.log(response.data.listDetailSet)
-            
+       
         })
         .catch(error=>{
             console.error({error})
@@ -68,6 +69,11 @@ function ListDetailPage () {
                
           
     },[status])
+    useEffect(()=>{ 
+     console.log(listDetailData)
+ 
+     
+    },[listDetailData])
     useEffect(()=>{ 
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
