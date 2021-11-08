@@ -93,8 +93,14 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void sendNotification(int id) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
-        List<Message> messageList = findAllByWalletAndTypeOrderByDate(wallet, String.valueOf(Message.MessageType.S));
-        messageList.forEach(this::delete);
+        List<Message> systemNotificationsList =
+                findAllByWalletAndTypeOrderByDate(wallet, String.valueOf(Message.MessageType.S));
+        List<Message> userNotificationsList =
+                findAllByWalletAndTypeOrderByDate(wallet, String.valueOf(Message.MessageType.E));
+        List<Message> notificationsList = new ArrayList<>();
+        notificationsList.addAll(systemNotificationsList);
+        notificationsList.addAll(userNotificationsList);
+        notificationsList.forEach(this::delete);
 
         for (DebtsHolder debtsHolder : walletService.findDebts(wallet)) {
             Message message = new Message(
