@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
-
+import 'react-datepicker/dist/react-datepicker-cssmodules.min.css'
 ReactDOM.render(
   <React.StrictMode>
     <App />

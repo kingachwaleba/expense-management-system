@@ -94,7 +94,7 @@ function AddExpensePage () {
         else {
             index = currentList.indexOf(e.target.value)
             currentList.splice(index, 1)
-            if(currentList.length == 0) setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")
+            if(currentList.length == 0) setErrorMessage("Lista musi zawierać co najmniej jednego użytkownika.")
           
         }
         setExpenseUsersList(currentList)
@@ -131,7 +131,7 @@ function AddExpensePage () {
     function handleCreateExpense(e){
         e.preventDefault();
         submitted = true;
-        if(expenseUsersList.length == 0){setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")} 
+        if(expenseUsersList.length == 0){setErrorMessage("Lista musi zawierać co najmniej jednego użytkownika.")} 
         else{
         const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
         const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
@@ -140,6 +140,7 @@ function AddExpensePage () {
             console.error({error})
             setErrorMessage(error.response.data)
         });
+        window.location.href='/wallet'
         //console.log("ExpenseHolder:")
        // console.log(expenseHolder)
     }
@@ -173,7 +174,7 @@ function AddExpensePage () {
                         </div>
 
                         <div className={'form-group'}>
-                            <label className="form-label" htmlFor="Description">Kwota: </label>
+                            <label className="form-label" htmlFor="price">Kwota: </label>
                             <input
                                 required
                                 type="number"
@@ -281,7 +282,7 @@ function AddExpensePage () {
                             id = "mainbuttonstyle"
                             type = "submit"
                             onClick={e =>  {submitted = true
-                                window.location.href='/home' 
+                                window.location.href='/wallet' 
                             }}
                             >
                             Dodaj
@@ -293,7 +294,7 @@ function AddExpensePage () {
                             id = "mainbuttonstyle"
                             type = "button"
                             onClick={e =>  {
-                                window.location.href='/wallet'
+                              
                             }}
                             >
                             Anuluj

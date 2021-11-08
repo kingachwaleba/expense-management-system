@@ -47,9 +47,11 @@ function EditExpensePage () {
     const [expenseReceiptImg, setExpenseReceiptImg] = useState()
     const [currentExpenseReceiptImg, setCurrentExpenseReceiptImg] = useState()
 
+    
 
     const [imagePreview, setImagePreview]=useState(null)
-    
+    const [displayImg, setDisplayImg] = useState (null)
+    const [message, setMessage] = useState("")
     const [errorMessage, setErrorMessage]=useState("")
     useEffect(()=>{
         const userData = UserService.getCurrentUser();
@@ -98,6 +100,7 @@ function EditExpensePage () {
                 setCurrentExpenseName(response.data.expense.name)
                 setExpenseName(response.data.expense.name)
                 setExpenseUsersList(currentExpenseUsersList)
+                setCurrentExpenseReceiptImg(response.data.expense.receipt_image)
            
             })
            
@@ -111,7 +114,35 @@ function EditExpensePage () {
  
 
 
-
+    useEffect(()=>{
+        if(currentExpenseReceiptImg != null){
+          setMessage("")
+          document.getElementById('img-preview-div').style.display = 'block';
+          /*
+          var formData = new FormData();
+              formData.append('imageName',receiptImg)
+          console.log(receiptImg)
+          console.log(formData.get('imageName')) 
+  
+          */
+          ImageService.getImg(expenseID, userData.token)
+          .then(response=>{
+              console.log(response)
+              const url = URL.createObjectURL(response.data)
+              setDisplayImg(url)
+              console.log(url)
+          })
+          .catch(error=>{
+              console.error(error)
+          });
+         
+  
+        }
+        else{
+            setMessage("Brak zdjęcia paragonu")
+            document.getElementById('img-preview-div').style.display = 'none';
+        }
+      },[currentExpenseReceiptImg])
 
     useEffect(()=>{
        
@@ -167,7 +198,7 @@ function EditExpensePage () {
 
                 index = currentList.indexOf(e.target.value)
             currentList.splice(index, 1)
-            if(currentList.length == 0) setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")
+            if(currentList.length == 0) setErrorMessage("Lista musi zawierać co najmniej jednego użytkownika.")
             }
 
         }
@@ -178,8 +209,10 @@ function EditExpensePage () {
     }
 
     function handleImageChange(e){
+        
         if (e.target.files && e.target.files[0]) {
-            setImagePreview(URL.createObjectURL(e.target.files[0]))
+            setDisplayImg(URL.createObjectURL(e.target.files[0]))
+           
             document.getElementById('img-preview-div').style.display = 'block';
             let img = e.target.files[0];
             var formData = new FormData();
@@ -210,26 +243,33 @@ function EditExpensePage () {
     }
     function handleClearChoosenImg(e){
         document.getElementById("insert-photo-button").value = "";
-        setImagePreview(null)
+        setDisplayImg(null)
+        setExpenseReceiptImg(null)
         document.getElementById('img-preview-div').style.display = 'none';
     }
-    function handleCreateExpense(e){
+
+
+    function handleEditExpense(e){
         e.preventDefault();
         submitted = true;
         if(expenseUsersList.length == 0){setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")} 
         else{
-        const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
-        const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
-        ExpenseService.editExpense(expenseID, expenseHolder, userToken.token)
-        .catch(error=>{
-            console.error({error})
-            setErrorMessage(error.response.data)
-        });
-        console.log("ExpenseHolder:")
-        console.log(expenseHolder)
-    }
+            const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
+            const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
+            ExpenseService.editExpense(expenseID, expenseHolder, userToken.token)
+            .then(()=>{
+                window.location.href='/wallet' 
+            })
+            
+            .catch(error=>{
+                console.error({error})
+                setErrorMessage(error.response.data)
+            });
+        }
         
     }
+
+    
         return (
             <Container className="container">
                 <Row>
@@ -238,9 +278,9 @@ function EditExpensePage () {
                 <Col md="7" className="box-content base-text text-size form-container">
                     <div className = "href-text center-content">Edytuj wydatek</div>
                     <div className="separator-line"/>
-                <form name="form"
+                    <form name="form"
                         method="post"
-                        onSubmit={(e)=>handleCreateExpense(e)}
+                        onSubmit={(e)=>handleEditExpense(e)}
                         >
                         <div className={'form-group'}>
                             <label className="form-label"  htmlFor="Name">Nazwa: </label>
@@ -339,7 +379,15 @@ function EditExpensePage () {
                 <div className = "box-subcontent">
                         <div className="base-text text-size">
                         Zdjęcie paragonu:
-                
+                        <div className="center-content">
+                                    {message}
+                        <div id="img-preview-div" style={{display:'none'}}>
+                            <img src={displayImg} className="img-preview"  alt="img" />
+                        </div>         
+                        
+
+                        </div>        
+                        
                         </div>
                         
                         <input  
@@ -348,8 +396,8 @@ function EditExpensePage () {
                             type="file"
                             onChange={(e)=>handleImageChange(e)} />
                    <br /><br />
-                   <div id="img-preview-div" style={{display:'none'}}>
-                        <img src={imagePreview} className="img-preview" alt="Podgląd zdjęcia" /> 
+                   <div id="img-preview-div">
+                        
                         <button
                         className="delete-user-icon icons-size"
                         onClick={(e)=>handleClearChoosenImg(e)}
@@ -366,7 +414,7 @@ function EditExpensePage () {
                             id = "mainbuttonstyle"
                             type = "submit"
                             onClick={e =>  {submitted = true
-                                window.location.href='/wallet' 
+                               
                             }}
                             >
                             Zapisz zmiany

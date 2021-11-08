@@ -39,10 +39,12 @@ function WalletPage () {
                     getWalletCategoryData(categoryData)
                     getWalletOwner(response.data.owner)
                     const usersData = response.data.userList
+                    console.log("USERS DATA")
+                    console.log([usersData])
                     getWalletUsersData(usersData)
                     if(user.login == response.data.owner) checkIsOwner(true)
                     else checkIsOwner(false)
-                    
+                    console.log(walletData)
                     
                 })
                 .catch(error=>{
@@ -88,7 +90,7 @@ function WalletPage () {
                                         <h3>Twoje wydatki: {walletData.walletExpensesCost} zł</h3>     
                                     </div>
                                     <div className = "center-content">
-                                        <h3>Bilans: {walletData.walletExpensesCost} zł</h3>     
+                                        <h3>Twój bilans: {walletData.loggedInUserBalance} zł</h3>     
                                     </div>
                                  </div> 
                     </>
@@ -226,8 +228,7 @@ function WalletPage () {
                         </div>
                         <div id="showing-content-lists" className="hide-content" style={{display:'none'}}>
                                             <DisplayWalletListsSumComponent/>
-                                            <DisplayWalletListsSumComponent/>
-                                            <DisplayWalletListsSumComponent/>
+                                          
                         </div>
 
 

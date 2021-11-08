@@ -61,7 +61,7 @@ function DisplayWalletExpensesSumComponent () {
                             </div >
                             <div  className="grid-container">
                                 <div  className="text-label right-content">Koszt:</div >
-                                <div className="left-content">{expense.total_cost}</div >
+                                <div className="left-content">{expense.total_cost} zł</div >
                             </div >
                            
                             <div className='separator-line'></div>
