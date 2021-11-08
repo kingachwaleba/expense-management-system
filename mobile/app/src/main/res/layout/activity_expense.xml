@@ -62,7 +62,6 @@
             android:id="@+id/date_expense_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:text="@string/date_label"
             android:textAppearance="@style/simple_label"
