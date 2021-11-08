@@ -65,6 +65,9 @@ public class ImageController {
     @GetMapping("/user-files/{login}")
     public ResponseEntity<?> getUserFile(@PathVariable String login) {
         String imageName = userService.findByLogin(login).orElseThrow(UserNotFoundException::new).getImage();
+        if (imageName == null)
+            return new ResponseEntity<>("The user does not have an image!", HttpStatus.NOT_FOUND);
+        
         Resource file = imageStorageService.load(imageName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
