@@ -247,23 +247,29 @@ function EditExpensePage () {
         setExpenseReceiptImg(null)
         document.getElementById('img-preview-div').style.display = 'none';
     }
-    function handleCreateExpense(e){
+
+
+    function handleEditExpense(e){
         e.preventDefault();
         submitted = true;
         if(expenseUsersList.length == 0){setErrorMessage("Lista musi zawierać conajmniej jednego użytkownika.")} 
         else{
-        const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
-        const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
-        ExpenseService.editExpense(expenseID, expenseHolder, userToken.token)
-        .catch(error=>{
-            console.error({error})
-            setErrorMessage(error.response.data)
-        });
-        console.log("ExpenseHolder:")
-        console.log(expenseHolder)
-    }
+            const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
+            const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
+            ExpenseService.editExpense(expenseID, expenseHolder, userToken.token)
+            .then(()=>{
+                window.location.href='/wallet' 
+            })
+            
+            .catch(error=>{
+                console.error({error})
+                setErrorMessage(error.response.data)
+            });
+        }
         
     }
+
+    
         return (
             <Container className="container">
                 <Row>
@@ -274,7 +280,7 @@ function EditExpensePage () {
                     <div className="separator-line"/>
                     <form name="form"
                         method="post"
-                        onSubmit={(e)=>handleCreateExpense(e)}
+                        onSubmit={(e)=>handleEditExpense(e)}
                         >
                         <div className={'form-group'}>
                             <label className="form-label"  htmlFor="Name">Nazwa: </label>
@@ -408,7 +414,7 @@ function EditExpensePage () {
                             id = "mainbuttonstyle"
                             type = "submit"
                             onClick={e =>  {submitted = true
-                                window.location.href='/wallet' 
+                               
                             }}
                             >
                             Zapisz zmiany

@@ -57,12 +57,10 @@ walletID = JSON.parse(sessionStorage.getItem('walletID'));
                                 roles: creditorRoles
                             },
                             howMuch: howMuch
-
                         }
                         NotificationService.sendReminder(walletID,debtsHolder,user.token)
                         .then((response)=>{
                          console.log(response)
-                         //window.location.href='/wallet'
                          if(response.status == 200)
                          alert("Wysłano przypomienie o długu");
                             

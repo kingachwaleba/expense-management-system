@@ -33,34 +33,28 @@ function ListDetailPage () {
         console.log(walletID)
         console.log("userToken:")
         console.log(userData.token)
-        let isMounted = true;
+       // let isMounted = true;
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
-            if(isMounted){
+           
                 setListDetailData(response.data.listDetailSet)
-            }
-            console.log("Get expenseSum data (responseData)")
-            //console.log(response.data)
-            
-            //setListDetailData(response.data.listDetailSet)
-            //console.log(response.data.listDetailSet)
-            
+                setLoading(false)
         })
         .catch(error=>{
             console.error({error})
         })
-        return()=>{isMounted = false
-        setLoading(false)}
-
+        
+        //Promise.all - js -doczytać 
         StatusService.getStatues()
         .then((response)=>{
             setStatus(response.data)
+            console.log("Statusy", status)
            // console.log(response.data)
         })
         .catch(error=>{
             console.error({error})
         });      
-          
+       
     },[])
 /*
     useEffect(()=>{ 
@@ -226,17 +220,19 @@ const renderMaping = (listData) =>{
     return(
                                 
         listData.map(
-            element =>
-            <div key = {element.id} className = "text-size">
-            {console.log(element)}
+            element1 =>
+            <div key = {element1.id} className = "text-size">
+            
+            {console.log("Element1: ",element1)}
+            {console.log("Status: ",Object.values(status))}
                 <Row>
                     <Col xs="1"> 
                         <button 
-                        className={`delete-list-element icons-size-2 left-content ${element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
-                            disabled={element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id}
+                        className={`delete-list-element icons-size-2 left-content ${element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
+                            disabled={element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id}
                             onClick={(e)=>{
                                 if(window.confirm('Czy chcesz usunąć ten element z listy zakupów?')){
-                                ListsService.deleteListElement(element.id, userData.token)
+                                ListsService.deleteListElement(element1.id, userData.token)
                                 .then((response)=>{
                                     
                                     console.log(response.data)
@@ -256,24 +252,24 @@ const renderMaping = (listData) =>{
                      </Col>
                     <Col xs="1"> 
                         <button 
-                        className={`edit-list-element icons-size left-content ${element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
+                        className={`edit-list-element icons-size left-content ${element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
                         title="Edytuj element"
-                        disabled={element.status.id == Object.values(status)[1].id || element.status.id == Object.values(status)[2].id}
+                        disabled={element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id}
                             onClick={(e)=>{
-                            if(element.status.id == Object.values(status)[0].id){
+                            if(element1.status.id == Object.values(status)[0].id){
                                 setEdit({
-                                    id: element.id,
-                                    name: element.name,
-                                    quantity: element.quantity,
+                                    id: element1.id,
+                                    name: element1.name,
+                                    quantity: element1.quantity,
                                       unit:{
-                                        id: element.unit.id,
-                                        name: element.unit.name
+                                        id: element1.unit.id,
+                                        name: element1.unit.name
                                     },
                                     status:{
-                                        id: element.status.id,
-                                        name: element.status.name
+                                        id: element1.status.id,
+                                        name: element1.status.name
                                     },
-                                    user:element.user
+                                    user:element1.user
                                 })
                                 setErrorMessage("")
                             }
@@ -281,25 +277,25 @@ const renderMaping = (listData) =>{
 
                         }}></button>
                     </Col>
-                    <Col xs="3" className="center-content ">{element.name}</Col>
+                    <Col xs="3" className="center-content ">{element1.name}</Col>
                    
-                    <Col xs="1" className="center-content">{element.quantity}</Col >
+                    <Col xs="1" className="center-content">{element1.quantity}</Col >
 
-                    <Col xs="3" className="right-content">{element.unit.name}</Col>
+                    <Col xs="3" className="right-content">{element1.unit.name}</Col>
                     <Col xs="1" >
                                     <div className="form-container">
                                         <div  className = "custom-checkboxes-list-buy margin-left-text " >
-                                        <label className = "form-label text-size " htmlFor={element.name+"-booking"}>
-                                        <input type="checkbox" id={element.name + "-booking"} name="users"
-                                            defaultChecked={element.status.id == Object.values(status)[2].id || element.status.id == Object.values(status)[1].id}
-                                            title={element.user + " zadeklarował kupno."}
+                                        <label className = "form-label text-size " htmlFor={element1.name+"-booking"}>
+                                        <input type="checkbox" id={element1.name + "-booking"} name="users"
+                                            defaultChecked={element1.status.id == Object.values(status)[2].id || element1.status.id == Object.values(status)[1].id}
+                                            title={element1.user + " zadeklarował kupno."}
                                             
                                             onChange={(e)=>{
                                                 if(e.target.checked){
-                                                    console.log(element.id)
+                                                    console.log(element1.id)
                                                     console.log(Object.values(status)[1].id)
                                                     
-                                                    ListsService.changeElementStatus(element.id, Object.values(status)[1].id, userData.token)
+                                                    ListsService.changeElementStatus(element1.id, Object.values(status)[1].id, userData.token)
                                                     .then((response)=>{
                                     
                                                         console.log(response.data)
@@ -330,10 +326,10 @@ const renderMaping = (listData) =>{
                     <Col xs="1">
                                     <div className="form-container">
                                         <div  className = "custom-checkboxes-list-buy margin-left-text" >
-                                        <label className = "form-label text-size " htmlFor={element.name+"-buy"}>
-                                        <input type="checkbox" id={element.name+"-buy"} name="users"
-                                            defaultChecked={element.status.id == Object.values(status)[2].id}
-                                            disabled={element.status.id == Object.values(status)[2].id}
+                                        <label className = "form-label text-size " htmlFor={element1.name+"-buy"}>
+                                        <input type="checkbox" id={element1.name+"-buy"} name="users"
+                                            defaultChecked={element1.status.id == Object.values(status)[2].id}
+                                            disabled={element1.status.id == Object.values(status)[2].id}
                                             onChange={(e)=>{
                                                 if(e.target.checked){
                                     
@@ -427,14 +423,10 @@ const renderMaping = (listData) =>{
                                 <Container>
                                 {console.log(listDetailData)}
                                 {console.log(counter)}
+                                {console.log("Dane:" ,  loading, listDetailData, status)}
                                 {
 
-                                   
-                                
-                               
-                                   
-                                        !loading ? (renderMaping(listDetailData)):(<div> listDetailData.id = null</div>)
-                                     
+                                        loading || listDetailData.length === 0 || status.length === 0 ? (<div></div>):(renderMaping(listDetailData))    
                                
                                 }
                             </Container>
