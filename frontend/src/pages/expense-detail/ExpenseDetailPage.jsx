@@ -144,7 +144,7 @@ function ExpenseDetailPage(){
                         </div >
                         <div  className="grid-container">
                                 <div  className="text-label right-content">Data:</div >
-                                <div className="left-content">{expenseDate}</div >
+                                <div className="left-content">{expenseDate.replace("T"," ")}</div >
                         </div >
                         <div className='separator-line'></div>
                         <div className="center-content">

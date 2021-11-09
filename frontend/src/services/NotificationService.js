@@ -1,6 +1,6 @@
 import axios from "axios";
-const INVITATIONS_API_BASE_URL = "http://localhost:8080/notifications/invitations";
-const INVITATIONS_MANAGE_API_BASE_URL = "http://localhost:8080/notifications/invitations/";
+const INVITATIONS_API_BASE_URL = "/notifications/invitations";
+const INVITATIONS_MANAGE_API_BASE_URL = "/notifications/invitations/";
 
 const DEBT_REMINDER_API_BASE_URL ="/send-notification/wallet/"
 const DEBT_REMINDERS_NOTIFICATION_API_BASE_URL ="/debts-notifications"

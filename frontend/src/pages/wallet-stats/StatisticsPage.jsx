@@ -34,9 +34,7 @@ function StatisticsPage (){
     function getStats(fromDate, toDate){
         WalletService.getWalletStats(walletID, fromDate, toDate, userData.token)
         .then((response)=>{
-           
            setStatsData(response.data)
-          
             if(response.data.totalCost > 0) setRenderStats(true)
             else{
                 setRenderStats(false)
@@ -47,7 +45,6 @@ function StatisticsPage (){
             console.error({error})
             setErrorMessage(error.response.data)
         });
-
     }
         return (
             <Container>
@@ -78,6 +75,7 @@ function StatisticsPage (){
                         </div>
                     </Col>
                     <Col >
+                    
                         <div className="text-size base-text">Do</div>
                         <div className="center-content">
                             <DatePicker 
@@ -89,7 +87,6 @@ function StatisticsPage (){
                             onChange={date=> {setSelectedDate2(date)
                                                 setRenderStats(false)
                                                 setErrorMessage("")
-                                            
                                             }}
                             minDate={selectedDate1}
                             maxDate = {new Date()}
@@ -130,12 +127,9 @@ function StatisticsPage (){
                                     <div className="text-size">
                                         <div className="grid-container">
                                             <div className="box-subcontent-2 text-label">Najwięcej wydali: </div>
-                                            <div className="box-subcontent-2">{statsData.maxUsersList.map(user=> user+",  ")}</div>
+                                            <div className="box-subcontent-2">{statsData.maxUsersList.map(user=> user+"  ") +" | "+ statsData.maxExpensesValue }zł</div>
                                         </div>
-                                        <div className="grid-container">
-                                            <div className="box-subcontent-2 text-label">Suma ich wydatków: </div>
-                                            <div className="box-subcontent-2">{statsData.maxExpensesValue} zł</div>
-                                        </div>
+                                   
                                        
                                      
                                       <div className="separator-line"></div>

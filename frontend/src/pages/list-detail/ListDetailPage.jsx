@@ -374,7 +374,8 @@ const renderMaping = (listData) =>{
     //------------------------
         return (
             <Container>
-                <Header title ="Lista zakupów"/> 
+                <Header title ="Lista zakupów"/>
+                 
                 <div className="box-content">
                     <Row>
                                 <Col md = "2" xs="1"> 

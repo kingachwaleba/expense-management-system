@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const UNIT_API_BASE_URL = "http://localhost:8080/units"
+const UNIT_API_BASE_URL = "/units"
 
 class UnitsService {
 

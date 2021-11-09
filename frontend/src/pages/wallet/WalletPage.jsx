@@ -34,6 +34,7 @@ function WalletPage () {
                 
                     WalletDetailService.getWalletDetail(walletID,user.token).then((response)=>{
                     const allData = response.data
+                    console.log("Wallet data:", response.data)
                     getWalletData(allData)
                     const categoryData = response.data.walletCategory
                     getWalletCategoryData(categoryData)
@@ -64,20 +65,35 @@ function WalletPage () {
         
 
    
-    
-    
         return (
+            
             <Container>
-                <Header title = "Portfel"/>
+                 <Header title = "Portfel"/>
+              { 
+                            walletData.name === undefined ? (
+                                   <div  className="container box-content text-size base-text center-content"> 
+
+                                       <div>Wystąpił błąd podczas wczytywania danych</div> 
+                                       <br />
+                                       <button className="card-link main-button-style center-content btn btn-primary text-size" type="button" onClick={(e)=>{
+                                           window.location.href='/home'
+                                       }}>
+                                           Wróć na stronę główną
+                                       </button>
+                                   </div>
+                                       
+                                    
+                                ):(
 
             <Col>
+            
                 <div className="container box-content">
-                    <>
+                   
                                 <h2 className="text-label center-content">  {walletData.name}</h2> 
 
                                 <div className="separator-line" ></div>
 
-                                <h3>Opis: {walletData.description}</h3>  
+                                <h3>Opis: {walletData.description ? (walletData.description) : ("Brak opisu")}</h3>  
 
                                 <div className="separator-line" ></div>   
 
@@ -87,13 +103,13 @@ function WalletPage () {
                                 <h3>Wydatki: {walletData.walletExpensesCost} zł</h3>     
                                  <div className = "grid-container">
                                     <div className = "center-content">
-                                        <h3>Twoje wydatki: {walletData.walletExpensesCost} zł</h3>     
+                                        <h3>Twoje wydatki: {walletData.userExpensesCost} zł</h3>     
                                     </div>
                                     <div className = "center-content">
                                         <h3>Twój bilans: {walletData.loggedInUserBalance} zł</h3>     
                                     </div>
                                  </div> 
-                    </>
+                   
 
 
                     <div className="box-subcontent center-content">
@@ -312,6 +328,7 @@ function WalletPage () {
 
            
                 </Col>
+                  )} 
             </Container>
         );
     }

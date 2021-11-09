@@ -1,5 +1,5 @@
 import axios from "axios";
-const WALLET_CATEGORY_API_BASE_URL = "http://localhost:8080/categories"
+const WALLET_CATEGORY_API_BASE_URL = "/categories"
 
 class CategoryService {
 

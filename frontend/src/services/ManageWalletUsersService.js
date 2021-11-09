@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const MANAGE_WALLET_USERS_API_BASE_URL = "http://localhost:8080/wallet/"
-//Manage wallet users api: "/wallet/{id}/users/{userLogin}"
-//Leave wallet: "/wallet/{id}/current-logged-in-user"
-const GET_WALLET_USERS_API_BASE_URL = "http://localhost:8080/wallet-users/"
+const MANAGE_WALLET_USERS_API_BASE_URL = "/wallet/"
+const GET_WALLET_USERS_API_BASE_URL = "/wallet-users/"
 class ManageWalletUsersService {
 
    
