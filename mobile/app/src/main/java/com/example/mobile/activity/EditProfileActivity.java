@@ -148,9 +148,11 @@ public class EditProfileActivity extends BaseActivity {
 
     public void setProfileImagePreview(int degree) {
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        imageBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        if(drawable!=null){
+            Bitmap bitmap = drawable.getBitmap();
+            Matrix matrix = new Matrix();
+            matrix.postRotate(degree);
+            imageBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        }
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.Toast;
-
 import com.example.mobile.ImageHelper;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
@@ -14,12 +13,9 @@ import com.example.mobile.model.Invitation;
 import com.example.mobile.model.Message;
 import com.example.mobile.model.UpdatePasswordHolder;
 import com.example.mobile.model.User;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -87,8 +83,6 @@ public class AccountService {
         //creating request body for file
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/" + type), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-        ApiInterface apiInterface = new ApiClient().getService();
 
         //creating a call and calling the upload image method
         Call<ResponseBody> call = apiInterface.uploadProfileImage("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
