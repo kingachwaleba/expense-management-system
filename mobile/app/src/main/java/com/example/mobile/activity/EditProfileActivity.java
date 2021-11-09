@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,25 +14,20 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.core.content.ContextCompat;
-
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.service.AccountService;
-
 import java.io.IOException;
 
 import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
 public class EditProfileActivity extends BaseActivity {
 
-    Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteImageBtn, deleteAccountBtn, rotateLeftBtn, rotateRightBtn;
+    Button changePasswordBtn, chooseImageBtn, saveChangeBtn, deleteImageBtn, deleteAccountBtn;
     ImageView imageView;
-    LinearLayout imagePreviewL;
 
     AccountService accountService;
     Uri selectedImage;
@@ -49,10 +43,7 @@ public class EditProfileActivity extends BaseActivity {
         changePasswordBtn = findViewById(R.id.change_password_btn);
         deleteImageBtn = findViewById(R.id.delete_image_btn);
         deleteAccountBtn = findViewById(R.id.delete_account_btn);
-        imageView = findViewById(R.id.profile_image_iv);
-        imagePreviewL = findViewById(R.id.image_preview_l);
-        rotateLeftBtn = findViewById(R.id.rotate_left_btn);
-        rotateRightBtn = findViewById(R.id.rotate_right_btn);
+        imageView = findViewById(R.id.new_profile_image_iv);
 
         session = new SessionManager(this);
         accountService = new AccountService(this);
@@ -77,28 +68,14 @@ public class EditProfileActivity extends BaseActivity {
         saveChangeBtn.setOnClickListener(v -> {
             if (selectedImage != null) {
                 try {
-                    int max = 400;
-                    int factor;
-                    int newHeigh, newWidth;
                     BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
-                    if (bitmap.getHeight() > bitmap.getWidth() && (bitmap.getWidth() > 400 && bitmap.getWidth() > 400)) {
-                        factor = bitmap.getHeight() / max;
-                        newHeigh = max;
-                        newWidth = bitmap.getWidth() / factor;
-                    } else {
-                        factor = bitmap.getWidth() / max;
-                        newWidth = max;
-                        newHeigh = bitmap.getHeight() / factor;
-                    }
-
-                    accountService.uploadProfileImage(Bitmap.createScaledBitmap(bitmap, newWidth, newHeigh, true));
-                    imagePreviewL.setVisibility(View.GONE);
+                    accountService.uploadProfileImage(Bitmap.createScaledBitmap(bitmap, 300, 400, true));
+                    imageView.setVisibility(View.GONE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            // a
         });
 
         if (ContextCompat.checkSelfPermission(this,
@@ -107,18 +84,7 @@ public class EditProfileActivity extends BaseActivity {
                     Uri.parse("package:" + getPackageName()));
             finish();
             startActivity(intent);
-            return;
         }
-
-        rotateRightBtn.setOnClickListener(v -> {
-            new Thread(() -> setProfileImagePreview(90)).start();
-            imageView.setImageBitmap(imageBitmap);
-        });
-
-        rotateLeftBtn.setOnClickListener(v -> {
-            new Thread(() -> setProfileImagePreview(-90)).start();
-            imageView.setImageBitmap(imageBitmap);
-        });
     }
 
     @Override
@@ -142,17 +108,7 @@ public class EditProfileActivity extends BaseActivity {
                 Toast.makeText(this, "Wybierz zdjęcie o mniejszej rozdzielczości", Toast.LENGTH_SHORT).show();
 
             imageView.setImageBitmap(imageBitmap);
-            imagePreviewL.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void setProfileImagePreview(int degree) {
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        if(drawable!=null){
-            Bitmap bitmap = drawable.getBitmap();
-            Matrix matrix = new Matrix();
-            matrix.postRotate(degree);
-            imageBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            imageView.setVisibility(View.VISIBLE);
         }
     }
 }
