@@ -193,7 +193,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             }
 
             save(updatedExpense);
-            calculateNewBalance(wallet, updatedExpense);
+            calculateNewBalance(wallet, updatedExpense, false);
         }
     }
 
@@ -240,7 +240,7 @@ public class ExpenseServiceImpl implements ExpenseService {
                 }
             }
 
-            calculateNewBalance(wallet, updatedExpense);
+            calculateNewBalance(wallet, updatedExpense, false);
         }
     }
 
@@ -248,7 +248,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void deleteExpense(Expense expense) {
         Wallet wallet = expense.getWallet();
 
-        calculateNewBalance(wallet, expense);
+        calculateNewBalance(wallet, expense, true);
         delete(expense);
     }
 
@@ -279,7 +279,7 @@ public class ExpenseServiceImpl implements ExpenseService {
                 });
     }
 
-    public void calculateNewBalance(Wallet wallet, Expense expense) {
+    public void calculateNewBalance(Wallet wallet, Expense expense, boolean ifDeleted) {
         User owner = expense.getUser();
         List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
         List<ExpenseDetail> expenseDetailList = new ArrayList<>(expense.getExpenseDetailSet());
@@ -294,13 +294,25 @@ public class ExpenseServiceImpl implements ExpenseService {
                     .findByUserAndExpense(walletUser.getUser(), expense)
                     .orElseThrow(ExpenseDetailNotFoundException::new).getCost();
 
-            if (!walletUser.equals(ownerDetails)) {
-                walletUser.setBalance(oldBalance.subtract(cost).setScale(2, RoundingMode.HALF_UP));
-                walletUserRepository.save(walletUser);
+            if (!ifDeleted) {
+                if (!walletUser.equals(ownerDetails)) {
+                    walletUser.setBalance(oldBalance.subtract(cost).setScale(2, RoundingMode.HALF_UP));
+                    walletUserRepository.save(walletUser);
 
-                oldBalance = ownerDetails.getBalance();
-                ownerDetails.setBalance(oldBalance.add(cost).setScale(2, RoundingMode.HALF_UP));
-                walletUserRepository.save(ownerDetails);
+                    oldBalance = ownerDetails.getBalance();
+                    ownerDetails.setBalance(oldBalance.add(cost).setScale(2, RoundingMode.HALF_UP));
+                    walletUserRepository.save(ownerDetails);
+                }
+            }
+            else {
+                if (!walletUser.equals(ownerDetails)) {
+                    walletUser.setBalance(oldBalance.add(cost).setScale(2, RoundingMode.HALF_UP));
+                    walletUserRepository.save(walletUser);
+
+                    oldBalance = ownerDetails.getBalance();
+                    ownerDetails.setBalance(oldBalance.subtract(cost).setScale(2, RoundingMode.HALF_UP));
+                    walletUserRepository.save(ownerDetails);
+                }
             }
 
             totalCost = totalCost.subtract(cost).setScale(2, RoundingMode.HALF_UP);

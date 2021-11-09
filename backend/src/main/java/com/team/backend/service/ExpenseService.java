@@ -27,7 +27,7 @@ public interface ExpenseService {
     void edit(Expense updatedExpense, Expense newExpense);
     void deleteExpense(Expense expense);
     void cleanBalance(Wallet wallet, Expense expense);
-    void calculateNewBalance(Wallet wallet, Expense expense);
+    void calculateNewBalance(Wallet wallet, Expense expense, boolean ifDeleted);
     BigDecimal calculateExpensesCost(Wallet wallet);
     BigDecimal calculateExpensesCostForUser(Wallet wallet, User user);
     Map<User, BigDecimal> calculateUserExpenses(List<ExpenseDetail> expenseDetailList);
