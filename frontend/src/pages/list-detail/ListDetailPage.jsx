@@ -28,6 +28,7 @@ function ListDetailPage () {
     const[errorMessage,setErrorMessage] = useState("")
     const[errorManageElementMessage,setErrorManageElementMessage] = useState("")
     const[loading, setLoading] = useState(true)
+    const[listName, setListName]=useState("")
     useEffect(()=>{
         console.log("WalletId:")
         console.log(walletID)
@@ -36,8 +37,9 @@ function ListDetailPage () {
        // let isMounted = true;
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
-           
+                console.log(response.data)
                 setListDetailData(response.data.listDetailSet)
+                setListName(response.data.name)
                 setLoading(false)
         })
         .catch(error=>{
@@ -124,22 +126,7 @@ function ListDetailPage () {
     */
 
 
-    const sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
-    
-    const loadListDetailData = (data) =>{
-        sleep(5000).then(()=>{
-             setListDetailData(data)
-             setLoading(false)
-        
-        }
-            
-          
-           
-        )
-        counter++
-    }
+  
     //------------------------
     const addElement = element =>{
         if(!element.name || !element.quantity)return
@@ -374,7 +361,23 @@ const renderMaping = (listData) =>{
     //------------------------
         return (
             <Container>
-                <Header title ="Lista zakupów"/> 
+                <Header title ="Lista zakupów"/>
+                { 
+                            listName === undefined ? (
+                                   <div  className="container box-content text-size base-text center-content"> 
+
+                                       <div>Wystąpił błąd podczas wczytywania danych</div> 
+                                       <br />
+                                       <button className="card-link main-button-style center-content btn btn-primary text-size" type="button" onClick={(e)=>{
+                                           window.location.href='/wallet'
+                                       }}>
+                                           Wróć na stronę portfela
+                                       </button>
+                                   </div>
+                                       
+                                    
+                                ):(
+                 <Col>
                 <div className="box-content">
                     <Row>
                                 <Col md = "2" xs="1"> 
@@ -442,10 +445,15 @@ const renderMaping = (listData) =>{
                 </div>
                
                 <div className="center-content">
-                    <a href="/wallet" className="card-link center-content btn btn-primary width-100" id="mainbuttonstyle">Wróć</a>
+                    <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 
+                    type="button"
+                    onClick={(e)=>{
+                        window.location.href="/wallet"
+                    }}>Wróć</button>
                 </div>
                 
-                
+               </Col>)
+}
             </Container>
         );
     

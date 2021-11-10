@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const EXPENSE_API_BASE_URL = "http://localhost:8080/wallet/"
-const EXPENSE_DETAIL_API_BASE_URL = "http://localhost:8080/expense/"
+const EXPENSE_API_BASE_URL = "/wallet/"
+const EXPENSE_DETAIL_API_BASE_URL = "/expense/"
 class ExpenseService {
 
     addExpense(id, expenseHolder, tokenStr){

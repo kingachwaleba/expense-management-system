@@ -3,7 +3,7 @@ const CREATE_WALLET_API_BASE_URL = "/create-wallet"
 const WALLET_DETAIL_API_BASE_URL = "/wallet/"
 const EDIT_WALLET_API_BASE_URL = "/wallet/"
 
-const GET_WALLET_STATS_API_BASE_URL = "http://localhost:8080/wallet/"
+const GET_WALLET_STATS_API_BASE_URL = "/wallet/"
 const PAY_DEBT_API_BASE_URL = "/pay-debt/wallet/"
 class WalletService {
 

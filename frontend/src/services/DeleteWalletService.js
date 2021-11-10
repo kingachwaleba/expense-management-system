@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const DELETE_WALLET_API_BASE_URL = "http://localhost:8080/wallet/"
+const DELETE_WALLET_API_BASE_URL = "/wallet/"
 
 class DeleteWalletService {
 

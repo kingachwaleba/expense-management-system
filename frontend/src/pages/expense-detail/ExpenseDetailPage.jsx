@@ -7,6 +7,7 @@ import ExpenseService from '../../services/ExpenseService';
 import { Container, Col, Row } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import ImageService from '../../services/ImageService';
+import DisplayWalletExpensesSumComponent from '../../components/DisplayWalletExpensesSumComponent';
 function ExpenseDetailPage(){
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
@@ -22,7 +23,7 @@ function ExpenseDetailPage(){
     const [expenseName, setExpenseName]= useState("")
     const [expenseWallet, setExpenseWallet]= useState([])
     const [ownerData, setOwnerData] = useState([])
-    const [receiptImg, setReceiptImg] = useState([])
+    const [receiptImg, setReceiptImg] = useState(null)
     const [expenseCost, setExpenseCost] = useState("")
     const [message, setMessage] = useState("")
     const [expenseDate, setExpenseDate]=useState("")
@@ -96,37 +97,56 @@ function ExpenseDetailPage(){
     },[expenseDetailSet])
     
     useEffect(()=>{
-      if(receiptImg != null){
+    
+      if( receiptImg!= null){
         setMessage("")
-        document.getElementById('img-preview-div').style.display = 'block';
-        /*
-        var formData = new FormData();
-            formData.append('imageName',receiptImg)
-        console.log(receiptImg)
-        console.log(formData.get('imageName')) 
-
-        */
+        //document.getElementById('img-preview-div').style.display = 'block';
+        console.log("Pobieranie obrazka")
         ImageService.getImg(expenseID, userData.token)
         .then(response=>{
             console.log(response)
-            const url = URL.createObjectURL(response.data)
-            setDisplayImg(url)
-            console.log(url)
+            if(response.data != null){
+                console.log("Pobrano obrazek")
+                const url = URL.createObjectURL(response.data)
+                setDisplayImg(url)
+                console.log(url)
+            }
         })
         .catch(error=>{
             console.error(error)
         });
-       
-
       }
       else{
-          setMessage("Brak zdjęcia paragonu")
-          document.getElementById('img-preview-div').style.display = 'none';
+            setMessage("Brak zdjęcia paragonu")
+            console.log("expenseName", expenseName)
+            console.log("Długość expenseName", expenseName.length)
+            if(expenseName.length != 0){
+                console.log("Zablokowano wyświetlanie podglądu")
+               // document.getElementById('img-preview-div').style.display = 'none';
+            }
+            else{
+                console.log("Nie zablokowano wyświetlania obrazka")
+            }
       }
     },[receiptImg])
         return (
             <Container>
                 <Header title="Wydatek"/>
+                { 
+                            expenseName.length === 0 ? (
+                                   <div  className="container box-content text-size base-text center-content"> 
+
+                                       <div>Wystąpił błąd podczas wczytywania danych</div> 
+                                       <br />
+                                       <button className="card-link main-button-style center-content btn btn-primary text-size" type="button" onClick={(e)=>{
+                                           window.location.href='/wallet'
+                                       }}>
+                                           Wróć na stronę portfela
+                                       </button>
+                                   </div>
+                                       
+                                    
+                                ):(
                 <div className="box-content text-size">
                         <div className="center-content text-label"><b>Wydatek: {expenseName}</b></div>       
                         <div className='separator-line'></div>
@@ -144,13 +164,17 @@ function ExpenseDetailPage(){
                         </div >
                         <div  className="grid-container">
                                 <div  className="text-label right-content">Data:</div >
-                                <div className="left-content">{expenseDate}</div >
+                                <div className="left-content">{expenseDate.replace("T"," ")}</div >
                         </div >
                         <div className='separator-line'></div>
                         <div className="center-content">
                                     {message}
                         <div id="img-preview-div">
-                            <img src={displayImg} className="img-preview"  alt="img" />
+                            {
+                                displayImg ? ( <img src={displayImg} className="img-preview"  alt="img" />):(<div/>)
+
+                            }
+                           
                         </div>         
                         
 
@@ -235,7 +259,7 @@ function ExpenseDetailPage(){
                             )}
 
                     
-                </div>
+                </div>)}
             </Container>
         );
     

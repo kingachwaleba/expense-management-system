@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const LISTS_API_BASE_URL = "http://localhost:8080/wallet/"
-const EXPENSE_DETAIL_API_BASE_URL = "http://localhost:8080/expense/"
+const LISTS_API_BASE_URL = "/wallet/"
+const EXPENSE_DETAIL_API_BASE_URL = "/expense/"
 const LISTS_SUM_API_BASE_URL = "/wallet/{id}/shopping-lists"
 const LIST_DETAIL_API_BASE_URL = "/shopping-list/"
 const EDIT_LIST_DETAIL_API_BASE_URL = "/edit-list-element/"

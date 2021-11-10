@@ -45,7 +45,7 @@ function EditExpensePage () {
  
 
     const [expenseReceiptImg, setExpenseReceiptImg] = useState()
-    const [currentExpenseReceiptImg, setCurrentExpenseReceiptImg] = useState()
+    const [currentExpenseReceiptImg, setCurrentExpenseReceiptImg] = useState(null)
 
     
 
@@ -100,8 +100,9 @@ function EditExpensePage () {
                 setCurrentExpenseName(response.data.expense.name)
                 setExpenseName(response.data.expense.name)
                 setExpenseUsersList(currentExpenseUsersList)
+                if(response.data.expense.receipt_image != null){
                 setCurrentExpenseReceiptImg(response.data.expense.receipt_image)
-           
+                }
             })
            
             .catch(error=>{
@@ -110,9 +111,6 @@ function EditExpensePage () {
                    
           
     },[])
-
- 
-
 
     useEffect(()=>{
         if(currentExpenseReceiptImg != null){
@@ -128,9 +126,12 @@ function EditExpensePage () {
           ImageService.getImg(expenseID, userData.token)
           .then(response=>{
               console.log(response)
+              if(response.data != null){
+                  console.log("Hey its not empty:", response.data)
               const url = URL.createObjectURL(response.data)
               setDisplayImg(url)
               console.log(url)
+              }
           })
           .catch(error=>{
               console.error(error)
@@ -139,7 +140,7 @@ function EditExpensePage () {
   
         }
         else{
-            setMessage("Brak zdjęcia paragonu")
+            
             document.getElementById('img-preview-div').style.display = 'none';
         }
       },[currentExpenseReceiptImg])
@@ -258,7 +259,7 @@ function EditExpensePage () {
             const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
             ExpenseService.editExpense(expenseID, expenseHolder, userToken.token)
             .then(()=>{
-                window.location.href='/wallet' 
+                window.location.href='/expense-detail'
             })
             
             .catch(error=>{
@@ -355,10 +356,10 @@ function EditExpensePage () {
                          walletUsers.map(
                             user =>
                             
-                             <div key = {user.userId} className = "left-content custom-checkboxes margin-left-text">
+                             <div key = {user.userId+"-key"} className = "left-content custom-checkboxes margin-left-text">
                            
                              <label className = "form-label text-size" htmlFor={user.userId}>
-                               <input type="checkbox" id={user.userId} name="users" value={user.login} 
+                               <input type="checkbox" id={Math.floor(Math.random() * 100000)} name="users" value={user.login} 
                                    defaultChecked={currentExpenseUsersList.includes(user.login)}
                                    
                                    onChange={(e)=>handleCreateExpenseUsersList(e)}
@@ -399,6 +400,7 @@ function EditExpensePage () {
                    <div id="img-preview-div">
                         
                         <button
+                        type="button"
                         className="delete-user-icon icons-size"
                         onClick={(e)=>handleClearChoosenImg(e)}
                         ></button>

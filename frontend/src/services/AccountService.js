@@ -1,5 +1,5 @@
 import axios from "axios";
-const ACCOUNT_DATA_API_BASE_URL = "http://localhost:8080/account";
+const ACCOUNT_DATA_API_BASE_URL = "/account";
 
 class AccountService {
 

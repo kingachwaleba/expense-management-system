@@ -1,5 +1,5 @@
 import axios from "axios";
-const USERS_WALLETS_API_BASE_URL = "http://localhost:8080/wallets"
+const USERS_WALLETS_API_BASE_URL = "/wallets"
 
 class UsersWalletsService {
 

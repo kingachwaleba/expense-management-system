@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const UPLOAD_IMAGE_API_BASE_URL = "http://localhost:8080/upload"
-const GET_IMAGE_API_BASE_URL = "http://localhost:8080/expense-files/"
+const UPLOAD_IMAGE_API_BASE_URL = "/upload"
+const GET_IMAGE_API_BASE_URL = "/expense-files/"
 class ImageService {
 
     uploadImg(img,tokenStr){
