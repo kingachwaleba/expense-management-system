@@ -340,6 +340,9 @@ public class ExpenseServiceImpl implements ExpenseService {
         expenseList.forEach(expense -> expenseDetailList.addAll(expense.getExpenseDetailSet()));
         Map<User, BigDecimal> mapByUser = calculateUserExpenses(expenseDetailList);
 
+        if (mapByUser.get(user) == null)
+            return BigDecimal.valueOf(0.00);
+
         return mapByUser.get(user);
     }
 
