@@ -140,7 +140,7 @@ function EditExpensePage () {
   
         }
         else{
-            setMessage("Brak zdjęcia paragonu")
+            
             document.getElementById('img-preview-div').style.display = 'none';
         }
       },[currentExpenseReceiptImg])
@@ -259,7 +259,7 @@ function EditExpensePage () {
             const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
             ExpenseService.editExpense(expenseID, expenseHolder, userToken.token)
             .then(()=>{
-                window.location.href='/wallet'
+                window.location.href='/expense-detail'
             })
             
             .catch(error=>{
@@ -356,10 +356,10 @@ function EditExpensePage () {
                          walletUsers.map(
                             user =>
                             
-                             <div key = {user.userId} className = "left-content custom-checkboxes margin-left-text">
+                             <div key = {user.userId+"-key"} className = "left-content custom-checkboxes margin-left-text">
                            
                              <label className = "form-label text-size" htmlFor={user.userId}>
-                               <input type="checkbox" id={user.userId} name="users" value={user.login} 
+                               <input type="checkbox" id={Math.floor(Math.random() * 100000)} name="users" value={user.login} 
                                    defaultChecked={currentExpenseUsersList.includes(user.login)}
                                    
                                    onChange={(e)=>handleCreateExpenseUsersList(e)}
