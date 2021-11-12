@@ -57,7 +57,7 @@ function ProfileDataComponent (){
                         <p>Email: {accountInfo.email}</p>
                         <p>Liczba porfeli: {accountInfo.walletsNumber}</p>
                         <p>Saldo: {accountInfo.userBalance}</p>
-                        <a href="/edit-profile" className="card-link center-content btn btn-primary" id="mainbuttonstyle">Edytuj profil</a>
+                        <a href="/edit-profile" className="card-link center-content btn text-size btn-primary" id="mainbuttonstyle">Edytuj profil</a>
                     </div>
                 </Col>
                 

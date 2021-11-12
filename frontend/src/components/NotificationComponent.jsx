@@ -3,7 +3,7 @@ import NotificationService from '../services/NotificationService';
 import UserService from '../services/user.service';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Col } from 'react-bootstrap';
 import { Button } from 'reactstrap';
 
 
@@ -18,6 +18,7 @@ function NotificationComponent(){
     const [message, setMessage] = useState("")
     const [reminders, setReminders] = useState("")
     const [messageReminder, setMessageReminder] = useState("")
+    const [loading, setLoading] = useState("true")
     useEffect(()=>{
        
            
@@ -55,6 +56,7 @@ function NotificationComponent(){
                 else{
                     setMessageReminder("")
                 }
+                setLoading(false)
                })
                .catch((error)=>{
                    
@@ -80,8 +82,58 @@ function NotificationComponent(){
      
     }
 
+    const renderReminders = (remindersData) =>{
+        
+            return (
+                    remindersData.map(
+                        reminderTab =>
+                        <Col key =  {Math.floor(Math.random() * 100000)} >
+                            <div className="box-content">
+                                <div className="text-label">! NIEUREGULOWANA NALEŻNOŚĆ !</div>
+                                <div className="separator-line"></div>
+                                <div className = "center-content error-text">Masz nieuregulowaną należność! </div>
+                                <div>Portfel: {reminderTab.wallet.name}</div> 
+                            
+                                <div>Wysokość należności: {reminderTab.content}</div> 
+                             
+                                <Button 
+                                    className="card-link center-content text-size btn btn-primary main-button-style"
+                                    onClick={function(e){
+                                       
+                                        sessionStorage.setItem('walletID',JSON.stringify(reminderTab.wallet.id))
+                                        window.location.href='/wallet'
+                                    }}>
+                                    Przejdź do portfla
+                                </Button>
+                        
+                                <Button className="card-link text-size center-content btn btn-primary main-button-style" 
+                                    onClick={function(e){
+                                       NotificationService.deleteNotification(reminderTab.id, userToken)
+                                        .then(()=>{
+                                            console.log("Usunięto powiadomienie.")
+                                            window.location.href = "/profile"
+                                        })
+                                        .catch((error)=>{
+                                            console.log(error)
+                                        })  
+                                    }}> 
+                                    Usuń przypomnienie
+                                </Button>
+                            </div>
+                        </Col>      
+                    )
+            )
+    }
+
+
+    const renderInvitations = () => {
+
+    }
         return (
-            <Container> 
+            <Container>
+                <div className="box-subcontent ">
+                 Zaproszenia
+                            <div className="separator-line"></div>
                 {
                     notification.map(
                         notificationTab =>
@@ -96,14 +148,14 @@ function NotificationComponent(){
                                 
                                 <br />
                                 <Button 
-                                    className="card-link center-content btn btn-primary main-button-style"
+                                    className="card-link center-content btn text-size btn-primary main-button-style"
                                     onClick={function(e){
                                         NotificationResponse(JSON.stringify(true), notificationTab.walletUserId); 
                                     }}>
                                     Zaakceptuj
                                 </Button>
                         
-                                <Button className="card-link center-content btn btn-primary main-button-style" 
+                                <Button className="card-link center-content text-size btn btn-primary main-button-style" 
                                     onClick={function(e){
                                         NotificationResponse(JSON.stringify(false), notificationTab.walletUserId);    
                                     }}> 
@@ -113,39 +165,23 @@ function NotificationComponent(){
                         </div>      
                     )
                 }
-                {message}
-                {/*
-                    reminders.map(
-                        reminderTab =>
-                        <div key =  {Math.floor(Math.random() * 100000)} >
-                            <div className="box-content">
-                                <div className="text-label">NIEUREGULOWANA NALEŻNOŚĆ</div>
-                                <div className="separator-line"></div>
-                                <div className = "center-content error-text">Użytkownik: {reminderTab.sender.name} przypomina Ci o uregulowaniu należności </div>
-                                <div>Portfel: {reminderTab.wallet.name}</div> 
-                                <br />
-                                <div>Wysokość należności: {reminderTab.content}</div> 
-                                
-                                <br />
-                                <Button 
-                                    className="card-link center-content btn btn-primary main-button-style"
-                                    onClick={function(e){
-                                        //NotificationResponse(JSON.stringify(true), reminderTab.walletUserId); 
-                                    }}>
-                                    Zaakceptuj
-                                </Button>
-                        
-                                <Button className="card-link center-content btn btn-primary main-button-style" 
-                                    onClick={function(e){
-                                       //NotificationResponse(JSON.stringify(false), reminderTab.walletUserId);    
-                                    }}> 
-                                    Odrzuć
-                                </Button>
-                            </div>
-                        </div>      
-                    )
-                                */}
+                <div>
+                     {message} 
+                </div>
+                </div> 
+                <br />
+                <div className="box-subcontent">
+
               
+               Przypomnienia o długach
+                            <div className="separator-line"></div>
+                {console.log("Przypomnienia:", reminders)}
+                <div>
+               {
+                   reminders.length === 0 || loading === true ? (<div>Brak przypomnień</div>):(renderReminders(reminders))
+               }
+                  </div>        
+                </div>
             </Container>
         );
     

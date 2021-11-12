@@ -1,7 +1,7 @@
 import axios from "axios";
 const INVITATIONS_API_BASE_URL = "/notifications/invitations";
 const INVITATIONS_MANAGE_API_BASE_URL = "/notifications/invitations/";
-
+const DELETE_NOTIFICATION_API_BASE_URL = "/notifications/"
 const DEBT_REMINDER_API_BASE_URL ="/send-notification/wallet/"
 const DEBT_REMINDERS_NOTIFICATION_API_BASE_URL ="/debts-notifications"
 class NotificationService {
@@ -17,6 +17,9 @@ class NotificationService {
     }
     sendReminder(id, debtHolder, tokenStr){
         return axios.post(DEBT_REMINDER_API_BASE_URL+id, debtHolder, {headers: {"Authorization" : `Bearer ${tokenStr} `, "Content-Type" : "application/json"}});
+    }
+    deleteNotification(id,tokenStr){
+        return axios.delete(DELETE_NOTIFICATION_API_BASE_URL+id, {headers: {"Authorization" : `Bearer ${tokenStr} `, "Content-Type" : "application/json"}});
     }
 }
 

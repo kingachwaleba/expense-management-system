@@ -324,7 +324,7 @@ function EditExpensePage () {
                          expenseCategories.map(
                              category =>
                             
-                             <div key = {category.id} className = "left-content custom-radiobuttons margin-left-text">
+                             <div key = {category.id+"_category_id"} className = "left-content custom-radiobuttons margin-left-text">
                                
                              <label className = "form-label text-size" htmlFor={category.id+"_category_id"}>
                                <input type="radio" id={category.id+"_category_id"} name="category" value={category.name} 
@@ -393,17 +393,21 @@ function EditExpensePage () {
                         
                         <input  
                             className="btn btn-primary btn-block form-button "
-                            id = "insert-photo-button" 
+                            id = "insert-photo-button"
+                            accept="image/png, image/jpeg, image/jpg" 
                             type="file"
                             onChange={(e)=>handleImageChange(e)} />
                    <br /><br />
                    <div id="img-preview-div">
-                        
-                        <button
-                        type="button"
-                        className="delete-user-icon icons-size"
-                        onClick={(e)=>handleClearChoosenImg(e)}
-                        ></button>
+                        {
+                            displayImg ? (  
+                            <button
+                                type="button"
+                                className="delete-user-icon icons-size"
+                                onClick={(e)=>handleClearChoosenImg(e)}/>
+                            ):(<div/>)
+                        }
+                      
                    </div>
               
                 </div>    

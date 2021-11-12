@@ -69,7 +69,7 @@ const user = UserService.getCurrentUser();
                                
                                  
                                  
-                                  <Button className="card-link center-content btn btn-primary"  id="mainbuttonstyle"
+                                  <Button className="card-link center-content text-size btn btn-primary"  id="mainbuttonstyle"
                                        onClick={(e)=>{
                                         sessionStorage.setItem('walletID',JSON.stringify(wallet.id))
                                         window.location.href='/wallet'

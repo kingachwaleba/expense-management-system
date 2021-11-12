@@ -162,6 +162,35 @@ font-size: 90px;
   .custom-checkboxes-list-buy input:checked ~ .checkmark-checkbox-list-buy {
     background-image: url(../element-bought.svg);
   }
+
+    /*===================================================================================*/
+   /*Checkboxes style - LISTS BOOKING*/
+   .custom-checkboxes-list-book input{  /*Ukrycie domyślenego radiobuttona */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+}
+.checkmark-checkbox-list-book {  /*Nowy styl*/
+    
+    background-image: url(../unchecked-buy-promise.svg);
+    size:auto;
+    margin:auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-size: contain;
+    margin-left:-40px;
+    margin-top: 5px;
+   
+  }
+
+    /* Gdy checked */
+  .custom-checkboxes-list-book input:checked ~ .checkmark-checkbox-list-book {
+    background-image: url(../checked-buy-promise.svg);
+  }
   @media only screen and (max-width: 1025px){ 
     .footer{  
         font-size: 25px;

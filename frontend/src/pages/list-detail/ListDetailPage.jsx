@@ -11,7 +11,7 @@ import StatusService from '../../services/StatusService';
 import { useLayoutEffect } from 'react';
 
 function ListDetailPage () {
-    let counter = 0;
+  
     let walletID = '';
     if (sessionStorage && sessionStorage.getItem('walletID')) {
         walletID = JSON.parse(sessionStorage.getItem('walletID'));
@@ -29,17 +29,18 @@ function ListDetailPage () {
     const[errorManageElementMessage,setErrorManageElementMessage] = useState("")
     const[loading, setLoading] = useState(true)
     const[listName, setListName]=useState("")
+    const[listData, setListData]=useState([])
     useEffect(()=>{
         console.log("WalletId:")
         console.log(walletID)
-        console.log("userToken:")
-        console.log(userData.token)
-       // let isMounted = true;
+        console.log("userData:")
+        console.log(userData)
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
                 console.log(response.data)
                 setListDetailData(response.data.listDetailSet)
                 setListName(response.data.name)
+                setListData(response.data)
                 setLoading(false)
         })
         .catch(error=>{
@@ -50,13 +51,14 @@ function ListDetailPage () {
         StatusService.getStatues()
         .then((response)=>{
             setStatus(response.data)
-            console.log("Statusy", status)
+            //console.log("Statusy", status)
            // console.log(response.data)
         })
         .catch(error=>{
             console.error({error})
         });      
        
+
     },[])
 /*
     useEffect(()=>{ 
@@ -74,21 +76,17 @@ function ListDetailPage () {
           
     },[status])
     */
-    
-    const counterIncrease =()=>{
-        counter++
-    }
-
+  
    
     useEffect(()=>{ 
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
           
-            let isMounted = true;
+         
             ListsService.getListDetail(listID,userData.token)
             .then((response)=>{
-            if(isMounted)setListDetailData(response.data.listDetailSet)
-            console.log("Get expenseSum data (responseData)")
+            setListDetailData(response.data.listDetailSet)
+            //console.log("Get expenseSum data (responseData)")
             //console.log(response.data)
             
             //setListDetailData(response.data.listDetailSet)
@@ -98,7 +96,7 @@ function ListDetailPage () {
         .catch(error=>{
             console.error({error})
         })
-        return()=>{isMounted = false}
+    
 
             
         })
@@ -108,7 +106,7 @@ function ListDetailPage () {
                
           
     },[edit])
-/*
+
     useEffect(()=>{ 
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
@@ -123,7 +121,7 @@ function ListDetailPage () {
                
           
     },[refresh])
-    */
+    
 
 
   
@@ -202,6 +200,20 @@ function ListDetailPage () {
             categoryId: ""
         })
     }
+    const setHoverTitle = (username, status)=>{
+        if(username === userData.login && status === 'zarezerwowany'){
+            return "Ten produkt jest zarezerwowany przez Ciebie"
+        }
+        else if(username === userData.login && status === 'zrealizowany'){
+            return "Ten produkt został zakupiony przez Ciebie."
+        }
+        else if(status === 'zarezerwowany'){
+            return `Ten produkt został zarezerwowany przez: ${username}`
+        }
+        else if(status ===  'zrealizowany'){
+            return `Ten produkt został już zakupiony przez: ${username}`
+        }
+    }
 const renderMaping = (listData) =>{
     
     return(
@@ -211,14 +223,14 @@ const renderMaping = (listData) =>{
             <div key = {element1.id} className = "text-size">
             
             {console.log("Element1: ",element1)}
-            {console.log("Status: ",Object.values(status))}
-                <Row>
+        
+                <Row title={element1.user ? (setHoverTitle(element1.user.login, element1.status.name)):("Ten produkt czeka na zakup.")}>
                     <Col xs="1"> 
                         <button 
-                        className={`delete-list-element icons-size-2 left-content ${element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
-                            disabled={element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id}
+                        className={`delete-list-element icons-size-2 left-content ${element1.status.id === Object.values(status)[1].id || element1.status.id === Object.values(status)[2].id ? "grey-scale" : ""}`}
+                            disabled={element1.status.id === Object.values(status)[1].id || element1.status.id === Object.values(status)[2].id}
                             onClick={(e)=>{
-                                if(window.confirm('Czy chcesz usunąć ten element z listy zakupów?')){
+                               
                                 ListsService.deleteListElement(element1.id, userData.token)
                                 .then((response)=>{
                                     
@@ -231,7 +243,7 @@ const renderMaping = (listData) =>{
                                     console.error({error})
                                     setErrorManageElementMessage(error.response.data)
                                 });
-                            }}
+                            }
                         }
                             title="Usuń element"
                         ></button>
@@ -239,11 +251,11 @@ const renderMaping = (listData) =>{
                      </Col>
                     <Col xs="1"> 
                         <button 
-                        className={`edit-list-element icons-size left-content ${element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id ? "grey-scale" : ""}`}
+                        className={`edit-list-element icons-size left-content ${element1.status.id === Object.values(status)[1].id || element1.status.id === Object.values(status)[2].id ? "grey-scale" : ""}`}
                         title="Edytuj element"
-                        disabled={element1.status.id == Object.values(status)[1].id || element1.status.id == Object.values(status)[2].id}
+                        disabled={element1.status.id === Object.values(status)[1].id || element1.status.id === Object.values(status)[2].id}
                             onClick={(e)=>{
-                            if(element1.status.id == Object.values(status)[0].id){
+                            if(element1.status.id === Object.values(status)[0].id){
                                 setEdit({
                                     id: element1.id,
                                     name: element1.name,
@@ -271,16 +283,16 @@ const renderMaping = (listData) =>{
                     <Col xs="3" className="right-content">{element1.unit.name}</Col>
                     <Col xs="1" >
                                     <div className="form-container">
-                                        <div  className = "custom-checkboxes-list-buy margin-left-text " >
+                                        <div  className ={ `custom-checkboxes-list-book margin-left-text ${element1.status.id === Object.values(status)[2].id ? "grey-scale" : ""}` }>
                                         <label className = "form-label text-size " htmlFor={element1.name+"-booking"}>
                                         <input type="checkbox" id={element1.name + "-booking"} name="users"
-                                            defaultChecked={element1.status.id == Object.values(status)[2].id || element1.status.id == Object.values(status)[1].id}
-                                            title={element1.user + " zadeklarował kupno."}
+                                            defaultChecked={element1.status.id === Object.values(status)[1].id}
                                             
+                                            disabled={element1.status.id === Object.values(status)[2].id || (element1.user ? (element1.user.login !== userData.login):(""))}
                                             onChange={(e)=>{
                                                 if(e.target.checked){
                                                     console.log(element1.id)
-                                                    console.log(Object.values(status)[1].id)
+                                                   
                                                     
                                                     ListsService.changeElementStatus(element1.id, Object.values(status)[1].id, userData.token)
                                                     .then((response)=>{
@@ -297,7 +309,22 @@ const renderMaping = (listData) =>{
                                                     });
                                                 }
                                                 else{
-                                                 
+                                                    console.log(element1.id)
+                                            
+                                                    
+                                                    ListsService.changeElementStatus(element1.id, Object.values(status)[0].id, userData.token)
+                                                    .then((response)=>{
+                                    
+                                                        console.log(response.data)
+                                                        if(refresh) setRefresh(false)
+                                                        else setRefresh(true)
+                                                        
+                                                    })
+                                                    .catch(error=>{
+                                                        console.error({error})
+                                                        e.target.checked=false
+                                                        setErrorManageElementMessage(error.response.data)
+                                                    });
                                                 }
 
                                             }}
@@ -305,7 +332,7 @@ const renderMaping = (listData) =>{
                                 
                             </input>
                         
-                        <div className="checkmark-checkbox-list-buy icons-size-2"></div>
+                        <div className="checkmark-checkbox-list-book icons-size-2"></div>
                         </label>
                         </div>
                         </div>
@@ -315,17 +342,45 @@ const renderMaping = (listData) =>{
                                         <div  className = "custom-checkboxes-list-buy margin-left-text" >
                                         <label className = "form-label text-size " htmlFor={element1.name+"-buy"}>
                                         <input type="checkbox" id={element1.name+"-buy"} name="users"
-                                            defaultChecked={element1.status.id == Object.values(status)[2].id}
-                                            disabled={element1.status.id == Object.values(status)[2].id}
+                                            defaultChecked={element1.status.id === Object.values(status)[2].id}
+                                            disabled={element1.user ? (element1.user.login !== userData.login):("")}
                                             onChange={(e)=>{
                                                 if(e.target.checked){
-                                    
+                                                   
+                                                   
                                                     
+                                                    ListsService.changeElementStatus(element1.id, Object.values(status)[2].id, userData.token)
+                                                    .then((response)=>{
+                                    
+                                                        //console.log(response.data)
+                                                        if(refresh) setRefresh(false)
+                                                        else setRefresh(true)
+                                                        
+                                                    })
+                                                    .catch(error=>{
+                                                        console.error({error})
+                                                        e.target.checked=false
+                                                        setErrorManageElementMessage(error.response.data)
+                                                    });
                                                 }
                                                 else{
+                                                   // console.log(element1.id)
+                                                    //console.log(Object.values(status)[2].id)
                                                     
+                                                    ListsService.changeElementStatus(element1.id, Object.values(status)[0].id, userData.token)
+                                                    .then((response)=>{
+                                    
+                                                        //console.log(response.data)
+                                                        if(refresh) setRefresh(false)
+                                                        else setRefresh(true)
+                                                        
+                                                    })
+                                                    .catch(error=>{
+                                                        console.error({error})
+                                                        e.target.checked=false
+                                                        setErrorManageElementMessage(error.response.data)
+                                                    });
                                                 }
-
                                             }}
                             >
                                 
@@ -358,6 +413,122 @@ const renderMaping = (listData) =>{
         )
         
     }
+
+
+    const renderListManagement = (listData) => {
+        return(
+            <Row>
+                <Col md = "2" xs="1"> 
+                <button className="delete-list-element icons-size-2"
+                 onClick={(e)=>{
+                    if (window.confirm('Czy chcesz usunąć listę?')){
+                        ListsService.deleteList(listID, userData.token)
+                        .then(()=>{
+                            console.log("Usunięto listę.")
+                            window.location.href = "/wallet"
+                        })
+                        .catch((error)=>{
+                            console.log(error)
+                        })
+                    }
+                 }}
+                title="Usuń listę"
+                ></button>
+
+                </Col>
+                <Col md="6"xs="6" className="center-content">
+                    <div className="text-label text-size">{listData.name}</div> 
+                </Col>
+
+
+                <Col md = "2" xs="1">
+                    <div  className = "form-container left-content custom-checkboxes-list-book">
+                    <label className = {`form-label text-size ${listData.status.id === Object.values(status)[2].id ? "grey-scale" : ""}`} 
+                    htmlFor="confirm-book-list">
+                            <input type="checkbox" id="confirm-book-list" name="users"
+                            defaultChecked={listData.status.id === Object.values(status)[1].id}
+                            disabled={listData.status.id === Object.values(status)[2].id || (listData.user ? (listData.user.login !== userData.login):(""))}
+                            onChange={(e)=>{
+                                
+                                if(e.target.checked){  
+                                    ListsService.changeListStatus(listID, Object.values(status)[1].id, userData.token)
+                                    .then(()=>{
+                                        if(refresh) setRefresh(false)
+                                        else setRefresh(true)
+                                        window.location.href="/list-detail"
+                                    })
+                                    .catch(error=>{
+                                        console.error({error})
+                                        e.target.checked=false
+                                        setErrorManageElementMessage(error.response.data)
+                                    });
+                                }
+                                else{
+                                    ListsService.changeListStatus(listID, Object.values(status)[0].id, userData.token)
+                                    .then(()=>{
+                                        if(refresh) setRefresh(false)
+                                        else setRefresh(true)
+                                        window.location.href="/list-detail"
+                                    })
+                                    .catch(error=>{
+                                        console.error({error})
+                                        e.target.checked=false
+                                        setErrorManageElementMessage(error.response.data)
+                                    });
+                                }
+                            }}
+                            />    
+                            <div className="checkmark-checkbox-list-book icons-size-2"></div>
+                    </label>
+                    </div>
+                </Col>
+                <Col md = "2" xs="1">
+                    <div  className = "form-container left-content custom-checkboxes-list-buy">
+                        <label className = "form-label text-size" htmlFor="confirm-buy-list">
+                            <input type="checkbox" id="confirm-buy-list" name="users"
+                           
+                            defaultChecked={listData.status.id === Object.values(status)[2].id}
+                            disabled={listData.user ? (listData.user.login !== userData.login):("")}
+                            onChange={(e)=>{
+                                
+                                if(e.target.checked){  
+                                    ListsService.changeListStatus(listID, Object.values(status)[2].id, userData.token)
+                                    .then(()=>{
+                                        if(refresh) setRefresh(false)
+                                        else setRefresh(true)
+                                        window.location.href="/list-detail"
+                                    })
+                                    .catch(error=>{
+                                        console.error({error})
+                                        e.target.checked=false
+                                        setErrorManageElementMessage(error.response.data)
+                                    });
+                                }
+                                else{
+                                    ListsService.changeListStatus(listID, Object.values(status)[0].id, userData.token)
+                                    .then(()=>{
+                                        if(refresh) setRefresh(false)
+                                        else setRefresh(true)
+                                        window.location.href="/list-detail"
+                                    })
+                                    .catch(error=>{
+                                        console.error({error})
+                                        e.target.checked=false
+                                        setErrorManageElementMessage(error.response.data)
+                                    });
+                                }
+                            }}
+                            >
+                                
+                            </input>
+
+                            <div className="checkmark-checkbox-list-buy icons-size-2"></div>
+                        </label>
+                    </div>
+                </Col>
+            </Row>
+        )
+    }
     //------------------------
         return (
             <Container>
@@ -379,57 +550,22 @@ const renderMaping = (listData) =>{
                                 ):(
                  <Col>
                 <div className="box-content">
-                    <Row>
-                                <Col md = "2" xs="1"> 
-                                                <button className="delete-list-element icons-size-2"
-                                                   // onClick={(e)=>{ removeElement(element.id)}}
-                                                title="Usuń listę"
-                                                ></button>
-
-                                </Col>
-                                <Col md="6"xs="6" className="center-content">
-                                    <h2 className="text-label text-size">Lista zakupów</h2> 
-                                </Col>
-                               
-                                <Col md = "2" xs="1">
-                                <div  className = "form-container left-content custom-checkboxes-list-buy">
-                                    <label className = "form-label text-size" htmlFor="confirm-buy-list">
-                                        <input type="checkbox" id="confirm-buy-list" name="users"
-                                        //defaultChecked={currentExpenseUsersList.includes(user.login)}
-                                        
-                                        //onChange={(e)=>handleCreateExpenseUsersList(e)}
-                                        >
-                                            
-                                        </input>
-                                    
-                                    <div className="checkmark-checkbox-list-buy icons-size-2"></div>
-                                    </label>
-                                    </div>
-                                </Col>
-                                <Col md = "2" xs="1">
-                                <div  className = "form-container left-content custom-checkboxes-list-buy">
-                                    <label className = "form-label text-size" htmlFor="confirm-buy-list">
-                                        <input type="checkbox" id="confirm-buy-list" name="users"
-                                        //defaultChecked={currentExpenseUsersList.includes(user.login)}
-                                        
-                                        //onChange={(e)=>handleCreateExpenseUsersList(e)}
-                                        >
-                                            
-                                        </input>
-                                    
-                                    <div className="checkmark-checkbox-list-buy icons-size-2"></div>
-                                    </label>
-                                    </div>
-                                </Col>
-                    </Row>        
+                    {
+                        loading || listData.length === 0 || status.length === 0 ? (<div className="text-size base-text center-content">Wczytywanie...</div>):(renderListManagement(listData))
+                    }
+                             
+                       
                                 <div className="separator-line"></div>
                                 <Container>
                                 {console.log(listDetailData)}
-                                {console.log(counter)}
-                                {console.log("Dane:" ,  loading, listDetailData, status)}
+                              
+                                {//console.log("Dane:" ,  loading, listDetailData, status)
+                                }
+
+
                                 {
 
-                                        loading || listDetailData.length === 0 || status.length === 0 ? (<div></div>):(renderMaping(listDetailData))    
+                                        loading || listDetailData.length === 0 || status.length === 0 ? (<div className="text-size base-text center-content">Brak elementów na liście.</div>):(renderMaping(listDetailData))    
                                
                                 }
                             </Container>
