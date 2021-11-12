@@ -176,9 +176,9 @@ function EditExpensePage () {
         setErrorMessage("")
     }
 
-    function readExpenseCategory (e){
-        var {id, value} = e.target;
-        
+    function readExpenseCategory (e, categoryId){
+        var { value} = e.target;
+        var id = categoryId
         setExpenseCategory(new category(id,value)) 
         setErrorMessage("")
     }
@@ -326,11 +326,11 @@ function EditExpensePage () {
                             
                              <div key = {category.id} className = "left-content custom-radiobuttons margin-left-text">
                                
-                             <label className = "form-label text-size" htmlFor={category.id}>
-                               <input type="radio" id={category.id} name="category" value={category.name} 
+                             <label className = "form-label text-size" htmlFor={category.id+"_category_id"}>
+                               <input type="radio" id={category.id+"_category_id"} name="category" value={category.name} 
                                     defaultChecked = {handleDefaultCheck(category.name)}
                                    
-                                   onChange={(e)=>readExpenseCategory(e)}
+                                   onChange={(e)=>readExpenseCategory(e, category.id)}
                                    >
                                        
                                </input>
@@ -359,7 +359,7 @@ function EditExpensePage () {
                              <div key = {user.userId+"-key"} className = "left-content custom-checkboxes margin-left-text">
                            
                              <label className = "form-label text-size" htmlFor={user.userId}>
-                               <input type="checkbox" id={Math.floor(Math.random() * 100000)} name="users" value={user.login} 
+                               <input type="checkbox" id={user.userId} name="users" value={user.login} 
                                    defaultChecked={currentExpenseUsersList.includes(user.login)}
                                    
                                    onChange={(e)=>handleCreateExpenseUsersList(e)}

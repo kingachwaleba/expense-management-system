@@ -103,7 +103,7 @@ function WalletPage () {
                                 <h3>Wydatki: {walletData.walletExpensesCost} zł</h3>     
                                  <div className = "grid-container">
                                     <div className = "center-content">
-                                        <h3>Twoje wydatki: {walletData.userExpensesCost} zł</h3>     
+                                        <h3>Twoje wydatki: {walletData.userExpensesCost === null ? ("0"):(walletData.userExpensesCost)} zł</h3>     
                                     </div>
                                     <div className = "center-content">
                                         <h3>Twój bilans: {walletData.loggedInUserBalance} zł</h3>     
