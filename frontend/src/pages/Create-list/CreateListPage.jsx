@@ -93,7 +93,7 @@ function CreateListPage () {
  
     function handleCreateList(){
         console.log(currentElements)
-        if(currentElements.length != 0){
+      
             let listDetailList = []
             currentElements.forEach(function (element){
              
@@ -139,7 +139,7 @@ function CreateListPage () {
                     console.error({error})
                 });
             }else setErrorMessageCreateList("Podaj nazwę listy!")
-        }else setErrorMessageCreateList("Lista jest pusta. Dodaj elementy do listy!")
+    
   
     }
 

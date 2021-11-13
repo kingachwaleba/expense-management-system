@@ -22,13 +22,14 @@ import ListDetailPage from './pages/list-detail/ListDetailPage';
 import StatisticsPage from './pages/wallet-stats/StatisticsPage';
 import EditWalletPage from './pages/edit-wallet/EditWalletPage';
 import ErrorPage from './pages/error/ErrorPage';
-import { useHistory } from 'react-router';
 import WalletPage from './pages/wallet/WalletPage';
 import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
 import FooterPage from './components/Footer';
 import EditExpensePage from './pages/edit-expense/EditExpensePage';
 import { Container, Navbar, Nav } from 'react-bootstrap';
+import EditShoppingListName from './pages/edit-shopping-list-name/EditShoppingListName';
+
 
 class App extends React.Component {
 
@@ -131,7 +132,7 @@ class App extends React.Component {
                         <AuthGuard path="/list-detail" component={ListDetailPage}/>
                         <AuthGuard path="/wallet-stats" component={StatisticsPage}/>        
                         <AuthGuard path="/edit-wallet" component={EditWalletPage}/>
-
+                        <AuthGuard path="/edit-shopping-list-name" component={EditShoppingListName}/>
                         <AuthGuard path="/home" component={HomePage}/>
                         <AuthGuard path="/profile" component={ProfilePage}/>
                         <AuthGuard path="/start" component={HomePage}/>

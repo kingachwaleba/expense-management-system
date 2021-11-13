@@ -91,7 +91,7 @@ function AddElementToListComponent(props) {
                                 name="name"
                                 placeholder="Wpisz nazwę"
                                 minLength="1"
-                                maxLength="45"
+                                maxLength="30"
                                 value = {inputName}
                                 onChange={handleChangeName}
                             />
@@ -107,7 +107,7 @@ function AddElementToListComponent(props) {
                                 className="form-control"
                                 name="price"
                                 placeholder="Wpisz ilość"
-                                maxLength="1000"
+                                maxLength="10"
                                 value={inputQuantity}
                                 pattern="^\d{0,8}(\.\d{1,2})?$"
                                 onChange={handleChangeQuantity}
