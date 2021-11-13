@@ -7,6 +7,7 @@ const LIST_DETAIL_API_BASE_URL = "/shopping-list/"
 const EDIT_LIST_DETAIL_API_BASE_URL = "/edit-list-element/"
 const DELETE_LIST_ELEMENT_API_BASE_URL = "/delete-list-element/"
 const CHANGE_ELEMENT_STATUS_API_BASE_URL = "/change-element-status/"
+const CHANGE_LIST_STATUS_API_BASE_URL = "/change-list-status/"
 class ExpenseService {
 
     createList(id, ListHolder, tokenStr){
@@ -21,6 +22,10 @@ class ExpenseService {
         return axios.get(LIST_DETAIL_API_BASE_URL + id, {headers: {"Authorization" : `Bearer ${tokenStr} `}});
     }
 
+    getListData(id,tokenStr){
+        return axios.get(LIST_DETAIL_API_BASE_URL + id, {headers: {"Authorization" : `Bearer ${tokenStr} `}});
+    }
+
     editListElement(id, listDetail,tokenStr){
         return axios.put(EDIT_LIST_DETAIL_API_BASE_URL + id, listDetail, {headers: {"Authorization" : `Bearer ${tokenStr} `}});
     }
@@ -32,6 +37,13 @@ class ExpenseService {
     }
     changeElementStatus(id, status, tokenStr){
         return axios.put(CHANGE_ELEMENT_STATUS_API_BASE_URL+id, status,{headers: {"Authorization" : `Bearer ${tokenStr}`, "Content-Type" : "application/json" }})
+    }
+    changeListStatus(id, status, tokenStr){
+        return axios.put(CHANGE_LIST_STATUS_API_BASE_URL+id, status,{headers: {"Authorization" : `Bearer ${tokenStr}`, "Content-Type" : "application/json" }})
+    }
+
+    deleteList(id,tokenStr){
+        return axios.delete(LIST_DETAIL_API_BASE_URL + id, {headers: {"Authorization" : `Bearer ${tokenStr} `}});
     }
 }   
 

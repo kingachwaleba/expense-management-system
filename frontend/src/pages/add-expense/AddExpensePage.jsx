@@ -77,10 +77,10 @@ function AddExpensePage () {
         setErrorMessage("")
     }
 
-    function readExpenseCategory (e){
-        var {id, value} = e.target;
+    function readExpenseCategory (e, categoryID){
+        var {value} = e.target;
         
-        setExpenseCategory(new category(id,value)) 
+        setExpenseCategory(new category(categoryID,value)) 
         setErrorMessage("")
     }
 
@@ -136,6 +136,10 @@ function AddExpensePage () {
         const expense = new Expense("",expenseName,expenseReceiptImg,expensePrice,expenseCategory)
         const expenseHolder = new ExpenseHolder(expense, expenseUsersList);
         ExpenseService.addExpense(walletID, expenseHolder, userToken.token)
+        .then(()=>{
+            window.location.href='/wallet' 
+        })
+        
         .catch(error=>{
             console.error({error})
             setErrorMessage(error.response.data)
@@ -201,11 +205,11 @@ function AddExpensePage () {
                             
                              <div key = {category.id} className = "left-content custom-radiobuttons margin-left-text">
                            
-                             <label className = "form-label text-size" htmlFor={category.id}>
-                               <input type="radio" id={category.id} name="category" value={category.name} 
+                             <label className = "form-label text-size" htmlFor={category.id+"_category_id"}>
+                               <input type="radio" id={category.id+"_category_id"} name="category" value={category.name} 
                                     defaultChecked = {category.name === Object.values(expenseCategories)[0].name}
                                    
-                                   onChange={(e)=>readExpenseCategory(e)}
+                                   onChange={(e)=>readExpenseCategory(e, category.id)}
                                    >
                                        
                                </input>
@@ -262,11 +266,13 @@ function AddExpensePage () {
                             className="btn btn-primary btn-block form-button "
                             id = "insert-photo-button" 
                             type="file"
+                            accept="image/png, image/jpeg, image/jpg" 
                             onChange={(e)=>handleImageChange(e)} />
                    <br /><br />
                    <div id="img-preview-div" style={{display:'none'}}>
                         <img src={imagePreview} className="img-preview" alt="Podgląd zdjęcia" /> 
                         <button
+                        type="button"
                         className="delete-user-icon icons-size"
                         onClick={(e)=>handleClearChoosenImg(e)}
                         ></button>
@@ -282,7 +288,7 @@ function AddExpensePage () {
                             id = "mainbuttonstyle"
                             type = "submit"
                             onClick={e =>  {submitted = true
-                                window.location.href='/wallet' 
+                               
                             }}
                             >
                             Dodaj

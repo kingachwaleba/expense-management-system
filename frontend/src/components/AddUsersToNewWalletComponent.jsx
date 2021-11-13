@@ -105,7 +105,7 @@ class AddUsersToNewWalletComponent extends Component {
                                 className="form-control"
                                 name="searchForUser"
                                 placeholder="Znajdź użytkownika..."
-                                pattern = "^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{4,45}$"
+                                pattern = "^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,45}$"
                                 onChange={(e) => {
                                     
                                     

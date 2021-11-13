@@ -20,10 +20,12 @@ const userToken = UserService.getCurrentUser().token;
 
                 <Row>
                     <div className="center-content">
-                        <ProfileDataComponent />
-                        <div className="box-subcontent base-text text-size"> 
-                            Powiadomienia
-                            <div className="separator-line"></div>
+                        <div className=" base-text text-size">
+                    <ProfileDataComponent />
+                        </div>
+                     
+                        <div className="base-text text-size"> 
+                           
                             <NotificationComponent />
                           
                         </div>

@@ -51,9 +51,9 @@ class HomePage extends React.Component {
                          
                   
                 </div>
-            
+            <br />
                 <div className="center-content">
-                    <a href="/create-wallet" className="card-link center-content btn btn-primary" id="mainbuttonstyle">Dodaj nowy portfel</a>
+                    <a href="/create-wallet" className="card-link center-content text-size btn btn-primary" id="mainbuttonstyle">Dodaj nowy portfel</a>
                 </div>
           </div>
         );

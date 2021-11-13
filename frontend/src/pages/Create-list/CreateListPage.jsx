@@ -131,15 +131,16 @@ function CreateListPage () {
                 ListsService.createList(walletID, listHolder, userData.token)
                 .then((response)=>{
                     console.log(response.data)
-                
+                    window.location.href='/wallet'
+                    setCurrentElements([])
                 })
             
                 .catch(error=>{
                     console.error({error})
                 });
-            }else setErrorMessage("Podaj nazwę listy!")
+            }else setErrorMessageCreateList("Podaj nazwę listy!")
         }else setErrorMessageCreateList("Lista jest pusta. Dodaj elementy do listy!")
-    setCurrentElements([])
+  
     }
 
     if(edit.id){
@@ -163,6 +164,7 @@ function CreateListPage () {
                                 </div>
                                
                                 <div className="separator-line"></div> 
+                                
                             <input
                                required
                                 type="text"
@@ -171,7 +173,7 @@ function CreateListPage () {
                                 placeholder="Wpisz nazwę listy..."
                                 minLength="1"
                                 maxLength="45"
-                                //value = {inputName}
+                                value = {listName}
                                 onChange={(e)=>handleListNameChange(e)}
                             />
                             <br />
@@ -233,8 +235,9 @@ function CreateListPage () {
                 <div className="center-content">
                     <div className="error-text text-size">
                         {errorMessageCreateList} 
-                        <br/>
+                       
                     </div>
+                    <br/>
                 <button
                             className="btn btn-primary btn-block form-button text-size"
                             id = "mainbuttonstyle"
@@ -242,7 +245,7 @@ function CreateListPage () {
                             onClick={e =>  {
                                 console.log(currentElements)
                                 handleCreateList()
-                                window.location.href='/wallet'
+                             
                             }}
                             >
                             Utwórz
