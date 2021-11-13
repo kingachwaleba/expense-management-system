@@ -87,6 +87,24 @@ public class ListController {
         return new ResponseEntity<>(updatedShoppingList, HttpStatus.OK);
     }
 
+    @PutMapping("/mobile/shopping-list/edit/{id}")
+    @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
+    public ResponseEntity<?> editOneMobile(@PathVariable int id, @RequestParam("name") String name) {
+        if (name.isBlank())
+            return new ResponseEntity<>(errorMessage.get("shoppingList.name.notBlank"), HttpStatus.BAD_REQUEST);
+        if (name.length() > 45)
+            return new ResponseEntity<>(errorMessage.get("shoppingList.name.size"),
+                    HttpStatus.BAD_REQUEST);
+
+        ShoppingList updatedShoppingList = listService.findById(id).orElseThrow(ListNotFoundException::new);
+
+        updatedShoppingList.setName(name);
+
+        listService.save(updatedShoppingList);
+
+        return new ResponseEntity<>(updatedShoppingList, HttpStatus.OK);
+    }
+
     @PutMapping("/change-list-status/{id}")
     @PreAuthorize("@authenticationService.isWalletMemberByShoppingList(#id)")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @RequestBody int statusId) {

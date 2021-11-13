@@ -217,4 +217,17 @@ public class UserController {
         else
             return new ResponseEntity<>("Account has been deleted!", HttpStatus.OK);
     }
+
+    @PutMapping("/mobile/delete-account")
+    public ResponseEntity<?> deleteAccountMobile(@RequestParam("password") String password) {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        if (!userService.checkIfValidOldPassword(user, password))
+            return new ResponseEntity<>(errorMessage.get("deleteAccount.password"), HttpStatus.BAD_REQUEST);
+
+        if (!userService.ifAccountDeleted(user))
+            return new ResponseEntity<>(errorMessage.get("deleteAccount.error"), HttpStatus.CONFLICT);
+        else
+            return new ResponseEntity<>("Account has been deleted!", HttpStatus.OK);
+    }
 }
