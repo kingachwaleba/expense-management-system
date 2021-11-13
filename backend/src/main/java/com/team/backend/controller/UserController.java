@@ -120,7 +120,7 @@ public class UserController {
     @PostMapping("/account/forgot-password")
     public ResponseEntity<?> forgotPassword(HttpServletRequest request, @RequestParam("email") String email) {
         if (!userService.checkIfValidEmail(email))
-            return new ResponseEntity<>(errorMessage.get("forgotPassword.email.error"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(errorMessage.get("forgotPassword.email.error"), HttpStatus.BAD_REQUEST);
 
         Optional<User> optionalUser = userService.findByEmail(email);
 
