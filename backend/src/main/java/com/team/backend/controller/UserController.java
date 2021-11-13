@@ -72,7 +72,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest, BindingResult bindingResult) {
         if (userService.getErrorList(bindingResult).size() != 0)
-            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("login.error"), HttpStatus.BAD_REQUEST);
 
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
@@ -103,7 +103,7 @@ public class UserController {
         String confirmPassword = registrationForm.getConfirmPassword();
 
         if (userService.validation(bindingResult, user.getPassword()).size() != 0)
-            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("user.password.error"), HttpStatus.BAD_REQUEST);
 
         if (!userService.checkIfValidConfirmPassword(user.getPassword(), confirmPassword))
             return new ResponseEntity<>(errorMessage.get("register.confirmPassword"), HttpStatus.BAD_REQUEST);
@@ -145,7 +145,7 @@ public class UserController {
             return new ResponseEntity<>(errorMessage.get("resetPassword.expiredToken"), HttpStatus.BAD_REQUEST);
 
         if (userService.passwordValidation(password).size() != 0)
-            return new ResponseEntity<>(userService.passwordValidation(password), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorMessage.get("user.password.error"), HttpStatus.BAD_REQUEST);
 
         if (!userService.checkIfValidConfirmPassword(password, confirmPassword))
             return new ResponseEntity<>(errorMessage.get("resetPassword.wrongPasswords"), HttpStatus.BAD_REQUEST);

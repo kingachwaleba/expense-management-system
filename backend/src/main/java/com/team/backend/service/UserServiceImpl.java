@@ -137,7 +137,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean checkIfValidExpiryDate(String token) {
-        User user = findByToken(token).orElseThrow(UserNotFoundException::new);
+        Optional<User> optionalUser = findByToken(token);
+        if (optionalUser.isEmpty())
+            return false;
+
+        User user = optionalUser.get();
         LocalDateTime now = LocalDateTime.now();
 
         return user.getExpiryDate().isAfter(now);
