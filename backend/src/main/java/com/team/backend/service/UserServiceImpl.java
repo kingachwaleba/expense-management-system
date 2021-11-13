@@ -175,6 +175,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean checkIfValidEmail(String email) {
+        return email.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
+                && email.length() >= 5
+                && email.length() <= 45;
+    }
+
+    @Override
     public void changeUserPassword(User user, String password) {
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);

@@ -119,18 +119,19 @@ public class UserController {
 
     @PostMapping("/account/forgot-password")
     public ResponseEntity<?> forgotPassword(HttpServletRequest request, @RequestParam("email") String email) {
-        if (!email.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$") || email.length() < 5
-                || email.length() > 45)
+        if (!userService.checkIfValidEmail(email))
             return new ResponseEntity<>(errorMessage.get("forgotPassword.email.error"), HttpStatus.CONFLICT);
 
-        User user = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        Optional<User> optionalUser = userService.findByEmail(email);
 
-        if (user.getDeleted().equals(String.valueOf(User.AccountType.Y)))
-            return new ResponseEntity<>(errorMessage.get("forgotPassword.email.deletedAccount"), HttpStatus.BAD_REQUEST);
+        if (optionalUser.isEmpty() || optionalUser.get().getDeleted().equals(String.valueOf(User.AccountType.Y)))
+            return new ResponseEntity<>(errorMessage.get("account.error"),
+                    HttpStatus.BAD_REQUEST);
+
+        User user = optionalUser.get();
+        String appUrl = request.getScheme() + "://" + request.getServerName();
 
         userService.setTokenAndExpiryDate(user);
-
-        String appUrl = request.getScheme() + "://" + request.getServerName();
         javaMailService.sendMessage(user, appUrl);
 
         return new ResponseEntity<>("The forgot password token was created and email was sent!", HttpStatus.OK);
