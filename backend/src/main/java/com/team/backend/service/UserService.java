@@ -29,6 +29,7 @@ public interface UserService {
     List<String> getErrorList(BindingResult bindingResult);
     List<String> passwordValidation(String password);
     List<String> validation(BindingResult bindingResult, String password);
+    Boolean checkIfValidEmail(String email);
     void changeUserPassword(User user, String password);
     void changeUserImage(User user, String imageUrl);
 

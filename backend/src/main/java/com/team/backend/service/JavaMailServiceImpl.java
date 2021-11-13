@@ -24,7 +24,7 @@ public class JavaMailServiceImpl implements JavaMailService {
         simpleMailMessage.setTo(user.getEmail());
         simpleMailMessage.setSubject(errorMessage.get("mail.subject"));
         simpleMailMessage.setText(errorMessage.get("mail.text") + "\n" + appUrl
-                + ":8080/account/reset-password?token=" + user.getToken());
+                + ":3000/account/reset-password?token=" + user.getToken());
 
         javaMailSender.send(simpleMailMessage);
     }
