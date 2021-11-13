@@ -19,18 +19,23 @@ function EditShoppingListName() {
         listName = JSON.parse(sessionStorage.getItem('listName'));
     }
 
-    const[name, setName] = useState("listName")
+    const[name, setName] = useState(listName)
     const[errorMessage, setErrorMessage] = useState("")
     const [submitted, setSubmitted] = useState(false)
 const handleSubmit = (e) =>{
     e.preventDefault();
     var newName = document.createTextNode("nowanazwa")
     console.log(name)
-    console.log(listID, newName, userData.token)
+
+    var formData = new FormData()
+   
+    formData.append('name',name)
+    console.log(listID, name, userData.token)
     //console.log(JSON.parse(newName))
-    ListsService.editListName(listID,newName, userData.token)
+    ListsService.editListName(listID,formData, userData.token)
     .then((response)=>{
         console.log(response)
+        window.location.href = "/list-detail"
     })
     .catch((error)=>{
         console.log(error)
