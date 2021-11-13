@@ -8,6 +8,7 @@ const EDIT_LIST_DETAIL_API_BASE_URL = "/edit-list-element/"
 const DELETE_LIST_ELEMENT_API_BASE_URL = "/delete-list-element/"
 const CHANGE_ELEMENT_STATUS_API_BASE_URL = "/change-element-status/"
 const CHANGE_LIST_STATUS_API_BASE_URL = "/change-list-status/"
+const CHANGE_LIST_NAME_API_BASE_URL = "/mobile/shopping-list/edit/"
 class ExpenseService {
 
     createList(id, ListHolder, tokenStr){
@@ -28,6 +29,9 @@ class ExpenseService {
 
     editListElement(id, listDetail,tokenStr){
         return axios.put(EDIT_LIST_DETAIL_API_BASE_URL + id, listDetail, {headers: {"Authorization" : `Bearer ${tokenStr} `}});
+    }
+    editListName(id, name, tokenStr){
+        return axios.put(CHANGE_LIST_NAME_API_BASE_URL + id, name, {headers: {"Authorization" : `Bearer ${tokenStr}`,"Content-Type" : "multipart/form-data"}});
     }
     addListElement(id, listDetail, tokenStr){
         return axios.post(LIST_DETAIL_API_BASE_URL+ id, listDetail, {headers: {"Authorization" : `Bearer ${tokenStr} `}});

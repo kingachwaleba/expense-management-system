@@ -200,18 +200,34 @@ function ListDetailPage () {
             categoryId: ""
         })
     }
-    const setHoverTitle = (username, status)=>{
-        if(username === userData.login && status === 'zarezerwowany'){
-            return "Ten produkt jest zarezerwowany przez Ciebie"
+    const setHoverTitle = (username, status,forElement)=>{
+        if(forElement){
+            if(username === userData.login && status === 'zarezerwowany'){
+                return "Ten produkt jest zarezerwowany przez Ciebie"
+            }
+            else if(username === userData.login && status === 'zrealizowany'){
+                return "Ten produkt został zakupiony przez Ciebie."
+            }
+            else if(status === 'zarezerwowany'){
+                return `Ten produkt został zarezerwowany przez: ${username}`
+            }
+            else if(status ===  'zrealizowany'){
+                return `Ten produkt został już zakupiony przez: ${username}`
+            }
         }
-        else if(username === userData.login && status === 'zrealizowany'){
-            return "Ten produkt został zakupiony przez Ciebie."
-        }
-        else if(status === 'zarezerwowany'){
-            return `Ten produkt został zarezerwowany przez: ${username}`
-        }
-        else if(status ===  'zrealizowany'){
-            return `Ten produkt został już zakupiony przez: ${username}`
+        else{
+            if(username === userData.login && status === 'zarezerwowany'){
+                return "Lista jest zarezerwowana przez Ciebie"
+            }
+            else if(username === userData.login && status === 'zrealizowany'){
+                return "Lista została zrealizowana przez Ciebie."
+            }
+            else if(status === 'zarezerwowany'){
+                return `Lista została zarezerwowana przez: ${username}`
+            }
+            else if(status ===  'zrealizowany'){
+                return `Lista została zrealizowana przez: ${username}`
+            }
         }
     }
 const renderMaping = (listData) =>{
@@ -224,7 +240,7 @@ const renderMaping = (listData) =>{
             
             {console.log("Element1: ",element1)}
         
-                <Row title={element1.user ? (setHoverTitle(element1.user.login, element1.status.name)):("Ten produkt czeka na zakup.")}>
+                <Row title={element1.user ? (setHoverTitle(element1.user.login, element1.status.name, true)):("Ten produkt czeka na zakup.")}>
                     <Col xs="1"> 
                         <button 
                         className={`delete-list-element icons-size-2 left-content ${element1.status.id === Object.values(status)[1].id || element1.status.id === Object.values(status)[2].id ? "grey-scale" : ""}`}
@@ -251,9 +267,9 @@ const renderMaping = (listData) =>{
                      </Col>
                     <Col xs="1"> 
                         <button 
-                        className={`edit-list-element icons-size left-content ${element1.status.id === Object.values(status)[1].id || element1.status.id === Object.values(status)[2].id ? "grey-scale" : ""}`}
+                        className={`edit-list-element icons-size left-content ${element1.status.id === Object.values(status)[2].id ? "grey-scale" : ""}`}
                         title="Edytuj element"
-                        disabled={element1.status.id === Object.values(status)[1].id || element1.status.id === Object.values(status)[2].id}
+                        disabled={element1.status.id === Object.values(status)[2].id}
                             onClick={(e)=>{
                             if(element1.status.id === Object.values(status)[0].id){
                                 setEdit({
@@ -417,7 +433,7 @@ const renderMaping = (listData) =>{
 
     const renderListManagement = (listData) => {
         return(
-            <Row>
+            <Row title={listData.user ? (setHoverTitle(listData.user.login, listData.status.name, false)):("")}>
                 <Col md = "2" xs="1"> 
                 <button className="delete-list-element icons-size-2"
                  onClick={(e)=>{
@@ -534,7 +550,7 @@ const renderMaping = (listData) =>{
             <Container>
                 <Header title ="Lista zakupów"/>
                 { 
-                            listName === undefined ? (
+                            !listName  ? (
                                    <div  className="container box-content text-size base-text center-content"> 
 
                                        <div>Wystąpił błąd podczas wczytywania danych</div> 
@@ -579,7 +595,16 @@ const renderMaping = (listData) =>{
                               <AddElementToExistingListComponent onSubmit={addElement} title="Dodaj element"/>
 
                 </div>
-               
+                <br />
+                <div className="center-content">
+                    <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 
+                    type="button"
+                    onClick={(e)=>{
+                        sessionStorage.setItem('listName',JSON.stringify(listName))
+                        window.location.href="/edit-shopping-list-name"
+                    }}>Edytuj listę</button>
+                </div>
+                <br />
                 <div className="center-content">
                     <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 
                     type="button"
