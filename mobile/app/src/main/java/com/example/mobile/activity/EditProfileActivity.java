@@ -58,7 +58,11 @@ public class EditProfileActivity extends BaseActivity {
             startActivityForResult(i, 100);
         });
 
-        deleteImageBtn.setOnClickListener(v -> accountService.deleteProfileImage());
+        deleteImageBtn.setOnClickListener(v -> {
+            if(session.getUserDetails().get(SessionManager.KEY_TOKEN)==null)
+                accountService.deleteProfileImage();
+            else Toast.makeText(this, "Nie masz ustawionego żadnego zdjęcia profilowego", Toast.LENGTH_SHORT).show();
+        });
 
         changePasswordBtn.setOnClickListener(v -> {
             Intent intent = new Intent(EditProfileActivity.this, ChangePasswordActivity.class);

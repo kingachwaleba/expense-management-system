@@ -73,33 +73,33 @@ public class AccountService {
     }
 
     public void uploadProfileImage(Bitmap bitmap) {
-
-        //creating a file
-        File file = ImageHelper.bitmapToFile(context, bitmap, session.getUserDetails().get(SessionManager.KEY_LOGIN) + ".png");
+        File file = ImageHelper.bitmapToFile(context, bitmap,
+                session.getUserDetails().get(SessionManager.KEY_LOGIN) + ".png");
 
         int startType = file.getPath().lastIndexOf('.');
         String type = file.getPath().substring(startType + 1);
 
-        //creating request body for file
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/" + type), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(),
+                requestFile);
 
-        //creating a call and calling the upload image method
-        Call<ResponseBody> call = apiInterface.uploadProfileImage("Bearer " + session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
-        //finally performing the call
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<String> call = apiInterface.uploadProfileImage("Bearer "
+                + session.getUserDetails().get(SessionManager.KEY_TOKEN), body);
+
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                if (response.isSuccessful())
-                    Toast.makeText(context, "Zdjęcie zostało zmienione", Toast.LENGTH_SHORT).show();
-                else {
+            public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response){
+                if (response.isSuccessful()){
+                    session.setKeyImagePathServer(response.body());
+                    Toast.makeText(context, "Zdjęcie zostało zmienione",
+                            Toast.LENGTH_SHORT).show();
+                } else {
                     String error = ErrorUtils.parseError(response);
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
                 Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
             }
         });
