@@ -27,16 +27,7 @@ function EditProfilePage (){
             userData.image=response.data
 
             sessionStorage.setItem("user", JSON.stringify(userData));
-            /*
-
-            ImageService.setUserProfileImg(response.data, userData.token)
-            .then((response)=>{
-                console.log("Ustawiono nowe zdjęcie profilowe")
-            })
-            .catch((error)=>{
-                console.log(error)
-            })
-            */
+          
         })
         .catch((error) => {
             console.log(error)
@@ -44,6 +35,7 @@ function EditProfilePage (){
     }
         return (
             <Container>
+            
                 <Header title="Edytuj profil"/>
                 <br />
                 <br />
