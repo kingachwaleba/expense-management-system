@@ -189,7 +189,7 @@ public class UserController {
 
             userService.changeUserImage(user, newImageName);
 
-            return new ResponseEntity<>("User image has been changed!", HttpStatus.OK);
+            return new ResponseEntity<>(newImageName, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
 
