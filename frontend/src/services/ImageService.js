@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const UPLOAD_IMAGE_API_BASE_URL = "/upload"
 const GET_IMAGE_API_BASE_URL = "/expense-files/"
+const SET_USER_PROFILE_PICTURE = "/account/change-profile-picture"
 class ImageService {
 
     uploadImg(img,tokenStr){
@@ -12,6 +13,9 @@ class ImageService {
         return axios.get(GET_IMAGE_API_BASE_URL+id ,  {responseType: 'blob', headers: {"Authorization" : `Bearer ${tokenStr}`}});
     };
     
+    setUserProfileImg(img,tokenStr){
+        return axios.put(SET_USER_PROFILE_PICTURE,img,  {headers: {"Authorization" : `Bearer ${tokenStr}`,"Content-Type" : "multipart/form-data"}});
+    }
 
 }   
 
