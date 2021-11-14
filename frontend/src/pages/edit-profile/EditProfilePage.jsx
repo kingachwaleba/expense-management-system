@@ -14,8 +14,15 @@ function EditProfilePage (){
     const [imgHelper, setImgHelper] = useState(userData.image)
 
     const handleImageChange = e =>{
+        if(e.target.files[0].size > 5242880){
+           window.alert("Wybrane zdjecie jest za duże! Wybierz zdjęcie poniżej 5MB")
+            document.getElementById("insert-photo-button").value = "";
+        }
+        else
+        {
         console.log("Zmiana obrazka")
         setImgHelper(e.target.files[0])
+        }
     }
     const handleSetNewImg = e =>{
         var formData = new FormData();
@@ -30,6 +37,7 @@ function EditProfilePage (){
           
         })
         .catch((error) => {
+            console.log(error.message)
             console.log(error)
         })
     }
@@ -51,8 +59,9 @@ function EditProfilePage (){
                 </Row>
                 <br />
                 <Row md="2">
-                <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 
+                <button className={`card-link center-content btn btn-primary width-100 text-size main-button-style ${imgHelper === null ? ('grey-scale'):('')}`} 
                         type="button"
+                        disabled={imgHelper === null}
                         onClick={(e)=>handleSetNewImg()
                            
                         }>
@@ -62,12 +71,25 @@ function EditProfilePage (){
                     <br></br>
                  
                 <Row md="2">
-                <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 
+                <button className={`card-link center-content btn btn-primary width-100 text-size main-button-style ${userData.image === null ? ('grey-scale'):('')}`} 
                         type="button"
+                        disabled={userData.image === null}
                         onClick={(e)=>{
+                            console.log("token:", userData.token)
+                            ImageService.deleteProfileImg(userData.token)
+                            .then((response)=>{
+                                console.log("Usunięto zdjecie profilowe", response)
+                                userData.image=null
+
+                                sessionStorage.setItem("user", JSON.stringify(userData));
+                                window.location.href = "/edit-profile"
+                            })
+                            .catch((error)=>{
+                                console.log(error)
+                            })
                           
                         }}>
-                            Usuń zdjęcie
+                            Usuń aktualne zdjęcie
                 </button>
                 </Row>
                     <br></br>

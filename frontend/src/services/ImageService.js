@@ -4,6 +4,7 @@ const UPLOAD_IMAGE_API_BASE_URL = "/upload"
 const GET_IMAGE_API_BASE_URL = "/expense-files/"
 const GET_PROFILE_IMAGE_API_BASE_URL = "/user-files/"
 const SET_USER_PROFILE_PICTURE = "/account/change-profile-picture"
+const DELETE_USER_PROFILE_PICTURE_API_BASE_URL = "/account/delete-profile-picture"
 class ImageService {
 
     uploadImg(img,tokenStr){
@@ -20,6 +21,10 @@ class ImageService {
 
     getUserProfileImg(login,tokenStr){
         return axios.get(GET_PROFILE_IMAGE_API_BASE_URL+login ,  {responseType: 'blob', headers: {"Authorization" : `Bearer ${tokenStr}`}});
+    }
+
+    deleteProfileImg(tokenStr){
+        return axios.put(DELETE_USER_PROFILE_PICTURE_API_BASE_URL,"",  {headers: {"Authorization" : `Bearer ${tokenStr}`}});
     }
 
 }   
