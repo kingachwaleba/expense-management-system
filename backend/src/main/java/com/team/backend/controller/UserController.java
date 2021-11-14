@@ -193,7 +193,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
 
-            return new ResponseEntity<>("Error!", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
