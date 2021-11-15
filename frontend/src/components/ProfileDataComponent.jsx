@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import AccountService from '../services/AccountService';
 import NotificationService from '../services/NotificationService';
 import ImageService from '../services/ImageService';
- 
+import picture from '../profile_picture_placeholder.jpg'
 
 function ProfileDataComponent (){
 
@@ -39,6 +39,7 @@ function ProfileDataComponent (){
             ImageService.getUserProfileImg(userData.login, userData.token)
             .then((response)=>{
                 var profilePic = URL.createObjectURL(response.data)
+                console.log(profilePic)
                 setDisplayProfilePic(profilePic)
             })
             .catch((error)=>{
@@ -59,7 +60,7 @@ function ProfileDataComponent (){
                
                 <Col>
                     <div className="profile-picture">
-                        <img src={displayProfilePic} className="profile-img-preview" alt="profilePic" />
+                        <img src={userData.image === null ? (picture):(displayProfilePic)} className="profile-img-preview" alt="profilePic" />
                     </div>
                             
                    

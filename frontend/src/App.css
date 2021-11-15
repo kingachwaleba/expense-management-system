@@ -366,7 +366,7 @@ border-radius: 38px;
 }
 /*PLACEHOLDER PROFILE PICTURE*/
 .profile-picture{
-  background-image: url(profile_picture_placeholder.jpg);
+  
   background-size: 220px;
   
   height: 220px;

@@ -27,19 +27,25 @@ import AuthGuard from './guards/AuthGuard';
 import UserService from "./services/user.service";
 import FooterPage from './components/Footer';
 import EditExpensePage from './pages/edit-expense/EditExpensePage';
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
 import EditShoppingListName from './pages/edit-shopping-list-name/EditShoppingListName';
 
+import picture from '../src/profile_picture_placeholder.jpg'
 
+import ImageService from './services/ImageService';
 class App extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-
+        const user = UserService.getCurrentUser();
         this.state = {
-            username: undefined,
-            login: false
+            username: user.login,
+            login: false,
+            userImage: user.image,
+            profileImgUrl: null,
+            userToken: user.token
         }
+        console.log("App.js user data:" ,user)
         this.logOut = this.logOut.bind(this);
     }
 
@@ -49,9 +55,10 @@ class App extends React.Component {
         if (user) {
             this.setState({
                 login: true,
-                username: user.login
+                username: user.login,
+                userImage: user.image
             });
-
+            this.setProfilePicHelper(user.login)
             console.log(user);
         }
     }
@@ -65,6 +72,30 @@ class App extends React.Component {
         
     }
 
+    setProfilePicHelper(login){
+        console.log("img url:", this.state.userImage)
+        console.log("login:", this.state.username)
+        if(this.state.userImage === null){
+           // return (<img src={picture} className="profile-img-preview" alt="profilePic"/>)
+           this.setState({profileImgUrl: picture})
+        }
+        else{
+            ImageService.getUserProfileImg(this.state.username, this.state.userToken)
+            .then((response)=>{
+                var profilePic = URL.createObjectURL(response.data)
+            
+                this.setState({profileImgUrl: profilePic})
+              
+            })
+            .catch((error)=>{
+                console.log(error)
+         
+            })
+           
+        }
+        
+    }
+
     render() {
         return (
             <div id="content">
@@ -73,13 +104,16 @@ class App extends React.Component {
                     {this.state.login &&
                     <Navbar className="navbar navbar-expand navbar-dark width-100">
                         <Container>
+                            
                             <Navbar.Brand className="navbarBrand" id="bootstrap-overrides" href="/home">eSakwa</Navbar.Brand>
                             <Nav className="content-right">
                             <Nav.Link className="text-size base-text" href="/home">Portfele</Nav.Link>
                             <Nav.Link className="text-size base-text" href="/profile"> Profil </Nav.Link>
                             <Nav.Link className="text-size base-text" onClick={this.logOut}> Wyloguj </Nav.Link>
                             <Nav.Link href="/profile">
-                                {/* <img src="./photo_placeholder.png" alt="Picture"></img> */}
+                                {<img src={this.state.profileImgUrl} className="icons-size profile-img-preview" alt="Picture"></img>
+                                    //this.setProfilePicHelper()
+                                }
                             </Nav.Link>
                             </Nav>
                         </Container>

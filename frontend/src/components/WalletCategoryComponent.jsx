@@ -47,7 +47,7 @@ class WalletCategoryComponent extends Component {
                                 this.state.categories.map(
                                     category =>
                                    
-                                    <div key = {category.id} className = "center-content custom-radiobuttons">
+                                    <div key = {category.id} className = "left-content custom-radiobuttons margin-left-text">
                                   
                                     <label className = "form-label text-size" htmlFor={category.id}>
                                       <input type="radio" id={category.id} name="category" value={category.name} 
