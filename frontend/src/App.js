@@ -39,11 +39,11 @@ class App extends React.Component {
         super(props, context);
         const user = UserService.getCurrentUser();
         this.state = {
-            username: user.login,
+            username: "",
             login: false,
-            userImage: user.image,
+            userImage: "",
             profileImgUrl: null,
-            userToken: user.token
+            userToken: "user.token"
         }
         console.log("App.js user data:" ,user)
         this.logOut = this.logOut.bind(this);
@@ -56,7 +56,8 @@ class App extends React.Component {
             this.setState({
                 login: true,
                 username: user.login,
-                userImage: user.image
+                userImage: user.image,
+                userToken: user.token
             });
             this.setProfilePicHelper(user.login)
             console.log(user);

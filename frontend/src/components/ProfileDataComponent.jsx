@@ -25,9 +25,6 @@ function ProfileDataComponent (){
     
 
     useEffect(()=>{
-
-      
-   
         AccountService
         .getProfileInfo(userData.token)
         .then((response)=>{

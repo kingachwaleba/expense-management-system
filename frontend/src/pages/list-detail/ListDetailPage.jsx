@@ -8,7 +8,6 @@ import EditListDetailElementComponent from '../../components/EditListDetailEleme
 import AddElementToExistingListComponent from '../../components/AddElementToExistingListComponent';
 import StatusService from '../../services/StatusService';
 
-import { useLayoutEffect } from 'react';
 
 function ListDetailPage () {
   
@@ -60,24 +59,7 @@ function ListDetailPage () {
        
 
     },[])
-/*
-    useEffect(()=>{ 
-        ListsService.getListDetail(listID,userData.token)
-        .then((response)=>{
-          
-            //setListDetailData(response.data.listDetailSet)
-            loadListDetailData(response.data.listDetailSet)
-            
-        })
-        .catch(error=>{
-            console.error({error})
-        });
-               
-          
-    },[status])
-    */
-  
-   
+
     useEffect(()=>{ 
         ListsService.getListDetail(listID,userData.token)
         .then((response)=>{
@@ -86,12 +68,7 @@ function ListDetailPage () {
             ListsService.getListDetail(listID,userData.token)
             .then((response)=>{
             setListDetailData(response.data.listDetailSet)
-            //console.log("Get expenseSum data (responseData)")
-            //console.log(response.data)
-            
-            //setListDetailData(response.data.listDetailSet)
-            //console.log(response.data.listDetailSet)
-            
+         
         })
         .catch(error=>{
             console.error({error})
@@ -128,9 +105,7 @@ function ListDetailPage () {
     //------------------------
     const addElement = element =>{
         if(!element.name || !element.quantity)return
-        //const newElement = [element, ...currentElements]
-        //setCurrentElements(newElement);
-        //console.log(currentElements);
+   
         ListsService.addListElement(listID, element, userData.token)
         .then((response)=>{
             
@@ -145,36 +120,16 @@ function ListDetailPage () {
             setErrorMessage(error.response.data)
         });
     }
-    /*
-    useLayoutEffect(() => {
-         ListsService.getListDetail(listID,userData.token)
-        .then((response)=>{
-          
-            setListDetailData(response.data.listDetailSet)
-            setErrorMessage("")
-            
-        })
-        .catch(error=>{
-            console.error({error})
-        });
-             
-    }, [])
-   */
+
     const submitUpdate = newElement => {
-        console.log(newElement)
-        console.log(listID)
         ListsService.editListElement(edit.id, newElement, userData.token)
-        .then((response)=>{
-            
-            console.log(response.data)
-            setErrorMessage("")
-            
+        .then(()=>{
+            setErrorMessage("") 
         })
         .catch(error=>{
             console.error({error})
             setErrorMessage(error.response.data)
         });
-      
        setEdit({
             id: null,
             name: "",

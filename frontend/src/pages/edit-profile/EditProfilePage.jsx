@@ -98,7 +98,7 @@ function EditProfilePage (){
                <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 
                         type="button"
                         onClick={(e)=>{
-                            window.location.href="/profile"
+                            window.location.href="/change-password"
                         }}>
                             Zmień hasło
                 </button>

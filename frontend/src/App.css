@@ -259,6 +259,10 @@ border-radius: 38px;
 .invert-colors{
   filter: invert(1);
 }
+.red-filter{
+  filter: hue-rotate(320deg) saturate(2.1) grayscale(0.44) contrast(1.2);
+
+}
 .margin-bot-5{
   margin-bottom: 5px;
 }
