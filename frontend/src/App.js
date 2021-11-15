@@ -53,13 +53,15 @@ class App extends React.Component {
         const user = UserService.getCurrentUser();
         
         if (user) {
+            this.setProfilePicHelper(user.login)
             this.setState({
                 login: true,
                 username: user.login,
                 userImage: user.image,
                 userToken: user.token
             });
-            this.setProfilePicHelper(user.login)
+            
+            
             console.log(user);
         }
     }
@@ -74,14 +76,15 @@ class App extends React.Component {
     }
 
     setProfilePicHelper(login){
-        console.log("img url:", this.state.userImage)
-        console.log("login:", this.state.username)
-        if(this.state.userImage === null){
+        const user = UserService.getCurrentUser();
+        console.log("img url:", user.image)
+        console.log("login:", user.login)
+        if(user.image === null){
            // return (<img src={picture} className="profile-img-preview" alt="profilePic"/>)
            this.setState({profileImgUrl: picture})
         }
         else{
-            ImageService.getUserProfileImg(this.state.username, this.state.userToken)
+            ImageService.getUserProfileImg(user.login, user.token)
             .then((response)=>{
                 var profilePic = URL.createObjectURL(response.data)
             

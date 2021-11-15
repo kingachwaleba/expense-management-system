@@ -32,8 +32,9 @@ function EditProfilePage (){
             console.log("Zdjęcie wysłano do bazy.")
             console.log(response.data)
             userData.image=response.data
-
+            window.alert("Zdjęcie zostało zmienione.")
             sessionStorage.setItem("user", JSON.stringify(userData));
+            window.location.href="/edit-profile"
           
         })
         .catch((error) => {
