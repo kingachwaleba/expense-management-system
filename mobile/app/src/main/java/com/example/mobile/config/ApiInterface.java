@@ -62,7 +62,7 @@ public interface ApiInterface {
 
     @Multipart
     @PUT("account/change-profile-picture")
-    Call<ResponseBody> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
+    Call<String> uploadProfileImage(@Header("Authorization") String accessToken, @Part MultipartBody.Part image);
 
     @PUT("account/delete-profile-picture")
     Call<ResponseBody> deleteProfileImage(@Header("Authorization") String accessToken);
