@@ -1,6 +1,8 @@
 import axios from 'axios';
-
+const CHANGE_PASSWORD_API_BASE_URL = "/account/change-password"
+const DELETE_ACCOUNT_API_BASE_URL = "/mobile/delete-account"
 class UserService {
+
 
     login = (email, password) => {
         return axios.post("/login", {email, password})
@@ -27,6 +29,14 @@ class UserService {
 
     getCurrentUser() {
         return JSON.parse(sessionStorage.getItem('user'));
+    }
+    
+    changePassword(updatePasswordHolder,tokenStr){
+        return axios.put(CHANGE_PASSWORD_API_BASE_URL, updatePasswordHolder, {headers: {"Authorization" : `Bearer ${tokenStr} `}});
+    }
+
+    deleteAccount(password,tokenStr){
+        return axios.put(DELETE_ACCOUNT_API_BASE_URL, password, {headers: {"Authorization" : `Bearer ${tokenStr} `, "Content-Type" : "multipart/form-data"}});
     }
 }
 

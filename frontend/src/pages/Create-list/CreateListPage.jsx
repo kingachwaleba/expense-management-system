@@ -93,10 +93,8 @@ function CreateListPage () {
  
     function handleCreateList(){
         console.log(currentElements)
-      
             let listDetailList = []
             currentElements.forEach(function (element){
-             
                 if(element.name || element.categoryName || element.categoryId || element.quantity){
                 let unit = new Unit(element.categoryId, element.categoryName)
                 let arrayEl = {
@@ -105,20 +103,8 @@ function CreateListPage () {
                     unit: unit
                 }
                 console.log(arrayEl)
-                listDetailList.push(arrayEl)
-            
-               
-
-                }else{
-                 console.log("Brak danych") 
-                }
-             
-                console.log(listDetailList)
-                
-                
+                listDetailList.push(arrayEl)}      
             })
-            console.log(listDetailList)
-          
             let listHolder = {
                 list:{
                     name: listName
@@ -129,18 +115,14 @@ function CreateListPage () {
             console.log(listHolder)
             if(listName.length != 0){
                 ListsService.createList(walletID, listHolder, userData.token)
-                .then((response)=>{
-                    console.log(response.data)
+                .then(()=>{
                     window.location.href='/wallet'
                     setCurrentElements([])
                 })
-            
                 .catch(error=>{
                     console.error({error})
-                });
-            }else setErrorMessageCreateList("Podaj nazwę listy!")
-    
-  
+                });}
+            else setErrorMessageCreateList("Podaj nazwę listy!")
     }
 
     if(edit.id){

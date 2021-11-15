@@ -114,31 +114,20 @@ function AddElementToListComponent(props) {
                             />
                             
                         </div>
-                    <Container className = "box-subcontent">
-                      
-                    
-                        <Row>
-                        {
-                         
-                         units.map(
+                <Container className = "box-subcontent">
+                    <Row>
+                        {units.map(
                             unit =>
-                         
-                            <Col key = {unit.id} className = "center-content custom-radiobuttons margin-left-text">
-                               
-                            <label className = "form-label text-size" htmlFor={unit.id}>
-                              <input type="radio" id={unit.id} name="unit" value={unit.name} 
-                                   defaultChecked = {unit.name === Object.values(units)[0].name}
-                                  
-                                  onChange={(e)=>handleChangeCategory( unit.name, unit.id)}
-                                  >
-                                      
-                              </input>
-                              
-                              <div className="checkmark icons-size-2"></div>
-                               {unit.name}</label>
-                              
-                          </Col> 
-                         
+                                <Col key = {unit.id} className = "center-content custom-radiobuttons margin-left-text">
+                                    <label className = "form-label text-size" htmlFor={unit.id}>
+                                        <input type="radio" id={unit.id} name="unit" value={unit.name} 
+                                            defaultChecked = {unit.name === Object.values(units)[0].name}
+                                            onChange={(e)=>handleChangeCategory( unit.name, unit.id)}>       
+                                        </input>
+                                        <div className="checkmark icons-size-2"/>
+                                        {unit.name}
+                                    </label>  
+                                </Col>
                          )}
                    </Row> 
                 </Container>    

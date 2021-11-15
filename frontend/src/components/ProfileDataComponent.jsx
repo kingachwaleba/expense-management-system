@@ -5,14 +5,15 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import AccountService from '../services/AccountService';
 import NotificationService from '../services/NotificationService';
+import ImageService from '../services/ImageService';
+import picture from '../profile_picture_placeholder.jpg'
 
-const delay = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 function ProfileDataComponent (){
 
   
-   
+    const userData = UserService.getCurrentUser();
     const [accountInfo, setAccountInfo] = useState([]);
- 
+    const [displayProfilePic, setDisplayProfilePic] = useState(null);
    let accountData = [];
    let token = undefined;
  
@@ -24,32 +25,40 @@ function ProfileDataComponent (){
     
 
     useEffect(()=>{
-
-        const userData = UserService.getCurrentUser();
-        read();
-  
-    },[])
-
-    const read = async()=>{
-        const userData = UserService.getCurrentUser();
         AccountService
         .getProfileInfo(userData.token)
         .then((response)=>{
+            console.log("Account data: ",response.data)
             accountData = response.data;
             setAccountInfo(accountData);
+
+            if(userData.image !== null)
+            ImageService.getUserProfileImg(userData.login, userData.token)
+            .then((response)=>{
+                var profilePic = URL.createObjectURL(response.data)
+                console.log(profilePic)
+                setDisplayProfilePic(profilePic)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
         })
         .catch((error)=>{  
             console.log(error)
         })
+    
+  
+    },[])
 
-        
-    }
+   
     
         return (
             <Container className="container content-center">
                
                 <Col>
-                    <div className="profile-picture" />
+                    <div className="profile-picture">
+                        <img src={userData.image === null ? (picture):(displayProfilePic)} className="profile-img-preview" alt="profilePic" />
+                    </div>
                             
                    
                     <div className="base-text text-size box-content">

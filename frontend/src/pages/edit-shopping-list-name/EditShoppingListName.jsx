@@ -87,38 +87,6 @@ const handleChange = e => {
                             Zapisz zmiany
                         </button>
                 </form>
-
-
-                {/* *
-                    <form   
-                        name="form"
-                     
-                        onSubmit={handleSubmit}>
-                        <div className={'form-group'}>
-                            <label className="form-label text-size"  htmlFor="Name">Nazwa: </label>
-                            <input
-                               required
-                                type="text"
-                                className="form-control"
-                                name="name"
-                                placeholder={listName}
-                                minLength="1"
-                                maxLength="30"
-                                //value ={listName}
-                               onChange={handleChange}
-                            />
-                         
-                        </div>
-                        <br />
-                        <div className="center-content">
-                            <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 
-                            type="submit"
-                            onClick={(e)=>{
-                                console.log("Wysłano prośbę o zmianę nazwy")
-                            }}>Zapisz zmiany</button>
-                        </div> 
-                    </form>  
-                        */}
                     <br />
                     <div className="center-content">
                         <button className="card-link center-content btn btn-primary width-100 text-size main-button-style" 

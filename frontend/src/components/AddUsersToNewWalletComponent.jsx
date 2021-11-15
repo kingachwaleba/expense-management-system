@@ -3,6 +3,8 @@ import DisplayUsersByName from './DisplayUsersByName';
 import FindUsersToWalletService from '../services/FindUsersToWalletService';
 import UserService from '../services/user.service';
 import ManageWalletUsersService from '../services/ManageWalletUsersService';
+import picture from '../profile_picture_placeholder.jpg'
+import ImageService from '../services/ImageService';
 class AddUsersToNewWalletComponent extends Component {
 
 
@@ -15,7 +17,8 @@ class AddUsersToNewWalletComponent extends Component {
             users: [],
             classNameHelper: "",
             walletExist: this.props.walletExist,
-            errorMessage: ""
+            errorMessage: "",
+            profileImgUrl:""
         }
     }
 
@@ -87,12 +90,35 @@ class AddUsersToNewWalletComponent extends Component {
     setHelperClassname(user){
         var classNameHelper = this.state.classNameHelper;
         if(this.props.currentList.includes(user)){
-            this.state.classNameHelper = "delete-user-from-list"
+            this.state.classNameHelper = "icons-size-2 delete-user-from-list"
         }
         else{
-            this.state.classNameHelper = "add-user-to-list"
+            this.state.classNameHelper = "icons-size-2 add-user-to-list"
           
         }
+    }
+
+    setProfilePicHelper(imageURL, login){
+        if(imageURL === null){
+            return (<img src={picture} className="profile-img-preview" alt="profilePic"/>)
+        }
+        else{
+            ImageService.getUserProfileImg(login, this.state.usertoken)
+            .then((response)=>{
+                var profilePic = URL.createObjectURL(response.data)
+            
+                this.setState({profileImgUrl: profilePic})
+                console.log("Response:",response.data)
+                console.log("ProfilePic:",profilePic)
+             
+            })
+            .catch((error)=>{
+                console.log(error)
+         
+            })
+            return (<img src={this.state.profileImgUrl} className="profile-img-preview" alt="profilePic"/>)
+        }
+        
     }
     render() {
         return (
@@ -128,9 +154,14 @@ class AddUsersToNewWalletComponent extends Component {
                                {
                                   this.setHelperClassname(user.login)
                                }
-
-                                 <div>
-                                     #ProfPic
+                                    
+                                 <div className="icons-size">
+                                       {/*
+                                           <img src={this.setProfilePicHelper(user.image, user.login)} className="profile-img-preview" alt="profilePic" />
+                                       */ } 
+                                       {
+                                           this.setProfilePicHelper(user.image, user.login)
+                                       }
                                  </div>
                                 <div>
                                 <label className = "form-label" htmlFor={user.login}>
