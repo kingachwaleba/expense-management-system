@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -33,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
         LocalDateTime date = LocalDateTime.now();
 
         message.setDate(date);
-        message.setType("M");
+        message.setType(String.valueOf(Message.MessageType.M));
         message.setSender(user);
         message.setReceiver(null);
         message.setWallet(wallet);
@@ -114,5 +115,14 @@ public class MessageServiceImpl implements MessageService {
 
             save(message);
         }
+    }
+
+    @Override
+    public void removeNotifications(User user, Wallet wallet, String type) {
+        List<Message> notificationsList = findAllByWalletAndTypeOrderByDate(wallet, type);
+        List<Message> userNotificationList =
+                notificationsList.stream().filter(
+                        message -> message.getReceiver().equals(user)).collect(Collectors.toList());
+        userNotificationList.forEach(this::delete);
     }
 }

@@ -24,4 +24,5 @@ public interface MessageService {
     Optional<Message> findById(Integer id);
 
     void sendNotification(int id);
+    void removeNotifications(User user, Wallet wallet, String type);
 }

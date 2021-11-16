@@ -8,6 +8,7 @@ import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.Message;
 import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
+import com.team.backend.model.WalletUser;
 import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.MessageService;
 import com.team.backend.service.UserService;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class MessageController {
@@ -58,19 +60,26 @@ public class MessageController {
     }
 
     @PostMapping("/wallet/{id}/message")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         messageService.save(message, wallet, user);
 
-//        List<Map<String, Object>> userList = walletService.findUserList(wallet);
-//        for (Map<String, Object> mapUser : userList) {
-//            User user2 = userService.findByLogin(mapUser.get("login").toString()).orElseThrow(UserNotFoundException::new);
-//
-//            if (user2.getId() != user.getId())
-//                messageService.saveNotifications(wallet, user2, user);
-//        }
+        List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
+        walletUserList = walletUserList.stream().filter(
+                walletUser -> !walletUser.getUser().equals(user)).collect(Collectors.toList());
+        messageService.removeNotifications(user, wallet, String.valueOf(Message.MessageType.R));
+        walletUserList.forEach(walletUser ->
+                messageService.saveNotifications(
+                        wallet,
+                        walletUser.getUser(),
+                        null,
+                        "Nowa wiadomość",
+                        String.valueOf(Message.MessageType.R)
+                )
+        );
 
         return ResponseEntity.ok("New message has been sent!");
     }
