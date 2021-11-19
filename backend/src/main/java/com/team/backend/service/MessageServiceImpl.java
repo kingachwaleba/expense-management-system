@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -33,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
         LocalDateTime date = LocalDateTime.now();
 
         message.setDate(date);
-        message.setType("M");
+        message.setType(String.valueOf(Message.MessageType.M));
         message.setSender(user);
         message.setReceiver(null);
         message.setWallet(wallet);
@@ -114,5 +115,35 @@ public class MessageServiceImpl implements MessageService {
 
             save(message);
         }
+    }
+
+    @Override
+    public void removeNotifications(User user, Wallet wallet, String type) {
+        List<Message> notificationsList = findAllByWalletAndTypeOrderByDate(wallet, type);
+        List<Message> userNotificationList =
+                notificationsList.stream().filter(
+                        message -> message.getReceiver().equals(user)).collect(Collectors.toList());
+        userNotificationList.forEach(this::delete);
+    }
+
+    @Override
+    public List<Message> manageMessageNotifications(User user) {
+        Map<Wallet, List<Message>> walletNotificationsMap = findWalletNotificationsMap(user);
+        List<Message> newMessageList = new ArrayList<>();
+        for (List<Message> messageList : walletNotificationsMap.values()) {
+            messageList.get(messageList.size() - 1).setContent(String.valueOf(messageList.size()));
+            save(messageList.get(messageList.size() - 1));
+            newMessageList.add((messageList.get(messageList.size() - 1)));
+        }
+
+        return newMessageList;
+    }
+
+    @Override
+    public Map<Wallet, List<Message>> findWalletNotificationsMap(User user) {
+        List<Message> notificationList =
+                findAllByReceiverAndTypeOrderByDate(user, String.valueOf(Message.MessageType.R));
+
+        return notificationList.stream().collect(Collectors.groupingBy(Message::getWallet));
     }
 }

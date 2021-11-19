@@ -53,7 +53,9 @@ public class Message {
     }
 
     public enum MessageType {
-        S, // notification about debts sends by system
-        E // notification about debts sends by user
+        S, // notification about debts sent by system
+        E, // notification about debts sent by user
+        M, // message sent by user
+        R, // notification about messages sent by system
     }
 }

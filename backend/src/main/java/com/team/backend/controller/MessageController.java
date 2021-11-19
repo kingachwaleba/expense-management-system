@@ -8,6 +8,7 @@ import com.team.backend.helpers.DebtsHolder;
 import com.team.backend.model.Message;
 import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
+import com.team.backend.model.WalletUser;
 import com.team.backend.repository.WalletUserRepository;
 import com.team.backend.service.MessageService;
 import com.team.backend.service.UserService;
@@ -19,8 +20,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class MessageController {
@@ -38,12 +44,32 @@ public class MessageController {
         this.walletUserRepository = walletUserRepository;
     }
 
-    @GetMapping("/wallet/{id}/message")
+    @GetMapping("/wallet/{id}/message/{stringDate}")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
-    public ResponseEntity<?> all(@PathVariable int id) {
+    public ResponseEntity<?> allMessages(@PathVariable int id, @PathVariable String stringDate) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
-        return new ResponseEntity<>(messageService.findAllByWalletAndTypeOrderByDate(wallet, "M"), HttpStatus.OK);
+        LocalDateTime date;
+        try {
+            date = LocalDateTime.parse(stringDate);
+        } catch (DateTimeException dateTimeException) {
+            return new ResponseEntity<>(dateTimeException.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        List<Message> messageList =
+                messageService.findAllByWalletAndTypeOrderByDate(wallet, String.valueOf(Message.MessageType.M));
+
+        messageList = messageList.stream().filter(
+                message -> message.getDate().isBefore(date)).collect(Collectors.toList());
+
+        if (messageList.size() > 10)
+            messageList = messageList.subList(messageList.size() - 10, messageList.size());
+
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        messageService.removeNotifications(user, wallet, String.valueOf(Message.MessageType.R));
+        messageService.manageMessageNotifications(user);
+
+        return new ResponseEntity<>(messageList, HttpStatus.OK);
     }
 
     @GetMapping("/debts-notifications")
@@ -57,20 +83,36 @@ public class MessageController {
         return new ResponseEntity<>(debtsList, HttpStatus.OK);
     }
 
+    @GetMapping("/message-notifications")
+    public ResponseEntity<?> messageNotifications() {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        List<Message> messageNotifications = messageService.manageMessageNotifications(user);
+
+        return new ResponseEntity<>(messageNotifications, HttpStatus.OK);
+    }
+
     @PostMapping("/wallet/{id}/message")
+    @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         messageService.save(message, wallet, user);
 
-//        List<Map<String, Object>> userList = walletService.findUserList(wallet);
-//        for (Map<String, Object> mapUser : userList) {
-//            User user2 = userService.findByLogin(mapUser.get("login").toString()).orElseThrow(UserNotFoundException::new);
-//
-//            if (user2.getId() != user.getId())
-//                messageService.saveNotifications(wallet, user2, user);
-//        }
+        List<WalletUser> walletUserList = walletService.findWalletUserList(wallet);
+        walletUserList = walletUserList.stream().filter(
+                walletUser -> !walletUser.getUser().equals(user)).collect(Collectors.toList());
+        messageService.removeNotifications(user, wallet, String.valueOf(Message.MessageType.R));
+        messageService.manageMessageNotifications(user);
+        walletUserList.forEach(walletUser ->
+                messageService.saveNotifications(
+                        wallet,
+                        walletUser.getUser(),
+                        null,
+                        "Nowa wiadomość",
+                        String.valueOf(Message.MessageType.R)
+                )
+        );
 
         return ResponseEntity.ok("New message has been sent!");
     }
@@ -100,5 +142,19 @@ public class MessageController {
         messageService.delete(notification);
 
         return ResponseEntity.ok("Notification has been deleted!");
+    }
+
+    @DeleteMapping("/notifications/{id}/messages")
+    @PreAuthorize("@authenticationService.isNotificationOwner(#id)")
+    public ResponseEntity<?> deleteMessageNotification(@PathVariable int id) {
+        Message notification = messageService.findById(id).orElseThrow(MessageNotFoundException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        Map<Wallet, List<Message>> walletNotificationsMap = messageService.findWalletNotificationsMap(user);
+        List<Message> messageList = walletNotificationsMap.get(notification.getWallet());
+
+        messageList.forEach(messageService::delete);
+
+        return ResponseEntity.ok("Notifications have been deleted!");
     }
 }
