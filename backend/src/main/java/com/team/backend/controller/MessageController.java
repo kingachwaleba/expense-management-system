@@ -94,7 +94,7 @@ public class MessageController {
                         wallet,
                         walletUser.getUser(),
                         null,
-                        "Nowa wiadomość",
+                        null,
                         String.valueOf(Message.MessageType.R)
                 )
         );
