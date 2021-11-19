@@ -5,6 +5,7 @@ import com.team.backend.model.User;
 import com.team.backend.model.Wallet;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface MessageService {
@@ -27,4 +28,5 @@ public interface MessageService {
     void removeNotifications(User user, Wallet wallet, String type);
 
     List<Message> manageMessageNotifications(User user);
+    Map<Wallet, List<Message>> findWalletNotificationsMap(User user);
 }

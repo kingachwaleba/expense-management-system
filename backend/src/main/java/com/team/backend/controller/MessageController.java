@@ -143,4 +143,18 @@ public class MessageController {
 
         return ResponseEntity.ok("Notification has been deleted!");
     }
+
+    @DeleteMapping("/notifications/{id}/messages")
+    @PreAuthorize("@authenticationService.isNotificationOwner(#id)")
+    public ResponseEntity<?> deleteMessageNotification(@PathVariable int id) {
+        Message notification = messageService.findById(id).orElseThrow(MessageNotFoundException::new);
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        Map<Wallet, List<Message>> walletNotificationsMap = messageService.findWalletNotificationsMap(user);
+        List<Message> messageList = walletNotificationsMap.get(notification.getWallet());
+
+        messageList.forEach(messageService::delete);
+
+        return ResponseEntity.ok("Notifications have been deleted!");
+    }
 }

@@ -128,17 +128,22 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> manageMessageNotifications(User user) {
-        List<Message> notificationList =
-                findAllByReceiverAndTypeOrderByDate(user, String.valueOf(Message.MessageType.R));
-        Map<Wallet, List<Message>> walletListMap =
-                notificationList.stream().collect(Collectors.groupingBy(Message::getWallet));
+        Map<Wallet, List<Message>> walletNotificationsMap = findWalletNotificationsMap(user);
         List<Message> newMessageList = new ArrayList<>();
-        for (List<Message> messageList : walletListMap.values()) {
+        for (List<Message> messageList : walletNotificationsMap.values()) {
             messageList.get(messageList.size() - 1).setContent(String.valueOf(messageList.size()));
             save(messageList.get(messageList.size() - 1));
             newMessageList.add((messageList.get(messageList.size() - 1)));
         }
 
         return newMessageList;
+    }
+
+    @Override
+    public Map<Wallet, List<Message>> findWalletNotificationsMap(User user) {
+        List<Message> notificationList =
+                findAllByReceiverAndTypeOrderByDate(user, String.valueOf(Message.MessageType.R));
+
+        return notificationList.stream().collect(Collectors.groupingBy(Message::getWallet));
     }
 }
