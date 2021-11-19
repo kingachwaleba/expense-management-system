@@ -125,4 +125,20 @@ public class MessageServiceImpl implements MessageService {
                         message -> message.getReceiver().equals(user)).collect(Collectors.toList());
         userNotificationList.forEach(this::delete);
     }
+
+    @Override
+    public List<Message> manageMessageNotifications(User user) {
+        List<Message> notificationList =
+                findAllByReceiverAndTypeOrderByDate(user, String.valueOf(Message.MessageType.R));
+        Map<Wallet, List<Message>> walletListMap =
+                notificationList.stream().collect(Collectors.groupingBy(Message::getWallet));
+        List<Message> newMessageList = new ArrayList<>();
+        for (List<Message> messageList : walletListMap.values()) {
+            messageList.get(messageList.size() - 1).setContent(String.valueOf(messageList.size()));
+            save(messageList.get(messageList.size() - 1));
+            newMessageList.add((messageList.get(messageList.size() - 1)));
+        }
+
+        return newMessageList;
+    }
 }

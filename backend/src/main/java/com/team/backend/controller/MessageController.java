@@ -22,6 +22,8 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,6 +65,10 @@ public class MessageController {
         if (messageList.size() > 10)
             messageList = messageList.subList(messageList.size() - 10, messageList.size());
 
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        messageService.removeNotifications(user, wallet, String.valueOf(Message.MessageType.R));
+        messageService.manageMessageNotifications(user);
+
         return new ResponseEntity<>(messageList, HttpStatus.OK);
     }
 
@@ -77,6 +83,14 @@ public class MessageController {
         return new ResponseEntity<>(debtsList, HttpStatus.OK);
     }
 
+    @GetMapping("/message-notifications")
+    public ResponseEntity<?> messageNotifications() {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+        List<Message> messageNotifications = messageService.manageMessageNotifications(user);
+
+        return new ResponseEntity<>(messageNotifications, HttpStatus.OK);
+    }
+
     @PostMapping("/wallet/{id}/message")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
     public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {
@@ -89,12 +103,13 @@ public class MessageController {
         walletUserList = walletUserList.stream().filter(
                 walletUser -> !walletUser.getUser().equals(user)).collect(Collectors.toList());
         messageService.removeNotifications(user, wallet, String.valueOf(Message.MessageType.R));
+        messageService.manageMessageNotifications(user);
         walletUserList.forEach(walletUser ->
                 messageService.saveNotifications(
                         wallet,
                         walletUser.getUser(),
                         null,
-                        null,
+                        "Nowa wiadomość",
                         String.valueOf(Message.MessageType.R)
                 )
         );

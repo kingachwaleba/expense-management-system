@@ -25,4 +25,6 @@ public interface MessageService {
 
     void sendNotification(int id);
     void removeNotifications(User user, Wallet wallet, String type);
+
+    List<Message> manageMessageNotifications(User user);
 }
