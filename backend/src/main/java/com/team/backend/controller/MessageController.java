@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,12 +42,28 @@ public class MessageController {
         this.walletUserRepository = walletUserRepository;
     }
 
-    @GetMapping("/wallet/{id}/message")
+    @GetMapping("/wallet/{id}/message/{stringDate}")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
-    public ResponseEntity<?> all(@PathVariable int id) {
+    public ResponseEntity<?> allMessages(@PathVariable int id, @PathVariable String stringDate) {
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
 
-        return new ResponseEntity<>(messageService.findAllByWalletAndTypeOrderByDate(wallet, "M"), HttpStatus.OK);
+        LocalDateTime date;
+        try {
+            date = LocalDateTime.parse(stringDate);
+        } catch (DateTimeException dateTimeException) {
+            return new ResponseEntity<>(dateTimeException.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        List<Message> messageList =
+                messageService.findAllByWalletAndTypeOrderByDate(wallet, String.valueOf(Message.MessageType.M));
+
+        messageList = messageList.stream().filter(
+                message -> message.getDate().isBefore(date)).collect(Collectors.toList());
+
+        if (messageList.size() > 10)
+            messageList = messageList.subList(messageList.size() - 10, messageList.size());
+
+        return new ResponseEntity<>(messageList, HttpStatus.OK);
     }
 
     @GetMapping("/debts-notifications")
