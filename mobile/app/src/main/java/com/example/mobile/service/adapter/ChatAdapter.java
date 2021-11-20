@@ -50,17 +50,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 viewHolder0.contentTv.setText(message.getContent());
                 viewHolder0.loginTv.setText(message.getSender().getLogin());
                 viewHolder0.dateTv.setText(message.getDate().replace("T", " "));
-               /* if (message.getSender().getImage() != null) {
+                if (message.getSender().getImage() != null) {
                     ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into((viewHolder0).profilePhoto), holder.itemView.getContext(), mAccessToken, message.getSender().getImage());
-                }*/
+                }
                 break;
             case 1:
                 ViewHolder1 viewHolder1 = (ViewHolder1) holder;
                 viewHolder1.contentTv.setText(message.getContent());
                 viewHolder1.dateTv.setText(message.getDate().replace("T", " "));
-                /* if (message.getSender().getImage() != null) {
+                 if (message.getSender().getImage() != null) {
                     ImageHelper.downloadImage((picasso, urlBuilder) -> picasso.load(String.valueOf(urlBuilder)).into((viewHolder1).profilePhoto), holder.itemView.getContext(), mAccessToken, message.getSender().getImage());
-                }*/
+                }
                 break;
         }
     }

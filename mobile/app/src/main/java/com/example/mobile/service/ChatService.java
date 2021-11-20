@@ -29,10 +29,6 @@ public class ChatService {
         this.userLogin = userLogin;
     }
 
-    public interface OnMessagesCallback {
-        void onMessages(List<Message> messages);
-    }
-
     public void getMessages(String accessToken, String date) {
         Call<List<Message>> call = apiInterface.getMessages("Bearer " + accessToken, walletId, date);
         call.enqueue(new Callback<List<Message>>() {

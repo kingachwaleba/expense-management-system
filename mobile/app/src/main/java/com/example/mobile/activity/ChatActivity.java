@@ -57,22 +57,6 @@ public class ChatActivity extends BaseActivity {
 
         chatService.getMessages(accessToken, date);
 
-
-  /*      chatService.getMessages(accessToken, date, new ChatService.OnMessagesCallback() {
-            @Override
-            public void onMessages(List<Message> messages) {
-                allMessages = messages;
-
-                chatAdapter.notifyDataSetChanged();
-                messageRv.setAdapter(chatAdapter);
-
-                for(int i = 0; i < allMessages.size(); i++)
-                    System.out.println(allMessages.get(i).getContent());
-            }
-        });*/
-
-
-
         sendMessageBtn.setOnClickListener(v -> {
             if(!contentEt.getText().toString().equals("")){
                 chatService.sendMessage(accessToken, walletId, new Message(contentEt.getText().toString()));
