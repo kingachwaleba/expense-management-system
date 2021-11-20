@@ -255,6 +255,7 @@ public class WalletActivity extends BaseActivity {
             intent.putExtra("accessToken", accessToken);
             intent.putExtra("walletId", id);
             intent.putExtra("walletName", walletName);
+            intent.putExtra("login", login);
             startActivity(intent);
         });
 

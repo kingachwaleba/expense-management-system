@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/edit_send_message_rl"
-                android:layout_marginBottom="20dp" />
+               />
 
             <LinearLayout
                 android:id="@+id/edit_send_message_rl"
@@ -50,6 +50,7 @@
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/bg_round_box_light"
                 android:orientation="horizontal"
+                android:layout_marginTop="20dp"
                 android:padding="10dp">
 
                 <EditText
