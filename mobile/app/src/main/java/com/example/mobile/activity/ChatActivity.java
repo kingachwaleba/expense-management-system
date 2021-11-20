@@ -1,100 +1,64 @@
 package com.example.mobile.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mobile.R;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import tech.gusavila92.websocketclient.WebSocketClient;
+import com.example.mobile.model.Message;
+import com.example.mobile.service.ChatService;
+import com.example.mobile.service.adapter.ChatAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatActivity extends BaseActivity {
 
     EditText contentEt;
+    TextView nameWallet;
     Button sendMessageBtn;
     RecyclerView messageRv;
-    String accessToken;
+    String accessToken, walletName;
     int walletId;
-    private WebSocketClient webSocketClient;
+    ChatService chatService;
+    String date, userLogin;
+    List<Message> allMessages;
+    ChatAdapter chatAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        createWebSocketClient();
 
         walletId = getIntent().getIntExtra("walletId", 0);
         accessToken = getIntent().getStringExtra("accessToken");
+        walletName = getIntent().getStringExtra("walletName");
+        userLogin = getIntent().getStringExtra("login");
 
         messageRv = findViewById(R.id.message_rv);
+        chatAdapter = new ChatAdapter(this, allMessages, userLogin, accessToken);
+
         contentEt = findViewById(R.id.message_et);
+        nameWallet = findViewById(R.id.name_tv);
         sendMessageBtn = findViewById(R.id.send_message_btn);
 
-    }
+        nameWallet.setText(walletName);
 
-    private void createWebSocketClient() {
-        URI uri;
-        try {
-            // Connect to local host
-            uri = new URI("ws://192.168.0.31:8080/websocket");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return;
-        }
-        webSocketClient = new WebSocketClient(uri) {
-            @Override
-            public void onOpen() {
-                Log.i("WebSocket", "Session is starting");
-                webSocketClient.send("Hello World!");
-            }
+        messageRv.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        List<Message> messagesInit = new ArrayList<>();
+        ChatAdapter chatAdapterInit = new ChatAdapter(ChatActivity.this, messagesInit, userLogin, accessToken);
+        messageRv.setAdapter(chatAdapterInit);
 
-            @Override
-            public void onTextReceived(String s) {
-                Log.i("WebSocket", "Message received");
-                final String message = s;
-                runOnUiThread(() -> {
-                    try {
-                        TextView textView = findViewById(R.id.name_tv);
-                        textView.setText(message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
+        chatService= new ChatService(this, walletId, messageRv, userLogin);
 
-            @Override
-            public void onBinaryReceived(byte[] data) {
-            }
+        chatService.getMessages(accessToken);
 
-            @Override
-            public void onPingReceived(byte[] data) {
+        sendMessageBtn.setOnClickListener(v -> {
+            if(!contentEt.getText().toString().equals("")){
+                chatService.sendMessage(accessToken, walletId, new Message(contentEt.getText().toString()));
+                contentEt.setText("");
             }
-
-            @Override
-            public void onPongReceived(byte[] data) {
-            }
-
-            @Override
-            public void onException(Exception e) {
-                System.out.println(e.getMessage());
-            }
-
-            @Override
-            public void onCloseReceived() {
-                Log.i("WebSocket", "Closed ");
-                System.out.println("onCloseReceived");
-            }
-        };
-        webSocketClient.setConnectTimeout(10000);
-        webSocketClient.setReadTimeout(60000);
-        webSocketClient.enableAutomaticReconnection(5000);
-        webSocketClient.connect();
+        });
     }
 }

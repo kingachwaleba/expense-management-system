@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="20dp"
     android:background="@drawable/bg_background"
     android:orientation="vertical">
@@ -17,7 +18,7 @@
             android:id="@+id/name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:textAppearance="@style/simple_label_bold"
             android:textColor="@color/yellow"
             android:textSize="36sp" />
@@ -40,8 +41,10 @@
                 android:id="@+id/message_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_above="@+id/edit_send_message_rl"
-                android:layout_marginBottom="20dp" />
+                tools:listitem="@layout/other_user_message"
+               />
 
             <LinearLayout
                 android:id="@+id/edit_send_message_rl"
@@ -50,6 +53,7 @@
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/bg_round_box_light"
                 android:orientation="horizontal"
+                android:layout_marginTop="20dp"
                 android:padding="10dp">
 
                 <EditText
