@@ -210,6 +210,37 @@ public class AccountService {
         });
     }
 
+    public void getMessageNotification(OnMessageNotificationCallback callback, String accessToken) {
+        Call<List<Message>> call = apiInterface.getMessageNotification("Bearer " + accessToken);
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<Message>> call, @NotNull Response<List<Message>> response) {
+                callback.onMessageNotification(response.body());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<Message>> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
+    public void deleteMessageNotification(String accessToken, int id) {
+        Call<ResponseBody> call = apiInterface.deleteMessageNotification("Bearer " + accessToken, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
     public interface OnAccountCallback {
         void onMyAccount(User user);
     }
@@ -220,5 +251,9 @@ public class AccountService {
 
     public interface OnNotificationCallback {
         void onAllNotifications(List<Message> messages);
+    }
+
+    public interface OnMessageNotificationCallback{
+        void onMessageNotification(List<Message> messages);
     }
 }

@@ -128,5 +128,7 @@
     <string name="receipt_photo">Zdjęcie paragonu:</string>
     <string name="delete_image">Usuń zdjęcie</string>
     <string name="wallets">Portfele</string>
+    <string name="delete_notification2">Usuń powiadomienie</string>
+    <string name="new_message">Nowa wiadomość</string>
 
 </resources>

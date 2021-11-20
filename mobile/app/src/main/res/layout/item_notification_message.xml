@@ -7,13 +7,15 @@
     android:background="@drawable/bg_round_box_dark"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="40dp">
+    android:padding="20dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:textAppearance="@style/simple_label_bold"
-        android:textColor="@color/red"
+        android:text="@string/new_message"
+        android:textColor="@color/yellow"
         android:textSize="36sp" />
 
     <View
@@ -24,14 +26,8 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/v_line_white" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
         <TextView
+            android:id="@+id/wallet_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginBottom="20dp"
@@ -39,12 +35,32 @@
             android:textAppearance="@style/simple_label"
             android:textSize="20sp" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/number_of_message_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:textAppearance="@style/simple_label"
+        android:textSize="20sp" />
+
 
     <Button
+        android:id="@+id/go_to_wallet_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_simple"
+        android:textAppearance="@style/simple_button"
+        android:text="@string/go_to_wallet"
+        android:textColor="@color/light_gray"
+        app:backgroundTint="@null" />
+
+    <Button
+        android:id="@+id/delete_notification_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_notification2"
         android:background="@drawable/btn_simple"
         android:textAppearance="@style/simple_button"
         android:textColor="@color/light_gray"

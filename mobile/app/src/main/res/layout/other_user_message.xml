@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="left"
+    android:layout_gravity="start"
     android:paddingTop="8dp">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_user_image"
@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginStart="10dp"
-        android:text="2021-11-11 15:21:00"
         android:textAppearance="@style/simple_label"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/txtMessage"
@@ -37,7 +36,6 @@
         android:elevation="5dp"
         android:maxWidth="240dp"
         android:padding="15dp"
-        android:text="Hi, John's message"
         android:textAppearance="@style/simple_label"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="John"
         android:textAppearance="@style/simple_label_bold"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
