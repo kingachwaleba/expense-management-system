@@ -224,4 +224,14 @@ public interface ApiInterface {
     @POST("send-notification/wallet/{id}")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> sendDebtNotification(@Header("Authorization") String accessToken, @Path("id") int id, @Body DebtsHolder debtsHolder);
+
+    //Chat
+    @GET("wallet/{id}/message/{stringDate}")
+    @Headers("Content-Type: application/json")
+    Call<List<Message>> getMessages(@Header("Authorization") String accessToken, @Path("id") int id, @Path("stringDate") String date);
+
+    @POST("wallet/{id}/message")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> sendMessage(@Header("Authorization") String accessToken, @Path("id") int id, @Body Message message);
+
 }
