@@ -18,6 +18,7 @@ import com.example.mobile.model.Message;
 import com.example.mobile.model.User;
 import com.example.mobile.service.AccountService;
 import com.example.mobile.service.adapter.InvitationAdapter;
+import com.example.mobile.service.adapter.MessageNotificationAdapter;
 import com.example.mobile.service.adapter.WarningAdapter;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class ProfileActivity extends BaseActivity {
     Button editProfileBtn;
     ImageButton openNotificationBtn;
     TextView loginTv, emailTv, numberOfWalletTv, balanceTv, goToStatuteTv;
-    RecyclerView notificationInvitationRv, notificationWarningRv;
+    RecyclerView notificationInvitationRv, notificationWarningRv, notificationMessageRv;
 
     SessionManager session;
     String accessToken;
@@ -48,18 +49,23 @@ public class ProfileActivity extends BaseActivity {
 
         notificationInvitationRv = findViewById(R.id.notification_invitation_rv);
         notificationWarningRv = findViewById(R.id.notification_warning_rv);
+        notificationMessageRv = findViewById(R.id.notification_message_rv);
 
         notificationInvitationRv.setLayoutManager(new LinearLayoutManager(this));
         notificationWarningRv.setLayoutManager(new LinearLayoutManager(this));
+        notificationMessageRv.setLayoutManager(new LinearLayoutManager(this));
 
         List<Invitation> invitationsInit = new ArrayList<>();
         List<Message> warningsInit = new ArrayList<>();
+        List<Message> messageInit = new ArrayList<>();
 
         InvitationAdapter invitationAdapterInit = new InvitationAdapter(this, invitationsInit, accessToken);
         WarningAdapter warningAdapterInit = new WarningAdapter(this, warningsInit, accessToken);
+        MessageNotificationAdapter messageNotificationAdapterInit = new MessageNotificationAdapter(this, messageInit, accessToken);
 
         notificationInvitationRv.setAdapter(invitationAdapterInit);
         notificationWarningRv.setAdapter(warningAdapterInit);
+        notificationMessageRv.setAdapter(messageNotificationAdapterInit);
 
         ifOpenNotification = false;
         openNotificationBtn = findViewById(R.id.open_notification_btn);
@@ -110,6 +116,13 @@ public class ProfileActivity extends BaseActivity {
                     warningAdapter.notifyDataSetChanged();
                 }, accessToken);
 
+                accountService.getMessageNotification(messages -> {
+                    MessageNotificationAdapter messageNotificationAdapter = new MessageNotificationAdapter(ProfileActivity.this, messages, accessToken);
+                    notificationMessageRv.setAdapter(messageNotificationAdapter);
+                    messageNotificationAdapter.notifyDataSetChanged();
+                }, accessToken);
+
+
             } else {
                 openNotificationBtn.setBackgroundResource(R.drawable.btn_list_closed);
                 invitationAdapterInit.clear();
@@ -118,6 +131,9 @@ public class ProfileActivity extends BaseActivity {
                 warningAdapterInit.clear();
                 notificationWarningRv.setAdapter(warningAdapterInit);
                 warningAdapterInit.notifyDataSetChanged();
+                messageNotificationAdapterInit.clear();
+                notificationMessageRv.setAdapter(messageNotificationAdapterInit);
+                messageNotificationAdapterInit.notifyDataSetChanged();
             }
         });
 

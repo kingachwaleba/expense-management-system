@@ -75,7 +75,7 @@ public class MessageNotificationAdapter extends RecyclerView.Adapter<MessageNoti
 
         public ViewHolder(View itemView) {
             super(itemView);
-            walletNameTv = itemView.findViewById(R.id.owner_tv);
+            walletNameTv = itemView.findViewById(R.id.wallet_name_tv);
             numberOfMessageTv = itemView.findViewById(R.id.number_of_message_tv);
             goToWalletBtn = itemView.findViewById(R.id.go_to_wallet_btn);
             denyBtn = itemView.findViewById(R.id.delete_notification_btn);

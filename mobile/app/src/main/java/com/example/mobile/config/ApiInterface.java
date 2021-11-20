@@ -238,7 +238,7 @@ public interface ApiInterface {
     @Headers("Content-Type: application/json")
     Call<List<Message>> getMessageNotification(@Header("Authorization") String accessToken);
 
-    @PUT("notifications/{id}/messages")
+    @DELETE("notifications/{id}/messages")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> deleteMessageNotification(@Header("Authorization") String accessToken, @Path("id") int id);
 }

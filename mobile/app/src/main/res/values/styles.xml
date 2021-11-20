@@ -18,7 +18,7 @@
         <item name="android:letterSpacing">0.04</item>
         <item name="fontFamily">pt sans</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">26sp</item>
         <item name="android:shadowColor">@color/shadow</item>
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">3</item>
