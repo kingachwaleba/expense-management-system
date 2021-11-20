@@ -8,6 +8,8 @@ import com.example.mobile.config.ApiInterface;
 import com.example.mobile.model.Message;
 import com.example.mobile.service.adapter.ChatAdapter;
 import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -29,7 +31,8 @@ public class ChatService {
         this.userLogin = userLogin;
     }
 
-    public void getMessages(String accessToken, String date) {
+    public void getMessages(String accessToken) {
+        String date = LocalDateTime.now().toString().substring(0,19);
         Call<List<Message>> call = apiInterface.getMessages("Bearer " + accessToken, walletId, date);
         call.enqueue(new Callback<List<Message>>() {
             @Override
@@ -50,11 +53,35 @@ public class ChatService {
         });
     }
 
+    public void getOldMessages(String accessToken, String date, List <Message> oldMessage) {
+        Call<List<Message>> call = apiInterface.getMessages("Bearer " + accessToken, walletId, date);
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<Message>> call, @NotNull Response<List<Message>> response) {
+                if(response.isSuccessful()){
+                    List<Message> messages = response.body();
+                    messages.addAll(oldMessage);
+                    ChatAdapter chatAdapter = new ChatAdapter(context, messages, userLogin, accessToken);
+                    chatRv.setAdapter(chatAdapter);
+                    chatAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<Message>> call, @NotNull Throwable t) {
+                Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });
+    }
+
     public void sendMessage(String accessToken, int walletId, Message message) {
         Call<ResponseBody> call = apiInterface.sendMessage("Bearer " + accessToken, walletId, message);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                }
             }
 
             @Override

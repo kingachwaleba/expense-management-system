@@ -10,7 +10,6 @@ import com.example.mobile.R;
 import com.example.mobile.model.Message;
 import com.example.mobile.service.ChatService;
 import com.example.mobile.service.adapter.ChatAdapter;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +36,6 @@ public class ChatActivity extends BaseActivity {
         walletName = getIntent().getStringExtra("walletName");
         userLogin = getIntent().getStringExtra("login");
 
-        date = LocalDateTime.now().toString().substring(0,19);
-
         messageRv = findViewById(R.id.message_rv);
         chatAdapter = new ChatAdapter(this, allMessages, userLogin, accessToken);
 
@@ -55,7 +52,7 @@ public class ChatActivity extends BaseActivity {
 
         chatService= new ChatService(this, walletId, messageRv, userLogin);
 
-        chatService.getMessages(accessToken, date);
+        chatService.getMessages(accessToken);
 
         sendMessageBtn.setOnClickListener(v -> {
             if(!contentEt.getText().toString().equals("")){
@@ -63,7 +60,5 @@ public class ChatActivity extends BaseActivity {
                 contentEt.setText("");
             }
         });
-
     }
-
 }
