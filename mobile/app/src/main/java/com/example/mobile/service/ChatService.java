@@ -32,7 +32,7 @@ public class ChatService {
     }
 
     public void getMessages(String accessToken) {
-        String date = LocalDateTime.now().toString().substring(0,19);
+        String date = LocalDateTime.now().plusSeconds(3).toString().substring(0,19);
         Call<List<Message>> call = apiInterface.getMessages("Bearer " + accessToken, walletId, date);
         call.enqueue(new Callback<List<Message>>() {
             @Override
@@ -42,6 +42,7 @@ public class ChatService {
                     ChatAdapter chatAdapter = new ChatAdapter(context, messages, userLogin, accessToken);
                     chatRv.setAdapter(chatAdapter);
                     chatAdapter.notifyDataSetChanged();
+                    chatRv.scrollToPosition(chatAdapter.getItemCount()-1);
                 }
             }
 
@@ -81,6 +82,7 @@ public class ChatService {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 if(response.isSuccessful()){
+                    getMessages(accessToken);
                 }
             }
 
