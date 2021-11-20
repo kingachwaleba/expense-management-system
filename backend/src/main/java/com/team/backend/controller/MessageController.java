@@ -1,5 +1,6 @@
 package com.team.backend.controller;
 
+import com.team.backend.config.ErrorMessage;
 import com.team.backend.exception.MessageNotFoundException;
 import com.team.backend.exception.UserNotFoundException;
 import com.team.backend.exception.WalletNotFoundException;
@@ -16,14 +17,13 @@ import com.team.backend.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,13 +35,15 @@ public class MessageController {
     private final UserService userService;
     private final MessageService messageService;
     private final WalletUserRepository walletUserRepository;
+    private final ErrorMessage errorMessage;
 
     public MessageController(WalletService walletService, UserService userService, MessageService messageService,
-                             WalletUserRepository walletUserRepository) {
+                             WalletUserRepository walletUserRepository, ErrorMessage errorMessage) {
         this.walletService = walletService;
         this.userService = userService;
         this.messageService = messageService;
         this.walletUserRepository = walletUserRepository;
+        this.errorMessage = errorMessage;
     }
 
     @GetMapping("/wallet/{id}/message/{stringDate}")
@@ -93,7 +95,11 @@ public class MessageController {
 
     @PostMapping("/wallet/{id}/message")
     @PreAuthorize("@authenticationService.isWalletMember(#id)")
-    public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message) {
+    public ResponseEntity<?> createMessage(@PathVariable int id, @Valid @RequestBody Message message,
+                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new ResponseEntity<>(errorMessage.get("message.error.content"), HttpStatus.BAD_REQUEST);
+
         Wallet wallet = walletService.findById(id).orElseThrow(WalletNotFoundException::new);
         User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 

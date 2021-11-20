@@ -31,8 +31,8 @@ public class Message {
     private LocalDateTime date;
 
     @Column(nullable = false)
-    @Size(min = 1, max = 255)
-    @NotBlank(message = "Content is mandatory!")
+    @Size(min = 1, max = 255, message = "{message.error.content}")
+    @NotBlank(message = "{message.error.content}")
     private String content;
 
     @Column(nullable = false, length = 1)

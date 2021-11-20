@@ -64,6 +64,9 @@ public class ImageController {
 
     @GetMapping("/user-files/{login}")
     public ResponseEntity<?> getUserFile(@PathVariable String login) {
+        if (!login.matches("^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\\d.-]{4,45}$"))
+            return new ResponseEntity<>(errorMessage.get("user.login.regexp"), HttpStatus.BAD_REQUEST);
+
         String imageName = userService.findByLogin(login).orElseThrow(UserNotFoundException::new).getImage();
         if (imageName == null)
             return new ResponseEntity<>("The user does not have an image!", HttpStatus.NOT_FOUND);
