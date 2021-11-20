@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
@@ -22,7 +23,7 @@ public class ChatActivity extends BaseActivity {
     String accessToken, walletName;
     int walletId;
     ChatService chatService;
-    String date, userLogin;
+    String userLogin;
     List<Message> allMessages;
     ChatAdapter chatAdapter;
 
@@ -45,7 +46,8 @@ public class ChatActivity extends BaseActivity {
 
         nameWallet.setText(walletName);
 
-        messageRv.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
+        messageRv.setLayoutManager(layoutManager);
         List<Message> messagesInit = new ArrayList<>();
         ChatAdapter chatAdapterInit = new ChatAdapter(ChatActivity.this, messagesInit, userLogin, accessToken);
         messageRv.setAdapter(chatAdapterInit);
@@ -60,5 +62,33 @@ public class ChatActivity extends BaseActivity {
                 contentEt.setText("");
             }
         });
+
+      //  contentEt.setOnClickListener(view -> messageRv.postDelayed(() -> messageRv.scrollToPosition(messageRv.getAdapter().getItemCount() - 1), 500));
+
+        messageRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(isRecyclerViewAtTop()) {
+                    ChatAdapter chatAdapter1 = (ChatAdapter) messageRv.getAdapter();
+                    if(chatAdapter1!=null){
+                        List<Message> oldMessage = chatAdapter1.getmMessage();
+                        chatService.getOldMessages(accessToken,oldMessage.get(0).getDate(), oldMessage);
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean isRecyclerViewAtTop()   {
+        if(messageRv.getChildCount() == 0)
+            return true;
+        return messageRv.getChildAt(0).getTop() == 0;
     }
 }

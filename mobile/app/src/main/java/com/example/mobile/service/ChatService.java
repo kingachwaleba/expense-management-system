@@ -61,10 +61,12 @@ public class ChatService {
             public void onResponse(@NotNull Call<List<Message>> call, @NotNull Response<List<Message>> response) {
                 if(response.isSuccessful()){
                     List<Message> messages = response.body();
-                    messages.addAll(oldMessage);
-                    ChatAdapter chatAdapter = new ChatAdapter(context, messages, userLogin, accessToken);
-                    chatRv.setAdapter(chatAdapter);
-                    chatAdapter.notifyDataSetChanged();
+                    if(messages!=null){
+                        messages.addAll(oldMessage);
+                        ChatAdapter chatAdapter = new ChatAdapter(context, messages, userLogin, accessToken);
+                        chatRv.setAdapter(chatAdapter);
+                        chatAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 

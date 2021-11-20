@@ -20,7 +20,8 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<Message> mMessage;
     private final LayoutInflater mInflater;
-    private String mUserLogin, mAccessToken;
+    private final String mUserLogin;
+    private final String mAccessToken;
 
     public ChatAdapter(Context context, List<Message> messages, String userLogin, String accessToken) {
         mMessage = messages;
@@ -34,10 +35,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View messageView;
         if (viewType == 0) {
             messageView = mInflater.inflate(R.layout.other_user_message, parent, false);
-            return new ChatAdapter.ViewHolder0(messageView);
+            return new ViewHolder0(messageView);
         } else if (viewType == 1) {
             messageView = mInflater.inflate(R.layout.current_user_message, parent, false);
-            return new ChatAdapter.ViewHolder1(messageView);
+            return new ViewHolder1(messageView);
         } else return null;
     }
 
@@ -77,7 +78,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mMessage.size();
     }
 
-    public class ViewHolder0 extends RecyclerView.ViewHolder {
+    public List<Message> getmMessage() {
+        return mMessage;
+    }
+
+    public static class ViewHolder0 extends RecyclerView.ViewHolder {
         TextView dateTv, loginTv, contentTv;
         ImageView profilePhoto;
         public ViewHolder0(View itemView) {
@@ -89,8 +94,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public class ViewHolder1 extends RecyclerView.ViewHolder {
-        TextView dateTv, loginTv, contentTv;
+    public static class ViewHolder1 extends RecyclerView.ViewHolder {
+        TextView dateTv, contentTv;
         ImageView profilePhoto;
         public ViewHolder1(View itemView) {
             super(itemView);
