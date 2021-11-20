@@ -65,14 +65,14 @@ export default function LoginPagev2 () {
                                     />
                                
                             </div>
-                           <div className="error-text">
-        
+                           <div className="error-text text-size center-content">
+                           
                                {errorMassage}
                              
                             </div> 
                        
                             <div className="center-content" >
-                                    <a href="/remindpassword" className="card-link href-text">Nie pamietam hasła, przypomnij hasło.</a>
+                                    <a href="/remind-password" className="card-link href-text text-size">Nie pamietam hasła, przypomnij hasło.</a>
                             </div>
                             <br></br>
                             <div  className="center-content">

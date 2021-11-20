@@ -143,6 +143,7 @@ class AddUsersToNewWalletComponent extends Component {
                        <div className="text-size error-text">
                            {this.state.errorMessage}
                         </div> 
+                        <br />
 
 {
 
