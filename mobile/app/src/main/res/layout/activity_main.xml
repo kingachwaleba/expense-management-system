@@ -28,13 +28,13 @@
             android:id="@+id/wallets_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_wallet"></androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/item_wallet"/>
 
         <Button
             android:id="@+id/add_new_wallet_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
+            android:layout_marginVertical="10dp"
             android:background="@drawable/btn_simple"
             android:text="@string/add_new_wallet"
             android:textAppearance="@style/simple_button"
