@@ -6,7 +6,7 @@
     android:background="@drawable/bg_round_box_light"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/name_list_tv"
@@ -21,15 +21,13 @@
         android:id="@+id/vector"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginVertical="10dp"
         android:background="@drawable/v_line_gradient" />
 
     <TextView
         android:id="@+id/number_of_elements_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
         android:text="@string/number_of_elements_label"
         android:textAppearance="@style/simple_label_bold"
@@ -40,15 +38,13 @@
         android:id="@+id/vector_2"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginVertical="10dp"
         android:background="@drawable/v_line_gradient" />
 
     <TextView
         android:id="@+id/go_to_list_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:clickable="true"
         android:gravity="center_horizontal"
         android:text="@string/see_details"

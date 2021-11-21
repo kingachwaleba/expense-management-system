@@ -12,7 +12,7 @@ public class ApiClient {
     private static Retrofit retrofit;
 
     public ApiClient() {
-        String BASE_URL = "http://192.168.8.153:8080/";
+        String BASE_URL = "http://192.168.0.31:8080/";
 
         Gson gson = new GsonBuilder()
                 .setLenient()

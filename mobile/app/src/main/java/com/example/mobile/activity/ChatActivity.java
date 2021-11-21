@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,12 +58,16 @@ public class ChatActivity extends BaseActivity {
 
         chatService.getMessages(accessToken);
 
+        String contentS = contentEt.getText().toString();
+
         sendMessageBtn.setOnClickListener(v -> {
-            if(!contentEt.getText().toString().equals("")){
-                chatService.sendMessage(accessToken, walletId, new Message(contentEt.getText().toString()));
+            if(!contentS.equals("") && contentEt.length()<256){
+                chatService.sendMessage(accessToken, walletId,
+                        new Message(contentS));
                 contentEt.setText("");
-            }
-        });
+            } else Toast.makeText(this,
+                    "Wiadomość musi mieć od 1 do 255 znaków",
+                    Toast.LENGTH_SHORT).show(); });
 
       //  contentEt.setOnClickListener(view -> messageRv.postDelayed(() -> messageRv.scrollToPosition(messageRv.getAdapter().getItemCount() - 1), 500));
 

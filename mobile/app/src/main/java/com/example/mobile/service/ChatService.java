@@ -5,6 +5,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.config.ApiClient;
 import com.example.mobile.config.ApiInterface;
+import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.model.Message;
 import com.example.mobile.service.adapter.ChatAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -85,6 +86,9 @@ public class ChatService {
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 if(response.isSuccessful()){
                     getMessages(accessToken);
+                } else {
+                    String error = ErrorUtils.parseError(response);
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
                 }
             }
 
