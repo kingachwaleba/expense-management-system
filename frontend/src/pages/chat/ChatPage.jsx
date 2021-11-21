@@ -66,7 +66,7 @@ function ChatPage() {
             const timer = setTimeout(()=>{
                 refreshChat(e)
                 console.log("Refresh!")
-            },500)
+            },1000)
             return() => clearTimeout(timer)
         }
         else{
@@ -108,27 +108,31 @@ function ChatPage() {
         }
     }
     const handleLoadMore = (e) =>{
+        document.getElementById("load-more-button").disabled = true
         setIsLoading(true)
         var currentDateTime = format(new Date(), 'yyyy-MM-dd kk:mm:ss')
         const formatCurrentDateTime = currentDateTime.replace(/ /g,'T')
-        var date = messagesData.at(-1).date
+        var date = messagesData.at(0).date
          var tempArray = messagesData
         setMessagesData([])
         
-        ChatService.getMessages(walletIdHelper, date, userData.token)
+       
+        const timer = setTimeout(()=>{
+           ChatService.getMessages(walletIdHelper, date, userData.token)
         .then((response)=>{
             console.log(response.data)
             setMessagesData(response.data)
             //setMessagesData(oldData => [...oldData, response.data])
             
             setIsLoading(false)
-            
+            document.getElementById("load-more-button").disabled = false
             
         })
         .catch((error)=>{
             console.log(error)
         })
-        
+        },1000)
+        return() => clearTimeout(timer)
         
     }
 
@@ -194,7 +198,7 @@ function ChatPage() {
              <Container className="box-content">
                  <Row >
                      <Col md={{span: 4, offset: 5 }} xs={{span: 5, offset:4 }}>
-                        <button className="main-button-style base-text" onClick={(e)=>{
+                        <button id="load-more-button"className="main-button-style base-text" onClick={(e)=>{
                             handleLoadMore()
                         }}>Załaduj więcej</button>
                         
