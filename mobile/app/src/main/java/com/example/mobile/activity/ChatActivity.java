@@ -56,9 +56,11 @@ public class ChatActivity extends BaseActivity {
 
         chatService.getMessages(accessToken);
 
+        String contentS = contentEt.getText().toString();
+
         sendMessageBtn.setOnClickListener(v -> {
-            if(!contentEt.getText().toString().equals("")){
-                chatService.sendMessage(accessToken, walletId, new Message(contentEt.getText().toString()));
+            if(!contentS.equals("") && contentEt.length()<256){
+                chatService.sendMessage(accessToken, walletId, new Message(contentS));
                 contentEt.setText("");
             }
         });
