@@ -295,6 +295,26 @@ border-radius: 38px;
   background-color: transparent;
   
 }
+.send-message-icon{
+  
+  background-image:url(send.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+  
+}
+.refresh-chat-icon{
+  
+  background-image:url(refresh.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+  
+}
 .delete-list-element{
     
   background-image:url(delete-list-element.png);
