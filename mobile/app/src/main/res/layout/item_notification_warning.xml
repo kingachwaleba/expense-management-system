@@ -7,7 +7,7 @@
     android:background="@drawable/bg_round_box_dark"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/warning_label"
@@ -41,7 +41,7 @@
             android:layout_weight="1"
             android:text="@string/warning_info_text"
             android:textAppearance="@style/simple_label"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/owner_tv"
@@ -50,7 +50,7 @@
             android:layout_weight="1"
             android:text="@string/owner_label"
             android:textAppearance="@style/simple_label"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/debt_tv"
@@ -59,7 +59,7 @@
             android:layout_weight="1"
             android:text="@string/debt"
             android:textAppearance="@style/simple_label"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -67,7 +67,7 @@
         android:id="@+id/accept_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/btn_simple"
         android:text="@string/go_to_wallet"
         android:textAppearance="@style/simple_button"
@@ -78,7 +78,6 @@
         android:id="@+id/delete_notification_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:background="@drawable/btn_simple"
         android:text="@string/delete_notification"
         android:textAppearance="@style/simple_button"

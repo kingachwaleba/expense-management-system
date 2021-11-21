@@ -16,7 +16,7 @@
         android:textAppearance="@style/simple_label_bold"
         android:text="@string/new_message"
         android:textColor="@color/yellow"
-        android:textSize="36sp" />
+        android:textSize="26sp" />
 
     <View
         android:id="@+id/vector"
@@ -26,30 +26,28 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/v_line_white" />
 
-        <TextView
-            android:id="@+id/wallet_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:textAppearance="@style/simple_label"
-            android:textSize="20sp" />
+    <TextView
+        android:id="@+id/wallet_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textAppearance="@style/simple_label"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/number_of_message_tv"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:layout_weight="1"
         android:textAppearance="@style/simple_label"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
 
     <Button
         android:id="@+id/go_to_wallet_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/btn_simple"
         android:textAppearance="@style/simple_button"
         android:text="@string/go_to_wallet"
