@@ -75,7 +75,6 @@ walletID = JSON.parse(sessionStorage.getItem('walletID'));
                 <div className="center-content">
                     <button className="handshake-icon icons-size"
                     title="Potwierdz uregulowanie rachunku"
-                
                     onClick={(e)=>{
                         var debtsHolder = {
                             debtor:{
@@ -93,13 +92,10 @@ walletID = JSON.parse(sessionStorage.getItem('walletID'));
                                 roles: creditorRoles
                             },
                             howMuch: howMuch
-
                         }
                         WalletService.payDebt(walletID,debtsHolder,user.token)
                         .then((response)=>{
-                         console.log(response)
-                         window.location.href='/wallet'
-                            
+                         window.location.href='/wallet'   
                         })
                         .catch(error=>{
                             console.error({error})

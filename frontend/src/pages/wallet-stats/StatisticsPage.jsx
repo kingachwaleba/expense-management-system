@@ -65,11 +65,10 @@ function StatisticsPage (){
                             locale='pl' 
                             className="box-subcontent-2 base-text text-size" 
                             selected={selectedDate1} 
-                            onChange={date=>{ setSelectedDate1(date)
-                                setRenderStats(false)
-                                setErrorMessage("")}}
+                            onChange={date=>{   setSelectedDate1(date)
+                                                setRenderStats(false)
+                                                setErrorMessage("")}}
                             dateFormat="yyyy-MM-dd"
-                            //maxDate={selectedDate2}
                             maxDate = {new Date()}
                             />
                         </div>
@@ -85,12 +84,10 @@ function StatisticsPage (){
                             dateFormat="yyyy-MM-dd"
                             selected={selectedDate2} 
                             onChange={date=> {setSelectedDate2(date)
-                                                setRenderStats(false)
-                                                setErrorMessage("")
-                                            }}
+                                              setRenderStats(false)
+                                              setErrorMessage("")}}
                             minDate={selectedDate1}
-                            maxDate = {new Date()}
-                            />
+                            maxDate = {new Date()}/>
                         </div>
 
                     </Col>
@@ -129,9 +126,6 @@ function StatisticsPage (){
                                             <div className="box-subcontent-2 text-label">Najwięcej wydali: </div>
                                             <div className="box-subcontent-2">{statsData.maxUsersList.map(user=> user+"  ") +" | "+ statsData.maxExpensesValue }zł</div>
                                         </div>
-                                   
-                                       
-                                     
                                       <div className="separator-line"></div>
                                       <div className="box-subcontent">
                                       <div className="grid-container ">
@@ -164,13 +158,10 @@ function StatisticsPage (){
                                             <div >{statsData.wyjście} zł</div>
                                         </div>
                                       </div>
-                                    </div>
-                                    
+                                    </div>   
                                 ):(
                                     <div className="text-size base-text center-content">
-
                                         {errorMessage}
-
                                     </div>
                                 )
                             }
@@ -180,7 +171,6 @@ function StatisticsPage (){
                     <button
                             className="btn btn-primary btn-block form-button text-size"
                             id = "mainbuttonstyle"
-                           
                             onClick={e =>  {
                                 window.location.href='/wallet'
                             }}
@@ -192,7 +182,6 @@ function StatisticsPage (){
              
             </Container>
         );
-  
 }
 
 export default StatisticsPage;

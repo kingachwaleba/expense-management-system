@@ -17,17 +17,13 @@ const userToken = UserService.getCurrentUser().token;
                     <Header title="Profil"/>
                </Row>
                 <Col md={{span: 8, offset:2 }}  className="center-content"> 
-
                 <Row>
                     <div className="center-content">
                         <div className=" base-text text-size">
                     <ProfileDataComponent />
                         </div>
-                     
                         <div className="base-text text-size"> 
-                           
                             <NotificationComponent />
-                          
                         </div>
                     </div>
                     <br/>

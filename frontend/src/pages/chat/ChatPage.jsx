@@ -8,10 +8,10 @@ import ChatService from '../../services/ChatService';
 import {format} from 'date-fns'
 import picture from '../../profile_picture_placeholder.jpg'
 import ImageService from '../../services/ImageService';
-import { Prev } from 'react-bootstrap/esm/PageItem';
-let temp = []
+
+
 function ChatPage() {
-    
+    var temp=""
     const userData = UserService.getCurrentUser()
     let walletIdHelper = '';    
     if (sessionStorage && sessionStorage.getItem('walletID')) {
@@ -19,24 +19,18 @@ function ChatPage() {
       }
     const [isLoading, setIsLoading] = useState(true)
     const [messagesData, setMessagesData] = useState([])
-    const [messagesData2, setMessagesData2] = useState([])
     const [message, setMessage] = useState({
         content: ""
     })
-    const [arrayHelp, setArrayHelp]=useState([])
-    const [profilePicsArray, setProfilePicsArray]= useState([])
-    const [picsObj, setPicsObj] = useState({
-        login: "",
-        pictureUrl: "",
-    })
-    const [update, setUpdate]=useState(true)
+   
+    
     useEffect(()=>{
         var currentDateTime = format(new Date(), 'yyyy-MM-dd kk:mm:ss')
         const formatCurrentDateTime = currentDateTime.replace(/ /g,'T')
         console.log(formatCurrentDateTime)
         ChatService.getMessages(walletIdHelper, formatCurrentDateTime, userData.token)
         .then((response)=>{
-           // console.log(response.data)
+         
             setMessagesData(response.data)
             setIsLoading(false)
         })
@@ -76,36 +70,35 @@ function ChatPage() {
     }
    
     const handleImageSrc=(img, login)=>{
+     
         if(img===null){
             return picture
         }
         else{
             ImageService.getUserProfileImg(login, userData.token)
             .then((response)=>{
-                if(arrayHelp.includes(login)){
-                    // console.log("Jest na liscie")
-                  //  console.log("Array help: "+ arrayHelp)
-                }
-                else{
-                   // console.log("Brak na liście")
-                    //setArrayHelp(prev => [...prev, login])
-                }
-               // window.location.temp.push(URL.createObjectURL(response.data))
-               
-                
               
-                    //setTakenPics(prev => [...prev, login])
-                   // setPicsObj({
-                    //    login: login,
-                     //   pictureUrl: URL.createObjectURL(response.data)
-                   // })
-                  //  setProfilePicsArray(prev=>[...prev, picsObj])
-                
-              //console.log("Taken pics: ",takenPics)
-              //console.log("Array ProfilePics: ", profilePicsArray)
+               
+                    temp = URL.createObjectURL(response.data)
+            
+                console.log("tempImg in promise:", temp)
+                return (URL.createObjectURL(response.data))
+               
             })
+            console.log("tempImg:",temp)
             return picture
         }
+    }
+    function imgPromiseHelper(login){
+        return new Promise(function(resolve, reject){
+            ImageService.getUserProfileImg(login, userData.token)
+            .then((response)=>{
+                  setTimeout(function(){
+                resolve (URL.createObjectURL(response.data))
+            },1000)
+            })
+          
+        })
     }
     const handleLoadMore = (e) =>{
         document.getElementById("load-more-button").disabled = true
@@ -145,13 +138,16 @@ function ChatPage() {
                     <Row key={singleMessageData.id}>
                        
                      <Row>
-                        <Col md={{span: 6, offset: 8 }} xs={{span: 5, offset:7 }}>
+                        <Col md={{span: 6, offset: 9}} xs={{span: 9, offset:3}}>
                             {singleMessageData.date.replace('T',' ')}
                         </Col>
                      </Row>
-                     <Row>       
-                        <Col md={{span: 5, offset: 6 }} xs={{span: 5, offset:5 }} className="box-subcontent-3">{singleMessageData.content}</Col>
-                        <Col md="1" xs="2" ><img src={handleImageSrc(singleMessageData.sender.image, singleMessageData.sender.login)} className="icons-size profile-img-preview" alt="Pic" /></Col>
+                     <Row className="right-content">       
+                        <Col md={{span: 5, offset: 6 }} xs={{span: 3, offset:4}} className="box-subcontent-3">{singleMessageData.content}</Col>
+                        <Col md={{span: 1, offset:0 }} xs={{span: 3, offset:0 }} ><img src={
+                           // imgPromiseHelper(singleMessageData.sender.login).then(function(val){return val})
+                            handleImageSrc(singleMessageData.sender.image, singleMessageData.sender.login)
+                            } className="icons-size profile-img-preview" alt="Pic" /></Col>
                      </Row>
                      <Row>
                          <Col md={{span: 5, offset:10 }} xs={{span: 5, offset:8 }}>{singleMessageData.sender.login}</Col>
@@ -166,12 +162,12 @@ function ChatPage() {
                         </Col>
                      </Row>
                      <Row>
-                        <Col md="1" xs="2" ><img src={handleImageSrc(singleMessageData.sender.image, singleMessageData.sender.login)} className="icons-size profile-img-preview" alt="Pic" /></Col>
+                        <Col md={{span: 1, offset: 1 }} xs={{span: 3, offset:0 }} ><img src={handleImageSrc(singleMessageData.sender.image, singleMessageData.sender.login)} className="icons-size profile-img-preview" alt="Pic" /></Col>
                         <Col md={{span: 5, offset: 0 }} xs={{span: 6, offset:1 }} className="box-subcontent-3">{singleMessageData.content}</Col>
                      
                      </Row>
                      <Row>
-                         <Col md={{span: 5, offset:0 }} xs={{span: 5, offset:1 }}>{singleMessageData.sender.login}</Col>
+                         <Col md={{span: 5, offset:1 }} xs={{span: 5, offset:1 }}>{singleMessageData.sender.login}</Col>
                     </Row>  
                  </Row> 
                    
@@ -230,7 +226,7 @@ function ChatPage() {
                         }}/>
                      </Col>
                      <Col md="8">
-                        <input type="text" id="messageInput" className="width-100" style={{textAlign:'center'}}
+                        <input type="text" id="messageInput" className="width-100" minLength="1" maxLength="255" style={{textAlign:'center'}}
                         onChange={(e)=>{
                             handleChange(e)
                         }}/>

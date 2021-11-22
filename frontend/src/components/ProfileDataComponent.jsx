@@ -36,7 +36,6 @@ function ProfileDataComponent (){
             ImageService.getUserProfileImg(userData.login, userData.token)
             .then((response)=>{
                 var profilePic = URL.createObjectURL(response.data)
-                console.log(profilePic)
                 setDisplayProfilePic(profilePic)
             })
             .catch((error)=>{

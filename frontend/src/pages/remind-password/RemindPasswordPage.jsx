@@ -15,26 +15,20 @@ function RemindPasswordPage() {
         setEmail(e.target.value)
         setErrorMessage("")
     }
-
     const handleSubmit = (e) =>{
         e.preventDefault();
         var formData = new FormData()
         formData.append('email',email)
         UserService.forgotPassword(formData)
         .then((response)=>{
-            console.log(response.data)
-            console.log("Wysłano maila")
-            window.alert(response.data)
+            window.alert("Wysłano wiadomość na podany adres email")
             window.location.href="/login"
         })
         .catch((error)=>{
-            console.log(error.response.data)
-           
-                 setErrorMessage(error.response.data.toString())
-            
-        
+            setErrorMessage(error.response.data.toString())
         })
     }
+
     return (
         <Container>
              <Header title={"Przypomnij \n hasło:"}/>

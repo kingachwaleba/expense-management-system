@@ -157,9 +157,7 @@ class AddUsersToNewWalletComponent extends Component {
                                }
                                     
                                  <div className="icons-size">
-                                       {/*
-                                           <img src={this.setProfilePicHelper(user.image, user.login)} className="profile-img-preview" alt="profilePic" />
-                                       */ } 
+                            
                                        {
                                            this.setProfilePicHelper(user.image, user.login)
                                        }

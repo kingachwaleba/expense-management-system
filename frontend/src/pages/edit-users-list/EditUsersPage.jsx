@@ -52,7 +52,6 @@ function EditUsersPage () {
    
     function setProfilePicHelper(imageURL, login){
         if(imageURL === null){
-            //return picture
             return (<img src={picture} className="profile-img-preview icons-size" alt="profilePic"/>)
         }
         else{
@@ -61,22 +60,12 @@ function EditUsersPage () {
             ImageService.getUserProfileImg(login, userData.token)
             .then((response)=>{
                profilePic = URL.createObjectURL(response.data)
-           
-                //this.setState({profileImgUrl: profilePic})
-                //console.log("Response:",response.data)
-                console.log("W response: ",profilePic)
-                //setImagePreview(profilePic)
             })
             .catch((error)=>{
                 console.log(error)
-                profilePic = picture
-                console.log("W catchError: ",profilePic)
-              
+                profilePic = picture 
             })
-            console.log("Po getUserProfileImg: ", profilePic)
-               // return (<img src={imagePreview} className="profile-img-preview" alt="profilePic"/>)
-           // console.log("From function profile Pic:", profilePic)
-            //return imagePreview
+                return (<img src={picture} className="profile-img-preview icons-size" alt="profilePic"/>)      
         } 
     }
 
