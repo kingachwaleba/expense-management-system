@@ -29,10 +29,11 @@ import FooterPage from './components/Footer';
 import EditExpensePage from './pages/edit-expense/EditExpensePage';
 import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
 import EditShoppingListName from './pages/edit-shopping-list-name/EditShoppingListName';
-
+import RemindPasswordPage from './pages/remind-password/RemindPasswordPage';
 import picture from '../src/profile_picture_placeholder.jpg'
 
 import ImageService from './services/ImageService';
+import ResetPasswordPage from './pages/reset-password/ResetPasswordPage';
 class App extends React.Component {
 
     constructor(props, context) {
@@ -154,6 +155,8 @@ class App extends React.Component {
                         <Route exact path="/register" component={RegisterPagev2}/>
                         <Route exact path="/statutes" component={StatutesPage}/>
                         <Route exact path="/error-page" component={ErrorPage}/>
+                        <Route exact path="/remind-password" component={RemindPasswordPage}/>
+                        <Route exact path="/account/reset-password" render={(props)=><ResetPasswordPage {...props}/>}/>
 
                         <AuthGuard path="/create-wallet" component={CreateWalletPage}/>
                         <AuthGuard path="/edit-profile" component={EditProfilePage}/>

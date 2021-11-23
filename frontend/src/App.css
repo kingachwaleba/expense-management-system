@@ -233,7 +233,7 @@ border-radius: 38px;
 .profile-img-preview{
   max-width: 100%;
   max-height: 100%;
-  border-radius: 110px;
+  border-radius: 100%;
 }
 .center-content{
   text-align: center;
@@ -293,6 +293,26 @@ border-radius: 38px;
   background-repeat: no-repeat;
   border-color:transparent;
   background-color: transparent;
+  
+}
+.send-message-icon{
+  
+  background-image:url(send.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
+  
+}
+.refresh-chat-icon{
+  
+  background-image:url(refresh.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-color:transparent;
+  background-color: transparent;
+  
   
 }
 .delete-list-element{

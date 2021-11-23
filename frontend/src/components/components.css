@@ -31,6 +31,20 @@ font-size: 90px;
     color: #F7F7F7;
     
 }
+.chat-box{
+  width: auto;
+  height: 500px;
+}
+.box-subcontent-3{
+  background-color: #555555;
+  border-radius: 24px;
+  margin-top: 10px;
+  padding: 10px;
+  margin-left:auto;
+  margin-right:auto;
+  color: #F7F7F7;
+  
+}
 .box-subcontent{
     background-color: #606060;
     padding:4%;

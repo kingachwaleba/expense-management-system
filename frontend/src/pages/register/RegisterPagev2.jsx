@@ -113,7 +113,7 @@ function RegisterPagev2 (){
                                 
                             </div>
                             <div className={'form-group'}>
-                                <label className="form-label" htmlFor="ConfirmPassword">Powtórz hasło* </label>
+                                <label className="form-label text-size" htmlFor="ConfirmPassword">Powtórz hasło* </label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -127,18 +127,19 @@ function RegisterPagev2 (){
                                 />
                                 
                             </div>
-                            <p>* - pola wymagane.</p>
+                            <h5> * - pola wymagane.</h5>
+                            <br />
                             <div>
                                 <input type="checkbox" id="confirmStatute" name="confirmStatute"/>
                                         
-                                <label for="confirmStatute">  Przeczytałem/am i akceptuję warunki regulaminu</label>
+                                <label for="confirmStatute" className="text-size"> <h5> - Przeczytałem/am i akceptuję warunki regulaminu</h5></label>
                             </div>
 
 
                            <div className="error-text text-size">
                                <br />
                                {errorMessageString}
-                               <br />
+                               
                            </div>
                             
                             <br></br>

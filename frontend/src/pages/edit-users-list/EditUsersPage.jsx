@@ -4,14 +4,24 @@ import { useState } from 'react';
 import ManageWalletUsersService from '../../services/ManageWalletUsersService';
 import UserService from '../../services/user.service';
 import { Container, Col, Row } from 'react-bootstrap';
-function EditUsersPage () {
 
+import picture from '../../profile_picture_placeholder.jpg'
+import ImageService from '../../services/ImageService';
+
+function EditUsersPage () {
+    
+    const userData = UserService.getCurrentUser();
     const [walletId, setWalletId] = useState("")
     const [userToken, setUserToken] = useState("")
     const [walletUsers, setWalletUsers] = useState([])
     const [message, setMessage] = useState("")
+    const [imagePreview, setImagePreview] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
+   
     useEffect(()=>{
         let walletIdHelper = '';
+        
+        
         if (sessionStorage && sessionStorage.getItem('walletID')) {
            walletIdHelper = JSON.parse(sessionStorage.getItem('walletID'));
           }
@@ -23,7 +33,7 @@ function EditUsersPage () {
                 setWalletUsers(response.data)
                 console.log(response.data)
                 console.log(walletUsers)
-                if(response.data.length == 0){
+                if(response.data.length === 0){
                     setMessage("Brak użytkowników")
                     window.location.href='/home'
                 }
@@ -39,7 +49,26 @@ function EditUsersPage () {
 
     },[])
 
-    
+   
+    function setProfilePicHelper(imageURL, login){
+        if(imageURL === null){
+            return (<img src={picture} className="profile-img-preview icons-size" alt="profilePic"/>)
+        }
+        else{
+            var profilePic
+            console.log("Przed getUserProfileImg: ", profilePic)
+            ImageService.getUserProfileImg(login, userData.token)
+            .then((response)=>{
+               profilePic = URL.createObjectURL(response.data)
+            })
+            .catch((error)=>{
+                console.log(error)
+                profilePic = picture 
+            })
+                return (<img src={picture} className="profile-img-preview icons-size" alt="profilePic"/>)      
+        } 
+    }
+
         return (
             <Container>
                 <Header title={"Edytuj \n członków"}/>
@@ -54,7 +83,13 @@ function EditUsersPage () {
                             <Row key = {user.userId} >
                                 
                                 <Col md="2">
-                                #ProfilePic
+                                    {
+                                        //console.log("Zwraca: ",setProfilePicHelper(user.image, user.login))
+                                    }
+                                {
+                                 //<img src={setProfilePicHelper(user.image, user.login)} className="profile-img-preview icons-size" alt="profilePic"/>
+                                 setProfilePicHelper(user.image, user.login)
+                                }
                                 </Col>
                                 <Col className="center-content">
                                     {user.login}

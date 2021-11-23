@@ -13,7 +13,7 @@ function NotificationComponent(){
     
     
     const [notification, setNotification] = useState([]);
-    
+    const [chatNotifications, setChatNotfications] = useState([])
     const [userToken, setUserToken] = useState("")
     const [message, setMessage] = useState("")
     const [reminders, setReminders] = useState("")
@@ -60,6 +60,14 @@ function NotificationComponent(){
                })
                .catch((error)=>{
                    
+                   console.log(error)
+               })
+
+               NotificationService.getChatNotifications(userData.token)
+               .then((response)=>{
+                   setChatNotfications(response.data)
+               })
+               .catch((error)=>{
                    console.log(error)
                })
               
@@ -125,6 +133,48 @@ function NotificationComponent(){
             )
     }
 
+    const renderMessagesNotification = (data) =>{
+        
+        return (
+                data.map(
+                    Tab =>
+                    <Col key =  {Math.floor(Math.random() * 100000)} >
+                        <div className="box-content">
+                            <div className="text-label">Nowe wiadomości</div>
+                            <div className="separator-line"></div>
+                         
+                            <div>Portfel: {Tab.wallet.name}</div> 
+                        
+                            <div>Liczba nowych wiadomości: {Tab.content}</div> 
+                         
+                            <Button 
+                                className="card-link center-content text-size btn btn-primary main-button-style"
+                                onClick={function(e){
+                                   
+                                    sessionStorage.setItem('walletID',JSON.stringify(Tab.wallet.id))
+                                    window.location.href='/wallet'
+                                }}>
+                                Przejdź do portfla
+                            </Button>
+                    
+                            <Button className="card-link text-size center-content btn btn-primary main-button-style" 
+                                onClick={function(e){
+                                   NotificationService.deleteChatNotification(Tab.id, userToken)
+                                    .then(()=>{
+                                        console.log("Usunięto powiadomienie.")
+                                        window.location.href = "/profile"
+                                    })
+                                    .catch((error)=>{
+                                        console.log(error)
+                                    })  
+                                }}> 
+                                Usuń powiadomienie
+                            </Button>
+                        </div>
+                    </Col>      
+                )
+        )
+}
 
     const renderInvitations = () => {
 
@@ -169,7 +219,7 @@ function NotificationComponent(){
                      {message} 
                 </div>
                 </div> 
-                <br />
+              
                 <div className="box-subcontent">
 
               
@@ -181,6 +231,16 @@ function NotificationComponent(){
                    reminders.length === 0 || loading === true ? (<div>Brak przypomnień</div>):(renderReminders(reminders))
                }
                   </div>        
+                </div>
+                <div className="box-subcontent">
+                    Nowe wiadomości
+                    <div className="separator-line"></div>
+                    {console.log("Przypomnienia:", chatNotifications)}
+                    <div>
+                    {
+                        chatNotifications.length === 0 || loading === true ? (<div>Brak nowych wiadomości</div>):(renderMessagesNotification(chatNotifications))
+                    }
+                    </div>        
                 </div>
             </Container>
         );
