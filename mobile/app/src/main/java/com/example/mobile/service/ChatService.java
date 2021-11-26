@@ -33,7 +33,7 @@ public class ChatService {
     }
 
     public void getMessages(String accessToken) {
-        String date = LocalDateTime.now().plusSeconds(3).toString().substring(0,19);
+        String date = LocalDateTime.now().plusSeconds(5).toString().substring(0,19);
         Call<List<Message>> call = apiInterface.getMessages("Bearer " + accessToken, walletId, date);
         call.enqueue(new Callback<List<Message>>() {
             @Override
