@@ -58,16 +58,15 @@ public class ChatActivity extends BaseActivity {
 
         chatService.getMessages(accessToken);
 
-        String contentS = contentEt.getText().toString();
-
         sendMessageBtn.setOnClickListener(v -> {
-            if(!contentS.equals("") && contentEt.length()<256){
-                chatService.sendMessage(accessToken, walletId,
-                        new Message(contentS));
+            String contentS = contentEt.getText().toString();
+            if(!contentS.equals("") && contentS.length()<256){
+                chatService.sendMessage(accessToken, walletId, new Message(contentS));
                 contentEt.setText("");
-            } else Toast.makeText(this,
-                    "Wiadomość musi mieć od 1 do 255 znaków",
-                    Toast.LENGTH_SHORT).show(); });
+            } else {
+                Toast.makeText(this, "Wiadomość musi mieć od 1 do 255 znaków",
+                        Toast.LENGTH_SHORT).show();
+       }});
 
       //  contentEt.setOnClickListener(view -> messageRv.postDelayed(() -> messageRv.scrollToPosition(messageRv.getAdapter().getItemCount() - 1), 500));
 
