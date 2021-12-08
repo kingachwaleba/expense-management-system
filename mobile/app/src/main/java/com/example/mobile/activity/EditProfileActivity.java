@@ -1,5 +1,7 @@
 package com.example.mobile.activity;
 
+import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,14 +17,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
+
 import com.example.mobile.ImageHelper;
 import com.example.mobile.R;
 import com.example.mobile.config.SessionManager;
 import com.example.mobile.service.AccountService;
-import java.io.IOException;
 
-import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
+import java.io.IOException;
 
 public class EditProfileActivity extends BaseActivity {
 
@@ -59,9 +62,10 @@ public class EditProfileActivity extends BaseActivity {
         });
 
         deleteImageBtn.setOnClickListener(v -> {
-            if(session.getUserDetails().get(SessionManager.KEY_TOKEN)==null)
+            if (session.getUserDetails().get(SessionManager.KEY_TOKEN) == null)
                 accountService.deleteProfileImage();
-            else Toast.makeText(this, "Nie masz ustawionego żadnego zdjęcia profilowego", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "Nie masz ustawionego żadnego zdjęcia profilowego", Toast.LENGTH_SHORT).show();
         });
 
         changePasswordBtn.setOnClickListener(v -> {

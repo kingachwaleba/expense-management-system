@@ -1,5 +1,7 @@
 package com.example.mobile.activity;
 
+import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,8 +37,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import static javax.microedition.khronos.opengles.GL10.GL_MAX_TEXTURE_SIZE;
 
 public class EditExpenseActivity extends BaseActivity {
 
@@ -208,11 +208,11 @@ public class EditExpenseActivity extends BaseActivity {
         }
     }
 
-    public double validateCost(String cost){
-        if (Pattern.compile("^\\d{0,8}(\\.\\d{1,2})?$").matcher(cost).matches()){
+    public double validateCost(String cost) {
+        if (Pattern.compile("^\\d{0,8}(\\.\\d{1,2})?$").matcher(cost).matches()) {
             try {
                 return Double.parseDouble(cost);
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return 0;
             }
         } else return 0;

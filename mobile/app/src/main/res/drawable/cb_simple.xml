@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:dither="true">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:dither="true">
 
-    <item
-        android:state_checked="true"
-        android:drawable="@drawable/cb_simple_checked" />
-    <item
-        android:drawable="@drawable/cb_simple_not_checked"/>
+    <item android:drawable="@drawable/cb_simple_checked" android:state_checked="true" />
+    <item android:drawable="@drawable/cb_simple_not_checked" />
 
 </selector>
 

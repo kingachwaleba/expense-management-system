@@ -45,11 +45,11 @@ public class MainActivity extends BaseActivity {
         return productUnits;
     }
 
-    static public List<Status> getStatusesList(){
+    static public List<Status> getStatusesList() {
         return statusesList;
     }
 
-    static public Status getStatusByName(String name){
+    static public Status getStatusByName(String name) {
         return statusesList.stream().filter(status -> name.equals(status.getName())).findAny().orElse(null);
     }
 

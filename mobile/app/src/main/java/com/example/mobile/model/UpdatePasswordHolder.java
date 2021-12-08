@@ -3,12 +3,12 @@ package com.example.mobile.model;
 import com.google.gson.annotations.SerializedName;
 
 public class UpdatePasswordHolder {
+    @SerializedName("confirmPassword")
+    private final String confirmPassword;
     @SerializedName("password")
     private String password;
     @SerializedName("oldPassword")
     private String oldPassword;
-    @SerializedName("confirmPassword")
-    private final String confirmPassword;
 
     public UpdatePasswordHolder(String password, String oldPassword, String confirmPassword) {
         this.password = password;

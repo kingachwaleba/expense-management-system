@@ -34,12 +34,12 @@
             android:id="@+id/member_balance_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_alignParentStart="false"
-            android:layout_toStartOf="@+id/show_debth_btn"
-            android:layout_toEndOf="@+id/member_name_tv"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="10dp"
+            android:layout_toStartOf="@+id/show_debth_btn"
+            android:layout_toEndOf="@+id/member_name_tv"
+            android:gravity="right"
             android:textAppearance="@style/simple_label_bold"
             android:textColor="@color/red"
             android:textSize="18sp" />
@@ -76,10 +76,10 @@
             android:layout_alignParentStart="false"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="10dp"
-            android:gravity="right"
             android:layout_toStartOf="@+id/handshake_btn"
             android:layout_toLeftOf="@+id/member_balance_to_you_tv"
             android:background="@drawable/ic_bell"
+            android:gravity="right"
             android:visibility="gone" />
 
         <Button

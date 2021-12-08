@@ -13,8 +13,8 @@
         android:id="@+id/warning_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/warning_debth"
         android:gravity="center_horizontal"
+        android:text="@string/warning_debth"
         android:textAppearance="@style/simple_label_bold"
         android:textColor="@color/red"
         android:textSize="26sp" />

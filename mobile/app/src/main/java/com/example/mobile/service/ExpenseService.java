@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.widget.Toast;
+
 import com.example.mobile.ImageHelper;
 import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.config.ApiClient;
@@ -12,10 +13,13 @@ import com.example.mobile.config.ErrorUtils;
 import com.example.mobile.model.DebtsHolder;
 import com.example.mobile.model.Expense;
 import com.example.mobile.model.ExpenseHolder;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -180,7 +184,7 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Intent i = new Intent(context, WalletActivity.class);
                     i.putExtra("id", String.valueOf(id));
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -204,7 +208,7 @@ public class ExpenseService {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                if(response.isSuccessful())
+                if (response.isSuccessful())
                     Toast.makeText(context, "Przypomnienie o długu zostało wysłane", Toast.LENGTH_SHORT).show();
                 else {
                     String error = ErrorUtils.parseError(response);
