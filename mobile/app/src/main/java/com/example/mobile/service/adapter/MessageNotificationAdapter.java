@@ -8,13 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mobile.R;
 import com.example.mobile.activity.ProfileActivity;
 import com.example.mobile.activity.WalletActivity;
 import com.example.mobile.model.Message;
 import com.example.mobile.service.AccountService;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class MessageNotificationAdapter extends RecyclerView.Adapter<MessageNotificationAdapter.ViewHolder> {

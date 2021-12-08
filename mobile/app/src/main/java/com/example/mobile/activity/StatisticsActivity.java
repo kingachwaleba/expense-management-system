@@ -1,7 +1,6 @@
 package com.example.mobile.activity;
 
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;

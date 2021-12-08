@@ -12,27 +12,17 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class SessionManager {
-    // User login (make variable public to access from outside)
     public static final String KEY_LOGIN = "login";
-    // Sharedpref file name
     private static final String PREF_NAME = "auth0";
-    // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
-    // User token
     public static String KEY_TOKEN = "token";
-    //User image path in server
     public static String KEY_IMAGE_PATH_SERVER = "imageServer";
     public static String KEY_EXPIRY_DATE = "expiry_date";
-    // Shared Preferences
     SharedPreferences pref;
-    // Editor for Shared preferences
     SharedPreferences.Editor editor;
-    // Context
     Context _context;
-    // Shared pref mode
     int PRIVATE_MODE = 0;
 
-    // Constructor
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -40,19 +30,12 @@ public class SessionManager {
     }
 
     public void createLoginSession(String login, String token, String expiryDate, String imageServerPath) {
-        // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
-
-        // Storing login in pref
         editor.putString(KEY_LOGIN, login);
-
         editor.putString(KEY_TOKEN, token);
-
         editor.putString(KEY_EXPIRY_DATE, expiryDate);
-
         editor.putString(KEY_IMAGE_PATH_SERVER, imageServerPath);
 
-        // commit changes
         editor.commit();
     }
 
@@ -76,30 +59,22 @@ public class SessionManager {
     }
 
     public void logoutUser() {
-        // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
 
-        // After logout redirect user to Loing Activity
         Intent intent = new Intent(_context, LoginActivity.class);
-        // Closing all the Activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Add new Flag to start new Activity
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        // Staring Login Activity
         _context.startActivity(intent);
     }
 
-    // Get Login State
     public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
     public void setKeyImagePathServer(String path) {
         editor.putString(KEY_IMAGE_PATH_SERVER, path);
-        // commit changes
         editor.commit();
     }
 

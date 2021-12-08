@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="start"
     android:paddingTop="8dp">
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_user_image"
         android:layout_width="50dp"
@@ -19,8 +20,8 @@
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:layout_marginStart="10dp"
+        android:layout_marginBottom="2dp"
         android:textAppearance="@style/simple_label"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/txtMessage"
