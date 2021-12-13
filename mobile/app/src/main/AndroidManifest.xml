@@ -19,7 +19,6 @@
         <activity android:name=".activity.ExpenseActivity" />
         <activity android:name=".activity.CreateExpenseActivity" />
         <activity android:name=".activity.StatisticsActivity" />
-        <activity android:name=".activity.DeleteMemberActivity" />
         <activity android:name=".activity.DeleteProfileActivity" />
         <activity android:name=".activity.PasswordRestoreActivity" />
         <activity android:name=".activity.ChatActivity" />
