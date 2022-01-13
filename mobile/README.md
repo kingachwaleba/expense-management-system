@@ -2,7 +2,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Exemplary functionalities](#exemplary-functionalities)
+* [Examples of functionalities](#examples-of-functionalities)
 
 ## General info
 Mobile application for expenses managment in group of people. 
@@ -30,7 +30,7 @@ To run mobile app
 * use emulator in Android Studio 
 <!-- * or install expense-managment-system/mobile/app/build/outputs/apk/debug/app-debug.apk file on your phone -->
 
-## Exemplary functionalities
+## Examples of functionalities
 Main function of the application is to simplfy debts between members in a group (wallet). App user can do things like:
 * register, login, remind password
 
