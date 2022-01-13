@@ -1,4 +1,4 @@
-## eSawka - Mobile App
+## eSakwa - Mobile App
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
@@ -31,7 +31,7 @@ To run mobile app
 <!-- * or install expense-managment-system/mobile/app/build/outputs/apk/debug/app-debug.apk file on your phone -->
 
 ## Exemplary functionalities
-Main function of the application is to simplfy debt between members in a group (wallet). App user can do things like:
+Main function of the application is to simplfy debts between members in a group (wallet). App user can do things like:
 * register, login, remind password
 
 <p align="center">
@@ -47,7 +47,7 @@ Main function of the application is to simplfy debt between members in a group (
 	<img src="https://user-images.githubusercontent.com/79993500/149238146-95067fb7-b1e2-4420-a42b-8f3300e13363.png" alt="edit_profile" width="200" height="430">
 </p>
 
-* wallet management (is a group of people who wants to share expenses with each other): create, edit, delete wallet
+* wallet management (the wallet is a group of people who wants to share expenses with each other): create, edit, delete wallet
 
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/79993500/149240988-5a66944e-243c-4618-bea5-ceb030acc7ac.png" alt="wallets_list" width="200" height="430">
