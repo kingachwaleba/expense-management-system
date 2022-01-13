@@ -1,14 +1,37 @@
 ## eSawka - Mobile App
 * [General info](#general-info)
-* [Exemplary functionalities](#exemplary-functionalities)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Exemplary functionalities](#exemplary-functionalities)
 
 ## General info
 Mobile application for expenses managment in group of people. 
+	
+## Technologies
+Project is created with:
+* Android Studio: 2020.3.1
+* Java: 11
+* Gradle Version: 6.7.1
+* Andorid Gradle Plugin Version: 4.2.2
+	
+## Setup
+To run this project,
+* firstly, download server app from expense-managment-system/backend. To run backend use:
+```
+$ cd expense-managment-system/backend
+$ mvn spring-boot:run
+```
+Before running project change ip for server app ip in file:
+* expense-managment-system/mobile/app/src/main/res/xml/network_security_config.xml
+* expense-managment-system/mobile/app/src/main/java/com/example/mobile/config/ApiClient.java 
+* expense-managment-system/mobile/app/src/main/java/com/example/mobile/ImageHelper.java
+
+To run mobile app 
+* use emulator in Android Studio 
+<!-- * or install expense-managment-system/mobile/app/build/outputs/apk/debug/app-debug.apk file on your phone -->
 
 ## Exemplary functionalities
-Main function of the application is to simplfy debth between members in a group (wallet). App user can do things like:
+Main function of the application is to simplfy debt between members in a group (wallet). App user can do things like:
 * register, login, remind password
 
 <p align="center">
@@ -17,7 +40,7 @@ Main function of the application is to simplfy debth between members in a group 
 	<img src="https://user-images.githubusercontent.com/79993500/149238524-400acb61-0fee-4bb3-928b-24f69f2a1a5e.png" alt="remind_password" width="200" height="430">
 </p>
 
-* profile management: change photo, change password, delete account, display notification about debths, wallet invitation and new message
+* profile management: change photo, change password, delete account, display notification about debts, wallet invitation and new message
 
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/79993500/149236400-58b99225-9240-470f-a3d9-8477536af30d.png" alt="profile" width="200" height="430">
@@ -38,7 +61,7 @@ Main function of the application is to simplfy debth between members in a group 
 	<img src="https://user-images.githubusercontent.com/79993500/149240611-1f2ebe28-cd3a-46b4-8b3d-35c51e546890.png" alt="expense" width="200" height="430">
 </p>
 
-* display your credits and debths, send remaider to your debtor, check credits as regulated 
+* display your credits and debts, send remaider to your debtor, check credits as regulated 
 
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/79993500/149239886-007ab284-0479-4482-93da-d960b6e4f66d.png" alt="debetor" width="200" height="430">
@@ -63,27 +86,3 @@ Main function of the application is to simplfy debth between members in a group 
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/79993500/149239149-bc380582-258d-4e2d-b96d-97373822d3d9.png" alt="chat" width="200" height="430">
 </p>
-
-	
-## Technologies
-Project is created with:
-* Android Studio: 2020.3.1
-* Java: 11
-* Gradle Version: 6.7.1
-* Andorid Gradle Plugin Version: 4.2.2
-	
-## Setup
-To run this project,
-* firstly, download server app from expense-managment-system/backend. To run backend use:
-```
-$ cd expense-managment-system/backend
-$ mvn spring-boot:run
-```
-Before running project change ip for server app ip in file:
-* expense-managment-system/mobile/app/src/main/res/xml/network_security_config.xml
-* expense-managment-system/mobile/app/src/main/java/com/example/mobile/config/ApiClient.java 
-* expense-managment-system/mobile/app/src/main/java/com/example/mobile/ImageHelper.java
-
-To run mobile app 
-* use emulator in Android Studio 
-<!-- * or install expense-managment-system/mobile/app/build/outputs/apk/debug/app-debug.apk file on your phone -->
