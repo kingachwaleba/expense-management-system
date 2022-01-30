@@ -5,33 +5,36 @@
 * [Examples of functionalities](#examples-of-functionalities)
 
 ## General info
-Mobile application for expenses managment in group of people. 
+Mobile application for expenses management in group of people. 
 	
 ## Technologies
 Project is created with:
 * Android Studio: 2020.3.1
 * Java: 11
 * Gradle Version: 6.7.1
-* Andorid Gradle Plugin Version: 4.2.2
+* Android Gradle Plugin Version: 4.2.2
 	
 ## Setup
-To run this project,
-* firstly, download server app from expense-managment-system/backend. To run backend use:
+Download or clone this project from https://github.com/kingachwaleba/expense-management-system. 
+
+To store pictures, create a new directory named ***uploads*** in the ***backend*** directory.
+
+To run backend application use:
 ```
-$ cd expense-managment-system/backend
+$ cd expense-management-system/backend
 $ mvn spring-boot:run
 ```
 Before running project change ip for server app ip in file:
-* expense-managment-system/mobile/app/src/main/res/xml/network_security_config.xml
-* expense-managment-system/mobile/app/src/main/java/com/example/mobile/config/ApiClient.java 
-* expense-managment-system/mobile/app/src/main/java/com/example/mobile/ImageHelper.java
+* expense-management-system/mobile/app/src/main/res/xml/network_security_config.xml
+* expense-management-system/mobile/app/src/main/java/com/example/mobile/config/ApiClient.java 
+* expense-management-system/mobile/app/src/main/java/com/example/mobile/ImageHelper.java
 
 To run mobile app 
 * use emulator in Android Studio 
-<!-- * or install expense-managment-system/mobile/app/build/outputs/apk/debug/app-debug.apk file on your phone -->
+<!-- * or install expense-management-system/mobile/app/build/outputs/apk/debug/app-debug.apk file on your phone -->
 
 ## Examples of functionalities
-Main function of the application is to simplfy debts between members in a group (wallet). App user can do things like:
+Main function of the application is to simplify debts between members in a group (wallet). App user can do things like:
 * register, login, remind password
 
 <p align="center">
