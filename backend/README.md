@@ -5,12 +5,13 @@
 * [Features](#features)
 
 ## General info
-Backend application for expenses management in a group of people. 
+Backend application for expenses management in a group of people. It is written in Spring Boot.
 	
 ## Technologies
 Technologies used to create this project:
 * Java: 11
-* Maven Version: 3.8.1
+* Maven: 3.8.1
+* Spring Boot: 2.5.2
 * IDE - IntelliJ IDEA Ultimate: 2020.2.3
 	
 ## Setup
